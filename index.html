@@ -3,215 +3,633 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#173f35">
 <title>Producción Las Acacias</title>
+
 <style>
-:root{--verde:#19564b;--fondo:#f2f5f7;--borde:#dbe4e8;--texto:#273c49}
+:root{
+  --fondo:#f4f3ed;
+  --tarjeta:#fffefa;
+  --bosque:#173f35;
+  --bosque-claro:#2c5949;
+  --oro:#b5995f;
+  --oro-claro:#eee6d5;
+  --texto:#243d33;
+  --secundario:#748077;
+  --borde:#e4e1d7;
+  --rojo:#c64c45;
+  --amarillo:#d8b238;
+  --verde:#5d8f64;
+  --sombra:0 5px 20px rgba(41,53,38,.045);
+}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
-body{margin:0;background:var(--fondo);color:var(--texto);font-family:Arial,sans-serif}
-main{max-width:1600px;margin:auto;padding:24px}
-header{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin-bottom:20px}
-h1{color:var(--verde);margin:0 0 8px;font-size:26px}
-.subtitulo{margin:0;color:#647582}
+body{
+  margin:0;
+  font-family:"Segoe UI",Arial,sans-serif;
+  background:var(--fondo);
+  color:var(--texto);
+}
 button,input,select{font:inherit}
-button{padding:10px 15px;border:1px solid var(--borde);border-radius:8px;background:white;cursor:pointer;color:var(--texto)}
-button:hover{background:#edf5f1}
-button:disabled{opacity:.5;cursor:default}
-.primario,.pestanas button.activo{background:var(--verde);border-color:var(--verde);color:white}
-.tarjetas,.graficos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:18px}
-.tarjeta{background:white;border:1px solid var(--borde);padding:20px 16px;border-radius:12px;text-align:center;display:flex;flex-direction:column;justify-content:center}
-.tarjeta h2{margin:0 0 10px;font-size:15px;color:var(--verde)}
-.numero{font-size:30px;font-weight:bold;margin-bottom:6px}
-.detalle{font-size:12px;color:#647582;line-height:1.6;overflow-wrap:anywhere}
-.error,.negativo{color:#b02e2e}
-.stock-rojo{border-top:4px solid #c94b4b}
-.stock-rojo h2{color:#a62323}
-.stock-amarillo{border-top:4px solid #d9b636}
-.stock-amarillo h2{color:#806300}
-.stock-verde{border-top:4px solid #429368}
-.stock-verde h2{color:#24623a}
-.stock-monte{border-top:4px solid #497ba0}
-.stock-monte h2{color:#315f80}
-.descarte{border-top:4px solid #b17b48}
-.descarte h2{color:#885b31}
-button.tarjeta{width:100%;font:inherit}
-button.tarjeta:hover{background:#fffaf3;box-shadow:0 3px 12px rgba(40,60,70,.08)}
-button.tarjeta:focus-visible{outline:3px solid #b17b48;outline-offset:3px}
-.grafico{background:white;border:1px solid var(--borde);border-radius:12px;overflow:hidden}
-.grafico h2{margin:0;padding:15px 12px;font-size:14px;text-align:center;color:var(--verde);border-bottom:1px solid var(--borde);background:#f8fbfa}
-.visual{min-height:300px;display:flex;justify-content:center;align-items:center;padding:8px 2px}
-.visual svg{display:block;width:100%;height:auto}
-.mensaje-grafico{text-align:center;color:#647582;font-size:13px;line-height:1.6;padding:16px}
-.alcance{text-align:center;font-size:11px;color:#647582;padding:0 12px 14px;line-height:1.5}
-.panel{background:white;border:1px solid var(--borde);border-radius:12px;overflow:hidden}
-.pestanas,.controles{display:flex;gap:10px;padding:16px;flex-wrap:wrap;align-items:center}
-.pestanas{justify-content:center}
-.ayuda-tablas{text-align:center;font-size:12px;color:#647582;margin:0;padding:0 16px 16px}
-#listado{border-top:1px solid var(--borde)}
-.titulo-tabla{margin:0;padding:18px 16px 0;text-align:center;color:var(--verde);font-size:20px;overflow-wrap:anywhere}
-input,select{padding:9px;border:1px solid var(--borde);border-radius:6px;background:white;color:var(--texto)}
+button{cursor:pointer}
+button:disabled{opacity:.55;cursor:default}
+button:focus-visible,input:focus-visible,select:focus-visible{
+  outline:3px solid #b5995f80;
+  outline-offset:3px;
+}
+.cabecera{
+  background:var(--bosque);
+  color:#fffefa;
+  border-bottom:3px solid var(--oro);
+  position:relative;
+  overflow:hidden;
+}
+.cabecera::after{
+  content:"";
+  position:absolute;
+  width:450px;
+  height:450px;
+  border:1px solid #b5995f26;
+  border-radius:50%;
+  right:-90px;
+  top:-270px;
+  pointer-events:none;
+}
+.cabecera-interior{
+  max-width:1600px;
+  margin:auto;
+  padding:28px 24px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:24px;
+  position:relative;
+  z-index:1;
+}
+.marca{display:flex;align-items:center;gap:18px}
+.marca-icono{
+  width:64px;
+  height:64px;
+  color:#c9b178;
+  flex-shrink:0;
+}
+h1{
+  margin:0 0 6px;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:clamp(23px,2.4vw,35px);
+  font-weight:600;
+  letter-spacing:.3px;
+}
+.subtitulo{
+  margin:0;
+  color:#d6e0d5;
+  font-size:16px;
+  letter-spacing:.3px;
+}
+.actualizar{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  background:var(--oro);
+  color:#fffefa;
+  border:1px solid #c8b17b;
+  border-radius:10px;
+  padding:13px 19px;
+  font-weight:600;
+  white-space:nowrap;
+  box-shadow:0 3px 12px #00000010;
+}
+.actualizar:hover{background:#a48a52}
+.actualizar svg{width:19px;height:19px}
+main{max-width:1600px;margin:auto;padding:24px}
+.tarjetas,.graficos,.botones-tablas{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px;
+  margin-bottom:20px;
+}
+.tarjeta{
+  background:var(--tarjeta);
+  border:1px solid var(--borde);
+  border-radius:13px;
+  box-shadow:var(--sombra);
+  padding:23px 20px;
+  display:flex;
+  align-items:center;
+  gap:18px;
+  min-height:145px;
+  position:relative;
+  overflow:hidden;
+  text-align:left;
+}
+.tarjeta::after{
+  content:"";
+  position:absolute;
+  width:90px;
+  height:90px;
+  border:1px solid currentColor;
+  border-radius:50%;
+  right:-32px;
+  bottom:-40px;
+  opacity:.08;
+  pointer-events:none;
+}
+.tarjeta-contenido{min-width:0;flex:1}
+.tarjeta h2{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:17px;
+  margin:0 0 9px;
+  color:var(--bosque);
+  line-height:1.35;
+}
+.numero{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:clamp(30px,3vw,45px);
+  font-weight:bold;
+  color:var(--bosque);
+  line-height:1.1;
+}
+.detalle{
+  margin-top:9px;
+  font-size:11px;
+  color:var(--secundario);
+  line-height:1.6;
+  overflow-wrap:anywhere;
+}
+.icono-tarjeta{
+  width:66px;
+  height:66px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#e9eddf;
+  color:var(--bosque);
+  flex-shrink:0;
+}
+.icono-tarjeta svg{width:35px;height:35px}
+.stock-monte .icono-tarjeta,.descarte .icono-tarjeta{
+  background:var(--oro-claro);
+  color:#786438;
+}
+.stock-rojo .icono-tarjeta{
+  background:#f5dfd9;color:#a43f38;
+}
+.stock-amarillo .icono-tarjeta{
+  background:#f8edc8;color:#997819;
+}
+.stock-verde .icono-tarjeta{
+  background:#e3ecd9;color:#48734b;
+}
+.stock-rojo{border-top:3px solid #c64c4570}
+.stock-amarillo{border-top:3px solid #d8b23880}
+.stock-verde{border-top:3px solid #5d8f6470}
+button.tarjeta{font:inherit;width:100%;color:var(--texto)}
+button.tarjeta:hover{
+  border-color:var(--oro);
+  background:#fffdf4;
+  transform:translateY(-1px);
+}
+.error,.negativo{color:#aa3c35!important}
+.grafico{
+  background:var(--tarjeta);
+  border:1px solid var(--borde);
+  border-radius:13px;
+  box-shadow:var(--sombra);
+  overflow:hidden;
+}
+.grafico h2{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:17px;
+  color:var(--bosque);
+  margin:0 18px;
+  padding:18px 0;
+  border-bottom:1px solid #b5995f90;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  text-align:center;
+}
+.grafico h2 svg{
+  width:24px;height:24px;
+  color:var(--oro);flex-shrink:0;
+}
+.visual{
+  min-height:300px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:7px 2px;
+}
+.visual svg{width:100%;height:auto;display:block}
+.mensaje-grafico{
+  text-align:center;
+  color:var(--secundario);
+  font-size:13px;
+  line-height:1.6;
+  padding:20px;
+}
+.alcance{
+  text-align:center;
+  padding:0 15px 15px;
+  font-size:11px;
+  line-height:1.5;
+  color:var(--secundario);
+}
+.boton-tabla{
+  border:1px solid #c8b47f;
+  border-radius:12px;
+  background:var(--tarjeta);
+  color:var(--bosque);
+  box-shadow:var(--sombra);
+  padding:18px 20px;
+  display:flex;
+  align-items:center;
+  gap:13px;
+  text-align:left;
+}
+.boton-tabla>svg{width:28px;height:28px;flex-shrink:0}
+.boton-tabla span{
+  flex:1;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:19px;
+  font-weight:bold;
+}
+.boton-tabla .flecha{width:18px;height:18px;color:#9b7c3f}
+.boton-tabla:hover{background:#f5f2e8}
+.boton-tabla.activo{
+  background:var(--bosque);
+  color:#fffefa;
+  border-color:var(--bosque);
+}
+.boton-tabla.activo .flecha{
+  color:#d3bc81;
+  transform:rotate(180deg);
+}
+#estadoCarga{
+  margin:0 0 18px;
+  font-size:12px;
+  line-height:1.6;
+  text-align:center;
+  color:var(--secundario);
+}
+.panel{
+  background:var(--tarjeta);
+  border:1px solid var(--borde);
+  border-radius:13px;
+  box-shadow:var(--sombra);
+  overflow:hidden;
+}
+.titulo-tabla{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:23px;
+  margin:0;
+  padding:23px 18px 6px;
+  text-align:center;
+  color:var(--bosque);
+  overflow-wrap:anywhere;
+}
+.controles{
+  padding:16px;
+  display:flex;
+  gap:12px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+input,select{
+  border:1px solid #dadfd2;
+  border-radius:7px;
+  padding:9px 11px;
+  background:#fffefa;
+  color:var(--texto);
+}
 #buscar{flex:1;min-width:190px}
-.controles label{font-size:13px;display:flex;align-items:center;gap:7px}
+.controles label{
+  display:flex;align-items:center;gap:7px;font-size:12px;
+}
 #fila{width:70px}
-#aviso{padding:0 16px 14px;color:#b02e2e;font-size:13px;line-height:1.6;text-align:center}
+.secundario{
+  border:1px solid #c8b47f;
+  border-radius:7px;
+  padding:9px 13px;
+  background:#f6f2e7;
+  color:var(--bosque);
+}
+.secundario:hover{background:#eee7d6}
+#aviso{
+  padding:0 16px 16px;
+  font-size:13px;
+  line-height:1.6;
+  text-align:center;
+  color:#aa3c35;
+}
 .tabla{overflow:auto;max-height:65vh;border-top:1px solid var(--borde)}
 table{width:100%;border-collapse:separate;border-spacing:0;font-size:12px}
-th,td{text-align:center;padding:10px;min-width:105px;max-width:220px;overflow-wrap:anywhere;border-bottom:1px solid var(--borde)}
-th{position:sticky;top:0;z-index:1;background:#edf3f4;vertical-align:top}
-th button{width:100%;border:none;background:transparent;color:var(--verde);font-weight:bold;white-space:normal;padding:4px}
-th input{width:100%;min-width:85px;margin-top:8px;font-size:11px}
-tbody tr:nth-child(even){background:#f8fafb}
-tbody tr:hover{background:#edf6f0}
+th,td{
+  padding:10px;
+  text-align:center;
+  min-width:105px;
+  max-width:220px;
+  overflow-wrap:anywhere;
+  border-bottom:1px solid var(--borde);
+}
+th{
+  position:sticky;top:0;z-index:1;
+  background:#edf0e5;vertical-align:top;
+}
+th button{
+  width:100%;
+  background:transparent;
+  border:none;
+  color:var(--bosque);
+  font-weight:600;
+  padding:4px;
+  white-space:normal;
+}
+th input{
+  width:100%;min-width:85px;
+  margin-top:8px;padding:7px;font-size:11px;
+}
+tbody tr:nth-child(even){background:#f8f7f1}
+tbody tr:hover{background:#edf2e5}
 th.observaciones,td.observaciones{min-width:280px;max-width:360px;width:320px}
 td.observaciones{text-align:left;vertical-align:top;padding:12px 16px}
 .nota-texto{white-space:pre-wrap;line-height:1.65;overflow-wrap:anywhere}
-.nota-texto.corta{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.leer-nota{padding:5px 8px;margin-top:7px;font-size:11px;color:var(--verde);background:#edf5f1}
+.nota-texto.corta{
+  display:-webkit-box;-webkit-line-clamp:3;
+  -webkit-box-orient:vertical;overflow:hidden;
+}
+.leer-nota{
+  border:1px solid var(--borde);
+  background:#edf0e5;
+  color:var(--bosque);
+  border-radius:5px;
+  font-size:11px;
+  padding:5px 8px;
+  margin-top:7px;
+}
 .etiqueta{display:inline-block;padding:5px 9px;border-radius:6px;font-weight:bold}
-.rojo{background:#ffe1e1;color:#a62323}
-.verde{background:#dff2e4;color:#24623a}
-.amarillo{background:#fff0b6;color:#765b00}
-#vacio{padding:30px;text-align:center;color:#647582}
-.pie{padding:16px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-size:13px}
+.rojo{background:#f5dfd9;color:#a43f38}
+.amarillo{background:#f8edc8;color:#806615}
+.verde{background:#e3ecd9;color:#48734b}
+#vacio{padding:30px;text-align:center;color:var(--secundario)}
+.pie{
+  padding:16px;display:flex;justify-content:space-between;
+  align-items:center;gap:12px;flex-wrap:wrap;font-size:12px;
+}
 .navegacion{display:flex;align-items:center;gap:10px}
-.nota{font-size:12px;line-height:1.6;color:#647582}
-#estadoCarga{margin-bottom:14px;font-size:12px;color:#647582;text-align:center;line-height:1.6}
-dialog{border:1px solid var(--borde);border-radius:14px;padding:24px;width:min(620px,90vw);max-height:80vh;color:var(--texto);overflow:auto}
-dialog::backdrop{background:rgba(20,40,45,.45)}
-dialog h2{margin-top:0;color:var(--verde)}
-#notaCompleta{white-space:pre-wrap;line-height:1.7;overflow-wrap:anywhere;margin-bottom:20px}
-#alcanceDescarte{font-size:13px;line-height:1.6;color:#647582;margin-bottom:16px}
+.nota{
+  font-size:11px;line-height:1.7;
+  color:var(--secundario);text-align:center;margin-top:20px;
+}
+dialog{
+  background:var(--tarjeta);
+  border:1px solid #c8b47f;
+  border-radius:15px;
+  padding:25px;
+  width:min(620px,90vw);
+  max-height:80vh;
+  overflow:auto;
+  color:var(--texto);
+  box-shadow:0 15px 60px #173f3525;
+}
+dialog::backdrop{background:#0b251dcc;backdrop-filter:blur(3px)}
+dialog h2{
+  margin-top:0;
+  font-family:Georgia,"Times New Roman",serif;
+  color:var(--bosque);
+}
+#notaCompleta{
+  white-space:pre-wrap;line-height:1.7;
+  overflow-wrap:anywhere;margin-bottom:20px;
+}
+#alcanceDescarte{
+  font-size:13px;line-height:1.6;
+  color:var(--secundario);margin-bottom:16px;
+}
 .tabla-detalle{margin-bottom:20px;font-size:14px}
 .tabla-detalle th{position:static;padding:12px}
 .tabla-detalle td{padding:12px}
 .tabla-detalle th:first-child,.tabla-detalle td:first-child{text-align:left}
-.tabla-detalle tfoot td{background:#edf3f4;font-weight:bold}
+.tabla-detalle tfoot td{background:#edf0e5;font-weight:bold}
+.iconos{position:absolute;width:0;height:0;overflow:hidden}
 @media(max-width:1100px){
   .graficos{grid-template-columns:1fr}
-  .visual svg{max-width:620px}
+  .visual svg{max-width:640px}
+  .tarjeta{gap:12px;padding:20px 15px}
+  .icono-tarjeta{width:50px;height:50px}
+  .icono-tarjeta svg{width:30px;height:30px}
 }
 @media(max-width:700px){
-  main{padding:12px}h1{font-size:22px}
-  .tarjetas{grid-template-columns:1fr}
-  .tarjeta{padding:16px}.numero{font-size:25px}
-  #buscar{flex-basis:100%}.titulo-tabla{font-size:17px}
-  th.observaciones,td.observaciones{min-width:230px}
+  .cabecera-interior{padding:22px 16px;flex-direction:column;align-items:stretch}
+  .marca{gap:12px}.marca-icono{width:45px;height:45px}
+  .subtitulo{font-size:13px}
+  main{padding:15px}
+  .tarjetas,.botones-tablas{grid-template-columns:1fr;gap:12px}
+  .tarjeta{min-height:115px}
+  .numero{font-size:35px}
+  #buscar{flex-basis:100%}
+  .titulo-tabla{font-size:20px}
   .visual{min-height:250px}
+  th.observaciones,td.observaciones{min-width:230px}
 }
 </style>
 </head>
+
 <body>
-<main>
-<header>
-  <div>
-    <h1>PRODUCCIÓN LAS ACACIAS</h1>
-    <p class="subtitulo">Producción · Insumos · Recibo</p>
+<svg class="iconos" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <symbol id="icono-bosque" viewBox="0 0 64 64">
+    <path d="M20 7 10 23h6L7 37h9L6 51h12v9h4v-9h12L24 37h9l-9-14h6L20 7ZM45 13 36 28h6l-8 13h8l-9 13h10v6h4v-6h10l-9-13h8l-8-13h6L45 13Z" fill="currentColor"/>
+  </symbol>
+  <symbol id="icono-troncos" viewBox="0 0 48 48">
+    <g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="13" cy="31" r="8"/>
+      <circle cx="13" cy="31" r="3"/>
+      <circle cx="30" cy="35" r="8"/>
+      <circle cx="30" cy="35" r="3"/>
+      <path d="m9 24 18-12c8-5 18 5 12 12L21 37M15 23l17-10M20 26l16-11M25 29l16-11M6 36l5 6M33 27l7-5"/>
+    </g>
+  </symbol>
+  <symbol id="icono-descarte" viewBox="0 0 48 48">
+    <g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M9 13h30M16 13V8h16v5M13 13l2 28h18l2-28M21 20v14M27 20v14"/>
+    </g>
+  </symbol>
+  <symbol id="icono-camion" viewBox="0 0 48 48">
+    <g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round">
+      <path d="M4 12h25v22H4ZM29 20h9l6 8v6H29M35 20v9h9"/>
+      <circle cx="12" cy="35" r="5"/>
+      <circle cx="36" cy="35" r="5"/>
+    </g>
+  </symbol>
+  <symbol id="icono-caja" viewBox="0 0 48 48">
+    <g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round">
+      <path d="m24 5 17 9v20l-17 9L7 34V14ZM7 14l17 10 17-10M24 24v19M16 10l17 10"/>
+    </g>
+  </symbol>
+  <symbol id="icono-documento" viewBox="0 0 48 48">
+    <g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round">
+      <path d="M11 5h18l9 10v28H11ZM29 5v11h9M17 23h15M17 29h15M17 35h10"/>
+    </g>
+  </symbol>
+  <symbol id="icono-actualizar" viewBox="0 0 24 24">
+    <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 8a8 8 0 0 0-14-3L3 8M3 3v5h5M4 16a8 8 0 0 0 14 3l3-3M21 21v-5h-5"/>
+    </g>
+  </symbol>
+  <symbol id="icono-flecha" viewBox="0 0 24 24">
+    <path d="m5 8 7 8 7-8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+</svg>
+
+<header class="cabecera">
+  <div class="cabecera-interior">
+    <div class="marca">
+      <svg class="marca-icono" aria-hidden="true"><use href="#icono-bosque"/></svg>
+      <div>
+        <h1>PRODUCCIÓN LAS ACACIAS</h1>
+        <p class="subtitulo">Control de producción y stock</p>
+      </div>
+    </div>
+    <button id="actualizar" class="actualizar">
+      <svg aria-hidden="true"><use href="#icono-actualizar"/></svg>
+      <span id="textoActualizar">Actualizar últimos datos</span>
+    </button>
   </div>
-  <button id="actualizar" class="primario">Actualizar desde Dropbox</button>
 </header>
 
+<main>
 <section class="tarjetas" aria-label="Totales">
   <article class="tarjeta">
-    <h2>PRODUCCIÓN</h2>
-    <div id="numero-produccion" class="numero">—</div>
+    <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#icono-troncos"/></svg></div>
+    <div class="tarjeta-contenido">
+      <h2>PRODUCCIÓN</h2>
+      <div id="numero-produccion" class="numero">—</div>
+    </div>
   </article>
+
   <article class="tarjeta stock-monte">
-    <h2>TROZAS STOCK MONTE</h2>
-    <div id="stock-monte" class="numero">—</div>
-    <div id="detalle-stock-monte" class="detalle">Pendiente de lectura</div>
+    <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#icono-troncos"/></svg></div>
+    <div class="tarjeta-contenido">
+      <h2>TROZAS STOCK MONTE</h2>
+      <div id="stock-monte" class="numero">—</div>
+      <div id="detalle-stock-monte" class="detalle">Pendiente de lectura</div>
+    </div>
   </article>
+
   <button id="tarjetaDescarte" class="tarjeta descarte" type="button" aria-haspopup="dialog">
-    <h2>DESCARTE</h2>
-    <div id="numero-descarte" class="numero">—</div>
-    <div class="detalle">Ver detalle por clasificación</div>
+    <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#icono-descarte"/></svg></div>
+    <div class="tarjeta-contenido">
+      <h2>DESCARTE</h2>
+      <div id="numero-descarte" class="numero">—</div>
+      <div class="detalle">Ver detalle por clasificación</div>
+    </div>
   </button>
 </section>
 
 <section class="tarjetas" aria-label="Stocks por color">
   <article class="tarjeta stock-rojo">
-    <h2>STOCK ROJO</h2>
-    <div id="stock-rojo" class="numero">—</div>
-    <div id="detalle-stock-rojo" class="detalle">Pendiente de lectura</div>
+    <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#icono-troncos"/></svg></div>
+    <div class="tarjeta-contenido">
+      <h2>STOCK ROJO</h2>
+      <div id="stock-rojo" class="numero">—</div>
+      <div id="detalle-stock-rojo" class="detalle">Pendiente de lectura</div>
+    </div>
   </article>
   <article class="tarjeta stock-amarillo">
-    <h2>STOCK AMARILLO</h2>
-    <div id="stock-amarillo" class="numero">—</div>
-    <div id="detalle-stock-amarillo" class="detalle">Pendiente de lectura</div>
+    <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#icono-troncos"/></svg></div>
+    <div class="tarjeta-contenido">
+      <h2>STOCK AMARILLO</h2>
+      <div id="stock-amarillo" class="numero">—</div>
+      <div id="detalle-stock-amarillo" class="detalle">Pendiente de lectura</div>
+    </div>
   </article>
   <article class="tarjeta stock-verde">
-    <h2>STOCK VERDE</h2>
-    <div id="stock-verde" class="numero">—</div>
-    <div id="detalle-stock-verde" class="detalle">Pendiente de lectura</div>
+    <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#icono-troncos"/></svg></div>
+    <div class="tarjeta-contenido">
+      <h2>STOCK VERDE</h2>
+      <div id="stock-verde" class="numero">—</div>
+      <div id="detalle-stock-verde" class="detalle">Pendiente de lectura</div>
+    </div>
   </article>
 </section>
 
 <section class="graficos" aria-label="Gráficos">
   <article class="grafico">
-    <h2>PRODUCCIÓN Y DESCARTES</h2>
+    <h2><svg aria-hidden="true"><use href="#icono-troncos"/></svg>PRODUCCIÓN Y DESCARTES</h2>
     <div id="graficoProduccionDescarte" class="visual"></div>
     <div class="alcance">Responde a los filtros de Producción.</div>
   </article>
   <article class="grafico">
-    <h2>DESPACHO DE TROZAS · RECIBO</h2>
+    <h2><svg aria-hidden="true"><use href="#icono-camion"/></svg>DESPACHO DE TROZAS</h2>
     <div id="graficoDespacho" class="visual"></div>
     <div class="alcance">Suma de CANTIDAD de todo Recibo.</div>
   </article>
   <article class="grafico">
-    <h2>PRODUCCIÓN TROZAS MONTE</h2>
+    <h2><svg aria-hidden="true"><use href="#icono-bosque"/></svg>PRODUCCIÓN TROZAS MONTE</h2>
     <div id="graficoProduccionColor" class="visual"></div>
     <div class="alcance">Responde a los filtros de Producción.</div>
   </article>
 </section>
 
-<div id="estadoCarga" aria-live="polite"></div>
+<div id="estadoCarga" hidden aria-live="polite"></div>
 
-<section class="panel">
-  <nav class="pestanas" aria-label="Mostrar u ocultar tablas">
-    <button data-tab="produccion" aria-expanded="false" aria-controls="listado">Producción</button>
-    <button data-tab="insumos" aria-expanded="false" aria-controls="listado">Insumos</button>
-    <button data-tab="recibo" aria-expanded="false" aria-controls="listado">Recibo</button>
-  </nav>
-  <p class="ayuda-tablas">
-    Seleccioná un botón para ver su listado.
-    Pulsá nuevamente el mismo botón para ocultarlo.
-  </p>
+<nav class="botones-tablas" aria-label="Mostrar u ocultar tablas">
+  <button class="boton-tabla" data-tab="produccion" aria-expanded="false" aria-controls="listado">
+    <svg aria-hidden="true"><use href="#icono-troncos"/></svg>
+    <span>Producción</span>
+    <svg class="flecha" aria-hidden="true"><use href="#icono-flecha"/></svg>
+  </button>
+  <button class="boton-tabla" data-tab="insumos" aria-expanded="false" aria-controls="listado">
+    <svg aria-hidden="true"><use href="#icono-caja"/></svg>
+    <span>Insumos</span>
+    <svg class="flecha" aria-hidden="true"><use href="#icono-flecha"/></svg>
+  </button>
+  <button class="boton-tabla" data-tab="recibo" aria-expanded="false" aria-controls="listado">
+    <svg aria-hidden="true"><use href="#icono-documento"/></svg>
+    <span>Recibo</span>
+    <svg class="flecha" aria-hidden="true"><use href="#icono-flecha"/></svg>
+  </button>
+</nav>
 
-  <div id="listado" hidden>
-    <h2 id="tituloTabla" class="titulo-tabla">Producción</h2>
-    <div class="controles">
-      <input id="buscar" type="search" placeholder="Buscar en toda la tabla..." aria-label="Buscar">
-      <label>Fila de encabezados
-        <input id="fila" type="number" min="1" max="100" value="3">
-      </label>
-      <label>Filas
-        <select id="limite">
-          <option value="25">25</option>
-          <option value="50" selected>50</option>
-          <option value="100">100</option>
-          <option value="200">200</option>
-        </select>
-      </label>
-      <button id="quitar">Quitar filtros</button>
-    </div>
-    <div id="aviso" hidden aria-live="polite"></div>
-    <div class="tabla">
-      <table><thead id="encabezado"></thead><tbody id="cuerpo"></tbody></table>
-      <div id="vacio">Cargando datos...</div>
-    </div>
-    <div class="pie">
-      <span>Hacé clic en los encabezados para ordenar.</span>
-      <div class="navegacion">
-        <button id="anterior">Anterior</button>
-        <span id="pagina">Página 1 de 1</span>
-        <button id="siguiente">Siguiente</button>
-      </div>
+<section id="listado" class="panel" hidden>
+  <h2 id="tituloTabla" class="titulo-tabla">Producción</h2>
+  <div class="controles">
+    <input id="buscar" type="search" placeholder="Buscar en toda la tabla..." aria-label="Buscar">
+    <label>Fila de encabezados
+      <input id="fila" type="number" min="1" max="100" value="3">
+    </label>
+    <label>Filas
+      <select id="limite">
+        <option value="25">25</option>
+        <option value="50" selected>50</option>
+        <option value="100">100</option>
+        <option value="200">200</option>
+      </select>
+    </label>
+    <button id="quitar" class="secundario">Quitar filtros</button>
+  </div>
+  <div id="aviso" hidden aria-live="polite"></div>
+  <div class="tabla">
+    <table><thead id="encabezado"></thead><tbody id="cuerpo"></tbody></table>
+    <div id="vacio">Cargando datos...</div>
+  </div>
+  <div class="pie">
+    <span>Hacé clic en los encabezados para ordenar.</span>
+    <div class="navegacion">
+      <button id="anterior" class="secundario">Anterior</button>
+      <span id="pagina">Página 1 de 1</span>
+      <button id="siguiente" class="secundario">Siguiente</button>
     </div>
   </div>
 </section>
+
 <p class="nota">
-  Producción excluye las filas sin FECHA.
-  Producción y Descarte responden a los filtros de su tabla.
-  Los stocks utilizan los totales completos.
+  Producción excluye las filas sin FECHA. Insumos excluye las filas sin Quincena.<br>
+  Producción y Descarte responden a los filtros de Producción.
+  Los stocks utilizan los totales completos.<br>
   Trozas Stock Monte = Producción total − suma de CANTIDAD de todo Recibo.
 </p>
 </main>
@@ -219,7 +637,7 @@ dialog h2{margin-top:0;color:var(--verde)}
 <dialog id="modalNota" aria-labelledby="tituloNota">
   <h2 id="tituloNota">Observaciones</h2>
   <div id="notaCompleta"></div>
-  <button id="cerrarNota" class="primario">Cerrar</button>
+  <button id="cerrarNota" class="secundario">Cerrar</button>
 </dialog>
 
 <dialog id="modalDescarte" aria-labelledby="tituloDescarte">
@@ -230,58 +648,96 @@ dialog h2{margin-top:0;color:var(--verde)}
     <tbody id="detalleDescarte"></tbody>
     <tfoot><tr><td>TOTAL DESCARTE</td><td id="totalDetalleDescarte">—</td></tr></tfoot>
   </table>
-  <button id="cerrarDescarte" class="primario">Cerrar</button>
+  <button id="cerrarDescarte" class="secundario">Cerrar</button>
 </dialog>
 
 <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
 <script>
 "use strict";
+
 const $=id=>document.getElementById(id);
 const TITULO_RECIBO="B3R UPM Las Acacias - Polo Logistico";
+
 const URLS={
   produccion:"https://dl.dropbox.com/scl/fi/z1jtk061zs1maw4vlnyib/PRODUCCION-LAS-ACACIAS.xlsx?rlkey=7pzd2o0oh1q3inr62bvztoqcb&dl=1",
   recibo:"https://dl.dropbox.com/scl/fi/l87boeiqu54yra3i0evd6/aENVIO-DE-CORREOS.xlsb?rlkey=149gw31ntsbso8vtpix30yxjl&dl=1"
 };
+
 const CONFIG={
   produccion:{origen:"produccion",hoja:"DATOS LAS ACACIAS",fila:3},
   insumos:{origen:"produccion",hoja:"INSUMOS",fila:1},
   recibo:{origen:"recibo",hoja:"tati las acacias",fila:1}
 };
+
 const GRUPOS_PRODUCCION={
   ROJO:["ROJO__STD+30","ROJO_STD +30 Basal"],
   AMARILLO:["AMARRILLO PPL+30","AMARRILLO PPL+45"],
   VERDE:["Verde-STD+45","Verde Basal +55"]
 };
+
 const COLUMNAS_DESCARTE=[
-  "Descarte basal+55","Descarte basal -55",
-  "Descarte +55","Descarte-55"
+  "Descarte basal+55",
+  "Descarte basal -55",
+  "Descarte +55",
+  "Descarte-55"
 ];
+
 const COLORES=["ROJO","AMARILLO","VERDE"];
-const PALETA={ROJO:"#ef3340",AMARILLO:"#efcf38",VERDE:"#37b96b"};
+const PALETA={
+  ROJO:"#c64c45",
+  AMARILLO:"#d8b238",
+  VERDE:"#5d8f64"
+};
+
 const tablas={},libros={};
 let activa="produccion",tablaVisible=false,ocupado=false;
 
 function normalizar(v){
-  return String(v??"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();
+  return String(v??"").normalize("NFD")
+    .replace(/[\u0300-\u036f]/g,"")
+    .toLowerCase().trim();
 }
-function claveColumna(v){return normalizar(v).replace(/[^a-z0-9]/g,"")}
-function claveSuma(v){return normalizar(v).replace(/amarillo/g,"amarrillo").replace(/[^a-z0-9+-]/g,"")}
+function claveColumna(v){
+  return normalizar(v).replace(/[^a-z0-9]/g,"");
+}
+function claveSuma(v){
+  return normalizar(v).replace(/amarillo/g,"amarrillo")
+    .replace(/[^a-z0-9+-]/g,"");
+}
 function texto(v){return v==null?"":String(v)}
-function numero(v){return v.toLocaleString("es-UY",{maximumFractionDigits:2})}
-function porcentaje(v){return v.toLocaleString("es-UY",{minimumFractionDigits:1,maximumFractionDigits:1})+"%"}
-function idsDelOrigen(o){return Object.keys(CONFIG).filter(id=>CONFIG[id].origen===o)}
-function claveProducto(v){return normalizar(v).replace(/,/g,".").replace(/\s+/g,"")}
+function numero(v){
+  return v.toLocaleString("es-UY",{maximumFractionDigits:2});
+}
+function porcentaje(v){
+  return v.toLocaleString("es-UY",{
+    minimumFractionDigits:1,maximumFractionDigits:1
+  })+"%";
+}
+function idsDelOrigen(o){
+  return Object.keys(CONFIG).filter(id=>CONFIG[id].origen===o);
+}
+function claveProducto(v){
+  return normalizar(v).replace(/,/g,".").replace(/\s+/g,"");
+}
 function esFecha(n){return claveColumna(n).includes("fecha")}
-function esObservaciones(n){return ["observaciones","observacion"].includes(claveColumna(n))}
+function esObservaciones(n){
+  return ["observaciones","observacion"].includes(claveColumna(n));
+}
+function tieneContenido(v){
+  return v!=null&&texto(v).trim()!=="";
+}
+
 const OCULTAS_PRODUCCION=new Set([
   "CAMIONES CARGADOS","AMARILLA/ ARBOL","ROJAS X ARBOL",
   "VERDE X ARBOL","Trozas","% DESCARTE","Predio"
 ].map(claveColumna));
+
 const EQUIVALENCIAS=new Map([
   [claveProducto("Troza 5,80 mts +30"),"ROJO"],
   [claveProducto("Troza 5,80 mts +45"),"VERDE"],
   [claveProducto("Troza 5,80 mts +30 PPL"),"AMARILLO"]
 ]);
+
 for(const id of Object.keys(CONFIG)){
   tablas[id]={
     columnas:[],filas:[],filtros:[],busqueda:"",
@@ -293,6 +749,7 @@ for(const id of Object.keys(CONFIG)){
     avisoCantidad:"",noClasificados:0
   };
 }
+
 function numeroCelda(v){
   if(typeof v==="number")return Number.isFinite(v)?v:NaN;
   let s=texto(v).trim().replace(/\s/g,"");
@@ -301,312 +758,674 @@ function numeroCelda(v){
   const n=Number(s);
   return Number.isFinite(n)?n:NaN;
 }
-function fechaTexto(v){
+
+function fechaTexto(v,date1904=false){
   if(v==null||v==="")return "";
   const p=n=>String(n).padStart(2,"0");
+
   if(v instanceof Date&&!Number.isNaN(v.getTime())){
-    return p(v.getUTCDate())+"/"+p(v.getUTCMonth()+1)+"/"+v.getUTCFullYear();
+    return p(v.getUTCDate())+"/"+
+      p(v.getUTCMonth()+1)+"/"+v.getUTCFullYear();
   }
+
   if(typeof v==="number"&&v>0&&v<2958466){
-    const d=XLSX.SSF.parse_date_code(v);
+    const d=XLSX.SSF.parse_date_code(v,{date1904});
     if(d)return p(d.d)+"/"+p(d.m)+"/"+d.y;
   }
+
   const s=texto(v).trim();
   let m=s.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})(?:[ T].*)?$/);
   if(m)return p(m[3])+"/"+p(m[2])+"/"+m[1];
+
   m=s.match(/^(\d{1,2})[/-](\d{1,2})[/-](\d{4})(?:[ T].*)?$/);
   return m?p(m[1])+"/"+p(m[2])+"/"+m[3]:s;
 }
+
 function clasificar(fila,indices){
   const encontrados=new Set();
+
   for(const v of(indices.length?indices.map(i=>fila[i]):fila)){
-    const c=EQUIVALENCIAS.get(claveProducto(v));
-    if(c)encontrados.add(c);
+    const color=EQUIVALENCIAS.get(claveProducto(v));
+    if(color)encontrados.add(color);
   }
-  return encontrados.size===1?[...encontrados][0]:encontrados.size>1?"REVISAR":"SIN CLASIFICAR";
+
+  return encontrados.size===1?[...encontrados][0]:
+    encontrados.size>1?"REVISAR":"SIN CLASIFICAR";
 }
+
 function localizarColumna(columnas,nombre,errores){
-  const encontrados=columnas.map((c,i)=>claveSuma(c)===claveSuma(nombre)?i:-1).filter(i=>i>=0);
+  const encontrados=columnas
+    .map((c,i)=>claveSuma(c)===claveSuma(nombre)?i:-1)
+    .filter(i=>i>=0);
+
   if(encontrados.length!==1){
-    errores.push(nombre+(encontrados.length>1?" (duplicada)":" (no encontrada)"));
+    errores.push(nombre+
+      (encontrados.length>1?" (duplicada)":" (no encontrada)"));
     return -1;
   }
+
   return encontrados[0];
 }
-function agregarError(lista,m){if(!lista.includes(m))lista.push(m)}
+
+function agregarError(lista,m){
+  if(!lista.includes(m))lista.push(m);
+}
+
+// Insumos: localizar la primera fila real con Quincena y FECHA.
+// Se revisan las primeras 30 filas físicas, incluyendo las vacías.
+function localizarEncabezadosInsumos(hoja){
+  const rango=XLSX.utils.decode_range(hoja["!ref"]);
+  rango.s.r=0;
+  rango.e.r=Math.min(rango.e.r,29);
+
+  const primeras=XLSX.utils.sheet_to_json(hoja,{
+    header:1,range:rango,raw:true,defval:"",blankrows:true
+  });
+
+  const indice=primeras.findIndex(fila=>{
+    const claves=fila.map(claveColumna);
+    return claves.includes("quincena")&&claves.includes("fecha");
+  });
+
+  if(indice<0){
+    throw new Error(
+      "No se encontraron los encabezados Quincena y FECHA en las primeras 30 filas de Insumos."
+    );
+  }
+
+  return indice+1;
+}
+
 function extraer(id,libro){
   const config=CONFIG[id];
-  const nombre=libro.SheetNames.find(n=>normalizar(n)===normalizar(config.hoja));
-  if(!nombre)throw new Error('No se encontró "'+config.hoja+'". Hojas: '+libro.SheetNames.join(", "));
+  const nombre=libro.SheetNames.find(
+    n=>normalizar(n)===normalizar(config.hoja)
+  );
+
+  if(!nombre){
+    throw new Error('No se encontró "'+config.hoja+
+      '". Hojas: '+libro.SheetNames.join(", "));
+  }
+
   const hoja=libro.Sheets[nombre];
   if(!hoja["!ref"])throw new Error("La hoja está vacía.");
+
+  const filaEncabezados=id==="insumos"
+    ?localizarEncabezadosInsumos(hoja)
+    :config.fila;
+
   const rango=XLSX.utils.decode_range(hoja["!ref"]);
-  rango.s.r=config.fila-1;
-  if(rango.s.r>rango.e.r)throw new Error("La fila elegida supera el contenido.");
-  const matriz=XLSX.utils.sheet_to_json(hoja,{header:1,range:rango,raw:true,defval:"",blankrows:true});
-  const cabecera=matriz[0]||[],datos=matriz.slice(1);
-  const ancho=datos.reduce((n,f)=>Math.max(n,f.length),cabecera.length);
+  rango.s.r=filaEncabezados-1;
+
+  if(rango.s.r>rango.e.r){
+    throw new Error("La fila elegida supera el contenido.");
+  }
+
+  const matriz=XLSX.utils.sheet_to_json(hoja,{
+    header:1,range:rango,raw:true,defval:"",blankrows:true
+  });
+
+  const cabecera=matriz[0]||[];
+  const datos=matriz.slice(1);
+  const ancho=datos.reduce(
+    (n,f)=>Math.max(n,f.length),cabecera.length
+  );
+
   const indices=[];
   for(let i=0;i<ancho;i++){
-    if(texto(cabecera[i]).trim()||datos.some(f=>texto(f[i]).trim()))indices.push(i);
+    if(tieneContenido(cabecera[i])||
+      datos.some(f=>tieneContenido(f[i]))){
+      indices.push(i);
+    }
   }
+
   const usados=new Map();
+
   let columnas=indices.map(i=>{
-    const base=texto(cabecera[i]).trim()||"Columna "+XLSX.utils.encode_col(rango.s.c+i);
+    const base=texto(cabecera[i]).trim()||
+      "Columna "+XLSX.utils.encode_col(rango.s.c+i);
     const n=(usados.get(base)||0)+1;
     usados.set(base,n);
     return n===1?base:base+" ("+n+")";
   });
-  let originales=datos.map(f=>indices.map(i=>f[i]??"")).filter(f=>f.some(v=>texto(v).trim()!==""));
-  if(id==="produccion"){
-    const fechas=columnas.map((c,i)=>claveColumna(c)==="fecha"?i:-1).filter(i=>i>=0);
-    if(fechas.length!==1)throw new Error("Se necesita una única columna FECHA en Producción.");
-    originales=originales.filter(f=>f[fechas[0]]!=null&&texto(f[fechas[0]]).trim()!=="");
+
+  let originales=datos
+    .map(f=>indices.map(i=>f[i]??""))
+    .filter(f=>f.some(tieneContenido));
+
+  if(id==="produccion"||id==="insumos"){
+    const clave=id==="produccion"?"fecha":"quincena";
+    const encontrados=columnas
+      .map((c,i)=>claveColumna(c)===clave?i:-1)
+      .filter(i=>i>=0);
+
+    if(encontrados.length!==1){
+      throw new Error(
+        "Se necesita una única columna "+
+        (id==="produccion"?"FECHA en Producción.":"Quincena en Insumos.")
+      );
+    }
+
+    originales=originales.filter(
+      f=>tieneContenido(f[encontrados[0]])
+    );
   }
+
   const faltantesColor={ROJO:[],AMARILLO:[],VERDE:[]};
   const erroresDescartePorColumna=COLUMNAS_DESCARTE.map(()=>[]);
-  let faltantes=[],erroresDescarte=[],avisoCantidad="",noClasificados=0;
+  let faltantes=[],erroresDescarte=[];
+  let avisoCantidad="",noClasificados=0;
+
+  const date1904=Boolean(libro.Workbook?.WBProps?.date1904);
+
   let filas=originales.map(f=>({
-    valores:f.map((v,i)=>esFecha(columnas[i])||v instanceof Date?fechaTexto(v):texto(v)),
-    total:0,produccion:{ROJO:0,AMARILLO:0,VERDE:0},
-    descarte:COLUMNAS_DESCARTE.map(()=>0),color:"",cantidad:0
+    valores:f.map((v,i)=>
+      esFecha(columnas[i])||v instanceof Date
+        ?fechaTexto(v,date1904):texto(v)
+    ),
+    total:0,
+    produccion:{ROJO:0,AMARILLO:0,VERDE:0},
+    descarte:COLUMNAS_DESCARTE.map(()=>0),
+    color:"",
+    cantidad:0
   }));
+
   if(id==="produccion"){
     const indicesColor={};
-    for(const c of COLORES){
-      indicesColor[c]=GRUPOS_PRODUCCION[c].map(n=>localizarColumna(columnas,n,faltantesColor[c]));
+
+    for(const color of COLORES){
+      indicesColor[color]=GRUPOS_PRODUCCION[color].map(
+        n=>localizarColumna(columnas,n,faltantesColor[color])
+      );
     }
-    const indicesDescarte=COLUMNAS_DESCARTE.map((n,i)=>localizarColumna(columnas,n,erroresDescartePorColumna[i]));
+
+    const indicesDescarte=COLUMNAS_DESCARTE.map(
+      (n,i)=>localizarColumna(
+        columnas,n,erroresDescartePorColumna[i]
+      )
+    );
+
     filas.forEach((fila,n)=>{
-      for(const c of COLORES){
-        for(const i of indicesColor[c]){
+      for(const color of COLORES){
+        for(const i of indicesColor[color]){
           if(i<0)continue;
-          const v=numeroCelda(originales[n][i]);
-          if(Number.isNaN(v))agregarError(faltantesColor[c],"Valor no numérico en "+columnas[i]);
-          else fila.produccion[c]+=v;
+          const valor=numeroCelda(originales[n][i]);
+
+          if(Number.isNaN(valor)){
+            agregarError(faltantesColor[color],
+              "Valor no numérico en "+columnas[i]);
+          }else{
+            fila.produccion[color]+=valor;
+          }
         }
       }
-      fila.total=COLORES.reduce((s,c)=>s+fila.produccion[c],0);
+
+      fila.total=COLORES.reduce(
+        (s,c)=>s+fila.produccion[c],0
+      );
+
       indicesDescarte.forEach((i,k)=>{
         if(i<0)return;
-        const v=numeroCelda(originales[n][i]);
-        if(Number.isNaN(v))agregarError(erroresDescartePorColumna[k],"Valor no numérico en "+columnas[i]);
-        else fila.descarte[k]=v;
+        const valor=numeroCelda(originales[n][i]);
+
+        if(Number.isNaN(valor)){
+          agregarError(erroresDescartePorColumna[k],
+            "Valor no numérico en "+columnas[i]);
+        }else{
+          fila.descarte[k]=valor;
+        }
       });
     });
+
     faltantes=COLORES.flatMap(c=>faltantesColor[c]);
     erroresDescarte=erroresDescartePorColumna.flat();
-    const mantener=columnas.map((c,i)=>OCULTAS_PRODUCCION.has(claveColumna(c))?-1:i).filter(i=>i>=0);
+
+    const mantener=columnas
+      .map((c,i)=>OCULTAS_PRODUCCION.has(claveColumna(c))?-1:i)
+      .filter(i=>i>=0);
+
     columnas=mantener.map(i=>columnas[i]);
-    filas=filas.map(f=>({...f,valores:mantener.map(i=>f.valores[i])}));
+    filas=filas.map(f=>({
+      ...f,valores:mantener.map(i=>f.valores[i])
+    }));
   }
+
   if(id==="recibo"){
-    const nombres=new Set(["producto","nombreproducto","descripcionproducto","productodescripcion","descripciondelproducto","tipoproducto"]);
-    const producto=columnas.map((c,i)=>nombres.has(claveColumna(c))?i:-1).filter(i=>i>=0);
-    const cantidades=columnas.map((c,i)=>claveColumna(c)==="cantidad"?i:-1).filter(i=>i>=0);
-    if(cantidades.length!==1)avisoCantidad=cantidades.length?"La columna CANTIDAD está duplicada.":"No se encontró la columna CANTIDAD en Recibo.";
+    const nombres=new Set([
+      "producto","nombreproducto","descripcionproducto",
+      "productodescripcion","descripciondelproducto","tipoproducto"
+    ]);
+
+    const producto=columnas
+      .map((c,i)=>nombres.has(claveColumna(c))?i:-1)
+      .filter(i=>i>=0);
+
+    const cantidades=columnas
+      .map((c,i)=>claveColumna(c)==="cantidad"?i:-1)
+      .filter(i=>i>=0);
+
+    if(cantidades.length!==1){
+      avisoCantidad=cantidades.length
+        ?"La columna CANTIDAD está duplicada."
+        :"No se encontró la columna CANTIDAD en Recibo.";
+    }
+
     filas.forEach((fila,n)=>{
       fila.color=clasificar(fila.valores,producto);
-      if(!COLORES.includes(fila.color))noClasificados++;
+
+      if(!COLORES.includes(fila.color)){
+        noClasificados++;
+      }
+
       if(cantidades.length===1){
-        const v=numeroCelda(originales[n][cantidades[0]]);
-        if(Number.isNaN(v))avisoCantidad="Hay valores no numéricos en CANTIDAD de Recibo.";
-        else fila.cantidad=v;
+        const valor=numeroCelda(
+          originales[n][cantidades[0]]
+        );
+
+        if(Number.isNaN(valor)){
+          avisoCantidad="Hay valores no numéricos en CANTIDAD de Recibo.";
+        }else{
+          fila.cantidad=valor;
+        }
       }
     });
-    const ocultas=new Set(["carga","cosecha","origen","idproducto"]);
-    const mantener=columnas.map((c,i)=>ocultas.has(claveColumna(c))?-1:i).filter(i=>i>=0);
-    const posicion=mantener.findIndex(i=>producto.includes(i));
+
+    const ocultas=new Set([
+      "carga","cosecha","origen","idproducto"
+    ]);
+
+    const mantener=columnas
+      .map((c,i)=>ocultas.has(claveColumna(c))?-1:i)
+      .filter(i=>i>=0);
+
+    const posicion=mantener.findIndex(
+      i=>producto.includes(i)
+    );
     const insertar=posicion>=0?posicion+1:0;
+
     columnas=mantener.map(i=>columnas[i]);
     columnas.splice(insertar,0,"ID PRODUCTO");
+
     filas=filas.map(f=>{
       const valores=mantener.map(i=>f.valores[i]);
       valores.splice(insertar,0,f.color);
       return {...f,valores};
     });
   }
+
   const anterior=tablas[id];
-  const mismos=JSON.stringify(columnas)===JSON.stringify(anterior.columnas);
+  const mismos=JSON.stringify(columnas)===
+    JSON.stringify(anterior.columnas);
+
+  // Mostrar la fila física detectada en Insumos.
+  if(id==="insumos")config.fila=filaEncabezados;
+
   return {
     ...anterior,columnas,filas,faltantes,faltantesColor,
-    erroresDescarte,erroresDescartePorColumna,avisoCantidad,noClasificados,
+    erroresDescarte,erroresDescartePorColumna,
+    avisoCantidad,noClasificados,
     filtros:mismos?anterior.filtros:columnas.map(()=>""),
-    orden:mismos?anterior.orden:null,pagina:1,error:"",cargando:false
+    orden:mismos?anterior.orden:null,
+    pagina:1,error:"",cargando:false
   };
 }
+
 function filtradas(id){
   const t=tablas[id],buscar=normalizar(t.busqueda);
+
   return t.filas.filter(f=>
-    (!buscar||f.valores.some(v=>normalizar(v).includes(buscar)))&&
-    t.filtros.every((v,i)=>!normalizar(v)||normalizar(f.valores[i]).includes(normalizar(v)))
+    (!buscar||f.valores.some(
+      v=>normalizar(v).includes(buscar)
+    ))&&
+    t.filtros.every((v,i)=>
+      !normalizar(v)||
+      normalizar(f.valores[i]).includes(normalizar(v))
+    )
   );
 }
+
 function calculoDescarte(){
   const seleccion=filtradas("produccion");
-  const cantidades=COLUMNAS_DESCARTE.map((_,i)=>seleccion.reduce((s,f)=>s+f.descarte[i],0));
-  return {seleccion,cantidades,total:cantidades.reduce((s,v)=>s+v,0)};
+  const cantidades=COLUMNAS_DESCARTE.map(
+    (_,i)=>seleccion.reduce((s,f)=>s+f.descarte[i],0)
+  );
+
+  return {
+    seleccion,cantidades,
+    total:cantidades.reduce((s,v)=>s+v,0)
+  };
 }
+
 function actualizarTotales(){
   const t=tablas.produccion;
-  const pp=t.error||(t.faltantes.length?"Revisar: "+t.faltantes.join(", "):"");
-  $("numero-produccion").textContent=!t.lectura||pp?"—":numero(filtradas("produccion").reduce((s,f)=>s+f.total,0));
-  $("numero-produccion").title=pp;
-  $("numero-produccion").classList.toggle("error",Boolean(pp));
-  const pd=t.error||(t.erroresDescarte.length?"Revisar: "+t.erroresDescarte.join(", "):"");
-  $("numero-descarte").textContent=!t.lectura||pd?"—":numero(calculoDescarte().total);
-  $("numero-descarte").classList.toggle("error",Boolean(pd));
-  $("tarjetaDescarte").title=pd;
+  const problemaP=t.error||
+    (t.faltantes.length
+      ?"Revisar: "+t.faltantes.join(", "):"");
+
+  $("numero-produccion").textContent=!t.lectura||problemaP
+    ?"—":numero(filtradas("produccion").reduce(
+      (s,f)=>s+f.total,0
+    ));
+
+  $("numero-produccion").title=problemaP;
+  $("numero-produccion").classList.toggle(
+    "error",Boolean(problemaP)
+  );
+
+  const problemaD=t.error||
+    (t.erroresDescarte.length
+      ?"Revisar: "+t.erroresDescarte.join(", "):"");
+
+  $("numero-descarte").textContent=!t.lectura||problemaD
+    ?"—":numero(calculoDescarte().total);
+
+  $("numero-descarte").classList.toggle(
+    "error",Boolean(problemaD)
+  );
+
+  $("tarjetaDescarte").title=problemaD;
 }
+
 function mostrarDetalleDescarte(){
   const t=tablas.produccion,d=calculoDescarte();
   const fragmento=document.createDocumentFragment();
-  COLUMNAS_DESCARTE.forEach((n,i)=>{
-    const tr=document.createElement("tr"),nombre=document.createElement("td"),cantidad=document.createElement("td");
-    nombre.textContent=n;
+
+  COLUMNAS_DESCARTE.forEach((nombre,i)=>{
+    const tr=document.createElement("tr");
+    const clasificacion=document.createElement("td");
+    const cantidad=document.createElement("td");
+
+    clasificacion.textContent=nombre;
+
     const errores=t.erroresDescartePorColumna[i];
-    cantidad.textContent=t.lectura&&!t.error&&!errores.length?numero(d.cantidades[i]):"—";
+
+    cantidad.textContent=t.lectura&&!t.error&&!errores.length
+      ?numero(d.cantidades[i]):"—";
+
     cantidad.title=errores.join(", ");
     cantidad.classList.toggle("error",errores.length>0);
-    tr.append(nombre,cantidad);fragmento.append(tr);
+
+    tr.append(clasificacion,cantidad);
+    fragmento.append(tr);
   });
+
   $("detalleDescarte").replaceChildren(fragmento);
-  const problema=t.error||(t.erroresDescarte.length?"Revisar: "+t.erroresDescarte.join(", "):"");
-  $("totalDetalleDescarte").textContent=t.lectura&&!problema?numero(d.total):"—";
-  $("alcanceDescarte").textContent=!t.lectura?"Se necesita cargar Producción.":problema||"Detalle de los registros seleccionados en Producción.";
-  $("alcanceDescarte").classList.toggle("error",Boolean(problema));
-}
-function ponerStock(id,v,d,error=false){
-  $("stock-"+id).textContent=v===null?"—":numero(v);
-  $("stock-"+id).classList.toggle("negativo",v!==null&&v<0);
-  $("detalle-stock-"+id).textContent=d;
-  $("detalle-stock-"+id).classList.toggle("error",error);
-}
-function tarjetasStock(){
-  const p=tablas.produccion,r=tablas.recibo,ids=["rojo","amarillo","verde","monte"];
-  if(p.cargando||r.cargando){ids.forEach(id=>ponerStock(id,null,"Actualizando datos..."));return}
-  if(!p.lectura||!r.lectura){ids.forEach(id=>ponerStock(id,null,"Se necesita cargar Producción y Recibo."));return}
-  if(p.error||r.error){ids.forEach(id=>ponerStock(id,null,"Revisar la lectura de Producción y Recibo.",true));return}
-  for(const c of COLORES){
-    const problemas=[...p.faltantesColor[c],...(r.avisoCantidad?[r.avisoCantidad]:[])];
-    if(problemas.length){ponerStock(c.toLowerCase(),null,"Revisar: "+problemas.join(", "),true);continue}
-    const producido=p.filas.reduce((s,f)=>s+f.produccion[c],0);
-    const recibido=r.filas.reduce((s,f)=>s+(f.color===c?f.cantidad:0),0);
-    ponerStock(c.toLowerCase(),producido-recibido,
-      "Producción: "+numero(producido)+" − Recibido: "+numero(recibido)+
-      (r.noClasificados?" · "+numero(r.noClasificados)+" registros sin clasificación válida, excluidos.":""),
-      r.noClasificados>0);
-  }
-  const problemas=[...p.faltantes,...(r.avisoCantidad?[r.avisoCantidad]:[])];
-  if(problemas.length){ponerStock("monte",null,"Revisar: "+problemas.join(", "),true);return}
-  const producido=p.filas.reduce((s,f)=>s+f.total,0);
-  const recibido=r.filas.reduce((s,f)=>s+f.cantidad,0);
-  ponerStock("monte",producido-recibido,"Producción: "+numero(producido)+" − Cantidad Recibo: "+numero(recibido));
+
+  const problema=t.error||
+    (t.erroresDescarte.length
+      ?"Revisar: "+t.erroresDescarte.join(", "):"");
+
+  $("totalDetalleDescarte").textContent=t.lectura&&!problema
+    ?numero(d.total):"—";
+
+  $("alcanceDescarte").textContent=!t.lectura
+    ?"Se necesita cargar Producción."
+    :problema||"Detalle de los registros seleccionados en Producción.";
+
+  $("alcanceDescarte").classList.toggle(
+    "error",Boolean(problema)
+  );
 }
 
-// GRÁFICOS CON ETIQUETAS EXTERIORES.
+function ponerStock(id,valor,detalle,error=false){
+  $("stock-"+id).textContent=valor===null?"—":numero(valor);
+
+  $("stock-"+id).classList.toggle(
+    "negativo",valor!==null&&valor<0
+  );
+
+  $("detalle-stock-"+id).textContent=detalle;
+  $("detalle-stock-"+id).classList.toggle("error",error);
+}
+
+function tarjetasStock(){
+  const p=tablas.produccion,r=tablas.recibo;
+  const ids=["rojo","amarillo","verde","monte"];
+
+  if(p.cargando||r.cargando){
+    ids.forEach(id=>ponerStock(id,null,"Actualizando datos..."));
+    return;
+  }
+
+  if(!p.lectura||!r.lectura){
+    ids.forEach(id=>ponerStock(id,null,
+      "Se necesita cargar Producción y Recibo."));
+    return;
+  }
+
+  if(p.error||r.error){
+    ids.forEach(id=>ponerStock(id,null,
+      "Revisar la lectura de Producción y Recibo.",true));
+    return;
+  }
+
+  for(const color of COLORES){
+    const problemas=[
+      ...p.faltantesColor[color],
+      ...(r.avisoCantidad?[r.avisoCantidad]:[])
+    ];
+
+    if(problemas.length){
+      ponerStock(color.toLowerCase(),null,
+        "Revisar: "+problemas.join(", "),true);
+      continue;
+    }
+
+    const producido=p.filas.reduce(
+      (s,f)=>s+f.produccion[color],0
+    );
+
+    const recibido=r.filas.reduce(
+      (s,f)=>s+(f.color===color?f.cantidad:0),0
+    );
+
+    ponerStock(
+      color.toLowerCase(),
+      producido-recibido,
+      "Producción: "+numero(producido)+
+      " − Recibido: "+numero(recibido)+
+      (r.noClasificados
+        ?" · "+numero(r.noClasificados)+
+          " registros sin clasificación válida, excluidos."
+        :""),
+      r.noClasificados>0
+    );
+  }
+
+  const problemas=[
+    ...p.faltantes,
+    ...(r.avisoCantidad?[r.avisoCantidad]:[])
+  ];
+
+  if(problemas.length){
+    ponerStock("monte",null,
+      "Revisar: "+problemas.join(", "),true);
+    return;
+  }
+
+  const producido=p.filas.reduce((s,f)=>s+f.total,0);
+  const recibido=r.filas.reduce((s,f)=>s+f.cantidad,0);
+
+  ponerStock("monte",producido-recibido,
+    "Producción: "+numero(producido)+
+    " − Cantidad Recibo: "+numero(recibido));
+}
+
+// GRÁFICOS SVG CON ETIQUETAS EXTERIORES.
 const SVG_NS="http://www.w3.org/2000/svg";
-function svgElemento(n,atributos={}){
-  const el=document.createElementNS(SVG_NS,n);
-  for(const[k,v]of Object.entries(atributos))el.setAttribute(k,String(v));
+
+function svgElemento(nombre,atributos={}){
+  const el=document.createElementNS(SVG_NS,nombre);
+  for(const[k,v]of Object.entries(atributos)){
+    el.setAttribute(k,String(v));
+  }
   return el;
 }
-function mensajeGrafico(id,m){
+
+function mensajeGrafico(id,mensaje){
   const div=document.createElement("div");
-  div.className="mensaje-grafico";div.textContent=m;
+  div.className="mensaje-grafico";
+  div.textContent=mensaje;
   $(id).replaceChildren(div);
 }
+
 function dividirNombre(nombre){
-  const palabras=nombre.split(/\s+/),lineas=[];
+  const palabras=nombre.split(/\s+/);
+  const lineas=[];
   let actual="";
+
   for(const palabra of palabras){
     if(actual&&(actual+" "+palabra).length>17){
-      lineas.push(actual);actual=palabra;
-    }else actual=actual?actual+" "+palabra:palabra;
+      lineas.push(actual);
+      actual=palabra;
+    }else{
+      actual=actual?actual+" "+palabra:palabra;
+    }
   }
+
   if(actual)lineas.push(actual);
   return lineas;
 }
+
 function acomodarEtiquetas(lista){
   if(!lista.length)return;
+
   lista.sort((a,b)=>a.y-b.y);
+
   const minimo=48,maximo=302,separacion=66;
+
   for(let i=0;i<lista.length;i++){
-    lista[i].y=Math.max(minimo,Math.min(maximo,lista[i].y));
-    if(i)lista[i].y=Math.max(lista[i].y,lista[i-1].y+separacion);
+    lista[i].y=Math.max(minimo,
+      Math.min(maximo,lista[i].y));
+
+    if(i){
+      lista[i].y=Math.max(
+        lista[i].y,lista[i-1].y+separacion
+      );
+    }
   }
+
   if(lista[lista.length-1].y>maximo){
     lista[lista.length-1].y=maximo;
+
     for(let i=lista.length-2;i>=0;i--){
-      lista[i].y=Math.min(lista[i].y,lista[i+1].y-separacion);
+      lista[i].y=Math.min(
+        lista[i].y,lista[i+1].y-separacion
+      );
     }
   }
 }
+
 function dibujarGrafico(id,series,anillo,etiqueta){
   if(series.some(s=>!Number.isFinite(s.valor)||s.valor<0)){
-    mensajeGrafico(id,"Revisar valores negativos o no numéricos.");
+    mensajeGrafico(id,
+      "Revisar valores negativos o no numéricos.");
     return;
   }
+
   const total=series.reduce((s,v)=>s+v.valor,0);
   const svg=svgElemento("svg",{
-    viewBox:"0 0 480 360",role:"img",
+    viewBox:"0 0 480 360",
+    role:"img",
     "aria-label":etiqueta+". Total: "+numero(total)
   });
+
   const cx=240,cy=180,r=88;
-  svg.append(svgElemento("circle",{cx,cy,r,fill:"#e9eef0"}));
+
+  svg.append(svgElemento("circle",{
+    cx,cy,r,fill:"#e8e7de"
+  }));
+
   let angulo=-Math.PI/2;
   const etiquetas=[];
 
   if(total>0){
     for(const serie of series){
       if(!serie.valor)continue;
+
       const amplitud=serie.valor/total*Math.PI*2;
-      const fin=angulo+amplitud,medio=angulo+amplitud/2;
+      const fin=angulo+amplitud;
+      const medio=angulo+amplitud/2;
       let pieza;
+
       if(amplitud>=Math.PI*2-0.000001){
-        pieza=svgElemento("circle",{cx,cy,r,fill:serie.color});
+        pieza=svgElemento("circle",{
+          cx,cy,r,fill:serie.color
+        });
       }else{
-        const x1=cx+r*Math.cos(angulo),y1=cy+r*Math.sin(angulo);
-        const x2=cx+r*Math.cos(fin),y2=cy+r*Math.sin(fin);
+        const x1=cx+r*Math.cos(angulo);
+        const y1=cy+r*Math.sin(angulo);
+        const x2=cx+r*Math.cos(fin);
+        const y2=cy+r*Math.sin(fin);
+
         pieza=svgElemento("path",{
           d:"M "+cx+" "+cy+" L "+x1+" "+y1+
-            " A "+r+" "+r+" 0 "+(amplitud>Math.PI?1:0)+" 1 "+x2+" "+y2+" Z",
-          fill:serie.color,stroke:"white","stroke-width":1
+            " A "+r+" "+r+" 0 "+
+            (amplitud>Math.PI?1:0)+" 1 "+x2+" "+y2+" Z",
+          fill:serie.color,
+          stroke:"#fffefa",
+          "stroke-width":1
         });
       }
+
       const titulo=svgElemento("title");
-      titulo.textContent=serie.nombre+": "+numero(serie.valor)+
-        " ("+porcentaje(serie.valor/total*100)+")";
-      pieza.append(titulo);svg.append(pieza);
+      titulo.textContent=serie.nombre+": "+
+        numero(serie.valor)+" ("+
+        porcentaje(serie.valor/total*100)+")";
+
+      pieza.append(titulo);
+      svg.append(pieza);
+
       etiquetas.push({
         serie,medio,
         derecha:Math.cos(medio)>=0,
         y:cy+112*Math.sin(medio)
       });
+
       angulo=fin;
     }
   }
+
   if(anillo){
-    svg.append(svgElemento("circle",{cx,cy,r:62,fill:"white"}));
+    svg.append(svgElemento("circle",{
+      cx,cy,r:62,fill:"#fffefa"
+    }));
+
     const valor=svgElemento("text",{
-      x:cx,y:183,"text-anchor":"middle",
-      "font-family":"Arial, sans-serif","font-size":23,
-      "font-weight":"bold",fill:"#273c49"
+      x:cx,y:183,
+      "text-anchor":"middle",
+      "font-family":"Georgia, serif",
+      "font-size":23,
+      "font-weight":"bold",
+      fill:"#173f35"
     });
-    valor.textContent=numero(total);svg.append(valor);
+
+    valor.textContent=numero(total);
+    svg.append(valor);
+
     const nombre=svgElemento("text",{
-      x:cx,y:203,"text-anchor":"middle",
-      "font-family":"Arial, sans-serif","font-size":8.5,
-      fill:"#647582"
+      x:cx,y:203,
+      "text-anchor":"middle",
+      "font-family":"Segoe UI, Arial, sans-serif",
+      "font-size":8.5,
+      fill:"#748077"
     });
-    nombre.textContent=etiqueta;svg.append(nombre);
+
+    nombre.textContent=etiqueta;
+    svg.append(nombre);
   }
+
   if(!total){
     const aviso=svgElemento("text",{
-      x:cx,y:anillo?230:184,"text-anchor":"middle",
-      "font-family":"Arial, sans-serif","font-size":13,fill:"#647582"
+      x:cx,y:anillo?230:184,
+      "text-anchor":"middle",
+      "font-family":"Segoe UI, Arial, sans-serif",
+      "font-size":13,
+      fill:"#748077"
     });
-    aviso.textContent="Sin cantidades";svg.append(aviso);
+
+    aviso.textContent="Sin cantidades";
+    svg.append(aviso);
   }
 
   acomodarEtiquetas(etiquetas.filter(e=>!e.derecha));
@@ -625,264 +1444,577 @@ function dibujarGrafico(id,series,anillo,etiqueta){
       points:xInicio+","+yInicio+" "+
         xIntermedio+","+e.y+" "+
         (e.derecha?xTexto-4:xTexto+4)+","+e.y,
-      fill:"none",stroke:"#9ca9b1","stroke-width":1
+      fill:"none",
+      stroke:"#a5ab96",
+      "stroke-width":1
     }));
 
     const etiquetaTexto=svgElemento("text",{
       x:xTexto,y:yTexto,
       "text-anchor":e.derecha?"start":"end",
-      "font-family":"Arial, sans-serif",
-      "font-size":12.5,"font-weight":"bold",
-      fill:"#273c49"
+      "font-family":"Segoe UI, Arial, sans-serif",
+      "font-size":12.5,
+      "font-weight":"600",
+      fill:"#243d33"
     });
+
     lineas.forEach((linea,i)=>{
-      const parte=svgElemento("tspan",{x:xTexto,dy:i===0?0:16});
-      parte.textContent=linea;etiquetaTexto.append(parte);
+      const parte=svgElemento("tspan",{
+        x:xTexto,dy:i===0?0:16
+      });
+      parte.textContent=linea;
+      etiquetaTexto.append(parte);
     });
+
     const valores=svgElemento("tspan",{
-      x:xTexto,dy:17,"font-size":13
+      x:xTexto,dy:17,
+      "font-size":13,
+      "font-weight":"bold"
     });
+
     valores.textContent=numero(e.serie.valor)+
       " ("+porcentaje(e.serie.valor/total*100)+")";
-    etiquetaTexto.append(valores);svg.append(etiquetaTexto);
+
+    etiquetaTexto.append(valores);
+    svg.append(etiquetaTexto);
   }
 
-  // Las categorías de valor cero también permanecen visibles.
   const ceros=series.filter(s=>s.valor===0);
+
   if(total>0&&ceros.length){
     const nota=svgElemento("text",{
-      x:cx,y:344,"text-anchor":"middle",
-      "font-family":"Arial, sans-serif","font-size":10,fill:"#647582"
+      x:cx,y:344,
+      "text-anchor":"middle",
+      "font-family":"Segoe UI, Arial, sans-serif",
+      "font-size":10,
+      fill:"#748077"
     });
-    nota.textContent=ceros.map(s=>s.nombre+": 0 (0,0%)").join(" · ");
+
+    nota.textContent=ceros.map(
+      s=>s.nombre+": 0 (0,0%)"
+    ).join(" · ");
+
     svg.append(nota);
   }
+
   $(id).replaceChildren(svg);
 }
+
 function actualizarGraficos(){
   const p=tablas.produccion,r=tablas.recibo;
   const seleccion=filtradas("produccion");
-  const problemaP=p.cargando?"Cargando Producción...":
-    !p.lectura?"Pendiente de lectura de Producción.":p.error||p.faltantes.join(", ");
-  if(problemaP)mensajeGrafico("graficoProduccionColor",problemaP);
-  else dibujarGrafico("graficoProduccionColor",
-    ["ROJO","VERDE","AMARILLO"].map(c=>({
-      nombre:c,color:PALETA[c],
-      valor:seleccion.reduce((s,f)=>s+f.produccion[c],0)
-    })),true,"TROZAS PRODUCIDAS");
-  const problemaPD=problemaP||p.erroresDescarte.join(", ");
-  if(problemaPD)mensajeGrafico("graficoProduccionDescarte",problemaPD);
-  else{
+
+  const problemaP=p.cargando
+    ?"Cargando Producción..."
+    :!p.lectura
+      ?"Pendiente de lectura de Producción."
+      :p.error||p.faltantes.join(", ");
+
+  if(problemaP){
+    mensajeGrafico("graficoProduccionColor",problemaP);
+  }else{
+    dibujarGrafico(
+      "graficoProduccionColor",
+      ["ROJO","VERDE","AMARILLO"].map(color=>({
+        nombre:color,
+        color:PALETA[color],
+        valor:seleccion.reduce(
+          (s,f)=>s+f.produccion[color],0
+        )
+      })),
+      true,
+      "TROZAS PRODUCIDAS"
+    );
+  }
+
+  const problemaPD=problemaP||
+    p.erroresDescarte.join(", ");
+
+  if(problemaPD){
+    mensajeGrafico("graficoProduccionDescarte",problemaPD);
+  }else{
     const d=calculoDescarte();
+
     dibujarGrafico("graficoProduccionDescarte",[
-      {nombre:"PRODUCCIÓN",color:"#f1763d",valor:seleccion.reduce((s,f)=>s+f.total,0)},
-      {nombre:"DESCARTE BASAL",color:"#247cbd",valor:d.cantidades[0]+d.cantidades[1]},
-      {nombre:"DESCARTE",color:"#23458c",valor:d.cantidades[2]+d.cantidades[3]}
+      {
+        nombre:"PRODUCCIÓN",
+        color:"#295344",
+        valor:seleccion.reduce((s,f)=>s+f.total,0)
+      },
+      {
+        nombre:"DESCARTE BASAL",
+        color:"#b5995f",
+        valor:d.cantidades[0]+d.cantidades[1]
+      },
+      {
+        nombre:"DESCARTE",
+        color:"#c64c45",
+        valor:d.cantidades[2]+d.cantidades[3]
+      }
     ],false,"PRODUCCIÓN Y DESCARTES");
   }
-  const problemaR=r.cargando?"Cargando Recibo...":
-    !r.lectura?"Pendiente de lectura de Recibo.":r.error||r.avisoCantidad;
-  if(problemaR)mensajeGrafico("graficoDespacho",problemaR);
-  else{
-    const series=["ROJO","VERDE","AMARILLO"].map(c=>({
-      nombre:c,color:PALETA[c],
-      valor:r.filas.reduce((s,f)=>s+(f.color===c?f.cantidad:0),0)
+
+  const problemaR=r.cargando
+    ?"Cargando Recibo..."
+    :!r.lectura
+      ?"Pendiente de lectura de Recibo."
+      :r.error||r.avisoCantidad;
+
+  if(problemaR){
+    mensajeGrafico("graficoDespacho",problemaR);
+  }else{
+    const series=["ROJO","VERDE","AMARILLO"].map(color=>({
+      nombre:color,
+      color:PALETA[color],
+      valor:r.filas.reduce(
+        (s,f)=>s+(f.color===color?f.cantidad:0),0
+      )
     }));
-    if(r.noClasificados)series.push({
-      nombre:"SIN CLASIFICAR",color:"#8a98a6",
-      valor:r.filas.reduce((s,f)=>s+(!COLORES.includes(f.color)?f.cantidad:0),0)
-    });
-    dibujarGrafico("graficoDespacho",series,true,"TROZAS DESPACHADAS");
+
+    if(r.noClasificados){
+      series.push({
+        nombre:"SIN CLASIFICAR",
+        color:"#98a090",
+        valor:r.filas.reduce(
+          (s,f)=>s+(!COLORES.includes(f.color)
+            ?f.cantidad:0),0
+        )
+      });
+    }
+
+    dibujarGrafico(
+      "graficoDespacho",series,true,"TROZAS DESPACHADAS"
+    );
   }
 }
+
 function actualizarEstado(){
-  const errores=Object.entries(tablas).filter(([,t])=>t.error).map(([id,t])=>id.toUpperCase()+": "+t.error);
-  $("estadoCarga").textContent=errores.length?errores.join(" · "):ocupado?"Actualizando datos...":"";
+  const errores=Object.entries(tablas)
+    .filter(([,t])=>t.error)
+    .map(([id,t])=>id.toUpperCase()+": "+t.error);
+
+  $("estadoCarga").textContent=errores.length
+    ?errores.join(" · ")
+    :ocupado?"Actualizando datos...":"";
+
   $("estadoCarga").classList.toggle("error",errores.length>0);
   $("estadoCarga").hidden=!$("estadoCarga").textContent;
 }
+
 function actualizarDashboard(){
-  actualizarTotales();tarjetasStock();actualizarGraficos();actualizarEstado();
-  if($("modalDescarte").open)mostrarDetalleDescarte();
+  actualizarTotales();
+  tarjetasStock();
+  actualizarGraficos();
+  actualizarEstado();
+
+  if($("modalDescarte").open){
+    mostrarDetalleDescarte();
+  }
 }
+
 function encabezado(){
-  const t=tablas[activa],tr=document.createElement("tr");
+  const t=tablas[activa];
+  const tr=document.createElement("tr");
+
   t.columnas.forEach((nombre,i)=>{
     const th=document.createElement("th");
-    if(esObservaciones(nombre))th.className="observaciones";
+
+    if(esObservaciones(nombre)){
+      th.className="observaciones";
+    }
+
     const b=document.createElement("button");
-    b.textContent=nombre+(t.orden===i?(t.direccion===1?" ▲":" ▼"):"");
+    b.textContent=nombre+
+      (t.orden===i?(t.direccion===1?" ▲":" ▼"):"");
+
     b.addEventListener("click",()=>{
       t.direccion=t.orden===i?-t.direccion:1;
-      t.orden=i;t.pagina=1;encabezado();mostrarFilas();
+      t.orden=i;
+      t.pagina=1;
+      encabezado();
+      mostrarFilas();
     });
+
     const input=document.createElement("input");
-    input.type="search";input.placeholder="Filtrar...";
+    input.type="search";
+    input.placeholder="Filtrar...";
     input.value=t.filtros[i]||"";
     input.setAttribute("aria-label","Filtrar "+nombre);
+
     input.addEventListener("input",()=>{
-      t.filtros[i]=input.value;t.pagina=1;
-      mostrarFilas();actualizarDashboard();
+      t.filtros[i]=input.value;
+      t.pagina=1;
+      mostrarFilas();
+      actualizarDashboard();
     });
-    th.append(b,input);tr.append(th);
+
+    th.append(b,input);
+    tr.append(th);
   });
+
   $("encabezado").replaceChildren(tr);
 }
-const comparador=new Intl.Collator("es",{numeric:true,sensitivity:"base"});
+
+const comparador=new Intl.Collator("es",{
+  numeric:true,sensitivity:"base"
+});
+
 function claveFecha(v){
-  const m=texto(v).match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+  const m=texto(v).match(
+    /^(\d{2})\/(\d{2})\/(\d{4})$/
+  );
   return m?m[3]+m[2]+m[1]:texto(v);
 }
+
 function mostrarFilas(){
   if(!tablaVisible)return;
-  const t=tablas[activa],resultado=filtradas(activa);
-  if(t.orden!==null)resultado.sort((a,b)=>{
-    let av=a.valores[t.orden],bv=b.valores[t.orden];
-    if(esFecha(t.columnas[t.orden])){av=claveFecha(av);bv=claveFecha(bv)}
-    return comparador.compare(av,bv)*t.direccion;
-  });
+
+  const t=tablas[activa];
+  const resultado=filtradas(activa);
+
+  if(t.orden!==null){
+    resultado.sort((a,b)=>{
+      let av=a.valores[t.orden];
+      let bv=b.valores[t.orden];
+
+      if(esFecha(t.columnas[t.orden])){
+        av=claveFecha(av);
+        bv=claveFecha(bv);
+      }
+
+      return comparador.compare(av,bv)*t.direccion;
+    });
+  }
+
   const limite=Number($("limite").value);
-  const paginas=Math.max(1,Math.ceil(resultado.length/limite));
+  const paginas=Math.max(
+    1,Math.ceil(resultado.length/limite)
+  );
+
   t.pagina=Math.min(t.pagina,paginas);
-  const inicio=(t.pagina-1)*limite,fragmento=document.createDocumentFragment();
+  const inicio=(t.pagina-1)*limite;
+  const fragmento=document.createDocumentFragment();
+
   resultado.slice(inicio,inicio+limite).forEach(f=>{
     const tr=document.createElement("tr");
+
     f.valores.forEach((v,i)=>{
       const td=document.createElement("td");
+
       if(esObservaciones(t.columnas[i])){
         td.className="observaciones";
+
         const nota=document.createElement("div");
-        nota.className="nota-texto corta";nota.textContent=v||"—";td.append(nota);
+        nota.className="nota-texto corta";
+        nota.textContent=v||"—";
+        td.append(nota);
+
         if(v.trim()){
           const b=document.createElement("button");
-          b.className="leer-nota";b.textContent="Ver observación";
+          b.className="leer-nota";
+          b.textContent="Ver observación";
+
           b.addEventListener("click",()=>{
-            $("notaCompleta").textContent=v;$("modalNota").showModal();
+            $("notaCompleta").textContent=v;
+            $("modalNota").showModal();
           });
+
           td.append(b);
         }
-      }else if(activa==="recibo"&&t.columnas[i]==="ID PRODUCTO"&&COLORES.includes(v)){
+      }else if(
+        activa==="recibo"&&
+        t.columnas[i]==="ID PRODUCTO"&&
+        COLORES.includes(v)
+      ){
         const e=document.createElement("span");
-        e.className="etiqueta "+v.toLowerCase();e.textContent=v;td.append(e);
-      }else td.textContent=v;
+        e.className="etiqueta "+v.toLowerCase();
+        e.textContent=v;
+        td.append(e);
+      }else{
+        td.textContent=v;
+      }
+
       tr.append(td);
     });
+
     fragmento.append(tr);
   });
+
   $("cuerpo").replaceChildren(fragmento);
+
   const avisos=[
     ...(t.error?[t.error]:[]),
-    ...(activa==="produccion"&&t.faltantes.length?["Producción: "+t.faltantes.join(", ")]:[]),
-    ...(activa==="produccion"&&t.erroresDescarte.length?["Descarte: "+t.erroresDescarte.join(", ")]:[])
+    ...(activa==="produccion"&&t.faltantes.length
+      ?["Producción: "+t.faltantes.join(", ")]:[]),
+    ...(activa==="produccion"&&t.erroresDescarte.length
+      ?["Descarte: "+t.erroresDescarte.join(", ")]:[])
   ];
-  $("aviso").hidden=!avisos.length;$("aviso").textContent=avisos.join(" · ");
-  $("pagina").textContent="Página "+t.pagina+" de "+paginas;
-  $("anterior").disabled=t.pagina<=1;$("siguiente").disabled=t.pagina>=paginas;
+
+  $("aviso").hidden=!avisos.length;
+  $("aviso").textContent=avisos.join(" · ");
+
+  $("pagina").textContent=
+    "Página "+t.pagina+" de "+paginas;
+
+  $("anterior").disabled=t.pagina<=1;
+  $("siguiente").disabled=t.pagina>=paginas;
   $("vacio").hidden=resultado.length>0;
-  $("vacio").textContent=t.cargando&&!t.lectura?"Cargando datos...":t.error&&!t.lectura?t.error:"No hay registros para esta selección.";
+
+  $("vacio").textContent=t.cargando&&!t.lectura
+    ?"Cargando datos..."
+    :t.error&&!t.lectura
+      ?t.error
+      :"No hay registros para esta selección.";
 }
+
 function mostrar(){
   $("listado").hidden=!tablaVisible;
+
   document.querySelectorAll("[data-tab]").forEach(b=>{
     const elegida=tablaVisible&&b.dataset.tab===activa;
     b.classList.toggle("activo",elegida);
     b.setAttribute("aria-expanded",String(elegida));
   });
+
   if(!tablaVisible)return;
-  $("tituloTabla").textContent=activa==="recibo"?TITULO_RECIBO:activa==="produccion"?"Producción":"Insumos";
+
+  $("tituloTabla").textContent=activa==="recibo"
+    ?TITULO_RECIBO
+    :activa==="produccion"?"Producción":"Insumos";
+
   $("buscar").value=tablas[activa].busqueda;
   $("fila").value=CONFIG[activa].fila;
-  $("fila").disabled=activa==="produccion"||ocupado;
-  encabezado();mostrarFilas();
+
+  // Producción fija en fila 3.
+  // Insumos detecta automáticamente su primer encabezado real.
+  $("fila").disabled=activa!=="recibo"||ocupado;
+  $("fila").title=activa==="insumos"
+    ?"Encabezados detectados automáticamente por Quincena y FECHA."
+    :"";
+
+  encabezado();
+  mostrarFilas();
 }
+
 function cargarLibro(origen,bytes){
-  const libro=XLSX.read(bytes,{type:"array",cellDates:true});
+  // Conservar números originales y convertir fechas explícitamente.
+  const libro=XLSX.read(bytes,{
+    type:"array",cellDates:false
+  });
+
   const lectura=new Date().toISOString();
   libros[origen]={libro,lectura};
+
   for(const id of idsDelOrigen(origen)){
     try{
-      const t=extraer(id,libro);t.lectura=lectura;tablas[id]=t;
-    }catch(e){tablas[id].error=e.message;tablas[id].cargando=false}
+      const t=extraer(id,libro);
+      t.lectura=lectura;
+      tablas[id]=t;
+    }catch(e){
+      tablas[id].error=e.message;
+      tablas[id].cargando=false;
+    }
   }
 }
-function errorOrigen(origen,m){
-  for(const id of idsDelOrigen(origen)){tablas[id].error=m;tablas[id].cargando=false}
+
+function errorOrigen(origen,mensaje){
+  for(const id of idsDelOrigen(origen)){
+    tablas[id].error=mensaje;
+    tablas[id].cargando=false;
+  }
 }
+
 async function descargar(origen){
-  const control=new AbortController(),timer=setTimeout(()=>control.abort(),90000);
+  const control=new AbortController();
+  const timer=setTimeout(()=>control.abort(),90000);
+
   try{
-    const r=await fetch(URLS[origen],{mode:"cors",cache:"no-store",credentials:"omit",signal:control.signal});
-    if(!r.ok)throw new Error("Dropbox respondió HTTP "+r.status+".");
-    const tipo=(r.headers.get("Content-Type")||"").toLowerCase();
-    if(tipo.includes("text/html")||tipo.includes("application/json"))throw new Error("El enlace no devolvió un Excel.");
-    const bytes=await r.arrayBuffer();
-    if(!bytes.byteLength)throw new Error("El archivo está vacío.");
+    const respuesta=await fetch(URLS[origen],{
+      mode:"cors",
+      cache:"no-store",
+      credentials:"omit",
+      signal:control.signal
+    });
+
+    if(!respuesta.ok){
+      throw new Error(
+        "La descarga respondió HTTP "+respuesta.status+"."
+      );
+    }
+
+    const tipo=(
+      respuesta.headers.get("Content-Type")||""
+    ).toLowerCase();
+
+    if(tipo.includes("text/html")||
+      tipo.includes("application/json")){
+      throw new Error("El enlace no devolvió un Excel.");
+    }
+
+    const bytes=await respuesta.arrayBuffer();
+
+    if(!bytes.byteLength){
+      throw new Error("El archivo está vacío.");
+    }
+
     cargarLibro(origen,bytes);
   }catch(e){
-    errorOrigen(origen,e.name==="AbortError"?"La descarga superó los 90 segundos.":
-      e instanceof TypeError?"No se pudo leer Dropbox por un bloqueo del navegador o un problema de conexión.":e.message);
-  }finally{clearTimeout(timer);actualizarDashboard();mostrar()}
+    errorOrigen(
+      origen,
+      e.name==="AbortError"
+        ?"La descarga superó los 90 segundos."
+        :e instanceof TypeError
+          ?"No se pudo descargar el archivo por un bloqueo del navegador o un problema de conexión."
+          :e.message
+    );
+  }finally{
+    clearTimeout(timer);
+    actualizarDashboard();
+    mostrar();
+  }
 }
+
 function bloquear(v){
-  ocupado=v;$("actualizar").disabled=v;
-  $("actualizar").textContent=v?"Cargando...":"Actualizar desde Dropbox";
-  $("fila").disabled=activa==="produccion"||v;
+  ocupado=v;
+  $("actualizar").disabled=v;
+  $("textoActualizar").textContent=v
+    ?"Actualizando datos..."
+    :"Actualizar últimos datos";
+
+  $("fila").disabled=activa!=="recibo"||v;
 }
+
 async function actualizar(){
   if(ocupado)return;
+
   if(typeof XLSX==="undefined"){
-    const m="No se cargó el lector Excel. Revisá la conexión y recargá.";
-    errorOrigen("produccion",m);errorOrigen("recibo",m);
-    actualizarDashboard();mostrar();return;
+    const mensaje=
+      "No se cargó el lector Excel. Revisá la conexión y recargá.";
+
+    errorOrigen("produccion",mensaje);
+    errorOrigen("recibo",mensaje);
+    actualizarDashboard();
+    mostrar();
+    return;
   }
+
   bloquear(true);
-  for(const t of Object.values(tablas)){t.cargando=true;t.error=""}
-  actualizarDashboard();mostrar();
-  try{await Promise.allSettled([descargar("produccion"),descargar("recibo")])}
-  finally{bloquear(false);actualizarDashboard();mostrar()}
+
+  for(const t of Object.values(tablas)){
+    t.cargando=true;
+    t.error="";
+  }
+
+  actualizarDashboard();
+  mostrar();
+
+  try{
+    await Promise.allSettled([
+      descargar("produccion"),
+      descargar("recibo")
+    ]);
+  }finally{
+    bloquear(false);
+    actualizarDashboard();
+    mostrar();
+  }
 }
+
 document.querySelectorAll("[data-tab]").forEach(b=>{
   b.addEventListener("click",()=>{
     const seleccion=b.dataset.tab;
-    if(tablaVisible&&activa===seleccion)tablaVisible=false;
-    else{activa=seleccion;tablaVisible=true}
+
+    if(tablaVisible&&activa===seleccion){
+      tablaVisible=false;
+    }else{
+      activa=seleccion;
+      tablaVisible=true;
+    }
+
     mostrar();
   });
 });
+
 $("buscar").addEventListener("input",()=>{
-  tablas[activa].busqueda=$("buscar").value;tablas[activa].pagina=1;
-  mostrarFilas();actualizarDashboard();
+  tablas[activa].busqueda=$("buscar").value;
+  tablas[activa].pagina=1;
+  mostrarFilas();
+  actualizarDashboard();
 });
+
 $("quitar").addEventListener("click",()=>{
   for(const t of Object.values(tablas)){
-    t.busqueda="";t.filtros=t.columnas.map(()=>"");
-    t.orden=null;t.direccion=1;t.pagina=1;
+    t.busqueda="";
+    t.filtros=t.columnas.map(()=>"");
+    t.orden=null;
+    t.direccion=1;
+    t.pagina=1;
   }
-  mostrar();actualizarDashboard();
+
+  mostrar();
+  actualizarDashboard();
 });
-$("limite").addEventListener("change",()=>{tablas[activa].pagina=1;mostrarFilas()});
-$("anterior").addEventListener("click",()=>{tablas[activa].pagina--;mostrarFilas()});
-$("siguiente").addEventListener("click",()=>{tablas[activa].pagina++;mostrarFilas()});
+
+$("limite").addEventListener("change",()=>{
+  tablas[activa].pagina=1;
+  mostrarFilas();
+});
+
+$("anterior").addEventListener("click",()=>{
+  tablas[activa].pagina--;
+  mostrarFilas();
+});
+
+$("siguiente").addEventListener("click",()=>{
+  tablas[activa].pagina++;
+  mostrarFilas();
+});
+
 $("fila").addEventListener("change",()=>{
-  if(activa==="produccion"||ocupado)return;
-  const c=CONFIG[activa],n=Number($("fila").value);
-  if(!Number.isInteger(n)||n<1||n>100){$("fila").value=c.fila;return}
-  const anterior=c.fila;c.fila=n;
-  const guardado=libros[c.origen];
+  if(activa!=="recibo"||ocupado)return;
+
+  const config=CONFIG[activa];
+  const nueva=Number($("fila").value);
+
+  if(!Number.isInteger(nueva)||nueva<1||nueva>100){
+    $("fila").value=config.fila;
+    return;
+  }
+
+  const anterior=config.fila;
+  config.fila=nueva;
+  const guardado=libros[config.origen];
+
   if(guardado){
     try{
       const t=extraer(activa,guardado.libro);
-      t.lectura=guardado.lectura;tablas[activa]=t;
-    }catch(e){c.fila=anterior;tablas[activa].error=e.message}
+      t.lectura=guardado.lectura;
+      tablas[activa]=t;
+    }catch(e){
+      config.fila=anterior;
+      tablas[activa].error=e.message;
+    }
   }
-  actualizarDashboard();mostrar();
+
+  actualizarDashboard();
+  mostrar();
 });
+
 $("actualizar").addEventListener("click",actualizar);
-$("cerrarNota").addEventListener("click",()=>$("modalNota").close());
-$("tarjetaDescarte").addEventListener("click",()=>{
-  mostrarDetalleDescarte();$("modalDescarte").showModal();
+
+$("cerrarNota").addEventListener("click",()=>{
+  $("modalNota").close();
 });
-$("cerrarDescarte").addEventListener("click",()=>$("modalDescarte").close());
+
+$("tarjetaDescarte").addEventListener("click",()=>{
+  mostrarDetalleDescarte();
+  $("modalDescarte").showModal();
+});
+
+$("cerrarDescarte").addEventListener("click",()=>{
+  $("modalDescarte").close();
+});
+
 mostrar();
 actualizar();
 </script>
