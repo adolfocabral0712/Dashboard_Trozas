@@ -451,7 +451,7 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
   <button id="tarjetaChapas" class="tarjeta stock-monte" type="button" aria-haspopup="dialog">
     <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#i-caja"/></svg></div>
     <div class="tarjeta-contenido">
-      <h2>CHAPAS</h2>
+      <h2>CHAPAS - Cajas Stock</h2>
       <div id="numero-chapas" class="numero">—</div>
       <div class="detalle">Saldo aproximado · ver detalle</div>
     </div>
@@ -460,8 +460,7 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
     <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#i-camion"/></svg></div>
     <div class="tarjeta-contenido">
       <h2>TROZAS POR CAMIÓN</h2>
-      <div id="numero-trozas-camion" class="numero">—</div>
-      <div class="detalle">Promedio por viaje · ver productos</div>
+            <div class="detalle">Ver detalle por producto</div>
     </div>
   </button>
 </section>
@@ -630,7 +629,7 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
   <h2 id="tituloTrozasCamion">TROZAS POR CAMIÓN</h2>
   <p id="avisoTrozasCamion" class="detalle"></p>
   <div class="detalle-scroll"><table class="tabla-detalle">
-    <thead><tr><th>Id Producto</th><th>Viajes</th><th>Cantidad de trozas</th><th>Neto total (t)</th><th>Trozas por camión</th><th>Neto por camión (t)</th></tr></thead>
+    <thead><tr><th>Id Producto</th><th>Viajes</th><th>Cantidad de trozas</th><th>Tons.</th><th>Trozas por camión</th><th>Neto por camión (t)</th></tr></thead>
     <tbody id="detalleTrozasCamion"></tbody>
     <tfoot id="totalTrozasCamion"></tfoot>
   </table></div>
@@ -639,7 +638,7 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
 </dialog>
 
 <dialog id="modalChapas" aria-labelledby="tituloChapas">
-  <h2 id="tituloChapas">CHAPAS</h2>
+  <h2 id="tituloChapas">CHAPAS - Cajas Stock</h2>
   <p id="alcanceChapas" class="detalle"></p>
   <table class="tabla-detalle">
     <thead><tr><th>Concepto</th><th>Cantidad</th><th>% de Cajas de Insumos</th></tr></thead>
@@ -647,9 +646,9 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
       <tr><td>Insumos · Cajas</td><td id="chapas-insumos">—</td><td id="chapas-pct-insumos">—</td></tr>
       <tr><td>Producción · Chapas</td><td id="chapas-produccion">—</td><td id="chapas-pct-produccion">—</td></tr>
     </tbody>
-    <tfoot><tr><td>Saldo aproximado · Producción − Insumos</td><td id="chapas-saldo">—</td><td id="chapas-pct-saldo">—</td></tr></tfoot>
+    <tfoot><tr><td>Saldo aproximado · Insumos − Producción</td><td id="chapas-saldo">—</td><td id="chapas-pct-saldo">—</td></tr></tfoot>
   </table>
-  <p class="detalle">Producción: Cajas Chapas + Chapas de mas PPL + Chapas EXTRAS STD.<br>Se resta la suma de Cajas de Insumos. Porcentajes calculados sobre Cajas de Insumos (100 %). Se utilizan los registros completos de ambas tablas.</p>
+  <p class="detalle">Producción: Cajas Chapas + Chapas de mas PPL + Chapas EXTRAS STD.<br>Insumos: suma de Cajas. Saldo = Insumos − Producción. Porcentajes calculados sobre Cajas de Insumos (100 %). Se utilizan los registros completos de ambas tablas.</p>
   <button id="cerrarChapas" class="secundario">Cerrar</button>
 </dialog>
 
@@ -1107,7 +1106,6 @@ function calculoTrozasCamion(){
 }
 function actualizarTrozasCamion(){
   const d=calculoTrozasCamion();
-  $("numero-trozas-camion").textContent=d.total&&d.total.viajes?numero(d.total.cantidad/d.total.viajes):"—";
   $("tarjetaTrozasCamion").title=d.error||"Cantidad total ÷ registros de Recibo. Cada registro se considera un viaje.";
   if($("modalTrozasCamion").open)mostrarDetalleTrozasCamion();
 }
@@ -1118,7 +1116,7 @@ function mostrarDetalleTrozasCamion(){
   function fila(g){
     const tr=document.createElement("tr");
     const valores=[g.producto,numero(g.viajes),numero(g.cantidad),numero(g.neto),
-      g.viajes?numero(g.cantidad/g.viajes):"—",g.viajes?numero(g.neto/g.viajes):"—"];
+      g.viajes?Math.round(g.cantidad/g.viajes).toLocaleString("es-UY"):"—",g.viajes?numero(g.neto/g.viajes):"—"];
     valores.forEach(v=>{const td=document.createElement("td");td.textContent=v;tr.append(td)});
     return tr;
   }
@@ -1148,14 +1146,14 @@ function sumarColumnasChapas(id,grupos){
 function calculoChapas(){
   const p=sumarColumnasChapas("produccion",[["Cajas Chapas"],["Chapas de mas PPL"],["Chapas EXTRAS STD"]]);
   const i=sumarColumnasChapas("insumos",[["Cajas"]]);
-  return {produccion:p.total,insumos:i.total,saldo:p.total===null||i.total===null?null:p.total-i.total,
+  return {produccion:p.total,insumos:i.total,saldo:p.total===null||i.total===null?null:i.total-p.total,
     error:[p.error,i.error].filter(Boolean).join(" · ")};
 }
 function actualizarChapas(){
   const d=calculoChapas();
   $("numero-chapas").textContent=d.saldo===null?"—":numero(d.saldo);
   $("numero-chapas").classList.toggle("negativo",d.saldo!==null&&d.saldo<0);
-  $("tarjetaChapas").title=d.error||"Producción − Insumos · registros completos";
+  $("tarjetaChapas").title=d.error||"Insumos − Producción · registros completos";
   if($("modalChapas").open)mostrarDetalleChapas();
 }
 function mostrarDetalleChapas(){
@@ -1166,7 +1164,7 @@ function mostrarDetalleChapas(){
       ?"—":porcentaje(d[k]/d.insumos*100);
   }
   $("alcanceChapas").textContent=d.error||
-    (d.insumos===0?"Insumos es cero: no se puede calcular un porcentaje.":"Saldo aproximado de chapas · Producción − Insumos.");
+    (d.insumos===0?"Insumos es cero: no se puede calcular un porcentaje.":"Saldo aproximado de chapas · Insumos − Producción.");
   $("alcanceChapas").classList.toggle("error",Boolean(d.error));
 }
 
