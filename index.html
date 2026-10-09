@@ -351,6 +351,11 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
 }
 .tabla-insumos .leer-nota{flex:0 0 auto;margin:0;padding:4px 7px;white-space:nowrap}
 
+.tarjetas-principales{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media(max-width:1100px){.tarjetas-principales{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.tarjetas-principales{grid-template-columns:1fr}}
+#modalChapas .tabla-detalle td:last-child{white-space:nowrap}
+#modalChapas .tabla-detalle tfoot{font-weight:bold;color:var(--bosque)}
 </style>
 </head>
 
@@ -414,7 +419,7 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
 </header>
 
 <main>
-<section class="tarjetas" aria-label="Totales">
+<section class="tarjetas tarjetas-principales" aria-label="Totales">
   <article class="tarjeta">
     <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#i-troncos"/></svg></div>
     <div class="tarjeta-contenido">
@@ -436,6 +441,14 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
       <h2>DESCARTE</h2>
       <div id="numero-descarte" class="numero">—</div>
       <div class="detalle">Ver detalle por clasificación</div>
+    </div>
+  </button>
+  <button id="tarjetaChapas" class="tarjeta stock-monte" type="button" aria-haspopup="dialog">
+    <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#i-caja"/></svg></div>
+    <div class="tarjeta-contenido">
+      <h2>CHAPAS</h2>
+      <div id="numero-chapas" class="numero">—</div>
+      <div class="detalle">Saldo aproximado · ver detalle</div>
     </div>
   </button>
 </section>
@@ -598,6 +611,21 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
   <h2 id="tituloNota">Observaciones</h2>
   <div id="notaCompleta"></div>
   <button id="cerrarNota" class="secundario">Cerrar</button>
+</dialog>
+
+<dialog id="modalChapas" aria-labelledby="tituloChapas">
+  <h2 id="tituloChapas">CHAPAS</h2>
+  <p id="alcanceChapas" class="detalle"></p>
+  <table class="tabla-detalle">
+    <thead><tr><th>Concepto</th><th>Cantidad</th><th>% de Insumos</th></tr></thead>
+    <tbody>
+      <tr><td>Insumos · Total chapas</td><td id="chapas-insumos">—</td><td id="chapas-pct-insumos">—</td></tr>
+      <tr><td>Producción · Chapas</td><td id="chapas-produccion">—</td><td id="chapas-pct-produccion">—</td></tr>
+    </tbody>
+    <tfoot><tr><td>Saldo aproximado · Producción − Insumos</td><td id="chapas-saldo">—</td><td id="chapas-pct-saldo">—</td></tr></tfoot>
+  </table>
+  <p class="detalle">Producción: Cajas Chapas + Chapas de mas PPL + Chapas EXTRAS STD.<br>Porcentajes calculados sobre Insumos (100 %). Se utilizan los registros completos de ambas tablas.</p>
+  <button id="cerrarChapas" class="secundario">Cerrar</button>
 </dialog>
 
 <dialog id="modalDescarte" aria-labelledby="tituloDescarte">
@@ -1031,6 +1059,50 @@ function calculoDescarte(){
     (_,i)=>seleccion.reduce((s,f)=>s+f.descarte[i],0)
   );
   return {seleccion,cantidades,total:cantidades.reduce((s,v)=>s+v,0)};
+}
+
+function sumarColumnasChapas(id,grupos){
+  const t=tablas[id],errores=[];
+  if(t.error)return {total:null,error:t.error};
+  if(!t.lectura)return {total:null,error:"Pendiente de lectura de "+(id==="insumos"?"Insumos":"Producción")+"."};
+  const indices=grupos.map(alias=>{
+    const claves=alias.map(claveColumna);
+    const encontrados=t.columnas.map((c,i)=>claves.includes(claveColumna(c))?i:-1).filter(i=>i>=0);
+    if(encontrados.length!==1)errores.push(alias[0]+(encontrados.length?" (duplicada)":" (no encontrada)"));
+    return encontrados.length===1?encontrados[0]:-1;
+  });
+  let total=0;
+  t.filas.forEach((f,n)=>indices.forEach(i=>{
+    if(i<0)return;
+    const valor=numeroCelda(f.valores[i]);
+    if(!Number.isFinite(valor))errores.push(t.columnas[i]+": valor no numérico en registro "+(n+1));
+    else total+=valor;
+  }));
+  return {total:errores.length?null:total,error:errores.length?"Revisar: "+errores.join(", "):""};
+}
+function calculoChapas(){
+  const p=sumarColumnasChapas("produccion",[["Cajas Chapas"],["Chapas de mas PPL"],["Chapas EXTRAS STD"]]);
+  const i=sumarColumnasChapas("insumos",[["Total chapas","Chapas Total","Suma chapas Total"]]);
+  return {produccion:p.total,insumos:i.total,saldo:p.total===null||i.total===null?null:p.total-i.total,
+    error:[p.error,i.error].filter(Boolean).join(" · ")};
+}
+function actualizarChapas(){
+  const d=calculoChapas();
+  $("numero-chapas").textContent=d.saldo===null?"—":numero(d.saldo);
+  $("numero-chapas").classList.toggle("negativo",d.saldo!==null&&d.saldo<0);
+  $("tarjetaChapas").title=d.error||"Producción − Insumos · registros completos";
+  if($("modalChapas").open)mostrarDetalleChapas();
+}
+function mostrarDetalleChapas(){
+  const d=calculoChapas();
+  for(const k of ["insumos","produccion","saldo"]){
+    $("chapas-"+k).textContent=d[k]===null?"—":numero(d[k]);
+    $("chapas-pct-"+k).textContent=d[k]===null||d.insumos===null||d.insumos===0
+      ?"—":porcentaje(d[k]/d.insumos*100);
+  }
+  $("alcanceChapas").textContent=d.error||
+    (d.insumos===0?"Insumos es cero: no se puede calcular un porcentaje.":"Saldo aproximado de chapas · Producción − Insumos.");
+  $("alcanceChapas").classList.toggle("error",Boolean(d.error));
 }
 
 function actualizarTotales(){
@@ -1546,6 +1618,7 @@ function actualizarEstado(){
 
 function actualizarDashboard(){
   actualizarTotales();
+  actualizarChapas();
   tarjetasStock();
   actualizarGraficos();
   actualizarSelectorQuincena();
@@ -1829,6 +1902,10 @@ $("cerrarNota").addEventListener("click",()=>$("modalNota").close());
 $("tarjetaDescarte").addEventListener("click",()=>{
   mostrarDetalleDescarte();$("modalDescarte").showModal();
 });
+$("tarjetaChapas").addEventListener("click",()=>{
+  mostrarDetalleChapas();$("modalChapas").showModal();
+});
+$("cerrarChapas").addEventListener("click",()=>$("modalChapas").close());
 $("cerrarDescarte").addEventListener("click",()=>$("modalDescarte").close());
 
 mostrar();
