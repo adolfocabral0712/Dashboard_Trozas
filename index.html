@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Producción Las Acacias</title>
+
 <style>
 :root{
   --verde:#19564b;
@@ -12,6 +13,7 @@
   --texto:#273c49;
 }
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 body{
   margin:0;
   background:var(--fondo);
@@ -20,58 +22,42 @@ body{
 }
 main{max-width:1600px;margin:auto;padding:24px}
 header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:15px;
-  flex-wrap:wrap;
+  display:flex;justify-content:space-between;
+  align-items:center;gap:15px;flex-wrap:wrap;
   margin-bottom:20px;
 }
 h1{color:var(--verde);margin:0 0 8px;font-size:26px}
 .subtitulo{margin:0;color:#647582}
 button,input,select{font:inherit}
 button{
-  padding:10px 15px;
-  border:1px solid var(--borde);
-  border-radius:8px;
-  background:white;
-  cursor:pointer;
-  color:var(--texto);
+  padding:10px 15px;border:1px solid var(--borde);
+  border-radius:8px;background:white;
+  cursor:pointer;color:var(--texto);
 }
 button:hover{background:#edf5f1}
 button:disabled{opacity:.5;cursor:default}
 .primario,.pestanas button.activo{
   background:var(--verde);
-  border-color:var(--verde);
-  color:white;
+  border-color:var(--verde);color:white;
 }
-.tarjetas{
+.tarjetas,.graficos{
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:14px;
-  margin-bottom:18px;
+  gap:14px;margin-bottom:18px;
 }
 .tarjeta{
-  background:white;
-  border:1px solid var(--borde);
-  padding:20px 16px;
-  border-radius:12px;
-  text-align:center;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
+  background:white;border:1px solid var(--borde);
+  padding:20px 16px;border-radius:12px;
+  text-align:center;display:flex;
+  flex-direction:column;justify-content:center;
 }
 .tarjeta h2{
-  margin:0 0 10px;
-  font-size:15px;
-  color:var(--verde);
+  margin:0 0 10px;font-size:15px;color:var(--verde);
 }
 .numero{font-size:30px;font-weight:bold;margin-bottom:6px}
 .detalle{
-  font-size:12px;
-  color:#647582;
-  line-height:1.6;
-  overflow-wrap:anywhere;
+  font-size:12px;color:#647582;
+  line-height:1.6;overflow-wrap:anywhere;
 }
 .error,.negativo{color:#b02e2e}
 .stock-rojo{border-top:4px solid #c94b4b}
@@ -90,193 +76,185 @@ button.tarjeta:hover{
   box-shadow:0 3px 12px rgba(40,60,70,.08);
 }
 button.tarjeta:focus-visible{
-  outline:3px solid #b17b48;
-  outline-offset:3px;
+  outline:3px solid #b17b48;outline-offset:3px;
+}
+.grafico{
+  background:white;border:1px solid var(--borde);
+  border-radius:12px;overflow:hidden;
+}
+.grafico h2{
+  margin:0;padding:15px 12px;
+  font-size:14px;text-align:center;
+  color:var(--verde);
+  border-bottom:1px solid var(--borde);
+  background:#f8fbfa;
+}
+.visual{
+  height:260px;display:flex;
+  justify-content:center;align-items:center;
+  padding:12px;
+}
+.visual svg{width:100%;height:100%;max-width:300px}
+.mensaje-grafico{
+  text-align:center;color:#647582;
+  font-size:13px;line-height:1.6;padding:16px;
+}
+.leyenda{padding:0 18px 14px}
+.leyenda-fila{
+  display:flex;align-items:center;
+  gap:8px;padding:9px 0;
+  border-bottom:1px solid #edf1f3;
+  font-size:12px;
+}
+.punto{
+  width:11px;height:11px;border-radius:50%;
+  flex:0 0 11px;
+}
+.nombre-serie{flex:1}
+.valor-serie{font-weight:bold;white-space:nowrap}
+.porcentaje{font-weight:normal;color:#647582}
+.alcance{
+  text-align:center;font-size:11px;
+  color:#647582;padding:0 12px 14px;line-height:1.5;
 }
 .panel{
-  background:white;
-  border:1px solid var(--borde);
-  border-radius:12px;
-  overflow:hidden;
+  background:white;border:1px solid var(--borde);
+  border-radius:12px;overflow:hidden;
 }
 .pestanas,.controles{
-  display:flex;
-  gap:10px;
-  padding:16px;
-  flex-wrap:wrap;
-  align-items:center;
+  display:flex;gap:10px;padding:16px;
+  flex-wrap:wrap;align-items:center;
 }
-.pestanas{border-bottom:1px solid var(--borde)}
+.pestanas{justify-content:center}
+.ayuda-tablas{
+  text-align:center;font-size:12px;
+  color:#647582;margin:0;padding:0 16px 16px;
+}
+#listado{border-top:1px solid var(--borde)}
 .titulo-tabla{
-  margin:0;
-  padding:18px 16px 0;
-  text-align:center;
-  color:var(--verde);
-  font-size:20px;
-  overflow-wrap:anywhere;
+  margin:0;padding:18px 16px 0;
+  text-align:center;color:var(--verde);
+  font-size:20px;overflow-wrap:anywhere;
 }
 input,select{
-  padding:9px;
-  border:1px solid var(--borde);
-  border-radius:6px;
-  background:white;
-  color:var(--texto);
+  padding:9px;border:1px solid var(--borde);
+  border-radius:6px;background:white;color:var(--texto);
 }
 #buscar{flex:1;min-width:190px}
 .controles label{
-  font-size:13px;
-  display:flex;
-  align-items:center;
-  gap:7px;
+  font-size:13px;display:flex;
+  align-items:center;gap:7px;
 }
 #fila{width:70px}
 #aviso{
-  padding:0 16px 14px;
-  color:#b02e2e;
-  font-size:13px;
-  line-height:1.6;
-  text-align:center;
+  padding:0 16px 14px;color:#b02e2e;
+  font-size:13px;line-height:1.6;text-align:center;
 }
 .tabla{
-  overflow:auto;
-  max-height:65vh;
+  overflow:auto;max-height:65vh;
   border-top:1px solid var(--borde);
 }
 table{
-  width:100%;
-  border-collapse:separate;
-  border-spacing:0;
-  font-size:12px;
+  width:100%;border-collapse:separate;
+  border-spacing:0;font-size:12px;
 }
 th,td{
-  text-align:center;
-  padding:10px;
-  min-width:105px;
-  max-width:220px;
+  text-align:center;padding:10px;
+  min-width:105px;max-width:220px;
   overflow-wrap:anywhere;
   border-bottom:1px solid var(--borde);
 }
 th{
-  position:sticky;
-  top:0;
-  z-index:1;
-  background:#edf3f4;
-  vertical-align:top;
+  position:sticky;top:0;z-index:1;
+  background:#edf3f4;vertical-align:top;
 }
 th button{
-  width:100%;
-  border:none;
-  background:transparent;
-  color:var(--verde);
-  font-weight:bold;
-  white-space:normal;
-  padding:4px;
+  width:100%;border:none;background:transparent;
+  color:var(--verde);font-weight:bold;
+  white-space:normal;padding:4px;
 }
 th input{
-  width:100%;
-  min-width:85px;
-  margin-top:8px;
-  font-size:11px;
+  width:100%;min-width:85px;
+  margin-top:8px;font-size:11px;
 }
 tbody tr:nth-child(even){background:#f8fafb}
 tbody tr:hover{background:#edf6f0}
 th.observaciones,td.observaciones{
-  min-width:280px;
-  max-width:360px;
-  width:320px;
+  min-width:280px;max-width:360px;width:320px;
 }
 td.observaciones{
-  text-align:left;
-  vertical-align:top;
+  text-align:left;vertical-align:top;
   padding:12px 16px;
 }
 .nota-texto{
-  white-space:pre-wrap;
-  line-height:1.65;
+  white-space:pre-wrap;line-height:1.65;
   overflow-wrap:anywhere;
 }
 .nota-texto.corta{
-  display:-webkit-box;
-  -webkit-line-clamp:3;
-  -webkit-box-orient:vertical;
-  overflow:hidden;
+  display:-webkit-box;-webkit-line-clamp:3;
+  -webkit-box-orient:vertical;overflow:hidden;
 }
 .leer-nota{
-  padding:5px 8px;
-  margin-top:7px;
-  font-size:11px;
-  color:var(--verde);
-  background:#edf5f1;
+  padding:5px 8px;margin-top:7px;
+  font-size:11px;color:var(--verde);background:#edf5f1;
 }
 .etiqueta{
-  display:inline-block;
-  padding:5px 9px;
-  border-radius:6px;
-  font-weight:bold;
+  display:inline-block;padding:5px 9px;
+  border-radius:6px;font-weight:bold;
 }
 .rojo{background:#ffe1e1;color:#a62323}
 .verde{background:#dff2e4;color:#24623a}
 .amarillo{background:#fff0b6;color:#765b00}
 #vacio{padding:30px;text-align:center;color:#647582}
 .pie{
-  padding:16px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  flex-wrap:wrap;
-  font-size:13px;
+  padding:16px;display:flex;
+  justify-content:space-between;align-items:center;
+  gap:12px;flex-wrap:wrap;font-size:13px;
 }
 .navegacion{display:flex;align-items:center;gap:10px}
 .nota{font-size:12px;line-height:1.6;color:#647582}
+#estadoCarga{
+  margin-bottom:14px;font-size:12px;
+  color:#647582;text-align:center;line-height:1.6;
+}
 dialog{
   border:1px solid var(--borde);
-  border-radius:14px;
-  padding:24px;
-  width:min(620px,90vw);
-  max-height:80vh;
-  color:var(--texto);
-  overflow:auto;
+  border-radius:14px;padding:24px;
+  width:min(620px,90vw);max-height:80vh;
+  color:var(--texto);overflow:auto;
 }
 dialog::backdrop{background:rgba(20,40,45,.45)}
 dialog h2{margin-top:0;color:var(--verde)}
 #notaCompleta{
-  white-space:pre-wrap;
-  line-height:1.7;
-  overflow-wrap:anywhere;
-  margin-bottom:20px;
+  white-space:pre-wrap;line-height:1.7;
+  overflow-wrap:anywhere;margin-bottom:20px;
 }
 #alcanceDescarte{
-  font-size:13px;
-  line-height:1.6;
-  color:#647582;
-  margin-bottom:16px;
+  font-size:13px;line-height:1.6;
+  color:#647582;margin-bottom:16px;
 }
 .tabla-detalle{margin-bottom:20px;font-size:14px}
-.tabla-detalle th{
-  position:static;
-  padding:12px;
-}
+.tabla-detalle th{position:static;padding:12px}
 .tabla-detalle td{padding:12px}
-.tabla-detalle th:first-child,.tabla-detalle td:first-child{
-  text-align:left;
-}
+.tabla-detalle th:first-child,
+.tabla-detalle td:first-child{text-align:left}
 .tabla-detalle tfoot td{
-  background:#edf3f4;
-  font-weight:bold;
+  background:#edf3f4;font-weight:bold;
+}
+@media(max-width:1000px){
+  .graficos{grid-template-columns:1fr}
+  .visual{height:250px}
 }
 @media(max-width:700px){
-  main{padding:12px}
-  h1{font-size:22px}
+  main{padding:12px}h1{font-size:22px}
   .tarjetas{grid-template-columns:1fr}
-  .tarjeta{padding:16px}
-  .numero{font-size:25px}
-  #buscar{flex-basis:100%}
-  .titulo-tabla{font-size:17px}
+  .tarjeta{padding:16px}.numero{font-size:25px}
+  #buscar{flex-basis:100%}.titulo-tabla{font-size:17px}
   th.observaciones,td.observaciones{min-width:230px}
 }
 </style>
 </head>
+
 <body>
 <main>
 <header>
@@ -289,7 +267,6 @@ dialog h2{margin-top:0;color:var(--verde)}
   </button>
 </header>
 
-<!-- PRIMERA FILA -->
 <section class="tarjetas" aria-label="Totales">
   <article class="tarjeta">
     <h2>PRODUCCIÓN</h2>
@@ -312,7 +289,6 @@ dialog h2{margin-top:0;color:var(--verde)}
   </button>
 </section>
 
-<!-- SEGUNDA FILA -->
 <section class="tarjetas" aria-label="Stocks por color">
   <article class="tarjeta stock-rojo">
     <h2>STOCK ROJO</h2>
@@ -339,61 +315,114 @@ dialog h2{margin-top:0;color:var(--verde)}
   </article>
 </section>
 
+<!-- GRÁFICOS ENTRE LAS TARJETAS Y LAS TABLAS -->
+<section class="graficos" aria-label="Gráficos">
+  <article class="grafico">
+    <h2>PRODUCCIÓN Y DESCARTES</h2>
+    <div id="graficoProduccionDescarte" class="visual"></div>
+    <div id="leyendaProduccionDescarte" class="leyenda"></div>
+    <div class="alcance">
+      Producción, descarte basal y otros descartes.
+      Responde a los filtros de Producción.
+    </div>
+  </article>
+
+  <article class="grafico">
+    <h2>DESPACHO DE TROZAS · RECIBO</h2>
+    <div id="graficoDespacho" class="visual"></div>
+    <div id="leyendaDespacho" class="leyenda"></div>
+    <div class="alcance">
+      Suma de CANTIDAD de todo Recibo.
+      Incluye una categoría adicional si hay productos sin clasificar.
+    </div>
+  </article>
+
+  <article class="grafico">
+    <h2>PRODUCCIÓN TROZAS MONTE</h2>
+    <div id="graficoProduccionColor" class="visual"></div>
+    <div id="leyendaProduccionColor" class="leyenda"></div>
+    <div class="alcance">
+      Producción por color.
+      Responde a los filtros de Producción.
+    </div>
+  </article>
+</section>
+
+<div id="estadoCarga" aria-live="polite"></div>
+
 <section class="panel">
-  <nav class="pestanas" aria-label="Seleccionar tabla">
-    <button data-tab="produccion" class="activo">Producción</button>
-    <button data-tab="insumos">Insumos</button>
-    <button data-tab="recibo">Recibo</button>
+  <nav class="pestanas" aria-label="Mostrar u ocultar tablas">
+    <button data-tab="produccion"
+      aria-expanded="false" aria-controls="listado">
+      Producción
+    </button>
+    <button data-tab="insumos"
+      aria-expanded="false" aria-controls="listado">
+      Insumos
+    </button>
+    <button data-tab="recibo"
+      aria-expanded="false" aria-controls="listado">
+      Recibo
+    </button>
   </nav>
 
-  <h2 id="tituloTabla" class="titulo-tabla">Producción</h2>
+  <p class="ayuda-tablas">
+    Seleccioná un botón para ver su listado.
+    Pulsá nuevamente el mismo botón para ocultarlo.
+  </p>
 
-  <div class="controles">
-    <input id="buscar" type="search"
-      placeholder="Buscar en toda la tabla..." aria-label="Buscar">
+  <!-- LAS TABLAS COMIENZAN OCULTAS -->
+  <div id="listado" hidden>
+    <h2 id="tituloTabla" class="titulo-tabla">Producción</h2>
 
-    <label>
-      Fila de encabezados
-      <input id="fila" type="number" min="1" max="100" value="3">
-    </label>
+    <div class="controles">
+      <input id="buscar" type="search"
+        placeholder="Buscar en toda la tabla..." aria-label="Buscar">
 
-    <label>
-      Filas
-      <select id="limite">
-        <option value="25">25</option>
-        <option value="50" selected>50</option>
-        <option value="100">100</option>
-        <option value="200">200</option>
-      </select>
-    </label>
+      <label>
+        Fila de encabezados
+        <input id="fila" type="number"
+          min="1" max="100" value="3">
+      </label>
 
-    <button id="quitar">Quitar filtros</button>
-  </div>
+      <label>
+        Filas
+        <select id="limite">
+          <option value="25">25</option>
+          <option value="50" selected>50</option>
+          <option value="100">100</option>
+          <option value="200">200</option>
+        </select>
+      </label>
 
-  <div id="aviso" hidden aria-live="polite"></div>
+      <button id="quitar">Quitar filtros</button>
+    </div>
 
-  <div class="tabla">
-    <table>
-      <thead id="encabezado"></thead>
-      <tbody id="cuerpo"></tbody>
-    </table>
-    <div id="vacio">Cargando datos...</div>
-  </div>
+    <div id="aviso" hidden aria-live="polite"></div>
 
-  <div class="pie">
-    <span>Hacé clic en los encabezados para ordenar.</span>
-    <div class="navegacion">
-      <button id="anterior">Anterior</button>
-      <span id="pagina">Página 1 de 1</span>
-      <button id="siguiente">Siguiente</button>
+    <div class="tabla">
+      <table>
+        <thead id="encabezado"></thead>
+        <tbody id="cuerpo"></tbody>
+      </table>
+      <div id="vacio">Cargando datos...</div>
+    </div>
+
+    <div class="pie">
+      <span>Hacé clic en los encabezados para ordenar.</span>
+      <div class="navegacion">
+        <button id="anterior">Anterior</button>
+        <span id="pagina">Página 1 de 1</span>
+        <button id="siguiente">Siguiente</button>
+      </div>
     </div>
   </div>
 </section>
 
 <p class="nota">
   Producción excluye las filas sin FECHA.
-  Producción y Descarte responden a los filtros de la tabla Producción.
-  Las tarjetas de stock utilizan los totales completos.
+  Producción y Descarte responden a los filtros de su tabla.
+  Los stocks utilizan los totales completos.
   Trozas Stock Monte = Producción total − suma de CANTIDAD de todo Recibo.
 </p>
 </main>
@@ -428,6 +457,7 @@ dialog h2{margin-top:0;color:var(--verde)}
 </dialog>
 
 <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+
 <script>
 "use strict";
 
@@ -459,18 +489,25 @@ const COLUMNAS_DESCARTE=[
 ];
 
 const COLORES=["ROJO","AMARILLO","VERDE"];
+const PALETA={
+  ROJO:"#ef3340",
+  AMARILLO:"#efcf38",
+  VERDE:"#37b96b"
+};
+
 const tablas={},libros={};
-let activa="produccion",ocupado=false;
+let activa="produccion";
+let tablaVisible=false;
+let ocupado=false;
 
 function normalizar(v){
   return String(v??"").normalize("NFD")
-    .replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();
+    .replace(/[\u0300-\u036f]/g,"")
+    .toLowerCase().trim();
 }
 function claveColumna(v){
   return normalizar(v).replace(/[^a-z0-9]/g,"");
 }
-
-// Conservar + y - para distinguir las clasificaciones.
 function claveSuma(v){
   return normalizar(v).replace(/amarillo/g,"amarrillo")
     .replace(/[^a-z0-9+-]/g,"");
@@ -479,13 +516,21 @@ function texto(v){return v==null?"":String(v)}
 function numero(v){
   return v.toLocaleString("es-UY",{maximumFractionDigits:2});
 }
+function porcentaje(v){
+  return v.toLocaleString("es-UY",{
+    minimumFractionDigits:1,
+    maximumFractionDigits:1
+  })+"%";
+}
 function idsDelOrigen(o){
   return Object.keys(CONFIG).filter(id=>CONFIG[id].origen===o);
 }
 function claveProducto(v){
   return normalizar(v).replace(/,/g,".").replace(/\s+/g,"");
 }
-function esFecha(n){return claveColumna(n).includes("fecha")}
+function esFecha(n){
+  return claveColumna(n).includes("fecha");
+}
 function esObservaciones(n){
   return ["observaciones","observacion"].includes(claveColumna(n));
 }
@@ -503,17 +548,9 @@ const EQUIVALENCIAS=new Map([
 
 for(const id of Object.keys(CONFIG)){
   tablas[id]={
-    columnas:[],
-    filas:[],
-    filtros:[],
-    busqueda:"",
-    orden:null,
-    direccion:1,
-    pagina:1,
-    lectura:"",
-    error:"",
-    cargando:false,
-    faltantes:[],
+    columnas:[],filas:[],filtros:[],busqueda:"",
+    orden:null,direccion:1,pagina:1,
+    lectura:"",error:"",cargando:false,faltantes:[],
     faltantesColor:{ROJO:[],AMARILLO:[],VERDE:[]},
     erroresDescarte:[],
     erroresDescartePorColumna:COLUMNAS_DESCARTE.map(()=>[]),
@@ -626,7 +663,6 @@ function extraer(id,libro){
   }
 
   const usados=new Map();
-
   let columnas=indices.map(i=>{
     const base=texto(cabecera[i]).trim()||
       "Columna "+XLSX.utils.encode_col(rango.s.c+i);
@@ -655,10 +691,8 @@ function extraer(id,libro){
 
   const faltantesColor={ROJO:[],AMARILLO:[],VERDE:[]};
   const erroresDescartePorColumna=COLUMNAS_DESCARTE.map(()=>[]);
-  let faltantes=[];
-  let erroresDescarte=[];
-  let avisoCantidad="";
-  let noClasificados=0;
+  let faltantes=[],erroresDescarte=[];
+  let avisoCantidad="",noClasificados=0;
 
   let filas=originales.map(f=>({
     valores:f.map((v,i)=>
@@ -702,9 +736,7 @@ function extraer(id,libro){
               faltantesColor[color],
               "Valor no numérico en "+columnas[i]
             );
-          }else{
-            suma+=valor;
-          }
+          }else suma+=valor;
         }
 
         fila.produccion[color]=suma;
@@ -723,9 +755,7 @@ function extraer(id,libro){
             erroresDescartePorColumna[clasificacion],
             "Valor no numérico en "+columnas[i]
           );
-        }else{
-          fila.descarte[clasificacion]=valor;
-        }
+        }else fila.descarte[clasificacion]=valor;
       });
     });
 
@@ -737,7 +767,6 @@ function extraer(id,libro){
       .filter(i=>i>=0);
 
     columnas=mantener.map(i=>columnas[i]);
-
     filas=filas.map(f=>({
       ...f,valores:mantener.map(i=>f.valores[i])
     }));
@@ -765,10 +794,7 @@ function extraer(id,libro){
 
     filas.forEach((fila,n)=>{
       fila.color=clasificar(fila.valores,producto);
-
-      if(!COLORES.includes(fila.color)){
-        noClasificados++;
-      }
+      if(!COLORES.includes(fila.color))noClasificados++;
 
       if(cantidades.length===1){
         const cantidad=numeroCelda(
@@ -777,9 +803,7 @@ function extraer(id,libro){
 
         if(Number.isNaN(cantidad)){
           avisoCantidad="Hay valores no numéricos en CANTIDAD de Recibo.";
-        }else{
-          fila.cantidad=cantidad;
-        }
+        }else fila.cantidad=cantidad;
       }
     });
 
@@ -811,31 +835,20 @@ function extraer(id,libro){
     JSON.stringify(anterior.columnas);
 
   return {
-    ...anterior,
-    columnas,
-    filas,
-    faltantes,
-    faltantesColor,
-    erroresDescarte,
-    erroresDescartePorColumna,
-    avisoCantidad,
-    noClasificados,
+    ...anterior,columnas,filas,faltantes,faltantesColor,
+    erroresDescarte,erroresDescartePorColumna,
+    avisoCantidad,noClasificados,
     filtros:mismos?anterior.filtros:columnas.map(()=>""),
     orden:mismos?anterior.orden:null,
-    pagina:1,
-    error:"",
-    cargando:false
+    pagina:1,error:"",cargando:false
   };
 }
 
 function filtradas(id){
-  const t=tablas[id];
-  const buscar=normalizar(t.busqueda);
+  const t=tablas[id],buscar=normalizar(t.busqueda);
 
   return t.filas.filter(f=>
-    (!buscar||f.valores.some(
-      v=>normalizar(v).includes(buscar)
-    ))&&
+    (!buscar||f.valores.some(v=>normalizar(v).includes(buscar)))&&
     t.filtros.every((v,i)=>
       !normalizar(v)||
       normalizar(f.valores[i]).includes(normalizar(v))
@@ -843,78 +856,56 @@ function filtradas(id){
   );
 }
 
-function tarjetaProduccion(){
-  const t=tablas.produccion;
-  const elemento=$("numero-produccion");
-  const problema=t.error||
-    (t.faltantes.length
-      ?"Revisar: "+t.faltantes.join(", "):"");
-
-  elemento.textContent=!t.lectura||problema
-    ?"—"
-    :numero(filtradas("produccion").reduce(
-      (s,f)=>s+f.total,0
-    ));
-
-  elemento.title=problema;
-  elemento.classList.toggle("error",Boolean(problema));
-}
-
 function calculoDescarte(){
-  const t=tablas.produccion;
   const seleccion=filtradas("produccion");
-
   const cantidades=COLUMNAS_DESCARTE.map(
-    (_,i)=>seleccion.reduce(
-      (s,f)=>s+f.descarte[i],0
-    )
+    (_,i)=>seleccion.reduce((s,f)=>s+f.descarte[i],0)
   );
-
   return {
-    seleccion,
-    cantidades,
+    seleccion,cantidades,
     total:cantidades.reduce((s,v)=>s+v,0)
   };
 }
 
-function tarjetaDescarte(){
+function actualizarTotales(){
   const t=tablas.produccion;
-  const elemento=$("numero-descarte");
+  const problemaProduccion=t.error||
+    (t.faltantes.length?"Revisar: "+t.faltantes.join(", "):"");
 
-  const problema=t.error||
+  const produccion=$("numero-produccion");
+  produccion.textContent=!t.lectura||problemaProduccion
+    ?"—":numero(filtradas("produccion").reduce((s,f)=>s+f.total,0));
+  produccion.title=problemaProduccion;
+  produccion.classList.toggle("error",Boolean(problemaProduccion));
+
+  const problemaDescarte=t.error||
     (t.erroresDescarte.length
       ?"Revisar: "+t.erroresDescarte.join(", "):"");
 
-  elemento.textContent=!t.lectura||problema
+  $("numero-descarte").textContent=!t.lectura||problemaDescarte
     ?"—":numero(calculoDescarte().total);
-
-  elemento.classList.toggle("error",Boolean(problema));
-  $("tarjetaDescarte").title=problema;
+  $("numero-descarte").classList.toggle(
+    "error",Boolean(problemaDescarte)
+  );
+  $("tarjetaDescarte").title=problemaDescarte;
 }
 
 function mostrarDetalleDescarte(){
-  const t=tablas.produccion;
-  const calculo=calculoDescarte();
+  const t=tablas.produccion,calculo=calculoDescarte();
   const fragmento=document.createDocumentFragment();
 
   COLUMNAS_DESCARTE.forEach((nombre,i)=>{
     const tr=document.createElement("tr");
     const clasificacion=document.createElement("td");
     const cantidad=document.createElement("td");
-
     clasificacion.textContent=nombre;
 
     const errores=t.erroresDescartePorColumna[i];
-    const disponible=t.lectura&&!t.error&&errores.length===0;
-
-    cantidad.textContent=disponible
+    cantidad.textContent=t.lectura&&!t.error&&!errores.length
       ?numero(calculo.cantidades[i]):"—";
 
-    if(errores.length){
-      cantidad.title=errores.join(", ");
-      cantidad.classList.add("error");
-    }
-
+    cantidad.title=errores.join(", ");
+    cantidad.classList.toggle("error",errores.length>0);
     tr.append(clasificacion,cantidad);
     fragmento.append(tr);
   });
@@ -925,58 +916,40 @@ function mostrarDetalleDescarte(){
     (t.erroresDescarte.length
       ?"Revisar: "+t.erroresDescarte.join(", "):"");
 
-  $("totalDetalleDescarte").textContent=
-    t.lectura&&!problema?numero(calculo.total):"—";
+  $("totalDetalleDescarte").textContent=t.lectura&&!problema
+    ?numero(calculo.total):"—";
 
   $("alcanceDescarte").textContent=!t.lectura
     ?"Se necesita cargar Producción."
-    :problema
-      ?problema
-      :"Detalle de los registros seleccionados en Producción. "+
-        numero(calculo.seleccion.length)+" registros.";
+    :problema||"Detalle de los registros seleccionados en Producción.";
 
-  $("alcanceDescarte").classList.toggle(
-    "error",Boolean(problema)
-  );
+  $("alcanceDescarte").classList.toggle("error",Boolean(problema));
 }
 
 function ponerStock(id,valor,detalle,error=false){
   const elemento=$("stock-"+id);
   elemento.textContent=valor===null?"—":numero(valor);
-
-  elemento.classList.toggle(
-    "negativo",valor!==null&&valor<0
-  );
-
+  elemento.classList.toggle("negativo",valor!==null&&valor<0);
   $("detalle-stock-"+id).textContent=detalle;
   $("detalle-stock-"+id).classList.toggle("error",error);
 }
 
 function tarjetasStock(){
-  const p=tablas.produccion;
-  const r=tablas.recibo;
+  const p=tablas.produccion,r=tablas.recibo;
   const ids=["rojo","amarillo","verde","monte"];
 
   if(p.cargando||r.cargando){
-    ids.forEach(id=>
-      ponerStock(id,null,"Actualizando datos...")
-    );
+    ids.forEach(id=>ponerStock(id,null,"Actualizando datos..."));
     return;
   }
 
   if(!p.lectura||!r.lectura){
-    ids.forEach(id=>
-      ponerStock(id,null,
-        "Se necesita cargar Producción y Recibo.")
-    );
+    ids.forEach(id=>ponerStock(id,null,"Se necesita cargar Producción y Recibo."));
     return;
   }
 
   if(p.error||r.error){
-    ids.forEach(id=>
-      ponerStock(id,null,
-        "Revisar la lectura de Producción y Recibo.",true)
-    );
+    ids.forEach(id=>ponerStock(id,null,"Revisar la lectura de Producción y Recibo.",true));
     return;
   }
 
@@ -987,24 +960,18 @@ function tarjetasStock(){
     ];
 
     if(problemas.length){
-      ponerStock(
-        color.toLowerCase(),null,
-        "Revisar: "+problemas.join(", "),true
-      );
+      ponerStock(color.toLowerCase(),null,
+        "Revisar: "+problemas.join(", "),true);
       continue;
     }
 
-    const producido=p.filas.reduce(
-      (s,f)=>s+f.produccion[color],0
-    );
-
+    const producido=p.filas.reduce((s,f)=>s+f.produccion[color],0);
     const recibido=r.filas.reduce(
       (s,f)=>s+(f.color===color?f.cantidad:0),0
     );
 
     ponerStock(
-      color.toLowerCase(),
-      producido-recibido,
+      color.toLowerCase(),producido-recibido,
       "Producción: "+numero(producido)+
       " − Recibido: "+numero(recibido)+
       (r.noClasificados
@@ -1021,38 +988,253 @@ function tarjetasStock(){
   ];
 
   if(problemasMonte.length){
-    ponerStock(
-      "monte",null,
-      "Revisar: "+problemasMonte.join(", "),true
-    );
+    ponerStock("monte",null,"Revisar: "+problemasMonte.join(", "),true);
     return;
   }
 
-  const produccionTotal=p.filas.reduce(
-    (s,f)=>s+f.total,0
-  );
+  const producido=p.filas.reduce((s,f)=>s+f.total,0);
+  const recibido=r.filas.reduce((s,f)=>s+f.cantidad,0);
 
-  // Suma de CANTIDAD de todo Recibo, sin filtro por color.
-  const cantidadReciboTotal=r.filas.reduce(
-    (s,f)=>s+f.cantidad,0
-  );
-
-  ponerStock(
-    "monte",
-    produccionTotal-cantidadReciboTotal,
-    "Producción: "+numero(produccionTotal)+
-    " − Cantidad Recibo: "+numero(cantidadReciboTotal)
-  );
+  ponerStock("monte",producido-recibido,
+    "Producción: "+numero(producido)+
+    " − Cantidad Recibo: "+numero(recibido));
 }
 
-function tarjetas(){
-  tarjetaProduccion();
-  tarjetaDescarte();
-  tarjetasStock();
+// GRÁFICOS SVG: sin una segunda biblioteca de gráficos.
+const SVG_NS="http://www.w3.org/2000/svg";
 
-  if($("modalDescarte").open){
-    mostrarDetalleDescarte();
+function svgElemento(nombre,atributos={}){
+  const el=document.createElementNS(SVG_NS,nombre);
+  for(const [k,v]of Object.entries(atributos)){
+    el.setAttribute(k,String(v));
   }
+  return el;
+}
+
+function mensajeGrafico(visualId,leyendaId,mensaje){
+  const div=document.createElement("div");
+  div.className="mensaje-grafico";
+  div.textContent=mensaje;
+  $(visualId).replaceChildren(div);
+  $(leyendaId).replaceChildren();
+}
+
+function dibujarGrafico(visualId,leyendaId,series,anillo,etiqueta){
+  if(series.some(s=>!Number.isFinite(s.valor)||s.valor<0)){
+    mensajeGrafico(visualId,leyendaId,
+      "Revisar valores negativos o no numéricos. No se puede representar esta composición.");
+    return;
+  }
+
+  const total=series.reduce((s,v)=>s+v.valor,0);
+  const svg=svgElemento("svg",{
+    viewBox:"0 0 260 260",
+    role:"img",
+    "aria-label":etiqueta+". Total: "+numero(total)
+  });
+
+  const cx=130,cy=130,r=103;
+  svg.append(svgElemento("circle",{
+    cx,cy,r,fill:"#e9eef0"
+  }));
+
+  let angulo=-Math.PI/2;
+
+  if(total>0){
+    for(const serie of series){
+      if(serie.valor===0)continue;
+
+      const amplitud=serie.valor/total*Math.PI*2;
+      let pieza;
+
+      if(amplitud>=Math.PI*2-0.000001){
+        pieza=svgElemento("circle",{
+          cx,cy,r,fill:serie.color
+        });
+      }else{
+        const fin=angulo+amplitud;
+        const x1=cx+r*Math.cos(angulo);
+        const y1=cy+r*Math.sin(angulo);
+        const x2=cx+r*Math.cos(fin);
+        const y2=cy+r*Math.sin(fin);
+        const grande=amplitud>Math.PI?1:0;
+
+        pieza=svgElemento("path",{
+          d:"M "+cx+" "+cy+
+            " L "+x1+" "+y1+
+            " A "+r+" "+r+" 0 "+grande+" 1 "+x2+" "+y2+
+            " Z",
+          fill:serie.color,
+          stroke:"white",
+          "stroke-width":"1"
+        });
+      }
+
+      const title=svgElemento("title");
+      title.textContent=serie.nombre+": "+numero(serie.valor)+
+        " ("+porcentaje(serie.valor/total*100)+")";
+      pieza.append(title);
+      svg.append(pieza);
+      angulo+=amplitud;
+    }
+  }
+
+  if(anillo){
+    svg.append(svgElemento("circle",{
+      cx,cy,r:75,fill:"white"
+    }));
+
+    const valor=svgElemento("text",{
+      x:cx,y:130,"text-anchor":"middle",
+      "font-family":"Arial, sans-serif",
+      "font-size":"25","font-weight":"bold",fill:"#273c49"
+    });
+    valor.textContent=numero(total);
+    svg.append(valor);
+
+    const nombre=svgElemento("text",{
+      x:cx,y:151,"text-anchor":"middle",
+      "font-family":"Arial, sans-serif",
+      "font-size":"10",fill:"#647582"
+    });
+    nombre.textContent=etiqueta;
+    svg.append(nombre);
+  }
+
+  $(visualId).replaceChildren(svg);
+
+  const leyenda=document.createDocumentFragment();
+  for(const serie of series){
+    const fila=document.createElement("div");
+    fila.className="leyenda-fila";
+
+    const punto=document.createElement("span");
+    punto.className="punto";
+    punto.style.background=serie.color;
+
+    const nombre=document.createElement("span");
+    nombre.className="nombre-serie";
+    nombre.textContent=serie.nombre;
+
+    const valor=document.createElement("span");
+    valor.className="valor-serie";
+    valor.textContent=numero(serie.valor)+" ";
+
+    const porcentajeTexto=document.createElement("span");
+    porcentajeTexto.className="porcentaje";
+    porcentajeTexto.textContent="("+
+      porcentaje(total?serie.valor/total*100:0)+")";
+
+    valor.append(porcentajeTexto);
+    fila.append(punto,nombre,valor);
+    leyenda.append(fila);
+  }
+
+  $(leyendaId).replaceChildren(leyenda);
+}
+
+function actualizarGraficos(){
+  const p=tablas.produccion,r=tablas.recibo;
+  const seleccion=filtradas("produccion");
+
+  const problemaP=p.cargando?"Cargando Producción...":
+    !p.lectura?"Pendiente de lectura de Producción.":
+    p.error||p.faltantes.join(", ");
+
+  if(problemaP){
+    mensajeGrafico("graficoProduccionColor","leyendaProduccionColor",problemaP);
+  }else{
+    dibujarGrafico(
+      "graficoProduccionColor","leyendaProduccionColor",
+      ["ROJO","VERDE","AMARILLO"].map(color=>({
+        nombre:color,
+        color:PALETA[color],
+        valor:seleccion.reduce((s,f)=>s+f.produccion[color],0)
+      })),
+      true,"TROZAS PRODUCIDAS"
+    );
+  }
+
+  const problemaPD=problemaP||p.erroresDescarte.join(", ");
+
+  if(problemaPD){
+    mensajeGrafico("graficoProduccionDescarte","leyendaProduccionDescarte",problemaPD);
+  }else{
+    const d=calculoDescarte();
+    dibujarGrafico(
+      "graficoProduccionDescarte","leyendaProduccionDescarte",
+      [
+        {
+          nombre:"PRODUCCIÓN",
+          color:"#f1763d",
+          valor:seleccion.reduce((s,f)=>s+f.total,0)
+        },
+        {
+          nombre:"DESCARTE BASAL",
+          color:"#247cbd",
+          valor:d.cantidades[0]+d.cantidades[1]
+        },
+        {
+          nombre:"DESCARTE",
+          color:"#23458c",
+          valor:d.cantidades[2]+d.cantidades[3]
+        }
+      ],
+      false,"PRODUCCIÓN Y DESCARTES"
+    );
+  }
+
+  const problemaR=r.cargando?"Cargando Recibo...":
+    !r.lectura?"Pendiente de lectura de Recibo.":
+    r.error||r.avisoCantidad;
+
+  if(problemaR){
+    mensajeGrafico("graficoDespacho","leyendaDespacho",problemaR);
+  }else{
+    const series=["ROJO","VERDE","AMARILLO"].map(color=>({
+      nombre:color,
+      color:PALETA[color],
+      valor:r.filas.reduce(
+        (s,f)=>s+(f.color===color?f.cantidad:0),0
+      )
+    }));
+
+    if(r.noClasificados){
+      series.push({
+        nombre:"SIN CLASIFICAR / REVISAR",
+        color:"#8a98a6",
+        valor:r.filas.reduce(
+          (s,f)=>s+(!COLORES.includes(f.color)?f.cantidad:0),0
+        )
+      });
+    }
+
+    dibujarGrafico(
+      "graficoDespacho","leyendaDespacho",
+      series,true,"TROZAS DESPACHADAS"
+    );
+  }
+}
+
+function actualizarEstado(){
+  const errores=Object.entries(tablas)
+    .filter(([,t])=>t.error)
+    .map(([id,t])=>id.toUpperCase()+": "+t.error);
+
+  $("estadoCarga").textContent=errores.length
+    ?errores.join(" · ")
+    :ocupado?"Actualizando datos...":"";
+
+  $("estadoCarga").classList.toggle("error",errores.length>0);
+  $("estadoCarga").hidden=!$("estadoCarga").textContent;
+}
+
+function actualizarDashboard(){
+  actualizarTotales();
+  tarjetasStock();
+  actualizarGraficos();
+  actualizarEstado();
+  if($("modalDescarte").open)mostrarDetalleDescarte();
 }
 
 function encabezado(){
@@ -1061,22 +1243,16 @@ function encabezado(){
 
   t.columnas.forEach((nombre,i)=>{
     const th=document.createElement("th");
-
-    if(esObservaciones(nombre)){
-      th.className="observaciones";
-    }
+    if(esObservaciones(nombre))th.className="observaciones";
 
     const b=document.createElement("button");
     b.textContent=nombre+
-      (t.orden===i
-        ?(t.direccion===1?" ▲":" ▼"):"");
+      (t.orden===i?(t.direccion===1?" ▲":" ▼"):"");
 
     b.addEventListener("click",()=>{
       t.direccion=t.orden===i?-t.direccion:1;
-      t.orden=i;
-      t.pagina=1;
-      encabezado();
-      mostrarFilas();
+      t.orden=i;t.pagina=1;
+      encabezado();mostrarFilas();
     });
 
     const input=document.createElement("input");
@@ -1089,10 +1265,10 @@ function encabezado(){
       t.filtros[i]=input.value;
       t.pagina=1;
       mostrarFilas();
+      actualizarDashboard();
     });
 
-    th.append(b,input);
-    tr.append(th);
+    th.append(b,input);tr.append(th);
   });
 
   $("encabezado").replaceChildren(tr);
@@ -1103,24 +1279,22 @@ const comparador=new Intl.Collator("es",{
 });
 
 function claveFecha(v){
-  const m=texto(v).match(
-    /^(\d{2})\/(\d{2})\/(\d{4})$/
-  );
+  const m=texto(v).match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
   return m?m[3]+m[2]+m[1]:texto(v);
 }
 
 function mostrarFilas(){
+  if(!tablaVisible)return;
+
   const t=tablas[activa];
   const resultado=filtradas(activa);
 
   if(t.orden!==null){
     resultado.sort((a,b)=>{
-      let av=a.valores[t.orden];
-      let bv=b.valores[t.orden];
+      let av=a.valores[t.orden],bv=b.valores[t.orden];
 
       if(esFecha(t.columnas[t.orden])){
-        av=claveFecha(av);
-        bv=claveFecha(bv);
+        av=claveFecha(av);bv=claveFecha(bv);
       }
 
       return comparador.compare(av,bv)*t.direccion;
@@ -1128,10 +1302,7 @@ function mostrarFilas(){
   }
 
   const limite=Number($("limite").value);
-  const paginas=Math.max(
-    1,Math.ceil(resultado.length/limite)
-  );
-
+  const paginas=Math.max(1,Math.ceil(resultado.length/limite));
   t.pagina=Math.min(t.pagina,paginas);
   const inicio=(t.pagina-1)*limite;
   const fragmento=document.createDocumentFragment();
@@ -1154,12 +1325,10 @@ function mostrarFilas(){
           const b=document.createElement("button");
           b.className="leer-nota";
           b.textContent="Ver observación";
-
           b.addEventListener("click",()=>{
             $("notaCompleta").textContent=v;
             $("modalNota").showModal();
           });
-
           td.append(b);
         }
       }else if(
@@ -1169,11 +1338,8 @@ function mostrarFilas(){
       ){
         const e=document.createElement("span");
         e.className="etiqueta "+v.toLowerCase();
-        e.textContent=v;
-        td.append(e);
-      }else{
-        td.textContent=v;
-      }
+        e.textContent=v;td.append(e);
+      }else td.textContent=v;
 
       tr.append(td);
     });
@@ -1193,34 +1359,26 @@ function mostrarFilas(){
 
   $("aviso").hidden=avisos.length===0;
   $("aviso").textContent=avisos.join(" · ");
-
-  $("pagina").textContent=
-    "Página "+t.pagina+" de "+paginas;
-
+  $("pagina").textContent="Página "+t.pagina+" de "+paginas;
   $("anterior").disabled=t.pagina<=1;
   $("siguiente").disabled=t.pagina>=paginas;
   $("vacio").hidden=resultado.length>0;
-
   $("vacio").textContent=t.cargando&&!t.lectura
     ?"Cargando datos...":
-    t.error&&!t.lectura
-      ?t.error:
+    t.error&&!t.lectura?t.error:
     "No hay registros para esta selección.";
-
-  tarjetaProduccion();
-  tarjetaDescarte();
-
-  if($("modalDescarte").open){
-    mostrarDetalleDescarte();
-  }
 }
 
 function mostrar(){
+  $("listado").hidden=!tablaVisible;
+
   document.querySelectorAll("[data-tab]").forEach(b=>{
-    const elegida=b.dataset.tab===activa;
+    const elegida=tablaVisible&&b.dataset.tab===activa;
     b.classList.toggle("activo",elegida);
-    b.setAttribute("aria-pressed",String(elegida));
+    b.setAttribute("aria-expanded",String(elegida));
   });
+
+  if(!tablaVisible)return;
 
   $("tituloTabla").textContent=activa==="recibo"
     ?TITULO_RECIBO:
@@ -1229,16 +1387,11 @@ function mostrar(){
   $("buscar").value=tablas[activa].busqueda;
   $("fila").value=CONFIG[activa].fila;
   $("fila").disabled=activa==="produccion"||ocupado;
-
-  encabezado();
-  mostrarFilas();
+  encabezado();mostrarFilas();
 }
 
 function cargarLibro(origen,bytes){
-  const libro=XLSX.read(bytes,{
-    type:"array",cellDates:true
-  });
-
+  const libro=XLSX.read(bytes,{type:"array",cellDates:true});
   const lectura=new Date().toISOString();
   libros[origen]={libro,lectura};
 
@@ -1263,45 +1416,27 @@ function errorOrigen(origen,mensaje){
 
 async function descargar(origen){
   const control=new AbortController();
-  const timer=setTimeout(
-    ()=>control.abort(),90000
-  );
+  const timer=setTimeout(()=>control.abort(),90000);
 
   try{
     const r=await fetch(URLS[origen],{
-      mode:"cors",
-      cache:"no-store",
-      credentials:"omit",
-      signal:control.signal
+      mode:"cors",cache:"no-store",
+      credentials:"omit",signal:control.signal
     });
 
-    if(!r.ok){
-      throw new Error(
-        "Dropbox respondió HTTP "+r.status+"."
-      );
-    }
+    if(!r.ok)throw new Error("Dropbox respondió HTTP "+r.status+".");
 
-    const tipo=(
-      r.headers.get("Content-Type")||""
-    ).toLowerCase();
-
-    if(
-      tipo.includes("text/html")||
-      tipo.includes("application/json")
-    ){
+    const tipo=(r.headers.get("Content-Type")||"").toLowerCase();
+    if(tipo.includes("text/html")||tipo.includes("application/json")){
       throw new Error("El enlace no devolvió un Excel.");
     }
 
     const bytes=await r.arrayBuffer();
-
-    if(!bytes.byteLength){
-      throw new Error("El archivo está vacío.");
-    }
+    if(!bytes.byteLength)throw new Error("El archivo está vacío.");
 
     cargarLibro(origen,bytes);
   }catch(e){
-    errorOrigen(
-      origen,
+    errorOrigen(origen,
       e.name==="AbortError"
         ?"La descarga superó los 90 segundos.":
       e instanceof TypeError
@@ -1310,7 +1445,7 @@ async function descargar(origen){
     );
   }finally{
     clearTimeout(timer);
-    tarjetas();
+    actualizarDashboard();
     mostrar();
   }
 }
@@ -1327,41 +1462,42 @@ async function actualizar(){
   if(ocupado)return;
 
   if(typeof XLSX==="undefined"){
-    const mensaje=
-      "No se cargó el lector Excel. Revisá la conexión y recargá.";
-
+    const mensaje="No se cargó el lector Excel. Revisá la conexión y recargá.";
     errorOrigen("produccion",mensaje);
     errorOrigen("recibo",mensaje);
-    tarjetas();
-    mostrar();
+    actualizarDashboard();mostrar();
     return;
   }
 
   bloquear(true);
 
   for(const t of Object.values(tablas)){
-    t.cargando=true;
-    t.error="";
+    t.cargando=true;t.error="";
   }
 
-  tarjetas();
-  mostrar();
+  actualizarDashboard();mostrar();
 
   try{
     await Promise.allSettled([
-      descargar("produccion"),
-      descargar("recibo")
+      descargar("produccion"),descargar("recibo")
     ]);
   }finally{
     bloquear(false);
-    tarjetas();
-    mostrar();
+    actualizarDashboard();mostrar();
   }
 }
 
 document.querySelectorAll("[data-tab]").forEach(b=>{
   b.addEventListener("click",()=>{
-    activa=b.dataset.tab;
+    const seleccion=b.dataset.tab;
+
+    if(tablaVisible&&activa===seleccion){
+      tablaVisible=false;
+    }else{
+      activa=seleccion;
+      tablaVisible=true;
+    }
+
     mostrar();
   });
 });
@@ -1370,43 +1506,34 @@ $("buscar").addEventListener("input",()=>{
   tablas[activa].busqueda=$("buscar").value;
   tablas[activa].pagina=1;
   mostrarFilas();
+  actualizarDashboard();
 });
 
 $("quitar").addEventListener("click",()=>{
   for(const t of Object.values(tablas)){
     t.busqueda="";
     t.filtros=t.columnas.map(()=>"");
-    t.orden=null;
-    t.direccion=1;
-    t.pagina=1;
+    t.orden=null;t.direccion=1;t.pagina=1;
   }
-  mostrar();
+  mostrar();actualizarDashboard();
 });
 
 $("limite").addEventListener("change",()=>{
-  tablas[activa].pagina=1;
-  mostrarFilas();
+  tablas[activa].pagina=1;mostrarFilas();
 });
-
 $("anterior").addEventListener("click",()=>{
-  tablas[activa].pagina--;
-  mostrarFilas();
+  tablas[activa].pagina--;mostrarFilas();
 });
-
 $("siguiente").addEventListener("click",()=>{
-  tablas[activa].pagina++;
-  mostrarFilas();
+  tablas[activa].pagina++;mostrarFilas();
 });
 
 $("fila").addEventListener("change",()=>{
   if(activa==="produccion"||ocupado)return;
-
-  const c=CONFIG[activa];
-  const n=Number($("fila").value);
+  const c=CONFIG[activa],n=Number($("fila").value);
 
   if(!Number.isInteger(n)||n<1||n>100){
-    $("fila").value=c.fila;
-    return;
+    $("fila").value=c.fila;return;
   }
 
   const anterior=c.fila;
@@ -1424,15 +1551,11 @@ $("fila").addEventListener("change",()=>{
     }
   }
 
-  tarjetas();
-  mostrar();
+  actualizarDashboard();mostrar();
 });
 
 $("actualizar").addEventListener("click",actualizar);
-
-$("cerrarNota").addEventListener("click",()=>{
-  $("modalNota").close();
-});
+$("cerrarNota").addEventListener("click",()=>$("modalNota").close());
 
 $("tarjetaDescarte").addEventListener("click",()=>{
   mostrarDetalleDescarte();
