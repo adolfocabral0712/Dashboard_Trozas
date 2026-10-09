@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "dashboardtrozas",
+  "name": "produccion-las-acacias",
   "main": "src/index.js",
   "compatibility_date": "2026-10-09",
   "workers_dev": true,
