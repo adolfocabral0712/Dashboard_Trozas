@@ -5,177 +5,54 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Producción Las Acacias</title>
 <style>
-:root{
-  --verde:#19564b;
-  --fondo:#f2f5f7;
-  --borde:#dbe4e8;
-  --texto:#273c49;
-}
+:root{--verde:#19564b;--fondo:#f2f5f7;--borde:#dbe4e8;--texto:#273c49}
 *{box-sizing:border-box}
-body{
-  margin:0;
-  background:var(--fondo);
-  color:var(--texto);
-  font-family:Arial,sans-serif;
-}
+body{margin:0;background:var(--fondo);color:var(--texto);font-family:Arial,sans-serif}
 main{max-width:1600px;margin:auto;padding:24px}
-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:15px;
-  flex-wrap:wrap;
-  margin-bottom:20px;
-}
+header{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin-bottom:20px}
 h1{color:var(--verde);margin:0 0 8px;font-size:26px}
 .subtitulo{margin:0;color:#647582}
 button,input,select{font:inherit}
-button{
-  padding:10px 15px;
-  border:1px solid var(--borde);
-  border-radius:8px;
-  background:white;
-  cursor:pointer;
-  color:var(--texto);
-}
+button{padding:10px 15px;border:1px solid var(--borde);border-radius:8px;background:white;cursor:pointer;color:var(--texto)}
 button:hover{background:#edf5f1}
 button:disabled{opacity:.5;cursor:default}
-.primario,.pestanas button.activo{
-  background:var(--verde);
-  border-color:var(--verde);
-  color:white;
-}
-.tarjetas{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:14px;
-  margin-bottom:18px;
-}
-.tarjeta{
-  background:white;
-  border:1px solid var(--borde);
-  padding:16px;
-  border-radius:12px;
-  text-align:center;
-}
+.primario,.pestanas button.activo{background:var(--verde);border-color:var(--verde);color:white}
+.tarjetas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:18px}
+.tarjeta{background:white;border:1px solid var(--borde);padding:16px;border-radius:12px;text-align:center}
 .tarjeta h2{margin:0 0 10px;font-size:15px;color:var(--verde)}
 .numero{font-size:28px;font-weight:bold;margin-bottom:8px}
-.estado{
-  font-size:12px;
-  line-height:1.5;
-  color:#647582;
-  overflow-wrap:anywhere;
-}
+.estado{font-size:12px;line-height:1.5;color:#647582;overflow-wrap:anywhere}
 .error{color:#b02e2e}
-.archivos,.panel{
-  background:white;
-  border:1px solid var(--borde);
-  border-radius:12px;
-}
+.archivos,.panel{background:white;border:1px solid var(--borde);border-radius:12px}
 .archivos{padding:16px;margin-bottom:18px}
 .archivos summary{cursor:pointer;color:var(--verde);font-weight:bold}
 .archivos p{font-size:13px;line-height:1.6}
 .cargas{display:flex;gap:20px;flex-wrap:wrap}
-.cargas label{
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-  font-size:13px;
-  max-width:100%;
-}
+.cargas label{display:flex;flex-direction:column;gap:8px;font-size:13px;max-width:100%}
 .cargas input{max-width:100%}
 .panel{overflow:hidden}
-.pestanas,.controles{
-  display:flex;
-  gap:10px;
-  padding:16px;
-  flex-wrap:wrap;
-  align-items:center;
-}
+.pestanas,.controles{display:flex;gap:10px;padding:16px;flex-wrap:wrap;align-items:center}
 .pestanas{border-bottom:1px solid var(--borde)}
-.titulo-tabla{
-  margin:0;
-  padding:18px 16px 0;
-  text-align:center;
-  color:var(--verde);
-  font-size:20px;
-  overflow-wrap:anywhere;
-}
-input,select{
-  padding:9px;
-  border:1px solid var(--borde);
-  border-radius:6px;
-  background:white;
-  color:var(--texto);
-}
+.titulo-tabla{margin:0;padding:18px 16px 0;text-align:center;color:var(--verde);font-size:20px;overflow-wrap:anywhere}
+input,select{padding:9px;border:1px solid var(--borde);border-radius:6px;background:white;color:var(--texto)}
 #buscar{flex:1;min-width:190px}
-.controles label{
-  font-size:13px;
-  display:flex;
-  align-items:center;
-  gap:7px;
-}
+.controles label{font-size:13px;display:flex;align-items:center;gap:7px}
 #fila{width:70px}
-#resumen{
-  padding:0 16px 14px;
-  color:#647582;
-  font-size:13px;
-  line-height:1.6;
-  text-align:center;
-}
+#resumen{padding:0 16px 14px;color:#647582;font-size:13px;line-height:1.6;text-align:center}
 .tabla{overflow:auto;max-height:65vh;border-top:1px solid var(--borde)}
-table{
-  width:100%;
-  border-collapse:separate;
-  border-spacing:0;
-  font-size:12px;
-}
-th,td{
-  text-align:center;
-  padding:10px;
-  min-width:105px;
-  max-width:220px;
-  overflow-wrap:anywhere;
-  border-bottom:1px solid var(--borde);
-}
-th{
-  position:sticky;
-  top:0;
-  z-index:1;
-  background:#edf3f4;
-  vertical-align:top;
-}
-th button{
-  width:100%;
-  border:none;
-  background:transparent;
-  color:var(--verde);
-  font-weight:bold;
-  white-space:normal;
-  padding:4px;
-}
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:12px}
+th,td{text-align:center;padding:10px;min-width:105px;max-width:220px;overflow-wrap:anywhere;border-bottom:1px solid var(--borde)}
+th{position:sticky;top:0;z-index:1;background:#edf3f4;vertical-align:top}
+th button{width:100%;border:none;background:transparent;color:var(--verde);font-weight:bold;white-space:normal;padding:4px}
 th input{width:100%;min-width:85px;margin-top:8px;font-size:11px}
 tbody tr:nth-child(even){background:#f8fafb}
 tbody tr:hover{background:#edf6f0}
-.etiqueta{
-  display:inline-block;
-  padding:5px 9px;
-  border-radius:6px;
-  font-weight:bold;
-}
+.etiqueta{display:inline-block;padding:5px 9px;border-radius:6px;font-weight:bold}
 .rojo{background:#ffe1e1;color:#a62323}
 .verde{background:#dff2e4;color:#24623a}
 .amarillo{background:#fff0b6;color:#765b00}
 #vacio{padding:30px;text-align:center;color:#647582}
-.pie{
-  padding:16px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  flex-wrap:wrap;
-  font-size:13px;
-}
+.pie{padding:16px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-size:13px}
 .navegacion{display:flex;align-items:center;gap:10px}
 .nota{font-size:12px;line-height:1.6;color:#647582}
 @media(max-width:700px){
@@ -246,8 +123,7 @@ tbody tr:hover{background:#edf6f0}
     <h2 id="tituloTabla" class="titulo-tabla">Producción</h2>
 
     <div class="controles">
-      <input id="buscar" type="search"
-        placeholder="Buscar en toda la tabla..."
+      <input id="buscar" type="search" placeholder="Buscar en toda la tabla..."
         aria-label="Buscar en toda la tabla">
       <label>
         Fila de encabezados
@@ -299,7 +175,6 @@ tbody tr:hover{background:#edf6f0}
 "use strict";
 
 const $ = id => document.getElementById(id);
-
 const TITULO_RECIBO = "B3R UPM Las Acacias - Polo Logistico";
 
 const URLS = {
@@ -357,9 +232,7 @@ function idsDelOrigen(origen) {
 }
 
 function claveProducto(valor) {
-  return normalizar(valor)
-    .replace(/,/g,".")
-    .replace(/\s+/g,"");
+  return normalizar(valor).replace(/,/g,".").replace(/\s+/g,"");
 }
 
 const EQUIVALENCIAS = new Map([
@@ -367,6 +240,30 @@ const EQUIVALENCIAS = new Map([
   [claveProducto("Troza 5,80 mts +45"), "VERDE"],
   [claveProducto("Troza 5,80 mts +30 PPL"), "AMARILLO"]
 ]);
+
+// Columnas que se ocultan exclusivamente en Producción.
+const OCULTAS_PRODUCCION = new Set([
+  "CAMIONES CARGADOS",
+  "AMARILLA/ ARBOL",
+  "ROJAS X ARBOL",
+  "VERDE X ARBOL",
+  "Trozas",
+  "% DESCARTE",
+  "Predio"
+].map(claveColumna));
+
+function transformarProduccion(columnas, filas) {
+  const mantener = columnas
+    .map((nombre, indice) =>
+      OCULTAS_PRODUCCION.has(claveColumna(nombre)) ? -1 : indice
+    )
+    .filter(indice => indice >= 0);
+
+  return {
+    columnas: mantener.map(indice => columnas[indice]),
+    filas: filas.map(fila => mantener.map(indice => fila[indice]))
+  };
+}
 
 function clasificarProducto(fila, indicesProducto) {
   const valores = indicesProducto.length
@@ -387,47 +284,36 @@ function clasificarProducto(fila, indicesProducto) {
 
 function transformarRecibo(columnas, filas) {
   const claves = columnas.map(claveColumna);
-
   const nombresProducto = new Set([
-    "producto",
-    "nombreproducto",
-    "descripcionproducto",
-    "productodescripcion",
-    "descripciondelproducto",
-    "tipoproducto"
+    "producto", "nombreproducto", "descripcionproducto",
+    "productodescripcion", "descripciondelproducto", "tipoproducto"
   ]);
 
   const indicesProducto = claves
     .map((clave, indice) => nombresProducto.has(clave) ? indice : -1)
     .filter(indice => indice >= 0);
 
-  // Sacada se conserva. Se ocultan Carga, Cosecha y Origen.
+  // Sacada se conserva.
   const ocultas = new Set(["carga", "cosecha", "origen"]);
-
-  const existentesID = claves
-    .map((clave, indice) => clave === "idproducto" ? indice : -1)
-    .filter(indice => indice >= 0);
 
   const mantener = columnas
     .map((nombre, indice) =>
-      !ocultas.has(claves[indice]) &&
-      !existentesID.includes(indice) ? indice : -1
+      !ocultas.has(claves[indice]) && claves[indice] !== "idproducto"
+        ? indice : -1
     )
     .filter(indice => indice >= 0);
 
   const nuevasColumnas = mantener.map(indice => columnas[indice]);
-
-  const posicionProducto = mantener.findIndex(indice =>
-    indicesProducto.includes(indice)
+  const posicionProducto = mantener.findIndex(
+    indice => indicesProducto.includes(indice)
   );
-
   const posicionID = posicionProducto >= 0 ? posicionProducto + 1 : 0;
+
   nuevasColumnas.splice(posicionID, 0, "ID PRODUCTO");
 
   const nuevasFilas = filas.map(fila => {
-    const clasificacion = clasificarProducto(fila, indicesProducto);
     const nueva = mantener.map(indice => fila[indice]);
-    nueva.splice(posicionID, 0, clasificacion);
+    nueva.splice(posicionID, 0, clasificarProducto(fila, indicesProducto));
     return nueva;
   });
 
@@ -436,7 +322,6 @@ function transformarRecibo(columnas, filas) {
 
 function extraer(id, libro) {
   const config = CONFIG[id];
-
   const nombre = libro.SheetNames.find(
     hoja => normalizar(hoja) === normalizar(config.hoja)
   );
@@ -464,7 +349,6 @@ function extraer(id, libro) {
 
   const encabezados = matriz[0] || [];
   const datos = matriz.slice(1);
-
   const ancho = datos.reduce(
     (maximo, fila) => Math.max(maximo, fila.length),
     encabezados.length
@@ -492,18 +376,23 @@ function extraer(id, libro) {
     .map(fila => indices.map(i => texto(fila[i])))
     .filter(fila => fila.some(valor => valor.trim() !== ""));
 
+  if (id === "produccion") {
+    const resultado = transformarProduccion(columnas, filas);
+    columnas = resultado.columnas;
+    filas = resultado.filas;
+  }
+
   if (id === "recibo") {
-    const transformada = transformarRecibo(columnas, filas);
-    columnas = transformada.columnas;
-    filas = transformada.filas;
+    const resultado = transformarRecibo(columnas, filas);
+    columnas = resultado.columnas;
+    filas = resultado.filas;
   }
 
   const anterior = tablas[id];
   const mismos = JSON.stringify(columnas) === JSON.stringify(anterior.columnas);
 
   return {
-    ...anterior,
-    columnas, filas,
+    ...anterior, columnas, filas,
     filtros:mismos ? anterior.filtros : columnas.map(() => ""),
     orden:mismos ? anterior.orden : null,
     pagina:1, error:"", cargando:false
@@ -514,7 +403,6 @@ function tarjetas() {
   for (const [id, tabla] of Object.entries(tablas)) {
     $("numero-" + id).textContent =
       tabla.lectura ? numero(tabla.filas.length) : "—";
-
     const estado = $("estado-" + id);
     estado.classList.toggle("error", Boolean(tabla.error));
 
@@ -538,7 +426,6 @@ function encabezado() {
   tabla.columnas.forEach((nombre, indice) => {
     const th = document.createElement("th");
     const boton = document.createElement("button");
-
     boton.textContent = nombre +
       (tabla.orden === indice ? (tabla.direccion === 1 ? " ▲" : " ▼") : "");
 
@@ -554,8 +441,7 @@ function encabezado() {
     input.type = "search";
     input.placeholder = "Filtrar...";
     input.value = tabla.filtros[indice] || "";
-    input.setAttribute("aria-label","Filtrar " + nombre);
-
+    input.setAttribute("aria-label", "Filtrar " + nombre);
     input.addEventListener("input", () => {
       tabla.filtros[indice] = input.value;
       tabla.pagina = 1;
@@ -594,16 +480,13 @@ function mostrarFilas() {
   const limite = Number($("limite").value);
   const paginas = Math.max(1, Math.ceil(resultado.length / limite));
   tabla.pagina = Math.min(tabla.pagina, paginas);
-
   const inicio = (tabla.pagina - 1) * limite;
   const fragmento = document.createDocumentFragment();
 
   resultado.slice(inicio, inicio + limite).forEach(fila => {
     const tr = document.createElement("tr");
-
     fila.forEach((valor, indice) => {
       const td = document.createElement("td");
-
       if (activa === "recibo" && tabla.columnas[indice] === "ID PRODUCTO" &&
           ["ROJO","VERDE","AMARILLO"].includes(valor)) {
         const etiqueta = document.createElement("span");
@@ -613,15 +496,12 @@ function mostrarFilas() {
       } else {
         td.textContent = valor;
       }
-
       tr.append(td);
     });
-
     fragmento.append(tr);
   });
 
   $("cuerpo").replaceChildren(fragmento);
-
   $("resumen").textContent =
     "Hoja: " + CONFIG[activa].hoja +
     " · Encabezados: fila " + CONFIG[activa].fila +
@@ -632,13 +512,11 @@ function mostrarFilas() {
   $("pagina").textContent = "Página " + tabla.pagina + " de " + paginas;
   $("anterior").disabled = tabla.pagina <= 1;
   $("siguiente").disabled = tabla.pagina >= paginas;
-
   $("vacio").hidden = resultado.length > 0;
   $("vacio").textContent = tabla.cargando && !tabla.lectura
     ? "Cargando datos..."
     : tabla.error && !tabla.lectura
-      ? tabla.error
-      : "No hay registros para esta selección.";
+      ? tabla.error : "No hay registros para esta selección.";
 }
 
 function mostrar() {
@@ -655,15 +533,14 @@ function mostrar() {
   $("buscar").value = tablas[activa].busqueda;
   $("fila").value = CONFIG[activa].fila;
   $("fila").disabled = activa === "produccion" || ocupado;
-
   encabezado();
   mostrarFilas();
 }
 
 function cargarLibro(origen, bytes, fuente) {
-  const libro = XLSX.read(bytes, { type:"array", cellDates:false });
+  const libro = XLSX.read(bytes, {type:"array", cellDates:false});
   const lectura = new Date().toISOString();
-  libros[origen] = { libro, fuente, lectura };
+  libros[origen] = {libro, fuente, lectura};
 
   for (const id of idsDelOrigen(origen)) {
     try {
@@ -706,14 +583,12 @@ async function descargar(origen) {
     }
 
     const tipo = (respuesta.headers.get("Content-Type") || "").toLowerCase();
-
     if (tipo.includes("text/html") || tipo.includes("application/json")) {
       throw new Error("El enlace no devolvió un Excel.");
     }
 
     const bytes = await respuesta.arrayBuffer();
     if (!bytes.byteLength) throw new Error("El archivo está vacío.");
-
     cargarLibro(origen, bytes, "Dropbox");
   } catch (error) {
     const mensaje = error.name === "AbortError"
@@ -721,7 +596,6 @@ async function descargar(origen) {
       : error instanceof TypeError
         ? "No se pudo leer Dropbox por un bloqueo del navegador o un problema de conexión."
         : error.message;
-
     errorOrigen(origen, mensaje + " Podés seleccionar el Excel desde la PC.");
     $("archivos").open = true;
   } finally {
@@ -742,7 +616,6 @@ function bloquear(valor) {
 
 async function actualizar() {
   if (ocupado) return;
-
   try {
     comprobarLector();
   } catch (error) {
@@ -758,7 +631,6 @@ async function actualizar() {
     tabla.cargando = true;
     tabla.error = "";
   }
-
   tarjetas();
   mostrar();
 
@@ -777,13 +649,12 @@ async function actualizar() {
 async function seleccionarArchivo(origen, input) {
   const archivo = input.files[0];
   if (!archivo || ocupado) return;
-
   bloquear(true);
+
   for (const id of idsDelOrigen(origen)) {
     tablas[id].cargando = true;
     tablas[id].error = "";
   }
-
   tarjetas();
 
   try {
@@ -840,7 +711,6 @@ $("siguiente").addEventListener("click", () => {
 
 $("fila").addEventListener("change", () => {
   if (activa === "produccion" || ocupado) return;
-
   const config = CONFIG[activa];
   const nuevaFila = Number($("fila").value);
 
@@ -864,7 +734,6 @@ $("fila").addEventListener("change", () => {
       tablas[activa].error = error.message;
     }
   }
-
   tarjetas();
   mostrar();
 });
