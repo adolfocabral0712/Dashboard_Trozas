@@ -18,8 +18,10 @@ button:hover{background:#edf5f1}
 button:disabled{opacity:.5;cursor:default}
 .primario,.pestanas button.activo{background:var(--verde);border-color:var(--verde);color:white}
 .tarjetas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:18px}
+.tarjetas.stock{grid-template-columns:repeat(4,minmax(0,1fr))}
 .tarjeta{background:white;border:1px solid var(--borde);padding:16px;border-radius:12px;text-align:center}
 .tarjeta h2{margin:0 0 10px;font-size:15px;color:var(--verde)}
+.tarjeta.produccion{display:flex;flex-direction:column;justify-content:center}
 .numero{font-size:28px;font-weight:bold;margin-bottom:6px}
 .detalle{font-size:12px;color:#647582;margin-bottom:8px;line-height:1.6;overflow-wrap:anywhere}
 .estado{font-size:12px;line-height:1.5;color:#647582;overflow-wrap:anywhere}
@@ -30,14 +32,9 @@ button:disabled{opacity:.5;cursor:default}
 .stock-amarillo h2{color:#806300}
 .stock-verde{border-top:4px solid #429368}
 .stock-verde h2{color:#24623a}
-.archivos,.panel{background:white;border:1px solid var(--borde);border-radius:12px}
-.archivos{padding:16px;margin-bottom:18px}
-.archivos summary{cursor:pointer;color:var(--verde);font-weight:bold}
-.archivos p{font-size:13px;line-height:1.6}
-.cargas{display:flex;gap:20px;flex-wrap:wrap}
-.cargas label{display:flex;flex-direction:column;gap:8px;font-size:13px;max-width:100%}
-.cargas input{max-width:100%}
-.panel{overflow:hidden}
+.stock-monte{border-top:4px solid #497ba0}
+.stock-monte h2{color:#315f80}
+.panel{background:white;border:1px solid var(--borde);border-radius:12px;overflow:hidden}
 .pestanas,.controles{display:flex;gap:10px;padding:16px;flex-wrap:wrap;align-items:center}
 .pestanas{border-bottom:1px solid var(--borde)}
 .titulo-tabla{margin:0;padding:18px 16px 0;text-align:center;color:var(--verde);font-size:20px;overflow-wrap:anywhere}
@@ -71,11 +68,14 @@ dialog{border:1px solid var(--borde);border-radius:14px;padding:24px;width:min(6
 dialog::backdrop{background:rgba(20,40,45,.45)}
 dialog h2{margin-top:0;color:var(--verde)}
 #notaCompleta{white-space:pre-wrap;line-height:1.7;overflow-wrap:anywhere;margin-bottom:20px}
+@media(max-width:1000px){
+  .tarjetas.stock{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
 @media(max-width:700px){
   main{padding:12px}h1{font-size:22px}
-  .tarjetas{grid-template-columns:1fr}.tarjeta{padding:12px}
-  .numero{font-size:23px}#buscar{flex-basis:100%}
-  .titulo-tabla{font-size:17px}
+  .tarjetas,.tarjetas.stock{grid-template-columns:1fr}
+  .tarjeta{padding:12px}.numero{font-size:23px}
+  #buscar{flex-basis:100%}.titulo-tabla{font-size:17px}
   th.observaciones,td.observaciones{min-width:230px}
 }
 </style>
@@ -91,11 +91,9 @@ dialog h2{margin-top:0;color:var(--verde)}
 </header>
 
 <section class="tarjetas">
-  <article class="tarjeta">
+  <article class="tarjeta produccion">
     <h2>PRODUCCIÓN</h2>
     <div id="numero-produccion" class="numero">—</div>
-    <div id="detalle-produccion" class="detalle">Total de las seis columnas de producción</div>
-    <div id="estado-produccion" class="estado">Pendiente</div>
   </article>
   <article class="tarjeta">
     <h2>INSUMOS</h2>
@@ -111,7 +109,7 @@ dialog h2{margin-top:0;color:var(--verde)}
   </article>
 </section>
 
-<section class="tarjetas" aria-label="Stocks por producto">
+<section class="tarjetas stock" aria-label="Stocks">
   <article class="tarjeta stock-rojo">
     <h2>STOCK ROJO</h2>
     <div id="stock-rojo" class="numero">—</div>
@@ -127,24 +125,12 @@ dialog h2{margin-top:0;color:var(--verde)}
     <div id="stock-verde" class="numero">—</div>
     <div id="detalle-stock-verde" class="detalle">Pendiente de lectura</div>
   </article>
+  <article class="tarjeta stock-monte">
+    <h2>TROZAS STOCK MONTE</h2>
+    <div id="stock-monte" class="numero">—</div>
+    <div id="detalle-stock-monte" class="detalle">Pendiente de lectura</div>
+  </article>
 </section>
-
-<details id="archivos" class="archivos">
-  <summary>Seleccionar archivos desde la PC</summary>
-  <p>
-    Si Dropbox bloquea la lectura directa, seleccioná los Excel.
-    El libro de Producción carga también Insumos.
-    Los archivos se leen en tu navegador.
-  </p>
-  <div class="cargas">
-    <label>PRODUCCION-LAS-ACACIAS.xlsx
-      <input id="archivo-produccion" type="file" accept=".xlsx">
-    </label>
-    <label>aENVIO-DE-CORREOS.xlsb
-      <input id="archivo-recibo" type="file" accept=".xlsb">
-    </label>
-  </div>
-</details>
 
 <section class="panel">
   <nav class="pestanas" aria-label="Seleccionar tabla">
@@ -154,8 +140,7 @@ dialog h2{margin-top:0;color:var(--verde)}
   </nav>
   <h2 id="tituloTabla" class="titulo-tabla">Producción</h2>
   <div class="controles">
-    <input id="buscar" type="search"
-      placeholder="Buscar en toda la tabla..." aria-label="Buscar">
+    <input id="buscar" type="search" placeholder="Buscar en toda la tabla..." aria-label="Buscar">
     <label>Fila de encabezados
       <input id="fila" type="number" min="1" max="100" value="3">
     </label>
@@ -171,10 +156,7 @@ dialog h2{margin-top:0;color:var(--verde)}
   </div>
   <div id="resumen" aria-live="polite"></div>
   <div class="tabla">
-    <table>
-      <thead id="encabezado"></thead>
-      <tbody id="cuerpo"></tbody>
-    </table>
+    <table><thead id="encabezado"></thead><tbody id="cuerpo"></tbody></table>
     <div id="vacio">Cargando datos...</div>
   </div>
   <div class="pie">
@@ -188,11 +170,10 @@ dialog h2{margin-top:0;color:var(--verde)}
 </section>
 
 <p class="nota">
-  Producción: encabezados en fila 3. Insumos y Recibo: fila ajustable.
-  La hora de lectura no representa la modificación del Excel.
-  Las fórmulas muestran los resultados guardados.
-  La tarjeta Producción responde a los filtros de su tabla.
-  Los stocks utilizan todos los registros cargados de Producción y Recibo.
+  La tabla Producción excluye las filas sin FECHA.
+  Su tarjeta responde a los filtros de la tabla.
+  Las tarjetas de stock y Trozas Stock Monte utilizan los totales completos.
+  Las fórmulas de Excel muestran los resultados guardados.
 </p>
 </main>
 
@@ -226,10 +207,11 @@ const GRUPOS_PRODUCCION={
   VERDE:["Verde-STD+45","Verde Basal +55"]
 };
 
-const SUMAR_PRODUCCION=Object.values(GRUPOS_PRODUCCION).flat();
 const COLORES=["ROJO","AMARILLO","VERDE"];
-const libros={},tablas={};
+const tablas={};
 let activa="produccion",ocupado=false;
+let libroRecibo=null;
+let lecturaRecibo="";
 
 function normalizar(v){
   return String(v??"").normalize("NFD")
@@ -257,11 +239,9 @@ function idsDelOrigen(o){
 function claveProducto(v){
   return normalizar(v).replace(/,/g,".").replace(/\s+/g,"");
 }
-function esFecha(nombre){
-  return claveColumna(nombre).includes("fecha");
-}
-function esObservaciones(nombre){
-  return ["observaciones","observacion"].includes(claveColumna(nombre));
+function esFecha(n){return claveColumna(n).includes("fecha")}
+function esObservaciones(n){
+  return ["observaciones","observacion"].includes(claveColumna(n));
 }
 
 const OCULTAS_PRODUCCION=new Set([
@@ -275,19 +255,18 @@ const EQUIVALENCIAS=new Map([
   [claveProducto("Troza 5,80 mts +30 PPL"),"AMARILLO"]
 ]);
 
+const libros={};
+
 for(const id of Object.keys(CONFIG)){
   tablas[id]={
     columnas:[],filas:[],filtros:[],busqueda:"",
     orden:null,direccion:1,pagina:1,lectura:"",
-    fuente:"",error:"",cargando:false,faltantes:[],
+    error:"",cargando:false,faltantes:[],
     faltantesColor:{ROJO:[],AMARILLO:[],VERDE:[]},
-    avisoCantidad:"",
-    noClasificados:0
+    avisoCantidad:"",noClasificados:0
   };
 }
 
-// Los números originales de Excel se usan directamente.
-// Para números guardados como texto se admite coma decimal.
 function numeroCelda(v){
   if(typeof v==="number")return Number.isFinite(v)?v:NaN;
   let s=texto(v).trim().replace(/\s/g,"");
@@ -300,7 +279,6 @@ function numeroCelda(v){
 function fechaTexto(v){
   if(v==null||v==="")return "";
   const completar=n=>String(n).padStart(2,"0");
-
   if(v instanceof Date&&!Number.isNaN(v.getTime())){
     return completar(v.getUTCDate())+"/"+
       completar(v.getUTCMonth()+1)+"/"+v.getUTCFullYear();
@@ -309,7 +287,6 @@ function fechaTexto(v){
     const d=XLSX.SSF.parse_date_code(v);
     if(d)return completar(d.d)+"/"+completar(d.m)+"/"+d.y;
   }
-
   const s=texto(v).trim();
   let m=s.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})(?:[ T].*)?$/);
   if(m)return completar(m[3])+"/"+completar(m[2])+"/"+m[1];
@@ -321,12 +298,10 @@ function fechaTexto(v){
 function clasificar(fila,indices){
   const valores=indices.length?indices.map(i=>fila[i]):fila;
   const encontrados=new Set();
-
   for(const v of valores){
-    const color=EQUIVALENCIAS.get(claveProducto(v));
-    if(color)encontrados.add(color);
+    const c=EQUIVALENCIAS.get(claveProducto(v));
+    if(c)encontrados.add(c);
   }
-
   return encontrados.size===1?[...encontrados][0]:
     encontrados.size>1?"REVISAR":"SIN CLASIFICAR";
 }
@@ -336,18 +311,15 @@ function extraer(id,libro){
   const nombre=libro.SheetNames.find(
     n=>normalizar(n)===normalizar(config.hoja)
   );
-
   if(!nombre){
     throw new Error('No se encontró "'+config.hoja+
       '". Hojas: '+libro.SheetNames.join(", "));
   }
-
   const hoja=libro.Sheets[nombre];
   if(!hoja["!ref"])throw new Error("La hoja está vacía.");
 
   const rango=XLSX.utils.decode_range(hoja["!ref"]);
   rango.s.r=config.fila-1;
-
   if(rango.s.r>rango.e.r){
     throw new Error("La fila elegida supera el contenido.");
   }
@@ -357,9 +329,7 @@ function extraer(id,libro){
   });
   const cabecera=matriz[0]||[];
   const datos=matriz.slice(1);
-  const ancho=datos.reduce(
-    (n,f)=>Math.max(n,f.length),cabecera.length
-  );
+  const ancho=datos.reduce((n,f)=>Math.max(n,f.length),cabecera.length);
 
   const indices=[];
   for(let i=0;i<ancho;i++){
@@ -378,24 +348,37 @@ function extraer(id,libro){
     return veces===1?base:base+" ("+veces+")";
   });
 
-  const originales=datos
+  let originales=datos
     .map(f=>indices.map(i=>f[i]??""))
     .filter(f=>f.some(v=>texto(v).trim()!==""));
 
+  // Excluir filas de Producción sin contenido en FECHA.
+  if(id==="produccion"){
+    const fechas=columnas
+      .map((c,i)=>claveColumna(c)==="fecha"?i:-1)
+      .filter(i=>i>=0);
+
+    if(fechas.length!==1){
+      throw new Error("Se necesita una única columna FECHA en Producción.");
+    }
+
+    const iFecha=fechas[0];
+    originales=originales.filter(f=>{
+      const v=f[iFecha];
+      return v!=null&&texto(v).trim()!=="";
+    });
+  }
+
   const faltantesColor={ROJO:[],AMARILLO:[],VERDE:[]};
-  let faltantes=[];
-  let avisoCantidad="";
-  let noClasificados=0;
+  let faltantes=[],avisoCantidad="",noClasificados=0;
 
   let filas=originales.map(f=>({
     valores:f.map((v,i)=>
-      esFecha(columnas[i])||v instanceof Date
-        ?fechaTexto(v):texto(v)
+      esFecha(columnas[i])||v instanceof Date?fechaTexto(v):texto(v)
     ),
     total:0,
     produccion:{ROJO:0,AMARILLO:0,VERDE:0},
-    color:"",
-    cantidad:0
+    color:"",cantidad:0
   }));
 
   if(id==="produccion"){
@@ -420,30 +403,22 @@ function extraer(id,libro){
     filas.forEach((fila,n)=>{
       for(const color of COLORES){
         let suma=0;
-
         for(const i of indicesPorColor[color]){
           if(i<0)continue;
           const valor=numeroCelda(originales[n][i]);
-
           if(Number.isNaN(valor)){
             const aviso="Valor no numérico en "+columnas[i];
             if(!faltantesColor[color].includes(aviso)){
               faltantesColor[color].push(aviso);
             }
-          }else{
-            suma+=valor;
-          }
+          }else suma+=valor;
         }
-
         fila.produccion[color]=suma;
       }
-
-      fila.total=COLORES.reduce(
-        (s,color)=>s+fila.produccion[color],0
-      );
+      fila.total=COLORES.reduce((s,c)=>s+fila.produccion[c],0);
     });
 
-    faltantes=COLORES.flatMap(color=>faltantesColor[color]);
+    faltantes=COLORES.flatMap(c=>faltantesColor[c]);
 
     const mantener=columnas
       .map((c,i)=>OCULTAS_PRODUCCION.has(claveColumna(c))?-1:i)
@@ -460,11 +435,9 @@ function extraer(id,libro){
       "producto","nombreproducto","descripcionproducto",
       "productodescripcion","descripciondelproducto","tipoproducto"
     ]);
-
     const producto=columnas
       .map((c,i)=>nombresProducto.has(claveColumna(c))?i:-1)
       .filter(i=>i>=0);
-
     const cantidades=columnas
       .map((c,i)=>claveColumna(c)==="cantidad"?i:-1)
       .filter(i=>i>=0);
@@ -477,26 +450,19 @@ function extraer(id,libro){
 
     filas.forEach((fila,n)=>{
       fila.color=clasificar(fila.valores,producto);
-
       if(!COLORES.includes(fila.color))noClasificados++;
-
       if(cantidades.length===1){
         const cantidad=numeroCelda(originales[n][cantidades[0]]);
-
         if(Number.isNaN(cantidad)){
           avisoCantidad="Hay valores no numéricos en CANTIDAD de Recibo.";
-        }else{
-          fila.cantidad=cantidad;
-        }
+        }else fila.cantidad=cantidad;
       }
     });
 
-    // Sacada permanece visible.
     const ocultas=new Set(["carga","cosecha","origen","idproducto"]);
     const mantener=columnas
       .map((c,i)=>ocultas.has(claveColumna(c))?-1:i)
       .filter(i=>i>=0);
-
     const posicion=mantener.findIndex(i=>producto.includes(i));
     const insertar=posicion>=0?posicion+1:0;
 
@@ -511,8 +477,7 @@ function extraer(id,libro){
   }
 
   const anterior=tablas[id];
-  const mismos=JSON.stringify(columnas)===
-    JSON.stringify(anterior.columnas);
+  const mismos=JSON.stringify(columnas)===JSON.stringify(anterior.columnas);
 
   return {
     ...anterior,columnas,filas,faltantes,faltantesColor,
@@ -524,9 +489,7 @@ function extraer(id,libro){
 }
 
 function filtradas(id){
-  const t=tablas[id];
-  const buscar=normalizar(t.busqueda);
-
+  const t=tablas[id],buscar=normalizar(t.busqueda);
   return t.filas.filter(f=>
     (!buscar||f.valores.some(v=>normalizar(v).includes(buscar)))&&
     t.filtros.every((v,i)=>
@@ -537,176 +500,138 @@ function filtradas(id){
 
 function tarjetaProduccion(){
   const t=tablas.produccion;
-  if(!t.lectura){
-    $("numero-produccion").textContent="—";
-    return;
-  }
+  const elemento=$("numero-produccion");
+  const problema=t.error||
+    (t.faltantes.length?"Revisar: "+t.faltantes.join(", "):"");
 
-  const seleccion=filtradas("produccion");
-  const suma=seleccion.reduce((s,f)=>s+f.total,0);
+  elemento.textContent=!t.lectura||problema
+    ?"—":numero(filtradas("produccion").reduce((s,f)=>s+f.total,0));
+  elemento.title=problema;
+  elemento.classList.toggle("error",Boolean(problema));
+}
 
-  $("numero-produccion").textContent=
-    t.faltantes.length?"—":numero(suma);
-
-  $("detalle-produccion").textContent=t.faltantes.length
-    ?"Revisar: "+t.faltantes.join(", ")
-    :"Total producción · "+numero(seleccion.length)+
-      " de "+numero(t.filas.length)+" registros";
-
-  $("detalle-produccion").classList.toggle(
-    "error",t.faltantes.length>0
-  );
+function ponerStock(id,valor,detalle,error=false){
+  const elemento=$("stock-"+id);
+  elemento.textContent=valor===null?"—":numero(valor);
+  elemento.classList.toggle("negativo",valor!==null&&valor<0);
+  $("detalle-stock-"+id).textContent=detalle;
+  $("detalle-stock-"+id).classList.toggle("error",error);
 }
 
 function tarjetasStock(){
-  const p=tablas.produccion;
-  const r=tablas.recibo;
+  const p=tablas.produccion,r=tablas.recibo;
+  const ids=["rojo","amarillo","verde","monte"];
 
+  if(p.cargando||r.cargando){
+    ids.forEach(id=>ponerStock(id,null,"Actualizando datos..."));
+    return;
+  }
+  if(!p.lectura||!r.lectura){
+    ids.forEach(id=>ponerStock(id,null,"Se necesita cargar Producción y Recibo."));
+    return;
+  }
+  if(p.error||r.error){
+    ids.forEach(id=>ponerStock(id,null,"Revisar la lectura de Producción y Recibo.",true));
+    return;
+  }
+
+  const stocks={};
   for(const color of COLORES){
-    const id=color.toLowerCase();
-    const valor=$("stock-"+id);
-    const detalle=$("detalle-stock-"+id);
-
-    valor.classList.remove("negativo");
-    detalle.classList.remove("error");
-
-    if(p.cargando||r.cargando){
-      valor.textContent="—";
-      detalle.textContent="Actualizando datos...";
-      continue;
-    }
-
-    if(!p.lectura||!r.lectura){
-      valor.textContent="—";
-      detalle.textContent="Se necesita cargar Producción y Recibo.";
-      continue;
-    }
-
-    // Evitar presentar como actual un stock con una lectura fallida.
-    if(p.error||r.error){
-      valor.textContent="—";
-      detalle.textContent="Revisar la lectura de Producción y Recibo.";
-      detalle.classList.add("error");
-      continue;
-    }
-
     const problemas=[
       ...p.faltantesColor[color],
       ...(r.avisoCantidad?[r.avisoCantidad]:[])
     ];
 
     if(problemas.length){
-      valor.textContent="—";
-      detalle.textContent="Revisar: "+problemas.join(", ");
-      detalle.classList.add("error");
+      ponerStock(color.toLowerCase(),null,"Revisar: "+problemas.join(", "),true);
       continue;
     }
 
-    const producido=p.filas.reduce(
-      (s,f)=>s+f.produccion[color],0
-    );
-    const recibido=r.filas.reduce(
-      (s,f)=>s+(f.color===color?f.cantidad:0),0
-    );
-    const stock=producido-recibido;
+    const producido=p.filas.reduce((s,f)=>s+f.produccion[color],0);
+    const recibido=r.filas.reduce((s,f)=>s+(f.color===color?f.cantidad:0),0);
+    stocks[color]=producido-recibido;
 
-    valor.textContent=numero(stock);
-    valor.classList.toggle("negativo",stock<0);
-
-    detalle.textContent=
-      "Producción: "+numero(producido)+
-      " − Recibido: "+numero(recibido)+
+    ponerStock(
+      color.toLowerCase(),stocks[color],
+      "Producción: "+numero(producido)+" − Recibido: "+numero(recibido)+
       (r.noClasificados
-        ?" · "+numero(r.noClasificados)+
-          " registros de Recibo sin clasificación válida, excluidos."
-        :"");
-
-    detalle.classList.toggle("error",r.noClasificados>0);
+        ?" · "+numero(r.noClasificados)+" registros sin clasificación válida, excluidos."
+        :""),
+      r.noClasificados>0
+    );
   }
+
+  if(COLORES.some(c=>stocks[c]===undefined)){
+    ponerStock("monte",null,"Se necesita calcular correctamente los tres stocks.",true);
+    return;
+  }
+
+  const produccion=p.filas.reduce((s,f)=>s+f.total,0);
+  const stockMonte=produccion-stocks.ROJO-stocks.AMARILLO-stocks.VERDE;
+
+  ponerStock(
+    "monte",stockMonte,
+    "Producción "+numero(produccion)+
+    " − Rojo "+numero(stocks.ROJO)+
+    " − Amarillo "+numero(stocks.AMARILLO)+
+    " − Verde "+numero(stocks.VERDE)
+  );
 }
 
 function tarjetas(){
   tarjetaProduccion();
   tarjetasStock();
 
-  for(const [id,t]of Object.entries(tablas)){
-    if(id!=="produccion"){
-      $("numero-"+id).textContent=
-        t.lectura?numero(t.filas.length):"—";
-    }
-
+  for(const id of ["insumos","recibo"]){
+    const t=tablas[id];
+    $("numero-"+id).textContent=t.lectura?numero(t.filas.length):"—";
     const e=$("estado-"+id);
     e.classList.toggle("error",Boolean(t.error));
     e.textContent=t.cargando?"Cargando archivo...":
-      t.error?t.error+
-        (t.lectura?" · Datos anteriores: "+hora(t.lectura):""):
-      t.lectura?t.fuente+" · Lectura: "+hora(t.lectura):
-      "Pendiente";
+      t.error?t.error+(t.lectura?" · Datos anteriores: "+hora(t.lectura):""):
+      t.lectura?"Dropbox · Lectura: "+hora(t.lectura):"Pendiente";
   }
 }
 
 function encabezado(){
-  const t=tablas[activa];
-  const tr=document.createElement("tr");
-
+  const t=tablas[activa],tr=document.createElement("tr");
   t.columnas.forEach((nombre,i)=>{
     const th=document.createElement("th");
     if(esObservaciones(nombre))th.className="observaciones";
-
     const b=document.createElement("button");
-    b.textContent=nombre+
-      (t.orden===i?(t.direccion===1?" ▲":" ▼"):"");
-
+    b.textContent=nombre+(t.orden===i?(t.direccion===1?" ▲":" ▼"):"");
     b.addEventListener("click",()=>{
       t.direccion=t.orden===i?-t.direccion:1;
-      t.orden=i;
-      t.pagina=1;
-      encabezado();
-      mostrarFilas();
+      t.orden=i;t.pagina=1;
+      encabezado();mostrarFilas();
     });
 
     const input=document.createElement("input");
-    input.type="search";
-    input.placeholder="Filtrar...";
+    input.type="search";input.placeholder="Filtrar...";
     input.value=t.filtros[i]||"";
     input.setAttribute("aria-label","Filtrar "+nombre);
-
     input.addEventListener("input",()=>{
-      t.filtros[i]=input.value;
-      t.pagina=1;
-      mostrarFilas();
+      t.filtros[i]=input.value;t.pagina=1;mostrarFilas();
     });
-
-    th.append(b,input);
-    tr.append(th);
+    th.append(b,input);tr.append(th);
   });
-
   $("encabezado").replaceChildren(tr);
 }
 
-const comparador=new Intl.Collator("es",{
-  numeric:true,sensitivity:"base"
-});
-
+const comparador=new Intl.Collator("es",{numeric:true,sensitivity:"base"});
 function claveFecha(v){
   const m=texto(v).match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
   return m?m[3]+m[2]+m[1]:texto(v);
 }
 
 function mostrarFilas(){
-  const t=tablas[activa];
-  const resultado=filtradas(activa);
-
+  const t=tablas[activa],resultado=filtradas(activa);
   if(t.orden!==null){
     resultado.sort((a,b)=>{
-      let av=a.valores[t.orden];
-      let bv=b.valores[t.orden];
-
+      let av=a.valores[t.orden],bv=b.valores[t.orden];
       if(esFecha(t.columnas[t.orden])){
-        av=claveFecha(av);
-        bv=claveFecha(bv);
+        av=claveFecha(av);bv=claveFecha(bv);
       }
-
       return comparador.compare(av,bv)*t.direccion;
     });
   }
@@ -719,62 +644,54 @@ function mostrarFilas(){
 
   resultado.slice(inicio,inicio+limite).forEach(f=>{
     const tr=document.createElement("tr");
-
     f.valores.forEach((v,i)=>{
       const td=document.createElement("td");
-
       if(esObservaciones(t.columnas[i])){
         td.className="observaciones";
         const nota=document.createElement("div");
         nota.className="nota-texto corta";
         nota.textContent=v||"—";
         td.append(nota);
-
         if(v.trim()){
           const b=document.createElement("button");
-          b.className="leer-nota";
-          b.textContent="Ver observación";
+          b.className="leer-nota";b.textContent="Ver observación";
           b.addEventListener("click",()=>{
             $("notaCompleta").textContent=v;
             $("modalNota").showModal();
           });
           td.append(b);
         }
-      }else if(
-        activa==="recibo"&&
-        t.columnas[i]==="ID PRODUCTO"&&
-        COLORES.includes(v)
-      ){
+      }else if(activa==="recibo"&&t.columnas[i]==="ID PRODUCTO"&&COLORES.includes(v)){
         const e=document.createElement("span");
         e.className="etiqueta "+v.toLowerCase();
-        e.textContent=v;
-        td.append(e);
-      }else{
-        td.textContent=v;
-      }
-
+        e.textContent=v;td.append(e);
+      }else td.textContent=v;
       tr.append(td);
     });
-
     fragmento.append(tr);
   });
 
   $("cuerpo").replaceChildren(fragmento);
+
+  const avisos=[
+    ...(t.error?[t.error]:[]),
+    ...(activa==="produccion"&&t.faltantes.length
+      ?["Revisar: "+t.faltantes.join(", ")]:[])
+  ];
+
   $("resumen").textContent=
     "Hoja: "+CONFIG[activa].hoja+
     " · Encabezados: fila "+CONFIG[activa].fila+
-    " · "+numero(resultado.length)+
-    " registros filtrados de "+numero(t.filas.length)+
-    (t.error?" · "+t.error:"");
+    " · "+numero(resultado.length)+" registros filtrados de "+numero(t.filas.length)+
+    (avisos.length?" · "+avisos.join(" · "):"");
 
   $("pagina").textContent="Página "+t.pagina+" de "+paginas;
   $("anterior").disabled=t.pagina<=1;
   $("siguiente").disabled=t.pagina>=paginas;
   $("vacio").hidden=resultado.length>0;
   $("vacio").textContent=t.cargando&&!t.lectura
-    ?"Cargando datos...":
-    t.error&&!t.lectura?t.error:
-    "No hay registros para esta selección.";
+    ?"Cargando datos...":t.error&&!t.lectura
+      ?t.error:"No hay registros para esta selección.";
 
   tarjetaProduccion();
 }
@@ -785,27 +702,22 @@ function mostrar(){
     b.classList.toggle("activo",elegida);
     b.setAttribute("aria-pressed",String(elegida));
   });
-
   $("tituloTabla").textContent=activa==="recibo"
-    ?TITULO_RECIBO:
-    activa==="produccion"?"Producción":"Insumos";
-
+    ?TITULO_RECIBO:activa==="produccion"?"Producción":"Insumos";
   $("buscar").value=tablas[activa].busqueda;
   $("fila").value=CONFIG[activa].fila;
   $("fila").disabled=activa==="produccion"||ocupado;
-  encabezado();
-  mostrarFilas();
+  encabezado();mostrarFilas();
 }
 
-function cargarLibro(origen,bytes,fuente){
+function cargarLibro(origen,bytes){
   const libro=XLSX.read(bytes,{type:"array",cellDates:true});
   const lectura=new Date().toISOString();
-  libros[origen]={libro,fuente,lectura};
+  libros[origen]={libro,lectura};
 
   for(const id of idsDelOrigen(origen)){
     try{
       const t=extraer(id,libro);
-      t.fuente=fuente;
       t.lectura=lectura;
       tablas[id]=t;
     }catch(e){
@@ -822,197 +734,108 @@ function errorOrigen(origen,mensaje){
   }
 }
 
-function comprobarLector(){
-  if(typeof XLSX==="undefined"){
-    throw new Error(
-      "No se cargó el lector Excel. Revisá la conexión y recargá."
-    );
-  }
-}
-
 async function descargar(origen){
   const control=new AbortController();
   const timer=setTimeout(()=>control.abort(),90000);
-
   try{
     const r=await fetch(URLS[origen],{
-      mode:"cors",cache:"no-store",
-      credentials:"omit",signal:control.signal
+      mode:"cors",cache:"no-store",credentials:"omit",signal:control.signal
     });
-
-    if(!r.ok){
-      throw new Error("Dropbox respondió HTTP "+r.status+".");
-    }
-
+    if(!r.ok)throw new Error("Dropbox respondió HTTP "+r.status+".");
     const tipo=(r.headers.get("Content-Type")||"").toLowerCase();
     if(tipo.includes("text/html")||tipo.includes("application/json")){
       throw new Error("El enlace no devolvió un Excel.");
     }
-
     const bytes=await r.arrayBuffer();
     if(!bytes.byteLength)throw new Error("El archivo está vacío.");
-    cargarLibro(origen,bytes,"Dropbox");
+    cargarLibro(origen,bytes);
   }catch(e){
-    const mensaje=e.name==="AbortError"
-      ?"La descarga superó los 90 segundos.":
-      e instanceof TypeError
+    errorOrigen(origen,e.name==="AbortError"
+      ?"La descarga superó los 90 segundos."
+      :e instanceof TypeError
         ?"No se pudo leer Dropbox por un bloqueo del navegador o un problema de conexión."
-        :e.message;
-
-    errorOrigen(origen,mensaje+
-      " Podés seleccionar el Excel desde la PC.");
-    $("archivos").open=true;
+        :e.message);
   }finally{
     clearTimeout(timer);
-    tarjetas();
-    mostrar();
+    tarjetas();mostrar();
   }
 }
 
 function bloquear(v){
   ocupado=v;
   $("actualizar").disabled=v;
-  $("actualizar").textContent=v
-    ?"Cargando...":"Actualizar desde Dropbox";
-  $("archivo-produccion").disabled=v;
-  $("archivo-recibo").disabled=v;
+  $("actualizar").textContent=v?"Cargando...":"Actualizar desde Dropbox";
   $("fila").disabled=activa==="produccion"||v;
 }
 
 async function actualizar(){
   if(ocupado)return;
-
-  try{
-    comprobarLector();
-  }catch(e){
-    errorOrigen("produccion",e.message);
-    errorOrigen("recibo",e.message);
-    tarjetas();
-    mostrar();
-    return;
+  if(typeof XLSX==="undefined"){
+    errorOrigen("produccion","No se cargó el lector Excel. Revisá la conexión y recargá.");
+    errorOrigen("recibo","No se cargó el lector Excel. Revisá la conexión y recargá.");
+    tarjetas();mostrar();return;
   }
 
   bloquear(true);
   for(const t of Object.values(tablas)){
-    t.cargando=true;
-    t.error="";
+    t.cargando=true;t.error="";
   }
-  tarjetas();
-  mostrar();
+  tarjetas();mostrar();
 
   try{
     await Promise.allSettled([
-      descargar("produccion"),
-      descargar("recibo")
+      descargar("produccion"),descargar("recibo")
     ]);
   }finally{
-    bloquear(false);
-    tarjetas();
-    mostrar();
-  }
-}
-
-async function seleccionarArchivo(origen,input){
-  const archivo=input.files[0];
-  if(!archivo||ocupado)return;
-
-  bloquear(true);
-  for(const id of idsDelOrigen(origen)){
-    tablas[id].cargando=true;
-    tablas[id].error="";
-  }
-  tarjetas();
-
-  try{
-    comprobarLector();
-    cargarLibro(origen,await archivo.arrayBuffer(),"Archivo local");
-  }catch(e){
-    errorOrigen(origen,"No se pudo leer el archivo: "+e.message);
-  }finally{
-    input.value="";
-    bloquear(false);
-    tarjetas();
-    mostrar();
+    bloquear(false);tarjetas();mostrar();
   }
 }
 
 document.querySelectorAll("[data-tab]").forEach(b=>{
-  b.addEventListener("click",()=>{
-    activa=b.dataset.tab;
-    mostrar();
-  });
+  b.addEventListener("click",()=>{activa=b.dataset.tab;mostrar()});
 });
-
 $("buscar").addEventListener("input",()=>{
   tablas[activa].busqueda=$("buscar").value;
-  tablas[activa].pagina=1;
-  mostrarFilas();
+  tablas[activa].pagina=1;mostrarFilas();
 });
-
 $("quitar").addEventListener("click",()=>{
   for(const t of Object.values(tablas)){
-    t.busqueda="";
-    t.filtros=t.columnas.map(()=>"");
-    t.orden=null;
-    t.direccion=1;
-    t.pagina=1;
+    t.busqueda="";t.filtros=t.columnas.map(()=>"");
+    t.orden=null;t.direccion=1;t.pagina=1;
   }
   mostrar();
 });
-
 $("limite").addEventListener("change",()=>{
-  tablas[activa].pagina=1;
-  mostrarFilas();
+  tablas[activa].pagina=1;mostrarFilas();
 });
 $("anterior").addEventListener("click",()=>{
-  tablas[activa].pagina--;
-  mostrarFilas();
+  tablas[activa].pagina--;mostrarFilas();
 });
 $("siguiente").addEventListener("click",()=>{
-  tablas[activa].pagina++;
-  mostrarFilas();
+  tablas[activa].pagina++;mostrarFilas();
 });
-
 $("fila").addEventListener("change",()=>{
   if(activa==="produccion"||ocupado)return;
-  const c=CONFIG[activa];
-  const n=Number($("fila").value);
-
+  const c=CONFIG[activa],n=Number($("fila").value);
   if(!Number.isInteger(n)||n<1||n>100){
-    $("fila").value=c.fila;
-    return;
+    $("fila").value=c.fila;return;
   }
-
   const anterior=c.fila;
   c.fila=n;
   const guardado=libros[c.origen];
-
   if(guardado){
     try{
       const t=extraer(activa,guardado.libro);
-      t.fuente=guardado.fuente;
       t.lectura=guardado.lectura;
       tablas[activa]=t;
     }catch(e){
-      c.fila=anterior;
-      tablas[activa].error=e.message;
+      c.fila=anterior;tablas[activa].error=e.message;
     }
   }
-
-  tarjetas();
-  mostrar();
+  tarjetas();mostrar();
 });
-
-$("archivo-produccion").addEventListener("change",e=>
-  seleccionarArchivo("produccion",e.target)
-);
-$("archivo-recibo").addEventListener("change",e=>
-  seleccionarArchivo("recibo",e.target)
-);
 $("actualizar").addEventListener("click",actualizar);
-$("cerrarNota").addEventListener("click",()=>
-  $("modalNota").close()
-);
+$("cerrarNota").addEventListener("click",()=>$("modalNota").close());
 
 mostrar();
 actualizar();
