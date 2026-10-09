@@ -88,7 +88,7 @@ dialog h2{margin-top:0;color:var(--verde)}
   <article class="tarjeta">
     <h2>PRODUCCIÓN</h2>
     <div id="numero-produccion" class="numero">—</div>
-    <div id="detalle-produccion" class="detalle">Total de las diez columnas de producción</div>
+    <div id="detalle-produccion" class="detalle">Total de las seis columnas de producción</div>
     <div id="estado-produccion" class="estado">Pendiente</div>
   </article>
   <article class="tarjeta">
@@ -159,7 +159,8 @@ dialog h2{margin-top:0;color:var(--verde)}
   Producción: encabezados en fila 3. Insumos y Recibo: fila ajustable.
   La hora de lectura no representa la modificación del Excel.
   Las fórmulas muestran los resultados guardados.
-  La tarjeta Producción suma todas las filas filtradas, no solamente la página visible.
+  La tarjeta Producción suma las seis columnas de todas las filas filtradas,
+  sin incluir descartes ni limitarse a la página visible.
 </p>
 </main>
 
@@ -199,19 +200,17 @@ function esFecha(nombre){return claveColumna(nombre).includes("fecha")}
 function esObservaciones(nombre){
   return ["observaciones","observacion"].includes(claveColumna(nombre));
 }
+
+// Producción: únicamente estas seis columnas.
 const SUMAR_PRODUCCION=[
   "AMARRILLO PPL+30",
   "AMARRILLO PPL+45",
   "ROJO__STD+30",
   "ROJO_STD +30 Basal",
   "Verde-STD+45",
-  "Verde Basal +55",
-  "Descarte basal+55",
-  "Descarte basal -55",
-  "Descarte +55",
-  "Descarte-55"
+  "Verde Basal +55"
 ];
-// Conserva los signos + y - para distinguir Descarte +55 de Descarte-55.
+
 function claveSuma(v){
   return normalizar(v).replace(/amarillo/g,"amarrillo").replace(/[^a-z0-9+-]/g,"");
 }
@@ -279,7 +278,6 @@ function extraer(id,libro){
   rango.s.r=config.fila-1;
   if(rango.s.r>rango.e.r)throw new Error("La fila elegida supera el contenido.");
 
-  // Valores originales para sumar números y reconocer fechas de Excel.
   const matriz=XLSX.utils.sheet_to_json(hoja,{
     header:1,range:rango,raw:true,defval:"",blankrows:true
   });
@@ -367,7 +365,6 @@ function tarjetaProduccion(){
   if(!t.lectura){$("numero-produccion").textContent="—";return}
   const seleccion=filtradas("produccion");
   const suma=seleccion.reduce((s,f)=>s+f.total,0);
-  // No mostrar como completo un total con columnas ausentes.
   $("numero-produccion").textContent=t.faltantes.length?"—":numero(suma);
   $("detalle-produccion").textContent=t.faltantes.length
     ?"Revisar encabezados: "+t.faltantes.join(", ")
