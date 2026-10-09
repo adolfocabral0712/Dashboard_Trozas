@@ -177,9 +177,7 @@ button.tarjeta:hover{border-color:var(--oro);background:#fffdf4}
   font-size:12px;font-weight:600;color:var(--bosque);
 }
 .selector-quincena select{min-width:155px;max-width:250px}
-fieldset.productos{
-  margin:0;padding:0;border:none;min-width:0;
-}
+fieldset.productos{margin:0;padding:0;border:none;min-width:0}
 .productos legend{
   padding:0;margin-bottom:7px;font-size:12px;
   font-weight:600;color:var(--bosque);
@@ -194,13 +192,8 @@ fieldset.productos{
 .chip input{margin:0;accent-color:var(--color)}
 .chip:has(input:checked){border-color:var(--color)}
 .chip input:disabled{cursor:default}
-#graficoQuincena{
-  overflow-x:auto;
-  padding:0 16px 5px;
-}
-#graficoQuincena svg{
-  display:block;width:100%;height:auto;
-}
+#graficoQuincena{overflow-x:auto;padding:0 16px 5px}
+#graficoQuincena svg{display:block;width:100%;height:auto}
 .leyenda-quincena{
   display:flex;justify-content:center;flex-wrap:wrap;
   gap:18px;padding:10px 18px 18px;font-size:12px;
@@ -305,39 +298,34 @@ dialog{
 }
 dialog::backdrop{background:#0b251dcc;backdrop-filter:blur(3px)}
 dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
-#notaCompleta{white-space:pre-wrap;line-height:1.7;overflow-wrap:anywhere;margin-bottom:20px}
-#alcanceDescarte{font-size:13px;line-height:1.6;color:var(--secundario);margin-bottom:16px}
+#notaCompleta{
+  white-space:pre-wrap;line-height:1.7;
+  overflow-wrap:anywhere;margin-bottom:20px;
+}
+#alcanceDescarte{
+  font-size:13px;line-height:1.6;
+  color:var(--secundario);margin-bottom:16px;
+}
 .tabla-detalle{margin-bottom:20px;font-size:14px}
 .tabla-detalle th{position:static;padding:12px}
 .tabla-detalle td{padding:12px}
 .tabla-detalle th:first-child,.tabla-detalle td:first-child{text-align:left}
 .tabla-detalle tfoot td{background:#edf0e5;font-weight:bold}
 .iconos{position:absolute;width:0;height:0;overflow:hidden}
-@media(max-width:1100px){
-  .graficos{grid-template-columns:1fr}
-  .visual svg{max-width:640px}
-}
-@media(max-width:700px){
-  .cabecera-interior{padding:22px 16px;flex-direction:column;align-items:stretch}
-  .marca{gap:12px}.marca-icono{width:45px;height:45px}
-  .subtitulo{font-size:13px}main{padding:15px}
-  .tarjetas,.botones-tablas{grid-template-columns:1fr;gap:12px}
-  .tarjeta{min-height:145px}.numero{font-size:35px}
-  #buscar{flex-basis:100%}.titulo-tabla{font-size:20px}
-  .visual{min-height:250px}
-  th.observaciones,td.observaciones{min-width:230px}
-  .cabecera-quincena{padding:18px 16px}
-}
-/* Insumos: filas compactas y observación en un solo renglón. */
 .tabla-insumos{width:100%;table-layout:auto}
 .tabla-insumos th,.tabla-insumos td{
-  min-width:0;max-width:none;white-space:nowrap;overflow-wrap:normal;
-  vertical-align:middle;
+  min-width:0;max-width:none;white-space:nowrap;
+  overflow-wrap:normal;vertical-align:middle;
 }
 .tabla-insumos td{padding:6px 10px;line-height:1.3}
 .tabla-insumos th{padding:8px 10px;min-width:105px;vertical-align:top}
-.tabla-insumos th button{display:block;width:100%;white-space:nowrap;line-height:1.3;margin:0}
-.tabla-insumos th input{display:block;min-width:0;width:105px;max-width:100%;margin:6px auto 0;box-sizing:border-box}
+.tabla-insumos th button{
+  display:block;width:100%;white-space:nowrap;line-height:1.3;margin:0;
+}
+.tabla-insumos th input{
+  display:block;min-width:0;width:105px;max-width:100%;
+  margin:6px auto 0;box-sizing:border-box;
+}
 .tabla-insumos th.observaciones input{width:100%}
 .tabla-insumos th.observaciones,.tabla-insumos td.observaciones{
   width:360px;min-width:360px;max-width:360px;
@@ -349,11 +337,10 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
   overflow:hidden;text-overflow:ellipsis;line-height:1.3;
   -webkit-line-clamp:unset;-webkit-box-orient:unset;
 }
-.tabla-insumos .leer-nota{flex:0 0 auto;margin:0;padding:4px 7px;white-space:nowrap}
-
+.tabla-insumos .leer-nota{
+  flex:0 0 auto;margin:0;padding:4px 7px;white-space:nowrap;
+}
 .tarjetas-principales{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
-@media(max-width:1100px){.tarjetas-principales{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:700px){.tarjetas-principales{grid-template-columns:1fr}}
 #modalChapas .tabla-detalle td:last-child{white-space:nowrap}
 #modalChapas .tabla-detalle tfoot{font-weight:bold;color:var(--bosque)}
 #modalTrozasCamion{width:min(1000px,94vw)}
@@ -361,6 +348,29 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
 #modalTrozasCamion .detalle-scroll{overflow:auto}
 #modalTrozasCamion .tabla-detalle th{white-space:normal;min-width:100px}
 #modalTrozasCamion .tabla-detalle tfoot{font-weight:bold;color:var(--bosque)}
+@media(max-width:1100px){
+  .graficos{grid-template-columns:1fr}
+  .visual svg{max-width:640px}
+  .tarjetas-principales{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:700px){
+  .cabecera-interior{
+    padding:22px 16px;flex-direction:column;align-items:stretch;
+  }
+  .marca{gap:12px}
+  .marca-icono{width:45px;height:45px}
+  .subtitulo{font-size:13px}
+  main{padding:15px}
+  .tarjetas,.botones-tablas{grid-template-columns:1fr;gap:12px}
+  .tarjetas-principales{grid-template-columns:1fr}
+  .tarjeta{min-height:145px}
+  .numero{font-size:35px}
+  #buscar{flex-basis:100%}
+  .titulo-tabla{font-size:20px}
+  .visual{min-height:250px}
+  th.observaciones,td.observaciones{min-width:230px}
+  .cabecera-quincena{padding:18px 16px}
+}
 </style>
 </head>
 
@@ -371,8 +381,10 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
   </symbol>
   <symbol id="i-troncos" viewBox="0 0 48 48">
     <g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="13" cy="31" r="8"/><circle cx="13" cy="31" r="3"/>
-      <circle cx="30" cy="35" r="8"/><circle cx="30" cy="35" r="3"/>
+      <circle cx="13" cy="31" r="8"/>
+      <circle cx="13" cy="31" r="3"/>
+      <circle cx="30" cy="35" r="8"/>
+      <circle cx="30" cy="35" r="3"/>
       <path d="m9 24 18-12c8-5 18 5 12 12L21 37M15 23l17-10M20 26l16-11M25 29l16-11M6 36l5 6M33 27l7-5"/>
     </g>
   </symbol>
@@ -384,7 +396,8 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
   <symbol id="i-camion" viewBox="0 0 48 48">
     <g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round">
       <path d="M4 12h25v22H4ZM29 20h9l6 8v6H29M35 20v9h9"/>
-      <circle cx="12" cy="35" r="5"/><circle cx="36" cy="35" r="5"/>
+      <circle cx="12" cy="35" r="5"/>
+      <circle cx="36" cy="35" r="5"/>
     </g>
   </symbol>
   <symbol id="i-caja" viewBox="0 0 48 48">
@@ -426,48 +439,64 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
 <main>
 <section class="tarjetas tarjetas-principales" aria-label="Totales">
   <article class="tarjeta">
-    <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#i-troncos"/></svg></div>
+    <div class="icono-tarjeta">
+      <svg aria-hidden="true"><use href="#i-troncos"/></svg>
+    </div>
     <div class="tarjeta-contenido">
       <h2>PRODUCCIÓN</h2>
       <div id="numero-produccion" class="numero">—</div>
     </div>
   </article>
+
   <article class="tarjeta stock-monte">
-    <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#i-bosque"/></svg></div>
+    <div class="icono-tarjeta">
+      <svg aria-hidden="true"><use href="#i-bosque"/></svg>
+    </div>
     <div class="tarjeta-contenido">
       <h2>TROZAS STOCK MONTE</h2>
       <div id="stock-monte" class="numero">—</div>
       <div id="detalle-stock-monte" class="detalle">Pendiente de lectura</div>
     </div>
   </article>
+
   <button id="tarjetaDescarte" class="tarjeta descarte" type="button" aria-haspopup="dialog">
-    <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#i-descarte"/></svg></div>
+    <div class="icono-tarjeta">
+      <svg aria-hidden="true"><use href="#i-descarte"/></svg>
+    </div>
     <div class="tarjeta-contenido">
       <h2>DESCARTE</h2>
       <div id="numero-descarte" class="numero">—</div>
       <div class="detalle">Ver detalle por clasificación</div>
     </div>
   </button>
+
   <button id="tarjetaChapas" class="tarjeta stock-monte" type="button" aria-haspopup="dialog">
-    <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#i-caja"/></svg></div>
+    <div class="icono-tarjeta">
+      <svg aria-hidden="true"><use href="#i-caja"/></svg>
+    </div>
     <div class="tarjeta-contenido">
       <h2>CHAPAS - Cajas Stock</h2>
       <div id="numero-chapas" class="numero">—</div>
       <div class="detalle">Saldo aproximado · ver detalle</div>
     </div>
   </button>
+
   <button id="tarjetaTrozasCamion" class="tarjeta stock-monte" type="button" aria-haspopup="dialog">
-    <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#i-camion"/></svg></div>
+    <div class="icono-tarjeta">
+      <svg aria-hidden="true"><use href="#i-camion"/></svg>
+    </div>
     <div class="tarjeta-contenido">
       <h2>TROZAS POR CAMIÓN</h2>
-            <div class="detalle">Ver detalle por producto</div>
+      <div class="detalle">Ver detalle por producto</div>
     </div>
   </button>
 </section>
 
 <section class="tarjetas" aria-label="Stocks por color">
   <article class="tarjeta stock-rojo">
-    <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#i-troncos"/></svg></div>
+    <div class="icono-tarjeta">
+      <svg aria-hidden="true"><use href="#i-troncos"/></svg>
+    </div>
     <div class="tarjeta-contenido">
       <h2>STOCK ROJO</h2>
       <div id="stock-rojo" class="numero">—</div>
@@ -475,7 +504,9 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
     </div>
   </article>
   <article class="tarjeta stock-amarillo">
-    <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#i-troncos"/></svg></div>
+    <div class="icono-tarjeta">
+      <svg aria-hidden="true"><use href="#i-troncos"/></svg>
+    </div>
     <div class="tarjeta-contenido">
       <h2>STOCK AMARILLO</h2>
       <div id="stock-amarillo" class="numero">—</div>
@@ -483,7 +514,9 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
     </div>
   </article>
   <article class="tarjeta stock-verde">
-    <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#i-troncos"/></svg></div>
+    <div class="icono-tarjeta">
+      <svg aria-hidden="true"><use href="#i-troncos"/></svg>
+    </div>
     <div class="tarjeta-contenido">
       <h2>STOCK VERDE</h2>
       <div id="stock-verde" class="numero">—</div>
@@ -494,17 +527,26 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
 
 <section class="graficos" aria-label="Gráficos">
   <article class="grafico">
-    <h2><svg aria-hidden="true"><use href="#i-troncos"/></svg>PRODUCCIÓN Y DESCARTES</h2>
+    <h2>
+      <svg aria-hidden="true"><use href="#i-troncos"/></svg>
+      PRODUCCIÓN Y DESCARTES
+    </h2>
     <div id="graficoProduccionDescarte" class="visual"></div>
     <div class="alcance">Responde a los filtros de Producción.</div>
   </article>
   <article class="grafico">
-    <h2><svg aria-hidden="true"><use href="#i-camion"/></svg>DESPACHO DE TROZAS</h2>
+    <h2>
+      <svg aria-hidden="true"><use href="#i-camion"/></svg>
+      DESPACHO DE TROZAS
+    </h2>
     <div id="graficoDespacho" class="visual"></div>
     <div class="alcance">Suma de Cantidad de todo Recibo.</div>
   </article>
   <article class="grafico">
-    <h2><svg aria-hidden="true"><use href="#i-bosque"/></svg>PRODUCCIÓN TROZAS MONTE</h2>
+    <h2>
+      <svg aria-hidden="true"><use href="#i-bosque"/></svg>
+      PRODUCCIÓN TROZAS MONTE
+    </h2>
     <div id="graficoProduccionColor" class="visual"></div>
     <div class="alcance">Responde a los filtros de Producción.</div>
   </article>
@@ -597,7 +639,10 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
   </div>
   <div id="aviso" hidden aria-live="polite"></div>
   <div class="tabla">
-    <table id="tablaDatos"><thead id="encabezado"></thead><tbody id="cuerpo"></tbody></table>
+    <table id="tablaDatos">
+      <thead id="encabezado"></thead>
+      <tbody id="cuerpo"></tbody>
+    </table>
     <div id="vacio">Cargando datos...</div>
   </div>
   <div class="pie">
@@ -628,12 +673,28 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
 <dialog id="modalTrozasCamion" aria-labelledby="tituloTrozasCamion">
   <h2 id="tituloTrozasCamion">TROZAS POR CAMIÓN</h2>
   <p id="avisoTrozasCamion" class="detalle"></p>
-  <div class="detalle-scroll"><table class="tabla-detalle">
-    <thead><tr><th>Id Producto</th><th>Viajes</th><th>Cantidad de trozas</th><th>Tons.</th><th>Trozas por camión</th><th>Neto por camión (t)</th></tr></thead>
-    <tbody id="detalleTrozasCamion"></tbody>
-    <tfoot id="totalTrozasCamion"></tfoot>
-  </table></div>
-  <p class="detalle">Cada registro de Recibo se considera un viaje. Trozas por camión = suma de Cantidad ÷ viajes. Neto por camión = suma de Neto ÷ viajes. Utiliza los registros completos de Recibo.</p>
+  <div class="detalle-scroll">
+    <table class="tabla-detalle">
+      <thead>
+        <tr>
+          <th>Id Producto</th>
+          <th>Viajes</th>
+          <th>Cantidad de trozas</th>
+          <th>Tons.</th>
+          <th>Trozas por camión</th>
+          <th>Neto por camión (t)</th>
+        </tr>
+      </thead>
+      <tbody id="detalleTrozasCamion"></tbody>
+      <tfoot id="totalTrozasCamion"></tfoot>
+    </table>
+  </div>
+  <p class="detalle">
+    Cada registro de Recibo se considera un viaje.
+    Trozas por camión = suma de Cantidad ÷ viajes.
+    Neto por camión = suma de Neto ÷ viajes.
+    Utiliza los registros completos de Recibo.
+  </p>
   <button id="cerrarTrozasCamion" class="secundario">Cerrar</button>
 </dialog>
 
@@ -641,14 +702,39 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
   <h2 id="tituloChapas">CHAPAS - Cajas Stock</h2>
   <p id="alcanceChapas" class="detalle"></p>
   <table class="tabla-detalle">
-    <thead><tr><th>Concepto</th><th>Cantidad</th><th>% de Cajas de Insumos</th></tr></thead>
+    <thead>
+      <tr>
+        <th>Concepto</th>
+        <th>Cantidad</th>
+        <th>% de Cajas de Insumos</th>
+      </tr>
+    </thead>
     <tbody>
-      <tr><td>Insumos · Cajas</td><td id="chapas-insumos">—</td><td id="chapas-pct-insumos">—</td></tr>
-      <tr><td>Producción · Chapas</td><td id="chapas-produccion">—</td><td id="chapas-pct-produccion">—</td></tr>
+      <tr>
+        <td>Insumos · Cajas</td>
+        <td id="chapas-insumos">—</td>
+        <td id="chapas-pct-insumos">—</td>
+      </tr>
+      <tr>
+        <td>Producción · Chapas</td>
+        <td id="chapas-produccion">—</td>
+        <td id="chapas-pct-produccion">—</td>
+      </tr>
     </tbody>
-    <tfoot><tr><td>Saldo aproximado · Insumos − Producción</td><td id="chapas-saldo">—</td><td id="chapas-pct-saldo">—</td></tr></tfoot>
+    <tfoot>
+      <tr>
+        <td>Saldo aproximado · Insumos − Producción</td>
+        <td id="chapas-saldo">—</td>
+        <td id="chapas-pct-saldo">—</td>
+      </tr>
+    </tfoot>
   </table>
-  <p class="detalle">Producción: Cajas Chapas + Chapas de mas PPL + Chapas EXTRAS STD.<br>Insumos: suma de Cajas. Saldo = Insumos − Producción. Porcentajes calculados sobre Cajas de Insumos (100 %). Se utilizan los registros completos de ambas tablas.</p>
+  <p class="detalle">
+    Producción: Cajas Chapas + Chapas de mas PPL + Chapas EXTRAS STD.<br>
+    Insumos: suma de Cajas. Saldo = Insumos − Producción.
+    Porcentajes calculados sobre Cajas de Insumos (100 %).
+    Se utilizan los registros completos de ambas tablas.
+  </p>
   <button id="cerrarChapas" class="secundario">Cerrar</button>
 </dialog>
 
@@ -658,7 +744,12 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
   <table class="tabla-detalle">
     <thead><tr><th>Clasificación</th><th>Cantidad</th></tr></thead>
     <tbody id="detalleDescarte"></tbody>
-    <tfoot><tr><td>TOTAL DESCARTE</td><td id="totalDetalleDescarte">—</td></tr></tfoot>
+    <tfoot>
+      <tr>
+        <td>TOTAL DESCARTE</td>
+        <td id="totalDetalleDescarte">—</td>
+      </tr>
+    </tfoot>
   </table>
   <button id="cerrarDescarte" class="secundario">Cerrar</button>
 </dialog>
@@ -671,8 +762,8 @@ const $=id=>document.getElementById(id);
 const TITULO_RECIBO="B3R UPM Las Acacias - Polo Logistico";
 
 const URLS={
-  produccion:"https://dl.dropbox.com/scl/fi/z1jtk061zs1maw4vlnyib/PRODUCCION-LAS-ACACIAS.xlsx?rlkey=7pzd2o0oh1q3inr62bvztoqcb&dl=1",
-  recibo:"https://dl.dropbox.com/scl/fi/l87boeiqu54yra3i0evd6/aENVIO-DE-CORREOS.xlsb?rlkey=149gw31ntsbso8vtpix30yxjl&dl=1"
+  produccion:"/api/produccion",
+  recibo:"/api/recibo"
 };
 
 const CONFIG={
@@ -1030,8 +1121,6 @@ function extraer(id,libro){
       }
     });
 
-    // Quitar Carga, Cosecha, Origen, Bruto_ton y Tara_ton.
-    // Sacada permanece y se presenta como Cuadro.
     const ocultas=new Set([
       "carga","cosecha","origen","idproducto","brutoton","taraton"
     ]);
@@ -1087,101 +1176,225 @@ function calculoDescarte(){
 
 function calculoTrozasCamion(){
   const t=tablas.recibo;
-  if(!t.lectura||t.error||t.avisoCantidad)return {error:t.error||t.avisoCantidad||"Pendiente de lectura de Recibo.",grupos:[],total:null};
-  const indices=t.columnas.map((c,i)=>["neto","netoton"].includes(claveColumna(c))?i:-1).filter(i=>i>=0);
-  if(indices.length!==1)return {error:"Se necesita una única columna Neto en Recibo.",grupos:[],total:null};
-  const grupos=new Map(),total={producto:"TOTAL",viajes:0,cantidad:0,neto:0};
+  if(!t.lectura||t.error||t.avisoCantidad){
+    return {
+      error:t.error||t.avisoCantidad||"Pendiente de lectura de Recibo.",
+      grupos:[],total:null
+    };
+  }
+
+  const indices=t.columnas
+    .map((c,i)=>["neto","netoton"].includes(claveColumna(c))?i:-1)
+    .filter(i=>i>=0);
+
+  if(indices.length!==1){
+    return {
+      error:"Se necesita una única columna Neto en Recibo.",
+      grupos:[],total:null
+    };
+  }
+
+  const grupos=new Map();
+  const total={producto:"TOTAL",viajes:0,cantidad:0,neto:0};
   let error="";
+
   t.filas.forEach((f,n)=>{
     const valorNeto=f.valores[indices[0]];
     const neto=numeroCelda(valorNeto);
+
     if(!tieneContenido(valorNeto)||!Number.isFinite(neto)){
-      error="Revisar Neto: valor vacío o no numérico en registro "+(n+1)+".";return;
+      error="Revisar Neto: valor vacío o no numérico en registro "+(n+1)+".";
+      return;
     }
+
     const producto=f.color||"SIN CLASIFICAR";
-    if(!grupos.has(producto))grupos.set(producto,{producto,viajes:0,cantidad:0,neto:0});
-    for(const g of [grupos.get(producto),total]){g.viajes++;g.cantidad+=f.cantidad;g.neto+=neto;}
+
+    if(!grupos.has(producto)){
+      grupos.set(producto,{producto,viajes:0,cantidad:0,neto:0});
+    }
+
+    for(const g of [grupos.get(producto),total]){
+      g.viajes++;
+      g.cantidad+=f.cantidad;
+      g.neto+=neto;
+    }
   });
-  return {error,grupos:[...grupos.values()].sort((a,b)=>a.producto.localeCompare(b.producto,"es")),total:error?null:total};
+
+  return {
+    error,
+    grupos:[...grupos.values()].sort(
+      (a,b)=>a.producto.localeCompare(b.producto,"es")
+    ),
+    total:error?null:total
+  };
 }
+
 function actualizarTrozasCamion(){
   const d=calculoTrozasCamion();
-  $("tarjetaTrozasCamion").title=d.error||"Cantidad total ÷ registros de Recibo. Cada registro se considera un viaje.";
+  $("tarjetaTrozasCamion").title=d.error||
+    "Cantidad total ÷ registros de Recibo. Cada registro se considera un viaje.";
   if($("modalTrozasCamion").open)mostrarDetalleTrozasCamion();
 }
+
 function mostrarDetalleTrozasCamion(){
   const d=calculoTrozasCamion();
-  $("avisoTrozasCamion").textContent=d.error||(d.total?.viajes?"Promedios por producto · registros completos de Recibo.":"No hay viajes en Recibo.");
+
+  $("avisoTrozasCamion").textContent=d.error||
+    (d.total?.viajes
+      ?"Promedios por producto · registros completos de Recibo."
+      :"No hay viajes en Recibo.");
+
   $("avisoTrozasCamion").classList.toggle("error",Boolean(d.error));
+
   function fila(g){
     const tr=document.createElement("tr");
-    const valores=[g.producto,numero(g.viajes),numero(g.cantidad),g.neto.toLocaleString("es-UY",{minimumFractionDigits:2,maximumFractionDigits:2}),
-      g.viajes?Math.round(g.cantidad/g.viajes).toLocaleString("es-UY"):"—",g.viajes?numero(g.neto/g.viajes):"—"];
-    valores.forEach(v=>{const td=document.createElement("td");td.textContent=v;tr.append(td)});
+
+    const valores=[
+      g.producto,
+      numero(g.viajes),
+      numero(g.cantidad),
+      g.neto.toLocaleString("es-UY",{
+        minimumFractionDigits:2,
+        maximumFractionDigits:2
+      }),
+      g.viajes
+        ?Math.round(g.cantidad/g.viajes).toLocaleString("es-UY")
+        :"—",
+      g.viajes?numero(g.neto/g.viajes):"—"
+    ];
+
+    valores.forEach(v=>{
+      const td=document.createElement("td");
+      td.textContent=v;
+      tr.append(td);
+    });
+
     return tr;
   }
-  $("detalleTrozasCamion").replaceChildren(...(d.error?[]:d.grupos.map(fila)));
-  $("totalTrozasCamion").replaceChildren(...(d.total?[fila(d.total)]:[]));
+
+  $("detalleTrozasCamion").replaceChildren(
+    ...(d.error?[]:d.grupos.map(fila))
+  );
+  $("totalTrozasCamion").replaceChildren(
+    ...(d.total?[fila(d.total)]:[])
+  );
 }
 
 function sumarColumnasChapas(id,grupos){
   const t=tablas[id],errores=[];
+
   if(t.error)return {total:null,error:t.error};
-  if(!t.lectura)return {total:null,error:"Pendiente de lectura de "+(id==="insumos"?"Insumos":"Producción")+"."};
+
+  if(!t.lectura){
+    return {
+      total:null,
+      error:"Pendiente de lectura de "+
+        (id==="insumos"?"Insumos":"Producción")+"."
+    };
+  }
+
   const indices=grupos.map(alias=>{
     const claves=alias.map(claveColumna);
-    const encontrados=t.columnas.map((c,i)=>claves.includes(claveColumna(c))?i:-1).filter(i=>i>=0);
-    if(encontrados.length!==1)errores.push(alias[0]+(encontrados.length?" (duplicada)":" (no encontrada)"));
+
+    const encontrados=t.columnas
+      .map((c,i)=>claves.includes(claveColumna(c))?i:-1)
+      .filter(i=>i>=0);
+
+    if(encontrados.length!==1){
+      errores.push(alias[0]+
+        (encontrados.length?" (duplicada)":" (no encontrada)"));
+    }
+
     return encontrados.length===1?encontrados[0]:-1;
   });
+
   let total=0;
+
   t.filas.forEach((f,n)=>indices.forEach(i=>{
     if(i<0)return;
+
     const valor=numeroCelda(f.valores[i]);
-    if(!Number.isFinite(valor))errores.push(t.columnas[i]+": valor no numérico en registro "+(n+1));
-    else total+=valor;
+
+    if(!Number.isFinite(valor)){
+      errores.push(t.columnas[i]+
+        ": valor no numérico en registro "+(n+1));
+    }else total+=valor;
   }));
-  return {total:errores.length?null:total,error:errores.length?"Revisar: "+errores.join(", "):""};
+
+  return {
+    total:errores.length?null:total,
+    error:errores.length?"Revisar: "+errores.join(", "):""
+  };
 }
+
 function calculoChapas(){
-  const p=sumarColumnasChapas("produccion",[["Cajas Chapas"],["Chapas de mas PPL"],["Chapas EXTRAS STD"]]);
+  const p=sumarColumnasChapas("produccion",[
+    ["Cajas Chapas"],
+    ["Chapas de mas PPL"],
+    ["Chapas EXTRAS STD"]
+  ]);
+
   const i=sumarColumnasChapas("insumos",[["Cajas"]]);
-  return {produccion:p.total,insumos:i.total,saldo:p.total===null||i.total===null?null:i.total-p.total,
-    error:[p.error,i.error].filter(Boolean).join(" · ")};
+
+  return {
+    produccion:p.total,
+    insumos:i.total,
+    saldo:p.total===null||i.total===null?null:i.total-p.total,
+    error:[p.error,i.error].filter(Boolean).join(" · ")
+  };
 }
+
 function actualizarChapas(){
   const d=calculoChapas();
+
   $("numero-chapas").textContent=d.saldo===null?"—":numero(d.saldo);
-  $("numero-chapas").classList.toggle("negativo",d.saldo!==null&&d.saldo<0);
-  $("tarjetaChapas").title=d.error||"Insumos − Producción · registros completos";
+  $("numero-chapas").classList.toggle(
+    "negativo",d.saldo!==null&&d.saldo<0
+  );
+
+  $("tarjetaChapas").title=d.error||
+    "Insumos − Producción · registros completos";
+
   if($("modalChapas").open)mostrarDetalleChapas();
 }
+
 function mostrarDetalleChapas(){
   const d=calculoChapas();
+
   for(const k of ["insumos","produccion","saldo"]){
     $("chapas-"+k).textContent=d[k]===null?"—":numero(d[k]);
-    $("chapas-pct-"+k).textContent=d[k]===null||d.insumos===null||d.insumos===0
-      ?"—":porcentaje(d[k]/d.insumos*100);
+
+    $("chapas-pct-"+k).textContent=
+      d[k]===null||d.insumos===null||d.insumos===0
+        ?"—":porcentaje(d[k]/d.insumos*100);
   }
+
   $("alcanceChapas").textContent=d.error||
-    (d.insumos===0?"Insumos es cero: no se puede calcular un porcentaje.":"Saldo aproximado de chapas · Insumos − Producción.");
+    (d.insumos===0
+      ?"Insumos es cero: no se puede calcular un porcentaje."
+      :"Saldo aproximado de chapas · Insumos − Producción.");
+
   $("alcanceChapas").classList.toggle("error",Boolean(d.error));
 }
 
 function actualizarTotales(){
   const t=tablas.produccion;
-  const pp=t.error||(t.faltantes.length?"Revisar: "+t.faltantes.join(", "):"");
+  const pp=t.error||
+    (t.faltantes.length?"Revisar: "+t.faltantes.join(", "):"");
 
   $("numero-produccion").textContent=!t.lectura||pp
     ?"—":numero(filtradas("produccion").reduce((s,f)=>s+f.total,0));
+
   $("numero-produccion").title=pp;
   $("numero-produccion").classList.toggle("error",Boolean(pp));
 
-  const pd=t.error||(t.erroresDescarte.length
-    ?"Revisar: "+t.erroresDescarte.join(", "):"");
+  const pd=t.error||
+    (t.erroresDescarte.length
+      ?"Revisar: "+t.erroresDescarte.join(", "):"");
 
   $("numero-descarte").textContent=!t.lectura||pd
     ?"—":numero(calculoDescarte().total);
+
   $("numero-descarte").classList.toggle("error",Boolean(pd));
   $("tarjetaDescarte").title=pd;
 }
@@ -1194,23 +1407,33 @@ function mostrarDetalleDescarte(){
     const tr=document.createElement("tr");
     const clasificacion=document.createElement("td");
     const cantidad=document.createElement("td");
+
     clasificacion.textContent=nombre;
     const errores=t.erroresDescartePorColumna[i];
+
     cantidad.textContent=t.lectura&&!t.error&&!errores.length
       ?numero(d.cantidades[i]):"—";
+
     cantidad.title=errores.join(", ");
     cantidad.classList.toggle("error",errores.length>0);
-    tr.append(clasificacion,cantidad);fragmento.append(tr);
+
+    tr.append(clasificacion,cantidad);
+    fragmento.append(tr);
   });
 
   $("detalleDescarte").replaceChildren(fragmento);
-  const problema=t.error||(t.erroresDescarte.length
-    ?"Revisar: "+t.erroresDescarte.join(", "):"");
 
-  $("totalDetalleDescarte").textContent=t.lectura&&!problema?numero(d.total):"—";
+  const problema=t.error||
+    (t.erroresDescarte.length
+      ?"Revisar: "+t.erroresDescarte.join(", "):"");
+
+  $("totalDetalleDescarte").textContent=
+    t.lectura&&!problema?numero(d.total):"—";
+
   $("alcanceDescarte").textContent=!t.lectura
     ?"Se necesita cargar Producción."
     :problema||"Detalle de los registros seleccionados en Producción.";
+
   $("alcanceDescarte").classList.toggle("error",Boolean(problema));
 }
 
@@ -1226,147 +1449,250 @@ function tarjetasStock(){
   const ids=["rojo","amarillo","verde","monte"];
 
   if(p.cargando||r.cargando){
-    ids.forEach(id=>ponerStock(id,null,"Actualizando datos..."));return;
+    ids.forEach(id=>ponerStock(id,null,"Actualizando datos..."));
+    return;
   }
+
   if(!p.lectura||!r.lectura){
-    ids.forEach(id=>ponerStock(id,null,"Se necesita cargar Producción y Recibo."));return;
+    ids.forEach(id=>ponerStock(
+      id,null,"Se necesita cargar Producción y Recibo."
+    ));
+    return;
   }
+
   if(p.error||r.error){
-    ids.forEach(id=>ponerStock(id,null,"Revisar la lectura de Producción y Recibo.",true));return;
+    ids.forEach(id=>ponerStock(
+      id,null,"Revisar la lectura de Producción y Recibo.",true
+    ));
+    return;
   }
 
   for(const color of COLORES){
-    const problemas=[...p.faltantesColor[color],
-      ...(r.avisoCantidad?[r.avisoCantidad]:[])];
+    const problemas=[
+      ...p.faltantesColor[color],
+      ...(r.avisoCantidad?[r.avisoCantidad]:[])
+    ];
 
     if(problemas.length){
-      ponerStock(color.toLowerCase(),null,"Revisar: "+problemas.join(", "),true);
+      ponerStock(
+        color.toLowerCase(),null,
+        "Revisar: "+problemas.join(", "),true
+      );
       continue;
     }
 
-    const producido=p.filas.reduce((s,f)=>s+f.produccion[color],0);
-    const recibido=r.filas.reduce((s,f)=>s+(f.color===color?f.cantidad:0),0);
+    const producido=p.filas.reduce(
+      (s,f)=>s+f.produccion[color],0
+    );
 
-    ponerStock(color.toLowerCase(),producido-recibido,
-      "Producción: "+numero(producido)+" − Recibido: "+numero(recibido)+
-      (r.noClasificados?" · "+numero(r.noClasificados)+
-        " registros sin clasificación válida, excluidos.":""),
-      r.noClasificados>0);
+    const recibido=r.filas.reduce(
+      (s,f)=>s+(f.color===color?f.cantidad:0),0
+    );
+
+    ponerStock(
+      color.toLowerCase(),
+      producido-recibido,
+      "Producción: "+numero(producido)+
+      " − Recibido: "+numero(recibido)+
+      (r.noClasificados
+        ?" · "+numero(r.noClasificados)+
+          " registros sin clasificación válida, excluidos."
+        :""),
+      r.noClasificados>0
+    );
   }
 
-  const problemas=[...p.faltantes,...(r.avisoCantidad?[r.avisoCantidad]:[])];
+  const problemas=[
+    ...p.faltantes,
+    ...(r.avisoCantidad?[r.avisoCantidad]:[])
+  ];
+
   if(problemas.length){
-    ponerStock("monte",null,"Revisar: "+problemas.join(", "),true);return;
+    ponerStock("monte",null,"Revisar: "+problemas.join(", "),true);
+    return;
   }
 
   const producido=p.filas.reduce((s,f)=>s+f.total,0);
   const recibido=r.filas.reduce((s,f)=>s+f.cantidad,0);
-  ponerStock("monte",producido-recibido,
-    "Producción: "+numero(producido)+" − Cantidad Recibo: "+numero(recibido));
+
+  ponerStock(
+    "monte",
+    producido-recibido,
+    "Producción: "+numero(producido)+
+    " − Cantidad Recibo: "+numero(recibido)
+  );
 }
 
 const SVG_NS="http://www.w3.org/2000/svg";
+
 function svgElemento(nombre,atributos={}){
   const el=document.createElementNS(SVG_NS,nombre);
-  for(const[k,v]of Object.entries(atributos))el.setAttribute(k,String(v));
+  for(const[k,v]of Object.entries(atributos)){
+    el.setAttribute(k,String(v));
+  }
   return el;
 }
+
 function textoSVG(svg,contenido,atributos){
   const el=svgElemento("text",{
     "font-family":"Segoe UI, Arial, sans-serif",
-    fill:"#243d33",...atributos
+    fill:"#243d33",
+    ...atributos
   });
-  el.textContent=contenido;svg.append(el);return el;
+
+  el.textContent=contenido;
+  svg.append(el);
+  return el;
 }
+
 function mensajeGrafico(id,mensaje){
   const div=document.createElement("div");
-  div.className="mensaje-grafico";div.textContent=mensaje;
+  div.className="mensaje-grafico";
+  div.textContent=mensaje;
   $(id).replaceChildren(div);
 }
+
 function dividirNombre(nombre){
   const palabras=nombre.split(/\s+/),lineas=[];
   let actual="";
+
   for(const palabra of palabras){
     if(actual&&(actual+" "+palabra).length>17){
-      lineas.push(actual);actual=palabra;
+      lineas.push(actual);
+      actual=palabra;
     }else actual=actual?actual+" "+palabra:palabra;
   }
+
   if(actual)lineas.push(actual);
   return lineas;
 }
+
 function acomodarEtiquetas(lista){
   if(!lista.length)return;
+
   lista.sort((a,b)=>a.y-b.y);
+
   const minimo=48,maximo=302,separacion=66;
+
   for(let i=0;i<lista.length;i++){
     lista[i].y=Math.max(minimo,Math.min(maximo,lista[i].y));
-    if(i)lista[i].y=Math.max(lista[i].y,lista[i-1].y+separacion);
+
+    if(i){
+      lista[i].y=Math.max(
+        lista[i].y,lista[i-1].y+separacion
+      );
+    }
   }
+
   if(lista[lista.length-1].y>maximo){
     lista[lista.length-1].y=maximo;
+
     for(let i=lista.length-2;i>=0;i--){
-      lista[i].y=Math.min(lista[i].y,lista[i+1].y-separacion);
+      lista[i].y=Math.min(
+        lista[i].y,lista[i+1].y-separacion
+      );
     }
   }
 }
+
 function dibujarGrafico(id,series,anillo,etiqueta){
   if(series.some(s=>!Number.isFinite(s.valor)||s.valor<0)){
-    mensajeGrafico(id,"Revisar valores negativos o no numéricos.");return;
+    mensajeGrafico(id,"Revisar valores negativos o no numéricos.");
+    return;
   }
+
   const total=series.reduce((s,v)=>s+v.valor,0);
+
   const svg=svgElemento("svg",{
-    viewBox:"0 0 480 360",role:"img",
+    viewBox:"0 0 480 360",
+    role:"img",
     "aria-label":etiqueta+". Total: "+numero(total)
   });
+
   const cx=240,cy=180,r=88;
   svg.append(svgElemento("circle",{cx,cy,r,fill:"#e8e7de"}));
+
   let angulo=-Math.PI/2;
   const etiquetas=[];
 
   if(total>0){
     for(const serie of series){
       if(!serie.valor)continue;
+
       const amplitud=serie.valor/total*Math.PI*2;
-      const fin=angulo+amplitud,medio=angulo+amplitud/2;
+      const fin=angulo+amplitud;
+      const medio=angulo+amplitud/2;
       let pieza;
+
       if(amplitud>=Math.PI*2-0.000001){
-        pieza=svgElemento("circle",{cx,cy,r,fill:serie.color});
+        pieza=svgElemento("circle",{
+          cx,cy,r,fill:serie.color
+        });
       }else{
-        const x1=cx+r*Math.cos(angulo),y1=cy+r*Math.sin(angulo);
-        const x2=cx+r*Math.cos(fin),y2=cy+r*Math.sin(fin);
+        const x1=cx+r*Math.cos(angulo);
+        const y1=cy+r*Math.sin(angulo);
+        const x2=cx+r*Math.cos(fin);
+        const y2=cy+r*Math.sin(fin);
+
         pieza=svgElemento("path",{
           d:"M "+cx+" "+cy+" L "+x1+" "+y1+
             " A "+r+" "+r+" 0 "+(amplitud>Math.PI?1:0)+
             " 1 "+x2+" "+y2+" Z",
-          fill:serie.color,stroke:"#fffefa","stroke-width":1
+          fill:serie.color,
+          stroke:"#fffefa",
+          "stroke-width":1
         });
       }
+
       const titulo=svgElemento("title");
       titulo.textContent=serie.nombre+": "+numero(serie.valor)+
         " ("+porcentaje(serie.valor/total*100)+")";
-      pieza.append(titulo);svg.append(pieza);
-      etiquetas.push({serie,medio,derecha:Math.cos(medio)>=0,
-        y:cy+112*Math.sin(medio)});
+
+      pieza.append(titulo);
+      svg.append(pieza);
+
+      etiquetas.push({
+        serie,
+        medio,
+        derecha:Math.cos(medio)>=0,
+        y:cy+112*Math.sin(medio)
+      });
+
       angulo=fin;
     }
   }
 
   if(anillo){
-    svg.append(svgElemento("circle",{cx,cy,r:62,fill:"#fffefa"}));
+    svg.append(svgElemento("circle",{
+      cx,cy,r:62,fill:"#fffefa"
+    }));
+
     textoSVG(svg,numero(total),{
-      x:cx,y:183,"text-anchor":"middle",
-      "font-family":"Georgia, serif","font-size":23,
-      "font-weight":"bold",fill:"#173f35"
+      x:cx,
+      y:183,
+      "text-anchor":"middle",
+      "font-family":"Georgia, serif",
+      "font-size":23,
+      "font-weight":"bold",
+      fill:"#173f35"
     });
+
     textoSVG(svg,etiqueta,{
-      x:cx,y:203,"text-anchor":"middle",
-      "font-size":8.5,fill:"#748077"
+      x:cx,
+      y:203,
+      "text-anchor":"middle",
+      "font-size":8.5,
+      fill:"#748077"
     });
   }
+
   if(!total){
     textoSVG(svg,"Sin cantidades",{
-      x:cx,y:anillo?230:184,"text-anchor":"middle",
-      "font-size":13,fill:"#748077"
+      x:cx,
+      y:anillo?230:184,
+      "text-anchor":"middle",
+      "font-size":13,
+      fill:"#748077"
     });
   }
 
@@ -1376,121 +1702,211 @@ function dibujarGrafico(id,series,anillo,etiqueta){
   for(const e of etiquetas){
     const xInicio=cx+(r+2)*Math.cos(e.medio);
     const yInicio=cy+(r+2)*Math.sin(e.medio);
-    const xIntermedio=e.derecha?344:136,xTexto=e.derecha?350:130;
+
+    const xIntermedio=e.derecha?344:136;
+    const xTexto=e.derecha?350:130;
+
     const lineas=dividirNombre(e.serie.nombre);
     const yTexto=e.y-(lineas.length+1)*8+12;
 
     svg.append(svgElemento("polyline",{
-      points:xInicio+","+yInicio+" "+xIntermedio+","+e.y+" "+
+      points:xInicio+","+yInicio+" "+
+        xIntermedio+","+e.y+" "+
         (e.derecha?xTexto-4:xTexto+4)+","+e.y,
-      fill:"none",stroke:"#a5ab96","stroke-width":1
+      fill:"none",
+      stroke:"#a5ab96",
+      "stroke-width":1
     }));
+
     const etiquetaTexto=svgElemento("text",{
-      x:xTexto,y:yTexto,"text-anchor":e.derecha?"start":"end",
+      x:xTexto,
+      y:yTexto,
+      "text-anchor":e.derecha?"start":"end",
       "font-family":"Segoe UI, Arial, sans-serif",
-      "font-size":12.5,"font-weight":"600",fill:"#243d33"
+      "font-size":12.5,
+      "font-weight":"600",
+      fill:"#243d33"
     });
+
     lineas.forEach((linea,i)=>{
-      const parte=svgElemento("tspan",{x:xTexto,dy:i===0?0:16});
-      parte.textContent=linea;etiquetaTexto.append(parte);
+      const parte=svgElemento("tspan",{
+        x:xTexto,
+        dy:i===0?0:16
+      });
+
+      parte.textContent=linea;
+      etiquetaTexto.append(parte);
     });
+
     const valores=svgElemento("tspan",{
-      x:xTexto,dy:17,"font-size":13,"font-weight":"bold"
+      x:xTexto,
+      dy:17,
+      "font-size":13,
+      "font-weight":"bold"
     });
+
     valores.textContent=numero(e.serie.valor)+
       " ("+porcentaje(e.serie.valor/total*100)+")";
-    etiquetaTexto.append(valores);svg.append(etiquetaTexto);
+
+    etiquetaTexto.append(valores);
+    svg.append(etiquetaTexto);
   }
 
   const ceros=series.filter(s=>s.valor===0);
+
   if(total>0&&ceros.length){
-    textoSVG(svg,ceros.map(s=>s.nombre+": 0 (0,0%)").join(" · "),{
-      x:cx,y:344,"text-anchor":"middle","font-size":10,fill:"#748077"
-    });
+    textoSVG(
+      svg,
+      ceros.map(s=>s.nombre+": 0 (0,0%)").join(" · "),
+      {
+        x:cx,
+        y:344,
+        "text-anchor":"middle",
+        "font-size":10,
+        fill:"#748077"
+      }
+    );
   }
+
   $(id).replaceChildren(svg);
 }
 
 function actualizarGraficos(){
   const p=tablas.produccion,r=tablas.recibo;
   const seleccion=filtradas("produccion");
-  const problemaP=p.cargando?"Cargando Producción...":
-    !p.lectura?"Pendiente de lectura de Producción.":p.error||p.faltantes.join(", ");
 
-  if(problemaP)mensajeGrafico("graficoProduccionColor",problemaP);
-  else dibujarGrafico("graficoProduccionColor",
-    ["ROJO","VERDE","AMARILLO"].map(color=>({
-      nombre:color,color:PALETA[color],
-      valor:seleccion.reduce((s,f)=>s+f.produccion[color],0)
-    })),true,"TROZAS PRODUCIDAS");
+  const problemaP=p.cargando
+    ?"Cargando Producción..."
+    :!p.lectura
+      ?"Pendiente de lectura de Producción."
+      :p.error||p.faltantes.join(", ");
+
+  if(problemaP){
+    mensajeGrafico("graficoProduccionColor",problemaP);
+  }else{
+    dibujarGrafico(
+      "graficoProduccionColor",
+      ["ROJO","VERDE","AMARILLO"].map(color=>({
+        nombre:color,
+        color:PALETA[color],
+        valor:seleccion.reduce(
+          (s,f)=>s+f.produccion[color],0
+        )
+      })),
+      true,
+      "TROZAS PRODUCIDAS"
+    );
+  }
 
   const problemaPD=problemaP||p.erroresDescarte.join(", ");
-  if(problemaPD)mensajeGrafico("graficoProduccionDescarte",problemaPD);
-  else{
+
+  if(problemaPD){
+    mensajeGrafico("graficoProduccionDescarte",problemaPD);
+  }else{
     const d=calculoDescarte();
+
     dibujarGrafico("graficoProduccionDescarte",[
-      {nombre:"PRODUCCIÓN",color:"#295344",
-        valor:seleccion.reduce((s,f)=>s+f.total,0)},
-      {nombre:"DESCARTE BASAL",color:"#b5995f",
-        valor:d.cantidades[0]+d.cantidades[1]},
-      {nombre:"DESCARTE",color:"#c64c45",
-        valor:d.cantidades[2]+d.cantidades[3]}
+      {
+        nombre:"PRODUCCIÓN",
+        color:"#295344",
+        valor:seleccion.reduce((s,f)=>s+f.total,0)
+      },
+      {
+        nombre:"DESCARTE BASAL",
+        color:"#b5995f",
+        valor:d.cantidades[0]+d.cantidades[1]
+      },
+      {
+        nombre:"DESCARTE",
+        color:"#c64c45",
+        valor:d.cantidades[2]+d.cantidades[3]
+      }
     ],false,"PRODUCCIÓN Y DESCARTES");
   }
 
-  const problemaR=r.cargando?"Cargando Recibo...":
-    !r.lectura?"Pendiente de lectura de Recibo.":r.error||r.avisoCantidad;
+  const problemaR=r.cargando
+    ?"Cargando Recibo..."
+    :!r.lectura
+      ?"Pendiente de lectura de Recibo."
+      :r.error||r.avisoCantidad;
 
-  if(problemaR)mensajeGrafico("graficoDespacho",problemaR);
-  else{
+  if(problemaR){
+    mensajeGrafico("graficoDespacho",problemaR);
+  }else{
     const series=["ROJO","VERDE","AMARILLO"].map(color=>({
-      nombre:color,color:PALETA[color],
-      valor:r.filas.reduce((s,f)=>s+(f.color===color?f.cantidad:0),0)
+      nombre:color,
+      color:PALETA[color],
+      valor:r.filas.reduce(
+        (s,f)=>s+(f.color===color?f.cantidad:0),0
+      )
     }));
+
     if(r.noClasificados){
-      series.push({nombre:"SIN CLASIFICAR",color:"#98a090",
-        valor:r.filas.reduce((s,f)=>s+(!COLORES.includes(f.color)?f.cantidad:0),0)});
+      series.push({
+        nombre:"SIN CLASIFICAR",
+        color:"#98a090",
+        valor:r.filas.reduce(
+          (s,f)=>s+(!COLORES.includes(f.color)?f.cantidad:0),0
+        )
+      });
     }
-    dibujarGrafico("graficoDespacho",series,true,"TROZAS DESPACHADAS");
+
+    dibujarGrafico(
+      "graficoDespacho",series,true,"TROZAS DESPACHADAS"
+    );
   }
 }
 
-// GRÁFICO POR LA COLUMNA QUINCENA DE PRODUCCIÓN.
-const comparador=new Intl.Collator("es",{numeric:true,sensitivity:"base"});
+const comparador=new Intl.Collator("es",{
+  numeric:true,sensitivity:"base"
+});
 
 function nombreQuincena(valor){
-  return /^quincena\b/i.test(valor)?valor:"Quincena "+valor;
+  return /^quincena\b/i.test(valor)
+    ?valor:"Quincena "+valor;
 }
 
 function actualizarSelectorQuincena(){
   const selector=$("selectorQuincena");
   const anterior=selector.value;
+
   const opciones=[...new Set(tablas.produccion.filas
     .map(f=>f.quincena).filter(tieneContenido))]
     .sort(comparador.compare);
 
   const fragmento=document.createDocumentFragment();
+
   const todas=document.createElement("option");
-  todas.value="";todas.textContent="Todas";fragmento.append(todas);
+  todas.value="";
+  todas.textContent="Todas";
+  fragmento.append(todas);
 
   for(const valor of opciones){
     const opcion=document.createElement("option");
-    opcion.value=valor;opcion.textContent=nombreQuincena(valor);
+    opcion.value=valor;
+    opcion.textContent=nombreQuincena(valor);
     fragmento.append(opcion);
   }
+
   selector.replaceChildren(fragmento);
   selector.value=opciones.includes(anterior)?anterior:"";
 }
 
 function seriesSeleccionadas(){
-  const seleccion=new Set([...document.querySelectorAll("[data-serie]:checked")]
-    .map(input=>input.dataset.serie));
+  const seleccion=new Set([
+    ...document.querySelectorAll("[data-serie]:checked")
+  ].map(input=>input.dataset.serie));
+
   return SERIES_QUINCENA.filter(s=>seleccion.has(s.id));
 }
 
 function valorSerie(fila,serie){
   if(serie==="PRODUCCION")return fila.total;
-  if(serie==="DESCARTES")return fila.descarte.reduce((s,v)=>s+v,0);
+
+  if(serie==="DESCARTES"){
+    return fila.descarte.reduce((s,v)=>s+v,0);
+  }
+
   return fila.produccion[serie];
 }
 
@@ -1502,148 +1918,241 @@ function erroresSerie(tabla,serie){
 
 function pasoEscala(rango){
   if(!rango)return 1;
+
   const bruto=rango/5;
   const potencia=Math.pow(10,Math.floor(Math.log10(bruto)));
   const proporcion=bruto/potencia;
-  const factor=proporcion<=1?1:proporcion<=2?2:
-    proporcion<=2.5?2.5:proporcion<=5?5:10;
+
+  const factor=proporcion<=1?1:
+    proporcion<=2?2:
+    proporcion<=2.5?2.5:
+    proporcion<=5?5:10;
+
   return factor*potencia;
 }
 
 function actualizarGraficoQuincena(){
   const t=tablas.produccion;
   const series=seriesSeleccionadas();
+
   $("leyendaQuincena").replaceChildren();
   $("avisoQuincena").hidden=true;
 
-  const problema=t.cargando?"Cargando Producción...":
-    !t.lectura?"Pendiente de lectura de Producción.":
-    t.error||t.avisoQuincena;
+  const problema=t.cargando
+    ?"Cargando Producción..."
+    :!t.lectura
+      ?"Pendiente de lectura de Producción."
+      :t.error||t.avisoQuincena;
 
-  if(problema){mensajeGrafico("graficoQuincena",problema);return}
-  if(!series.length){
-    mensajeGrafico("graficoQuincena","Seleccioná al menos un producto.");return;
+  if(problema){
+    mensajeGrafico("graficoQuincena",problema);
+    return;
   }
 
-  const errores=[...new Set(series.flatMap(s=>erroresSerie(t,s.id)))];
+  if(!series.length){
+    mensajeGrafico(
+      "graficoQuincena","Seleccioná al menos un producto."
+    );
+    return;
+  }
+
+  const errores=[
+    ...new Set(series.flatMap(s=>erroresSerie(t,s.id)))
+  ];
+
   if(errores.length){
-    mensajeGrafico("graficoQuincena","Revisar: "+errores.join(", "));return;
+    mensajeGrafico(
+      "graficoQuincena","Revisar: "+errores.join(", ")
+    );
+    return;
   }
 
   const seleccionQuincena=$("selectorQuincena").value;
   const filtrado=filtradas("produccion");
-  const sinQuincena=filtrado.filter(f=>!tieneContenido(f.quincena)).length;
+
+  const sinQuincena=filtrado.filter(
+    f=>!tieneContenido(f.quincena)
+  ).length;
+
   const filas=filtrado.filter(f=>
     tieneContenido(f.quincena)&&
     (!seleccionQuincena||f.quincena===seleccionQuincena)
   );
 
   const grupos=new Map();
+
   for(const fila of filas){
     if(!grupos.has(fila.quincena)){
-      grupos.set(fila.quincena,
-        Object.fromEntries(series.map(s=>[s.id,0])));
+      grupos.set(
+        fila.quincena,
+        Object.fromEntries(series.map(s=>[s.id,0]))
+      );
     }
+
     const valores=grupos.get(fila.quincena);
+
     for(const serie of series){
       valores[serie.id]+=valorSerie(fila,serie.id);
     }
   }
 
   const categorias=[...grupos.keys()].sort(comparador.compare);
+
   if(!categorias.length){
-    mensajeGrafico("graficoQuincena","No hay registros para la selección actual.");
+    mensajeGrafico(
+      "graficoQuincena",
+      "No hay registros para la selección actual."
+    );
+
     if(sinQuincena){
       $("avisoQuincena").hidden=false;
-      $("avisoQuincena").textContent=
-        numero(sinQuincena)+" registros sin Quincena no se incluyen en este gráfico.";
+      $("avisoQuincena").textContent=numero(sinQuincena)+
+        " registros sin Quincena no se incluyen en este gráfico.";
     }
+
     return;
   }
 
-  const valores=categorias.flatMap(q=>series.map(s=>grupos.get(q)[s.id]));
+  const valores=categorias.flatMap(
+    q=>series.map(s=>grupos.get(q)[s.id])
+  );
+
   const menor=Math.min(0,...valores);
   const mayor=Math.max(0,...valores);
   const paso=pasoEscala(mayor-menor);
+
   const minimo=Math.floor(menor/paso)*paso;
   const maximo=Math.ceil(mayor/paso)*paso||paso;
 
-  // Mantener anchura suficiente para las etiquetas.
   const anchoGrupo=Math.max(180,series.length*65);
-  const ancho=Math.max(1000,110+categorias.length*anchoGrupo);
+  const ancho=Math.max(
+    1000,110+categorias.length*anchoGrupo
+  );
   const alto=390;
-  const margen={izquierda:80,derecha:25,arriba:45,abajo:78};
+
+  const margen={
+    izquierda:80,
+    derecha:25,
+    arriba:45,
+    abajo:78
+  };
+
   const anchoArea=ancho-margen.izquierda-margen.derecha;
   const altoArea=alto-margen.arriba-margen.abajo;
-  const y=v=>margen.arriba+(maximo-v)/(maximo-minimo)*altoArea;
+
+  const y=v=>margen.arriba+
+    (maximo-v)/(maximo-minimo)*altoArea;
+
   const cero=y(0);
 
   const svg=svgElemento("svg",{
     viewBox:"0 0 "+ancho+" "+alto,
-    role:"img","aria-label":"Producción agrupada por Quincena"
+    role:"img",
+    "aria-label":"Producción agrupada por Quincena"
   });
+
   svg.style.minWidth=ancho+"px";
 
   for(let v=minimo;v<=maximo+paso/1000;v+=paso){
     const posicion=y(v);
+
     svg.append(svgElemento("line",{
-      x1:margen.izquierda,y1:posicion,
-      x2:ancho-margen.derecha,y2:posicion,
-      stroke:"#dedfd4","stroke-width":1,"stroke-dasharray":"4 4"
+      x1:margen.izquierda,
+      y1:posicion,
+      x2:ancho-margen.derecha,
+      y2:posicion,
+      stroke:"#dedfd4",
+      "stroke-width":1,
+      "stroke-dasharray":"4 4"
     }));
-    textoSVG(svg,numero(Math.abs(v)<paso/1000?0:v),{
-      x:margen.izquierda-12,y:posicion+4,
-      "text-anchor":"end","font-size":12,fill:"#748077"
-    });
+
+    textoSVG(
+      svg,
+      numero(Math.abs(v)<paso/1000?0:v),
+      {
+        x:margen.izquierda-12,
+        y:posicion+4,
+        "text-anchor":"end",
+        "font-size":12,
+        fill:"#748077"
+      }
+    );
   }
 
   svg.append(svgElemento("line",{
-    x1:margen.izquierda,y1:cero,
-    x2:ancho-margen.derecha,y2:cero,
-    stroke:"#899383","stroke-width":1
+    x1:margen.izquierda,
+    y1:cero,
+    x2:ancho-margen.derecha,
+    y2:cero,
+    stroke:"#899383",
+    "stroke-width":1
   }));
 
   textoSVG(svg,"Cantidad",{
-    x:20,y:margen.arriba+altoArea/2,
-    transform:"rotate(-90 20 "+(margen.arriba+altoArea/2)+")",
-    "text-anchor":"middle","font-size":12,fill:"#748077"
+    x:20,
+    y:margen.arriba+altoArea/2,
+    transform:"rotate(-90 20 "+
+      (margen.arriba+altoArea/2)+")",
+    "text-anchor":"middle",
+    "font-size":12,
+    fill:"#748077"
   });
 
   const espacioGrupo=anchoArea/categorias.length;
-  const espacioBarra=Math.min(65,espacioGrupo*.83/series.length);
+  const espacioBarra=Math.min(
+    65,espacioGrupo*.83/series.length
+  );
   const anchoBarra=Math.max(12,espacioBarra-12);
 
   categorias.forEach((quincena,indice)=>{
-    const centro=margen.izquierda+espacioGrupo*(indice+.5);
+    const centro=margen.izquierda+
+      espacioGrupo*(indice+.5);
+
     const inicio=centro-series.length*espacioBarra/2;
 
     series.forEach((serie,i)=>{
       const valor=grupos.get(quincena)[serie.id];
-      const x=inicio+i*espacioBarra+(espacioBarra-anchoBarra)/2;
+
+      const x=inicio+i*espacioBarra+
+        (espacioBarra-anchoBarra)/2;
+
       const altoBarra=Math.abs(y(valor)-cero);
+
       const rect=svgElemento("rect",{
-        x,y:Math.min(y(valor),cero),width:anchoBarra,
-        height:altoBarra,fill:serie.color,rx:2
+        x,
+        y:Math.min(y(valor),cero),
+        width:anchoBarra,
+        height:altoBarra,
+        fill:serie.color,
+        rx:2
       });
+
       const tooltip=svgElemento("title");
       tooltip.textContent=nombreQuincena(quincena)+
         " · "+serie.nombre+": "+numero(valor);
-      rect.append(tooltip);svg.append(rect);
+
+      rect.append(tooltip);
+      svg.append(rect);
 
       textoSVG(svg,numero(valor),{
-        x:x+anchoBarra/2,y:valor>=0?y(valor)-9:y(valor)+17,
-        "text-anchor":"middle","font-size":11,
+        x:x+anchoBarra/2,
+        y:valor>=0?y(valor)-9:y(valor)+17,
+        "text-anchor":"middle",
+        "font-size":11,
         "font-weight":"600"
       });
     });
 
     const etiqueta=nombreQuincena(quincena);
-    const lineas=etiqueta.length>25?dividirNombre(etiqueta):[etiqueta];
+    const lineas=etiqueta.length>25
+      ?dividirNombre(etiqueta):[etiqueta];
 
     lineas.forEach((linea,i)=>{
       textoSVG(svg,linea,{
-        x:centro,y:alto-margen.abajo+27+i*15,
-        "text-anchor":"middle","font-size":12
+        x:centro,
+        y:alto-margen.abajo+27+i*15,
+        "text-anchor":"middle",
+        "font-size":12
       });
     });
   });
@@ -1651,31 +2160,44 @@ function actualizarGraficoQuincena(){
   $("graficoQuincena").replaceChildren(svg);
 
   const leyenda=document.createDocumentFragment();
+
   for(const serie of series){
     const item=document.createElement("span");
     item.className="leyenda-item";
+
     const punto=document.createElement("span");
-    punto.className="punto";punto.style.background=serie.color;
+    punto.className="punto";
+    punto.style.background=serie.color;
+
     const nombre=document.createElement("span");
     nombre.textContent=serie.nombre;
-    item.append(punto,nombre);leyenda.append(item);
+
+    item.append(punto,nombre);
+    leyenda.append(item);
   }
+
   $("leyendaQuincena").replaceChildren(leyenda);
 
   if(sinQuincena){
     $("avisoQuincena").hidden=false;
-    $("avisoQuincena").textContent=
-      numero(sinQuincena)+" registros sin Quincena no se incluyen en este gráfico.";
+    $("avisoQuincena").textContent=numero(sinQuincena)+
+      " registros sin Quincena no se incluyen en este gráfico.";
   }
 }
 
 function actualizarEstado(){
-  const errores=Object.entries(tablas).filter(([,t])=>t.error)
+  const errores=Object.entries(tablas)
+    .filter(([,t])=>t.error)
     .map(([id,t])=>id.toUpperCase()+": "+t.error);
 
   $("estadoCarga").textContent=errores.length
-    ?errores.join(" · "):ocupado?"Actualizando datos...":"";
-  $("estadoCarga").classList.toggle("error",errores.length>0);
+    ?errores.join(" · ")
+    :ocupado?"Actualizando datos...":"";
+
+  $("estadoCarga").classList.toggle(
+    "error",errores.length>0
+  );
+
   $("estadoCarga").hidden=!$("estadoCarga").textContent;
 }
 
@@ -1688,59 +2210,90 @@ function actualizarDashboard(){
   actualizarSelectorQuincena();
   actualizarGraficoQuincena();
   actualizarEstado();
-  if($("modalDescarte").open)mostrarDetalleDescarte();
+
+  if($("modalDescarte").open){
+    mostrarDetalleDescarte();
+  }
 }
 
 function encabezado(){
-  const t=tablas[activa],tr=document.createElement("tr");
+  const t=tablas[activa];
+  const tr=document.createElement("tr");
 
   t.columnas.forEach((nombre,i)=>{
     const th=document.createElement("th");
-    if(esObservaciones(nombre))th.className="observaciones";
+
+    if(esObservaciones(nombre)){
+      th.className="observaciones";
+    }
+
     const b=document.createElement("button");
-    b.textContent=nombre+(t.orden===i?(t.direccion===1?" ▲":" ▼"):"");
+    b.textContent=nombre+
+      (t.orden===i?(t.direccion===1?" ▲":" ▼"):"");
 
     b.addEventListener("click",()=>{
       t.direccion=t.orden===i?-t.direccion:1;
-      t.orden=i;t.pagina=1;encabezado();mostrarFilas();
+      t.orden=i;
+      t.pagina=1;
+      encabezado();
+      mostrarFilas();
     });
 
     const input=document.createElement("input");
-    input.type="search";input.placeholder="Filtrar...";
+    input.type="search";
+    input.placeholder="Filtrar...";
     input.value=t.filtros[i]||"";
     input.setAttribute("aria-label","Filtrar "+nombre);
 
     input.addEventListener("input",()=>{
-      t.filtros[i]=input.value;t.pagina=1;
-      mostrarFilas();actualizarDashboard();
+      t.filtros[i]=input.value;
+      t.pagina=1;
+      mostrarFilas();
+      actualizarDashboard();
     });
 
-    th.append(b,input);tr.append(th);
+    th.append(b,input);
+    tr.append(th);
   });
 
   $("encabezado").replaceChildren(tr);
 }
 
 function claveFecha(v){
-  const m=texto(v).match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+  const m=texto(v).match(
+    /^(\d{2})\/(\d{2})\/(\d{4})$/
+  );
+
   return m?m[3]+m[2]+m[1]:texto(v);
 }
 
 function mostrarFilas(){
   if(!tablaVisible)return;
-  const t=tablas[activa],resultado=filtradas(activa);
+
+  const t=tablas[activa];
+  const resultado=filtradas(activa);
 
   if(t.orden!==null){
     resultado.sort((a,b)=>{
-      let av=a.valores[t.orden],bv=b.valores[t.orden];
-      if(esFecha(t.columnas[t.orden])){av=claveFecha(av);bv=claveFecha(bv)}
+      let av=a.valores[t.orden];
+      let bv=b.valores[t.orden];
+
+      if(esFecha(t.columnas[t.orden])){
+        av=claveFecha(av);
+        bv=claveFecha(bv);
+      }
+
       return comparador.compare(av,bv)*t.direccion;
     });
   }
 
   const limite=Number($("limite").value);
-  const paginas=Math.max(1,Math.ceil(resultado.length/limite));
+  const paginas=Math.max(
+    1,Math.ceil(resultado.length/limite)
+  );
+
   t.pagina=Math.min(t.pagina,paginas);
+
   const inicio=(t.pagina-1)*limite;
   const fragmento=document.createDocumentFragment();
 
@@ -1752,18 +2305,30 @@ function mostrarFilas(){
 
       if(esObservaciones(t.columnas[i])){
         td.className="observaciones";
-        const contenedor=activa==="insumos"?document.createElement("div"):td;
-        if(activa==="insumos"){contenedor.className="nota-fila";td.append(contenedor);}
+
+        const contenedor=activa==="insumos"
+          ?document.createElement("div"):td;
+
+        if(activa==="insumos"){
+          contenedor.className="nota-fila";
+          td.append(contenedor);
+        }
+
         const nota=document.createElement("div");
-        nota.className="nota-texto corta";nota.textContent=v||"—";
+        nota.className="nota-texto corta";
+        nota.textContent=v||"—";
         contenedor.append(nota);
 
         if(v.trim()){
           const b=document.createElement("button");
-          b.className="leer-nota";b.textContent="Ver observación";
+          b.className="leer-nota";
+          b.textContent="Ver observación";
+
           b.addEventListener("click",()=>{
-            $("notaCompleta").textContent=v;$("modalNota").showModal();
+            $("notaCompleta").textContent=v;
+            $("modalNota").showModal();
           });
+
           contenedor.append(b);
         }
       }else if(
@@ -1772,16 +2337,21 @@ function mostrarFilas(){
         COLORES.includes(v)
       ){
         const e=document.createElement("span");
-        e.className="etiqueta "+v.toLowerCase();e.textContent=v;
+        e.className="etiqueta "+v.toLowerCase();
+        e.textContent=v;
         td.append(e);
-      }else td.textContent=v;
+      }else{
+        td.textContent=v;
+      }
 
       tr.append(td);
     });
+
     fragmento.append(tr);
   });
 
   $("cuerpo").replaceChildren(fragmento);
+
   const avisos=[
     ...(t.error?[t.error]:[]),
     ...(activa==="produccion"&&t.faltantes.length
@@ -1792,52 +2362,77 @@ function mostrarFilas(){
 
   $("aviso").hidden=!avisos.length;
   $("aviso").textContent=avisos.join(" · ");
-  $("pagina").textContent="Página "+t.pagina+" de "+paginas;
+
+  $("pagina").textContent=
+    "Página "+t.pagina+" de "+paginas;
+
   $("anterior").disabled=t.pagina<=1;
   $("siguiente").disabled=t.pagina>=paginas;
+
   $("vacio").hidden=resultado.length>0;
   $("vacio").textContent=t.cargando&&!t.lectura
-    ?"Cargando datos...":t.error&&!t.lectura
-      ?t.error:"No hay registros para esta selección.";
+    ?"Cargando datos..."
+    :t.error&&!t.lectura
+      ?t.error
+      :"No hay registros para esta selección.";
 }
 
 function mostrar(){
   $("listado").hidden=!tablaVisible;
-  $("tablaDatos").classList.toggle("tabla-insumos",activa==="insumos");
+
+  $("tablaDatos").classList.toggle(
+    "tabla-insumos",activa==="insumos"
+  );
+
   document.querySelectorAll("[data-tab]").forEach(b=>{
     const elegida=tablaVisible&&b.dataset.tab===activa;
+
     b.classList.toggle("activo",elegida);
     b.setAttribute("aria-expanded",String(elegida));
   });
 
   if(!tablaVisible)return;
+
   $("tituloTabla").textContent=activa==="recibo"
-    ?TITULO_RECIBO:activa==="produccion"?"Producción":"Insumos";
+    ?TITULO_RECIBO
+    :activa==="produccion"?"Producción":"Insumos";
+
   $("buscar").value=tablas[activa].busqueda;
   $("fila").value=CONFIG[activa].fila;
   $("fila").disabled=activa!=="recibo"||ocupado;
+
   $("fila").title=activa==="insumos"
-    ?"Encabezados detectados automáticamente por Quincena y FECHA.":"";
-  encabezado();mostrarFilas();
+    ?"Encabezados detectados automáticamente por Quincena y FECHA."
+    :"";
+
+  encabezado();
+  mostrarFilas();
 }
 
 function cargarLibro(origen,bytes){
-  const libro=XLSX.read(bytes,{type:"array",cellDates:false});
+  const libro=XLSX.read(bytes,{
+    type:"array",cellDates:false
+  });
+
   const lectura=new Date().toISOString();
   libros[origen]={libro,lectura};
 
   for(const id of idsDelOrigen(origen)){
     try{
-      const t=extraer(id,libro);t.lectura=lectura;tablas[id]=t;
+      const t=extraer(id,libro);
+      t.lectura=lectura;
+      tablas[id]=t;
     }catch(e){
-      tablas[id].error=e.message;tablas[id].cargando=false;
+      tablas[id].error=e.message;
+      tablas[id].cargando=false;
     }
   }
 }
 
 function errorOrigen(origen,mensaje){
   for(const id of idsDelOrigen(origen)){
-    tablas[id].error=mensaje;tablas[id].cargando=false;
+    tablas[id].error=mensaje;
+    tablas[id].cargando=false;
   }
 }
 
@@ -1847,37 +2442,66 @@ async function descargar(origen){
 
   try{
     const respuesta=await fetch(URLS[origen],{
-      mode:"cors",cache:"no-store",
-      credentials:"omit",signal:control.signal
+      mode:"same-origin",
+      cache:"no-store",
+      credentials:"omit",
+      signal:control.signal
     });
 
     if(!respuesta.ok){
-      throw new Error("La descarga respondió HTTP "+respuesta.status+".");
+      let mensaje="La descarga respondió HTTP "+
+        respuesta.status+".";
+
+      try{
+        const detalle=await respuesta.json();
+        if(detalle.error)mensaje=detalle.error;
+      }catch{}
+
+      throw new Error(mensaje);
     }
 
-    const tipo=(respuesta.headers.get("Content-Type")||"").toLowerCase();
-    if(tipo.includes("text/html")||tipo.includes("application/json")){
+    const tipo=(
+      respuesta.headers.get("Content-Type")||""
+    ).toLowerCase();
+
+    if(
+      tipo.includes("text/html")||
+      tipo.includes("application/json")
+    ){
       throw new Error("El enlace no devolvió un Excel.");
     }
 
     const bytes=await respuesta.arrayBuffer();
-    if(!bytes.byteLength)throw new Error("El archivo está vacío.");
+
+    if(!bytes.byteLength){
+      throw new Error("El archivo está vacío.");
+    }
+
     cargarLibro(origen,bytes);
   }catch(e){
-    errorOrigen(origen,e.name==="AbortError"
-      ?"La descarga superó los 90 segundos."
-      :e instanceof TypeError
-        ?"No se pudo descargar el archivo por un bloqueo del navegador o un problema de conexión."
-        :e.message);
+    errorOrigen(
+      origen,
+      e.name==="AbortError"
+        ?"La descarga superó los 90 segundos."
+        :e instanceof TypeError
+          ?"No se pudo conectar con el servidor. Revisá la conexión e intentá actualizar nuevamente."
+          :e.message
+    );
   }finally{
-    clearTimeout(timer);actualizarDashboard();mostrar();
+    clearTimeout(timer);
+    actualizarDashboard();
+    mostrar();
   }
 }
 
 function bloquear(v){
-  ocupado=v;$("actualizar").disabled=v;
+  ocupado=v;
+  $("actualizar").disabled=v;
+
   $("textoActualizar").textContent=v
-    ?"Actualizando datos...":"Actualizar últimos datos";
+    ?"Actualizando datos..."
+    :"Actualizar últimos datos";
+
   $("fila").disabled=activa!=="recibo"||v;
 }
 
@@ -1885,96 +2509,171 @@ async function actualizar(){
   if(ocupado)return;
 
   if(typeof XLSX==="undefined"){
-    const mensaje="No se cargó el lector Excel. Revisá la conexión y recargá.";
-    errorOrigen("produccion",mensaje);errorOrigen("recibo",mensaje);
-    actualizarDashboard();mostrar();return;
+    const mensaje=
+      "No se cargó el lector Excel. Revisá la conexión y recargá.";
+
+    errorOrigen("produccion",mensaje);
+    errorOrigen("recibo",mensaje);
+    actualizarDashboard();
+    mostrar();
+    return;
   }
 
   bloquear(true);
-  for(const t of Object.values(tablas)){t.cargando=true;t.error=""}
-  actualizarDashboard();mostrar();
+
+  for(const t of Object.values(tablas)){
+    t.cargando=true;
+    t.error="";
+  }
+
+  actualizarDashboard();
+  mostrar();
 
   try{
-    await Promise.allSettled([descargar("produccion"),descargar("recibo")]);
+    await Promise.allSettled([
+      descargar("produccion"),
+      descargar("recibo")
+    ]);
   }finally{
-    bloquear(false);actualizarDashboard();mostrar();
+    bloquear(false);
+    actualizarDashboard();
+    mostrar();
   }
 }
 
 document.querySelectorAll("[data-tab]").forEach(b=>{
   b.addEventListener("click",()=>{
     const seleccion=b.dataset.tab;
-    if(tablaVisible&&activa===seleccion)tablaVisible=false;
-    else{activa=seleccion;tablaVisible=true}
+
+    if(tablaVisible&&activa===seleccion){
+      tablaVisible=false;
+    }else{
+      activa=seleccion;
+      tablaVisible=true;
+    }
+
     mostrar();
   });
 });
 
 $("buscar").addEventListener("input",()=>{
   tablas[activa].busqueda=$("buscar").value;
-  tablas[activa].pagina=1;mostrarFilas();actualizarDashboard();
+  tablas[activa].pagina=1;
+  mostrarFilas();
+  actualizarDashboard();
 });
 
 $("quitar").addEventListener("click",()=>{
   for(const t of Object.values(tablas)){
-    t.busqueda="";t.filtros=t.columnas.map(()=>"");
-    t.orden=null;t.direccion=1;t.pagina=1;
+    t.busqueda="";
+    t.filtros=t.columnas.map(()=>"");
+    t.orden=null;
+    t.direccion=1;
+    t.pagina=1;
   }
+
   $("selectorQuincena").value="";
-  document.querySelectorAll("[data-serie]").forEach(input=>input.checked=true);
-  mostrar();actualizarDashboard();
+
+  document.querySelectorAll("[data-serie]").forEach(input=>{
+    input.checked=true;
+  });
+
+  mostrar();
+  actualizarDashboard();
 });
 
 $("limite").addEventListener("change",()=>{
-  tablas[activa].pagina=1;mostrarFilas();
+  tablas[activa].pagina=1;
+  mostrarFilas();
 });
+
 $("anterior").addEventListener("click",()=>{
-  tablas[activa].pagina--;mostrarFilas();
+  tablas[activa].pagina--;
+  mostrarFilas();
 });
+
 $("siguiente").addEventListener("click",()=>{
-  tablas[activa].pagina++;mostrarFilas();
+  tablas[activa].pagina++;
+  mostrarFilas();
 });
 
 $("fila").addEventListener("change",()=>{
   if(activa!=="recibo"||ocupado)return;
-  const config=CONFIG[activa],nueva=Number($("fila").value);
-  if(!Number.isInteger(nueva)||nueva<1||nueva>100){
-    $("fila").value=config.fila;return;
+
+  const config=CONFIG[activa];
+  const nueva=Number($("fila").value);
+
+  if(
+    !Number.isInteger(nueva)||
+    nueva<1||
+    nueva>100
+  ){
+    $("fila").value=config.fila;
+    return;
   }
 
-  const anterior=config.fila;config.fila=nueva;
+  const anterior=config.fila;
+  config.fila=nueva;
+
   const guardado=libros[config.origen];
 
   if(guardado){
     try{
       const t=extraer(activa,guardado.libro);
-      t.lectura=guardado.lectura;tablas[activa]=t;
+      t.lectura=guardado.lectura;
+      tablas[activa]=t;
     }catch(e){
-      config.fila=anterior;tablas[activa].error=e.message;
+      config.fila=anterior;
+      tablas[activa].error=e.message;
     }
   }
-  actualizarDashboard();mostrar();
+
+  actualizarDashboard();
+  mostrar();
 });
 
-$("selectorQuincena").addEventListener("change",actualizarGraficoQuincena);
+$("selectorQuincena").addEventListener(
+  "change",actualizarGraficoQuincena
+);
+
 document.querySelectorAll("[data-serie]").forEach(input=>{
-  input.addEventListener("change",actualizarGraficoQuincena);
+  input.addEventListener(
+    "change",actualizarGraficoQuincena
+  );
 });
 
 $("actualizar").addEventListener("click",actualizar);
-$("cerrarNota").addEventListener("click",()=>$("modalNota").close());
+
+$("cerrarNota").addEventListener("click",()=>{
+  $("modalNota").close();
+});
+
 $("tarjetaDescarte").addEventListener("click",()=>{
-  mostrarDetalleDescarte();$("modalDescarte").showModal();
+  mostrarDetalleDescarte();
+  $("modalDescarte").showModal();
 });
+
 $("tarjetaChapas").addEventListener("click",()=>{
-  mostrarDetalleChapas();$("modalChapas").showModal();
+  mostrarDetalleChapas();
+  $("modalChapas").showModal();
 });
+
 $("tarjetaTrozasCamion").addEventListener("click",()=>{
-  mostrarDetalleTrozasCamion();$("modalTrozasCamion").showModal();
+  mostrarDetalleTrozasCamion();
+  $("modalTrozasCamion").showModal();
 });
-$("cerrarTrozasCamion").addEventListener("click",()=>$("modalTrozasCamion").close());
-$("cerrarChapas").addEventListener("click",()=>$("modalChapas").close());
-$("cerrarDescarte").addEventListener("click",()=>$("modalDescarte").close());
+
+$("cerrarTrozasCamion").addEventListener("click",()=>{
+  $("modalTrozasCamion").close();
+});
+
+$("cerrarChapas").addEventListener("click",()=>{
+  $("modalChapas").close();
+});
+
+$("cerrarDescarte").addEventListener("click",()=>{
+  $("modalDescarte").close();
+});
 
 mostrar();
 actualizar();
