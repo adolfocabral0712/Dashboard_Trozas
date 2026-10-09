@@ -20,7 +20,8 @@ button:disabled{opacity:.5;cursor:default}
 .tarjetas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:18px}
 .tarjeta{background:white;border:1px solid var(--borde);padding:16px;border-radius:12px;text-align:center}
 .tarjeta h2{margin:0 0 10px;font-size:15px;color:var(--verde)}
-.numero{font-size:28px;font-weight:bold;margin-bottom:8px}
+.numero{font-size:28px;font-weight:bold;margin-bottom:6px}
+.detalle{font-size:12px;color:#647582;margin-bottom:8px;line-height:1.5}
 .estado{font-size:12px;line-height:1.5;color:#647582;overflow-wrap:anywhere}
 .error{color:#b02e2e}
 .archivos,.panel{background:white;border:1px solid var(--borde);border-radius:12px}
@@ -47,6 +48,11 @@ th button{width:100%;border:none;background:transparent;color:var(--verde);font-
 th input{width:100%;min-width:85px;margin-top:8px;font-size:11px}
 tbody tr:nth-child(even){background:#f8fafb}
 tbody tr:hover{background:#edf6f0}
+th.observaciones,td.observaciones{min-width:280px;max-width:360px;width:320px}
+td.observaciones{text-align:left;vertical-align:top;padding:12px 16px}
+.nota-texto{white-space:pre-wrap;line-height:1.65;overflow-wrap:anywhere}
+.nota-texto.corta{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.leer-nota{padding:5px 8px;margin-top:7px;font-size:11px;color:var(--verde);background:#edf5f1}
 .etiqueta{display:inline-block;padding:5px 9px;border-radius:6px;font-weight:bold}
 .rojo{background:#ffe1e1;color:#a62323}
 .verde{background:#dff2e4;color:#24623a}
@@ -55,699 +61,528 @@ tbody tr:hover{background:#edf6f0}
 .pie{padding:16px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-size:13px}
 .navegacion{display:flex;align-items:center;gap:10px}
 .nota{font-size:12px;line-height:1.6;color:#647582}
+dialog{border:1px solid var(--borde);border-radius:14px;padding:24px;width:min(600px,90vw);max-height:80vh;color:var(--texto)}
+dialog::backdrop{background:rgba(20,40,45,.45)}
+dialog h2{margin-top:0;color:var(--verde)}
+#notaCompleta{white-space:pre-wrap;line-height:1.7;overflow-wrap:anywhere;margin-bottom:20px}
 @media(max-width:700px){
-  main{padding:12px}
-  h1{font-size:22px}
-  .tarjetas{grid-template-columns:1fr}
-  .tarjeta{padding:12px}
-  .numero{font-size:23px}
-  #buscar{flex-basis:100%}
+  main{padding:12px}h1{font-size:22px}
+  .tarjetas{grid-template-columns:1fr}.tarjeta{padding:12px}
+  .numero{font-size:23px}#buscar{flex-basis:100%}
   .titulo-tabla{font-size:17px}
+  th.observaciones,td.observaciones{min-width:230px}
 }
 </style>
 </head>
 <body>
 <main>
-  <header>
-    <div>
-      <h1>PRODUCCIÓN LAS ACACIAS</h1>
-      <p class="subtitulo">Producción · Insumos · Recibo</p>
+<header>
+  <div>
+    <h1>PRODUCCIÓN LAS ACACIAS</h1>
+    <p class="subtitulo">Producción · Insumos · Recibo</p>
+  </div>
+  <button id="actualizar" class="primario">Actualizar desde Dropbox</button>
+</header>
+
+<section class="tarjetas">
+  <article class="tarjeta">
+    <h2>PRODUCCIÓN</h2>
+    <div id="numero-produccion" class="numero">—</div>
+    <div id="detalle-produccion" class="detalle">Total de las diez columnas de producción</div>
+    <div id="estado-produccion" class="estado">Pendiente</div>
+  </article>
+  <article class="tarjeta">
+    <h2>INSUMOS</h2>
+    <div id="numero-insumos" class="numero">—</div>
+    <div class="detalle">Registros</div>
+    <div id="estado-insumos" class="estado">Pendiente</div>
+  </article>
+  <article class="tarjeta">
+    <h2>RECIBO</h2>
+    <div id="numero-recibo" class="numero">—</div>
+    <div class="detalle">Registros</div>
+    <div id="estado-recibo" class="estado">Pendiente</div>
+  </article>
+</section>
+
+<details id="archivos" class="archivos">
+  <summary>Seleccionar archivos desde la PC</summary>
+  <p>Si Dropbox bloquea la lectura directa, seleccioná los Excel.
+    El libro de Producción carga también Insumos. Los archivos se leen en tu navegador.</p>
+  <div class="cargas">
+    <label>PRODUCCION-LAS-ACACIAS.xlsx
+      <input id="archivo-produccion" type="file" accept=".xlsx">
+    </label>
+    <label>aENVIO-DE-CORREOS.xlsb
+      <input id="archivo-recibo" type="file" accept=".xlsb">
+    </label>
+  </div>
+</details>
+
+<section class="panel">
+  <nav class="pestanas" aria-label="Seleccionar tabla">
+    <button data-tab="produccion" class="activo">Producción</button>
+    <button data-tab="insumos">Insumos</button>
+    <button data-tab="recibo">Recibo</button>
+  </nav>
+  <h2 id="tituloTabla" class="titulo-tabla">Producción</h2>
+  <div class="controles">
+    <input id="buscar" type="search" placeholder="Buscar en toda la tabla..." aria-label="Buscar">
+    <label>Fila de encabezados
+      <input id="fila" type="number" min="1" max="100" value="3">
+    </label>
+    <label>Filas
+      <select id="limite">
+        <option value="25">25</option>
+        <option value="50" selected>50</option>
+        <option value="100">100</option>
+        <option value="200">200</option>
+      </select>
+    </label>
+    <button id="quitar">Quitar filtros</button>
+  </div>
+  <div id="resumen" aria-live="polite"></div>
+  <div class="tabla">
+    <table><thead id="encabezado"></thead><tbody id="cuerpo"></tbody></table>
+    <div id="vacio">Cargando datos...</div>
+  </div>
+  <div class="pie">
+    <span>Hacé clic en los encabezados para ordenar.</span>
+    <div class="navegacion">
+      <button id="anterior">Anterior</button>
+      <span id="pagina">Página 1 de 1</span>
+      <button id="siguiente">Siguiente</button>
     </div>
-    <button id="actualizar" class="primario">Actualizar desde Dropbox</button>
-  </header>
-
-  <section class="tarjetas">
-    <article class="tarjeta">
-      <h2>PRODUCCIÓN</h2>
-      <div id="numero-produccion" class="numero">—</div>
-      <div id="estado-produccion" class="estado">Pendiente</div>
-    </article>
-    <article class="tarjeta">
-      <h2>INSUMOS</h2>
-      <div id="numero-insumos" class="numero">—</div>
-      <div id="estado-insumos" class="estado">Pendiente</div>
-    </article>
-    <article class="tarjeta">
-      <h2>RECIBO</h2>
-      <div id="numero-recibo" class="numero">—</div>
-      <div id="estado-recibo" class="estado">Pendiente</div>
-    </article>
-  </section>
-
-  <details id="archivos" class="archivos">
-    <summary>Seleccionar archivos desde la PC</summary>
-    <p>
-      Si Dropbox bloquea la lectura directa, seleccioná los Excel.
-      El libro de Producción carga también Insumos.
-      Los archivos se leen en tu navegador.
-    </p>
-    <div class="cargas">
-      <label>
-        PRODUCCION-LAS-ACACIAS.xlsx
-        <input id="archivo-produccion" type="file" accept=".xlsx">
-      </label>
-      <label>
-        aENVIO-DE-CORREOS.xlsb
-        <input id="archivo-recibo" type="file" accept=".xlsb">
-      </label>
-    </div>
-  </details>
-
-  <section class="panel">
-    <nav class="pestanas" aria-label="Seleccionar tabla">
-      <button data-tab="produccion" class="activo">Producción</button>
-      <button data-tab="insumos">Insumos</button>
-      <button data-tab="recibo">Recibo</button>
-    </nav>
-
-    <h2 id="tituloTabla" class="titulo-tabla">Producción</h2>
-
-    <div class="controles">
-      <input id="buscar" type="search" placeholder="Buscar en toda la tabla..."
-        aria-label="Buscar en toda la tabla">
-      <label>
-        Fila de encabezados
-        <input id="fila" type="number" min="1" max="100" value="3">
-      </label>
-      <label>
-        Filas
-        <select id="limite">
-          <option value="25">25</option>
-          <option value="50" selected>50</option>
-          <option value="100">100</option>
-          <option value="200">200</option>
-        </select>
-      </label>
-      <button id="quitar">Quitar filtros</button>
-    </div>
-
-    <div id="resumen" aria-live="polite"></div>
-
-    <div class="tabla">
-      <table>
-        <thead id="encabezado"></thead>
-        <tbody id="cuerpo"></tbody>
-      </table>
-      <div id="vacio">Cargando datos...</div>
-    </div>
-
-    <div class="pie">
-      <span>Hacé clic en los encabezados para ordenar.</span>
-      <div class="navegacion">
-        <button id="anterior">Anterior</button>
-        <span id="pagina">Página 1 de 1</span>
-        <button id="siguiente">Siguiente</button>
-      </div>
-    </div>
-  </section>
-
-  <p class="nota">
-    Producción: encabezados en fila 3.
-    Insumos y Recibo: fila de encabezados ajustable.
-    La hora de lectura no representa la modificación del Excel.
-    Las fórmulas muestran los resultados guardados en el libro.
-    Los productos de Recibo sin equivalencia quedan como SIN CLASIFICAR.
-  </p>
+  </div>
+</section>
+<p class="nota">
+  Producción: encabezados en fila 3. Insumos y Recibo: fila ajustable.
+  La hora de lectura no representa la modificación del Excel.
+  Las fórmulas muestran los resultados guardados.
+  La tarjeta Producción suma todas las filas filtradas, no solamente la página visible.
+</p>
 </main>
+
+<dialog id="modalNota">
+  <h2>Observaciones</h2>
+  <div id="notaCompleta"></div>
+  <button id="cerrarNota" class="primario">Cerrar</button>
+</dialog>
 
 <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
 <script>
 "use strict";
-
-const $ = id => document.getElementById(id);
-const TITULO_RECIBO = "B3R UPM Las Acacias - Polo Logistico";
-
-const URLS = {
-  produccion: "https://dl.dropbox.com/scl/fi/z1jtk061zs1maw4vlnyib/PRODUCCION-LAS-ACACIAS.xlsx?rlkey=7pzd2o0oh1q3inr62bvztoqcb&dl=1",
-  recibo: "https://dl.dropbox.com/scl/fi/l87boeiqu54yra3i0evd6/aENVIO-DE-CORREOS.xlsb?rlkey=149gw31ntsbso8vtpix30yxjl&dl=1"
+const $=id=>document.getElementById(id);
+const TITULO_RECIBO="B3R UPM Las Acacias - Polo Logistico";
+const URLS={
+  produccion:"https://dl.dropbox.com/scl/fi/z1jtk061zs1maw4vlnyib/PRODUCCION-LAS-ACACIAS.xlsx?rlkey=7pzd2o0oh1q3inr62bvztoqcb&dl=1",
+  recibo:"https://dl.dropbox.com/scl/fi/l87boeiqu54yra3i0evd6/aENVIO-DE-CORREOS.xlsb?rlkey=149gw31ntsbso8vtpix30yxjl&dl=1"
 };
-
-const CONFIG = {
-  produccion: { origen:"produccion", hoja:"DATOS LAS ACACIAS", fila:3 },
-  insumos: { origen:"produccion", hoja:"INSUMOS", fila:1 },
-  recibo: { origen:"recibo", hoja:"tati las acacias", fila:1 }
+const CONFIG={
+  produccion:{origen:"produccion",hoja:"DATOS LAS ACACIAS",fila:3},
+  insumos:{origen:"produccion",hoja:"INSUMOS",fila:1},
+  recibo:{origen:"recibo",hoja:"tati las acacias",fila:1}
 };
+const libros={},tablas={};
+let activa="produccion",ocupado=false;
 
-const libros = {};
-const tablas = {};
-let activa = "produccion";
-let ocupado = false;
-
-for (const id of Object.keys(CONFIG)) {
-  tablas[id] = {
-    columnas:[], filas:[], filtros:[], busqueda:"",
-    orden:null, direccion:1, pagina:1,
-    lectura:"", fuente:"", error:"", cargando:false
-  };
+function normalizar(v){
+  return String(v??"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();
 }
-
-function normalizar(valor) {
-  return String(valor ?? "")
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g,"")
-    .toLowerCase()
-    .trim();
+function claveColumna(v){return normalizar(v).replace(/[^a-z0-9]/g,"")}
+function texto(v){return v==null?"":String(v)}
+function numero(v){return v.toLocaleString("es-UY",{maximumFractionDigits:2})}
+function hora(v){return new Date(v).toLocaleString("es-UY",{timeZone:"America/Montevideo"})}
+function idsDelOrigen(o){return Object.keys(CONFIG).filter(id=>CONFIG[id].origen===o)}
+function claveProducto(v){return normalizar(v).replace(/,/g,".").replace(/\s+/g,"")}
+function esFecha(nombre){return claveColumna(nombre).includes("fecha")}
+function esObservaciones(nombre){
+  return ["observaciones","observacion"].includes(claveColumna(nombre));
 }
-
-function claveColumna(valor) {
-  return normalizar(valor).replace(/[^a-z0-9]/g,"");
+const SUMAR_PRODUCCION=[
+  "AMARRILLO PPL+30",
+  "AMARRILLO PPL+45",
+  "ROJO__STD+30",
+  "ROJO_STD +30 Basal",
+  "Verde-STD+45",
+  "Verde Basal +55",
+  "Descarte basal+55",
+  "Descarte basal -55",
+  "Descarte +55",
+  "Descarte-55"
+];
+// Conserva los signos + y - para distinguir Descarte +55 de Descarte-55.
+function claveSuma(v){
+  return normalizar(v).replace(/amarillo/g,"amarrillo").replace(/[^a-z0-9+-]/g,"");
 }
-
-function texto(valor) {
-  return valor == null ? "" : String(valor);
-}
-
-function numero(valor) {
-  return valor.toLocaleString("es-UY");
-}
-
-function hora(valor) {
-  return new Date(valor).toLocaleString("es-UY", {
-    timeZone:"America/Montevideo"
-  });
-}
-
-function idsDelOrigen(origen) {
-  return Object.keys(CONFIG).filter(id => CONFIG[id].origen === origen);
-}
-
-function claveProducto(valor) {
-  return normalizar(valor).replace(/,/g,".").replace(/\s+/g,"");
-}
-
-const EQUIVALENCIAS = new Map([
-  [claveProducto("Troza 5,80 mts +30"), "ROJO"],
-  [claveProducto("Troza 5,80 mts +45"), "VERDE"],
-  [claveProducto("Troza 5,80 mts +30 PPL"), "AMARILLO"]
+const OCULTAS_PRODUCCION=new Set([
+  "CAMIONES CARGADOS","AMARILLA/ ARBOL","ROJAS X ARBOL",
+  "VERDE X ARBOL","Trozas","% DESCARTE","Predio"
+].map(claveColumna));
+const EQUIVALENCIAS=new Map([
+  [claveProducto("Troza 5,80 mts +30"),"ROJO"],
+  [claveProducto("Troza 5,80 mts +45"),"VERDE"],
+  [claveProducto("Troza 5,80 mts +30 PPL"),"AMARILLO"]
 ]);
 
-// Columnas que se ocultan exclusivamente en Producción.
-const OCULTAS_PRODUCCION = new Set([
-  "CAMIONES CARGADOS",
-  "AMARILLA/ ARBOL",
-  "ROJAS X ARBOL",
-  "VERDE X ARBOL",
-  "Trozas",
-  "% DESCARTE",
-  "Predio"
-].map(claveColumna));
-
-function transformarProduccion(columnas, filas) {
-  const mantener = columnas
-    .map((nombre, indice) =>
-      OCULTAS_PRODUCCION.has(claveColumna(nombre)) ? -1 : indice
-    )
-    .filter(indice => indice >= 0);
-
-  return {
-    columnas: mantener.map(indice => columnas[indice]),
-    filas: filas.map(fila => mantener.map(indice => fila[indice]))
+for(const id of Object.keys(CONFIG)){
+  tablas[id]={
+    columnas:[],filas:[],filtros:[],busqueda:"",
+    orden:null,direccion:1,pagina:1,lectura:"",
+    fuente:"",error:"",cargando:false,faltantes:[]
   };
 }
 
-function clasificarProducto(fila, indicesProducto) {
-  const valores = indicesProducto.length
-    ? indicesProducto.map(indice => fila[indice])
-    : fila;
-
-  const coincidencias = new Set();
-
-  for (const valor of valores) {
-    const clasificacion = EQUIVALENCIAS.get(claveProducto(valor));
-    if (clasificacion) coincidencias.add(clasificacion);
+function numeroCelda(v){
+  if(typeof v==="number")return Number.isFinite(v)?v:0;
+  let s=texto(v).trim().replace(/\s/g,"");
+  if(!s)return 0;
+  if(s.includes(","))s=s.replace(/\./g,"").replace(",",".");
+  const n=Number(s);
+  return Number.isFinite(n)?n:0;
+}
+function fechaTexto(v){
+  if(v==null||v==="")return "";
+  const completar=n=>String(n).padStart(2,"0");
+  if(v instanceof Date&&!Number.isNaN(v.getTime())){
+    return completar(v.getUTCDate())+"/"+completar(v.getUTCMonth()+1)+"/"+v.getUTCFullYear();
   }
-
-  if (coincidencias.size === 1) return [...coincidencias][0];
-  if (coincidencias.size > 1) return "REVISAR";
-  return "SIN CLASIFICAR";
+  if(typeof v==="number"&&v>0&&v<2958466){
+    const d=XLSX.SSF.parse_date_code(v);
+    if(d)return completar(d.d)+"/"+completar(d.m)+"/"+d.y;
+  }
+  const s=texto(v).trim();
+  let m=s.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})(?:[ T].*)?$/);
+  if(m)return completar(m[3])+"/"+completar(m[2])+"/"+m[1];
+  m=s.match(/^(\d{1,2})[/-](\d{1,2})[/-](\d{4})(?:[ T].*)?$/);
+  if(m)return completar(m[1])+"/"+completar(m[2])+"/"+m[3];
+  return s;
+}
+function clasificar(fila,indices){
+  const valores=indices.length?indices.map(i=>fila[i]):fila;
+  const encontrados=new Set();
+  for(const v of valores){
+    const color=EQUIVALENCIAS.get(claveProducto(v));
+    if(color)encontrados.add(color);
+  }
+  return encontrados.size===1?[...encontrados][0]:
+    encontrados.size>1?"REVISAR":"SIN CLASIFICAR";
 }
 
-function transformarRecibo(columnas, filas) {
-  const claves = columnas.map(claveColumna);
-  const nombresProducto = new Set([
-    "producto", "nombreproducto", "descripcionproducto",
-    "productodescripcion", "descripciondelproducto", "tipoproducto"
-  ]);
+function extraer(id,libro){
+  const config=CONFIG[id];
+  const nombre=libro.SheetNames.find(n=>normalizar(n)===normalizar(config.hoja));
+  if(!nombre)throw new Error('No se encontró "'+config.hoja+'". Hojas: '+libro.SheetNames.join(", "));
+  const hoja=libro.Sheets[nombre];
+  if(!hoja["!ref"])throw new Error("La hoja está vacía.");
+  const rango=XLSX.utils.decode_range(hoja["!ref"]);
+  rango.s.r=config.fila-1;
+  if(rango.s.r>rango.e.r)throw new Error("La fila elegida supera el contenido.");
 
-  const indicesProducto = claves
-    .map((clave, indice) => nombresProducto.has(clave) ? indice : -1)
-    .filter(indice => indice >= 0);
-
-  // Sacada se conserva.
-  const ocultas = new Set(["carga", "cosecha", "origen"]);
-
-  const mantener = columnas
-    .map((nombre, indice) =>
-      !ocultas.has(claves[indice]) && claves[indice] !== "idproducto"
-        ? indice : -1
-    )
-    .filter(indice => indice >= 0);
-
-  const nuevasColumnas = mantener.map(indice => columnas[indice]);
-  const posicionProducto = mantener.findIndex(
-    indice => indicesProducto.includes(indice)
-  );
-  const posicionID = posicionProducto >= 0 ? posicionProducto + 1 : 0;
-
-  nuevasColumnas.splice(posicionID, 0, "ID PRODUCTO");
-
-  const nuevasFilas = filas.map(fila => {
-    const nueva = mantener.map(indice => fila[indice]);
-    nueva.splice(posicionID, 0, clasificarProducto(fila, indicesProducto));
-    return nueva;
+  // Valores originales para sumar números y reconocer fechas de Excel.
+  const matriz=XLSX.utils.sheet_to_json(hoja,{
+    header:1,range:rango,raw:true,defval:"",blankrows:true
   });
-
-  return { columnas:nuevasColumnas, filas:nuevasFilas };
-}
-
-function extraer(id, libro) {
-  const config = CONFIG[id];
-  const nombre = libro.SheetNames.find(
-    hoja => normalizar(hoja) === normalizar(config.hoja)
-  );
-
-  if (!nombre) {
-    throw new Error(
-      'No se encontró "' + config.hoja +
-      '". Hojas: ' + libro.SheetNames.join(", ")
-    );
+  const cabecera=matriz[0]||[],datos=matriz.slice(1);
+  const ancho=datos.reduce((n,f)=>Math.max(n,f.length),cabecera.length);
+  const indices=[];
+  for(let i=0;i<ancho;i++){
+    if(texto(cabecera[i]).trim()||datos.some(f=>texto(f[i]).trim()))indices.push(i);
   }
-
-  const hoja = libro.Sheets[nombre];
-  if (!hoja["!ref"]) throw new Error("La hoja está vacía.");
-
-  const rango = XLSX.utils.decode_range(hoja["!ref"]);
-  rango.s.r = config.fila - 1;
-
-  if (rango.s.r > rango.e.r) {
-    throw new Error("La fila elegida supera el contenido de la hoja.");
-  }
-
-  const matriz = XLSX.utils.sheet_to_json(hoja, {
-    header:1, range:rango, raw:false, defval:"", blankrows:true
+  const usados=new Map();
+  let columnas=indices.map(i=>{
+    const base=texto(cabecera[i]).trim()||"Columna "+XLSX.utils.encode_col(rango.s.c+i);
+    const veces=(usados.get(base)||0)+1;
+    usados.set(base,veces);
+    return veces===1?base:base+" ("+veces+")";
   });
+  const originales=datos
+    .map(f=>indices.map(i=>f[i]??""))
+    .filter(f=>f.some(v=>texto(v).trim()!==""));
 
-  const encabezados = matriz[0] || [];
-  const datos = matriz.slice(1);
-  const ancho = datos.reduce(
-    (maximo, fila) => Math.max(maximo, fila.length),
-    encabezados.length
-  );
+  let faltantes=[],totales=originales.map(()=>0);
 
-  const indices = [];
-  for (let i = 0; i < ancho; i++) {
-    if (texto(encabezados[i]).trim() ||
-        datos.some(fila => texto(fila[i]).trim())) {
-      indices.push(i);
-    }
+  if(id==="produccion"){
+    const indicesSuma=SUMAR_PRODUCCION.map(nombre=>{
+      const encontrados=columnas
+        .map((c,i)=>claveSuma(c)===claveSuma(nombre)?i:-1)
+        .filter(i=>i>=0);
+      if(encontrados.length!==1){
+        faltantes.push(nombre+(encontrados.length>1?" (duplicada)":""));
+        return -1;
+      }
+      return encontrados[0];
+    });
+    totales=originales.map(f=>indicesSuma.reduce(
+      (s,i)=>s+(i>=0?numeroCelda(f[i]):0),0
+    ));
   }
 
-  const usados = new Map();
+  let filas=originales.map((f,indice)=>({
+    valores:f.map((v,i)=>esFecha(columnas[i])||v instanceof Date?fechaTexto(v):texto(v)),
+    total:totales[indice]
+  }));
 
-  let columnas = indices.map(i => {
-    const base = texto(encabezados[i]).trim() ||
-      "Columna " + XLSX.utils.encode_col(rango.s.c + i);
-    const veces = (usados.get(base) || 0) + 1;
-    usados.set(base, veces);
-    return veces === 1 ? base : base + " (" + veces + ")";
-  });
-
-  let filas = datos
-    .map(fila => indices.map(i => texto(fila[i])))
-    .filter(fila => fila.some(valor => valor.trim() !== ""));
-
-  if (id === "produccion") {
-    const resultado = transformarProduccion(columnas, filas);
-    columnas = resultado.columnas;
-    filas = resultado.filas;
+  if(id==="produccion"){
+    const mantener=columnas.map((c,i)=>OCULTAS_PRODUCCION.has(claveColumna(c))?-1:i).filter(i=>i>=0);
+    columnas=mantener.map(i=>columnas[i]);
+    filas=filas.map(f=>({...f,valores:mantener.map(i=>f.valores[i])}));
   }
-
-  if (id === "recibo") {
-    const resultado = transformarRecibo(columnas, filas);
-    columnas = resultado.columnas;
-    filas = resultado.filas;
+  if(id==="recibo"){
+    const nombres=new Set([
+      "producto","nombreproducto","descripcionproducto",
+      "productodescripcion","descripciondelproducto","tipoproducto"
+    ]);
+    const producto=columnas.map((c,i)=>nombres.has(claveColumna(c))?i:-1).filter(i=>i>=0);
+    const ocultas=new Set(["carga","cosecha","origen","idproducto"]);
+    const mantener=columnas.map((c,i)=>ocultas.has(claveColumna(c))?-1:i).filter(i=>i>=0);
+    const posicion=mantener.findIndex(i=>producto.includes(i));
+    const insertar=posicion>=0?posicion+1:0;
+    columnas=mantener.map(i=>columnas[i]);
+    columnas.splice(insertar,0,"ID PRODUCTO");
+    filas=filas.map(f=>{
+      const valores=mantener.map(i=>f.valores[i]);
+      valores.splice(insertar,0,clasificar(f.valores,producto));
+      return {...f,valores};
+    });
   }
-
-  const anterior = tablas[id];
-  const mismos = JSON.stringify(columnas) === JSON.stringify(anterior.columnas);
-
+  const anterior=tablas[id];
+  const mismos=JSON.stringify(columnas)===JSON.stringify(anterior.columnas);
   return {
-    ...anterior, columnas, filas,
-    filtros:mismos ? anterior.filtros : columnas.map(() => ""),
-    orden:mismos ? anterior.orden : null,
-    pagina:1, error:"", cargando:false
+    ...anterior,columnas,filas,faltantes,
+    filtros:mismos?anterior.filtros:columnas.map(()=>""),
+    orden:mismos?anterior.orden:null,pagina:1,error:"",cargando:false
   };
 }
 
-function tarjetas() {
-  for (const [id, tabla] of Object.entries(tablas)) {
-    $("numero-" + id).textContent =
-      tabla.lectura ? numero(tabla.filas.length) : "—";
-    const estado = $("estado-" + id);
-    estado.classList.toggle("error", Boolean(tabla.error));
-
-    if (tabla.cargando) {
-      estado.textContent = "Cargando archivo...";
-    } else if (tabla.error) {
-      estado.textContent = tabla.error +
-        (tabla.lectura ? " · Datos anteriores: " + hora(tabla.lectura) : "");
-    } else if (tabla.lectura) {
-      estado.textContent = tabla.fuente + " · Lectura: " + hora(tabla.lectura);
-    } else {
-      estado.textContent = "Pendiente";
-    }
+function filtradas(id){
+  const t=tablas[id],buscar=normalizar(t.busqueda);
+  return t.filas.filter(f=>
+    (!buscar||f.valores.some(v=>normalizar(v).includes(buscar)))&&
+    t.filtros.every((v,i)=>!normalizar(v)||normalizar(f.valores[i]).includes(normalizar(v)))
+  );
+}
+function tarjetaProduccion(){
+  const t=tablas.produccion;
+  if(!t.lectura){$("numero-produccion").textContent="—";return}
+  const seleccion=filtradas("produccion");
+  const suma=seleccion.reduce((s,f)=>s+f.total,0);
+  // No mostrar como completo un total con columnas ausentes.
+  $("numero-produccion").textContent=t.faltantes.length?"—":numero(suma);
+  $("detalle-produccion").textContent=t.faltantes.length
+    ?"Revisar encabezados: "+t.faltantes.join(", ")
+    :"Total producción · "+numero(seleccion.length)+" de "+numero(t.filas.length)+" registros";
+  $("detalle-produccion").classList.toggle("error",t.faltantes.length>0);
+}
+function tarjetas(){
+  tarjetaProduccion();
+  for(const [id,t]of Object.entries(tablas)){
+    if(id!=="produccion")$("numero-"+id).textContent=t.lectura?numero(t.filas.length):"—";
+    const e=$("estado-"+id);
+    e.classList.toggle("error",Boolean(t.error));
+    e.textContent=t.cargando?"Cargando archivo...":
+      t.error?t.error+(t.lectura?" · Datos anteriores: "+hora(t.lectura):""):
+      t.lectura?t.fuente+" · Lectura: "+hora(t.lectura):"Pendiente";
   }
 }
-
-function encabezado() {
-  const tabla = tablas[activa];
-  const tr = document.createElement("tr");
-
-  tabla.columnas.forEach((nombre, indice) => {
-    const th = document.createElement("th");
-    const boton = document.createElement("button");
-    boton.textContent = nombre +
-      (tabla.orden === indice ? (tabla.direccion === 1 ? " ▲" : " ▼") : "");
-
-    boton.addEventListener("click", () => {
-      tabla.direccion = tabla.orden === indice ? -tabla.direccion : 1;
-      tabla.orden = indice;
-      tabla.pagina = 1;
-      encabezado();
-      mostrarFilas();
+function encabezado(){
+  const t=tablas[activa],tr=document.createElement("tr");
+  t.columnas.forEach((nombre,i)=>{
+    const th=document.createElement("th");
+    if(esObservaciones(nombre))th.className="observaciones";
+    const b=document.createElement("button");
+    b.textContent=nombre+(t.orden===i?(t.direccion===1?" ▲":" ▼"):"");
+    b.addEventListener("click",()=>{
+      t.direccion=t.orden===i?-t.direccion:1;
+      t.orden=i;t.pagina=1;encabezado();mostrarFilas();
     });
-
-    const input = document.createElement("input");
-    input.type = "search";
-    input.placeholder = "Filtrar...";
-    input.value = tabla.filtros[indice] || "";
-    input.setAttribute("aria-label", "Filtrar " + nombre);
-    input.addEventListener("input", () => {
-      tabla.filtros[indice] = input.value;
-      tabla.pagina = 1;
-      mostrarFilas();
+    const input=document.createElement("input");
+    input.type="search";input.placeholder="Filtrar...";
+    input.value=t.filtros[i]||"";
+    input.setAttribute("aria-label","Filtrar "+nombre);
+    input.addEventListener("input",()=>{
+      t.filtros[i]=input.value;t.pagina=1;mostrarFilas();
     });
-
-    th.append(boton, input);
-    tr.append(th);
+    th.append(b,input);tr.append(th);
   });
-
   $("encabezado").replaceChildren(tr);
 }
-
-const comparador = new Intl.Collator("es", {
-  numeric:true, sensitivity:"base"
-});
-
-function mostrarFilas() {
-  const tabla = tablas[activa];
-  const buscar = normalizar(tabla.busqueda);
-
-  let resultado = tabla.filas.filter(fila =>
-    (!buscar || fila.some(valor => normalizar(valor).includes(buscar))) &&
-    tabla.filtros.every((filtro, indice) =>
-      !normalizar(filtro) ||
-      normalizar(fila[indice]).includes(normalizar(filtro))
-    )
-  );
-
-  if (tabla.orden !== null) {
-    resultado.sort((a,b) =>
-      comparador.compare(a[tabla.orden], b[tabla.orden]) * tabla.direccion
-    );
+const comparador=new Intl.Collator("es",{numeric:true,sensitivity:"base"});
+function claveFecha(v){
+  const m=texto(v).match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+  return m?m[3]+m[2]+m[1]:texto(v);
+}
+function mostrarFilas(){
+  const t=tablas[activa],resultado=filtradas(activa);
+  if(t.orden!==null){
+    resultado.sort((a,b)=>{
+      let av=a.valores[t.orden],bv=b.valores[t.orden];
+      if(esFecha(t.columnas[t.orden])){av=claveFecha(av);bv=claveFecha(bv)}
+      return comparador.compare(av,bv)*t.direccion;
+    });
   }
+  const limite=Number($("limite").value);
+  const paginas=Math.max(1,Math.ceil(resultado.length/limite));
+  t.pagina=Math.min(t.pagina,paginas);
+  const inicio=(t.pagina-1)*limite;
+  const fragmento=document.createDocumentFragment();
 
-  const limite = Number($("limite").value);
-  const paginas = Math.max(1, Math.ceil(resultado.length / limite));
-  tabla.pagina = Math.min(tabla.pagina, paginas);
-  const inicio = (tabla.pagina - 1) * limite;
-  const fragmento = document.createDocumentFragment();
-
-  resultado.slice(inicio, inicio + limite).forEach(fila => {
-    const tr = document.createElement("tr");
-    fila.forEach((valor, indice) => {
-      const td = document.createElement("td");
-      if (activa === "recibo" && tabla.columnas[indice] === "ID PRODUCTO" &&
-          ["ROJO","VERDE","AMARILLO"].includes(valor)) {
-        const etiqueta = document.createElement("span");
-        etiqueta.className = "etiqueta " + valor.toLowerCase();
-        etiqueta.textContent = valor;
-        td.append(etiqueta);
-      } else {
-        td.textContent = valor;
-      }
+  resultado.slice(inicio,inicio+limite).forEach(f=>{
+    const tr=document.createElement("tr");
+    f.valores.forEach((v,i)=>{
+      const td=document.createElement("td");
+      if(esObservaciones(t.columnas[i])){
+        td.className="observaciones";
+        const nota=document.createElement("div");
+        nota.className="nota-texto corta";
+        nota.textContent=v||"—";
+        td.append(nota);
+        if(v.trim()){
+          const b=document.createElement("button");
+          b.className="leer-nota";b.textContent="Ver observación";
+          b.addEventListener("click",()=>{
+            $("notaCompleta").textContent=v;
+            $("modalNota").showModal();
+          });
+          td.append(b);
+        }
+      }else if(activa==="recibo"&&t.columnas[i]==="ID PRODUCTO"&&["ROJO","VERDE","AMARILLO"].includes(v)){
+        const e=document.createElement("span");
+        e.className="etiqueta "+v.toLowerCase();e.textContent=v;td.append(e);
+      }else td.textContent=v;
       tr.append(td);
     });
     fragmento.append(tr);
   });
 
   $("cuerpo").replaceChildren(fragmento);
-  $("resumen").textContent =
-    "Hoja: " + CONFIG[activa].hoja +
-    " · Encabezados: fila " + CONFIG[activa].fila +
-    " · " + numero(resultado.length) +
-    " registros filtrados de " + numero(tabla.filas.length) +
-    (tabla.error ? " · " + tabla.error : "");
-
-  $("pagina").textContent = "Página " + tabla.pagina + " de " + paginas;
-  $("anterior").disabled = tabla.pagina <= 1;
-  $("siguiente").disabled = tabla.pagina >= paginas;
-  $("vacio").hidden = resultado.length > 0;
-  $("vacio").textContent = tabla.cargando && !tabla.lectura
-    ? "Cargando datos..."
-    : tabla.error && !tabla.lectura
-      ? tabla.error : "No hay registros para esta selección.";
+  $("resumen").textContent="Hoja: "+CONFIG[activa].hoja+
+    " · Encabezados: fila "+CONFIG[activa].fila+
+    " · "+numero(resultado.length)+" registros filtrados de "+numero(t.filas.length)+
+    (t.error?" · "+t.error:"");
+  $("pagina").textContent="Página "+t.pagina+" de "+paginas;
+  $("anterior").disabled=t.pagina<=1;
+  $("siguiente").disabled=t.pagina>=paginas;
+  $("vacio").hidden=resultado.length>0;
+  $("vacio").textContent=t.cargando&&!t.lectura?"Cargando datos...":
+    t.error&&!t.lectura?t.error:"No hay registros para esta selección.";
+  tarjetaProduccion();
 }
-
-function mostrar() {
-  document.querySelectorAll("[data-tab]").forEach(boton => {
-    const seleccionada = boton.dataset.tab === activa;
-    boton.classList.toggle("activo", seleccionada);
-    boton.setAttribute("aria-pressed", String(seleccionada));
+function mostrar(){
+  document.querySelectorAll("[data-tab]").forEach(b=>{
+    const elegida=b.dataset.tab===activa;
+    b.classList.toggle("activo",elegida);
+    b.setAttribute("aria-pressed",String(elegida));
   });
-
-  $("tituloTabla").textContent = activa === "recibo"
-    ? TITULO_RECIBO
-    : activa === "produccion" ? "Producción" : "Insumos";
-
-  $("buscar").value = tablas[activa].busqueda;
-  $("fila").value = CONFIG[activa].fila;
-  $("fila").disabled = activa === "produccion" || ocupado;
-  encabezado();
-  mostrarFilas();
+  $("tituloTabla").textContent=activa==="recibo"?TITULO_RECIBO:
+    activa==="produccion"?"Producción":"Insumos";
+  $("buscar").value=tablas[activa].busqueda;
+  $("fila").value=CONFIG[activa].fila;
+  $("fila").disabled=activa==="produccion"||ocupado;
+  encabezado();mostrarFilas();
 }
-
-function cargarLibro(origen, bytes, fuente) {
-  const libro = XLSX.read(bytes, {type:"array", cellDates:false});
-  const lectura = new Date().toISOString();
-  libros[origen] = {libro, fuente, lectura};
-
-  for (const id of idsDelOrigen(origen)) {
-    try {
-      const tabla = extraer(id, libro);
-      tabla.fuente = fuente;
-      tabla.lectura = lectura;
-      tablas[id] = tabla;
-    } catch (error) {
-      tablas[id].error = error.message;
-      tablas[id].cargando = false;
-    }
+function cargarLibro(origen,bytes,fuente){
+  const libro=XLSX.read(bytes,{type:"array",cellDates:true});
+  const lectura=new Date().toISOString();
+  libros[origen]={libro,fuente,lectura};
+  for(const id of idsDelOrigen(origen)){
+    try{
+      const t=extraer(id,libro);
+      t.fuente=fuente;t.lectura=lectura;tablas[id]=t;
+    }catch(e){tablas[id].error=e.message;tablas[id].cargando=false}
   }
 }
-
-function errorOrigen(origen, mensaje) {
-  for (const id of idsDelOrigen(origen)) {
-    tablas[id].error = mensaje;
-    tablas[id].cargando = false;
+function errorOrigen(origen,mensaje){
+  for(const id of idsDelOrigen(origen)){
+    tablas[id].error=mensaje;tablas[id].cargando=false;
   }
 }
-
-function comprobarLector() {
-  if (typeof XLSX === "undefined") {
-    throw new Error("No se cargó el lector Excel. Revisá la conexión y recargá.");
-  }
+function comprobarLector(){
+  if(typeof XLSX==="undefined")throw new Error("No se cargó el lector Excel. Revisá la conexión y recargá.");
 }
-
-async function descargar(origen) {
-  const controlador = new AbortController();
-  const temporizador = setTimeout(() => controlador.abort(), 90000);
-
-  try {
-    const respuesta = await fetch(URLS[origen], {
-      mode:"cors", cache:"no-store", credentials:"omit",
-      signal:controlador.signal
+async function descargar(origen){
+  const control=new AbortController();
+  const timer=setTimeout(()=>control.abort(),90000);
+  try{
+    const r=await fetch(URLS[origen],{
+      mode:"cors",cache:"no-store",credentials:"omit",signal:control.signal
     });
-
-    if (!respuesta.ok) {
-      throw new Error("Dropbox respondió HTTP " + respuesta.status + ".");
-    }
-
-    const tipo = (respuesta.headers.get("Content-Type") || "").toLowerCase();
-    if (tipo.includes("text/html") || tipo.includes("application/json")) {
-      throw new Error("El enlace no devolvió un Excel.");
-    }
-
-    const bytes = await respuesta.arrayBuffer();
-    if (!bytes.byteLength) throw new Error("El archivo está vacío.");
-    cargarLibro(origen, bytes, "Dropbox");
-  } catch (error) {
-    const mensaje = error.name === "AbortError"
-      ? "La descarga superó los 90 segundos."
-      : error instanceof TypeError
-        ? "No se pudo leer Dropbox por un bloqueo del navegador o un problema de conexión."
-        : error.message;
-    errorOrigen(origen, mensaje + " Podés seleccionar el Excel desde la PC.");
-    $("archivos").open = true;
-  } finally {
-    clearTimeout(temporizador);
-    tarjetas();
-    mostrar();
-  }
+    if(!r.ok)throw new Error("Dropbox respondió HTTP "+r.status+".");
+    const tipo=(r.headers.get("Content-Type")||"").toLowerCase();
+    if(tipo.includes("text/html")||tipo.includes("application/json"))throw new Error("El enlace no devolvió un Excel.");
+    const bytes=await r.arrayBuffer();
+    if(!bytes.byteLength)throw new Error("El archivo está vacío.");
+    cargarLibro(origen,bytes,"Dropbox");
+  }catch(e){
+    const mensaje=e.name==="AbortError"?"La descarga superó los 90 segundos.":
+      e instanceof TypeError?"No se pudo leer Dropbox por un bloqueo del navegador o un problema de conexión.":e.message;
+    errorOrigen(origen,mensaje+" Podés seleccionar el Excel desde la PC.");
+    $("archivos").open=true;
+  }finally{clearTimeout(timer);tarjetas();mostrar()}
 }
-
-function bloquear(valor) {
-  ocupado = valor;
-  $("actualizar").disabled = valor;
-  $("actualizar").textContent = valor ? "Cargando..." : "Actualizar desde Dropbox";
-  $("archivo-produccion").disabled = valor;
-  $("archivo-recibo").disabled = valor;
-  $("fila").disabled = activa === "produccion" || valor;
+function bloquear(v){
+  ocupado=v;$("actualizar").disabled=v;
+  $("actualizar").textContent=v?"Cargando...":"Actualizar desde Dropbox";
+  $("archivo-produccion").disabled=v;$("archivo-recibo").disabled=v;
+  $("fila").disabled=activa==="produccion"||v;
 }
-
-async function actualizar() {
-  if (ocupado) return;
-  try {
-    comprobarLector();
-  } catch (error) {
-    errorOrigen("produccion", error.message);
-    errorOrigen("recibo", error.message);
-    tarjetas();
-    mostrar();
-    return;
+async function actualizar(){
+  if(ocupado)return;
+  try{comprobarLector()}catch(e){
+    errorOrigen("produccion",e.message);errorOrigen("recibo",e.message);
+    tarjetas();mostrar();return;
   }
-
   bloquear(true);
-  for (const tabla of Object.values(tablas)) {
-    tabla.cargando = true;
-    tabla.error = "";
-  }
-  tarjetas();
-  mostrar();
-
-  try {
-    await Promise.allSettled([
-      descargar("produccion"),
-      descargar("recibo")
-    ]);
-  } finally {
-    bloquear(false);
-    tarjetas();
-    mostrar();
-  }
+  for(const t of Object.values(tablas)){t.cargando=true;t.error=""}
+  tarjetas();mostrar();
+  try{await Promise.allSettled([descargar("produccion"),descargar("recibo")])}
+  finally{bloquear(false);tarjetas();mostrar()}
 }
-
-async function seleccionarArchivo(origen, input) {
-  const archivo = input.files[0];
-  if (!archivo || ocupado) return;
+async function seleccionarArchivo(origen,input){
+  const archivo=input.files[0];
+  if(!archivo||ocupado)return;
   bloquear(true);
-
-  for (const id of idsDelOrigen(origen)) {
-    tablas[id].cargando = true;
-    tablas[id].error = "";
-  }
+  for(const id of idsDelOrigen(origen)){tablas[id].cargando=true;tablas[id].error=""}
   tarjetas();
-
-  try {
-    comprobarLector();
-    cargarLibro(origen, await archivo.arrayBuffer(), "Archivo local");
-  } catch (error) {
-    errorOrigen(origen, "No se pudo leer el archivo: " + error.message);
-  } finally {
-    input.value = "";
-    bloquear(false);
-    tarjetas();
-    mostrar();
-  }
+  try{comprobarLector();cargarLibro(origen,await archivo.arrayBuffer(),"Archivo local")}
+  catch(e){errorOrigen(origen,"No se pudo leer el archivo: "+e.message)}
+  finally{input.value="";bloquear(false);tarjetas();mostrar()}
 }
-
-document.querySelectorAll("[data-tab]").forEach(boton => {
-  boton.addEventListener("click", () => {
-    activa = boton.dataset.tab;
-    mostrar();
-  });
+document.querySelectorAll("[data-tab]").forEach(b=>{
+  b.addEventListener("click",()=>{activa=b.dataset.tab;mostrar()});
 });
-
-$("buscar").addEventListener("input", () => {
-  tablas[activa].busqueda = $("buscar").value;
-  tablas[activa].pagina = 1;
-  mostrarFilas();
+$("buscar").addEventListener("input",()=>{
+  tablas[activa].busqueda=$("buscar").value;
+  tablas[activa].pagina=1;mostrarFilas();
 });
-
-$("quitar").addEventListener("click", () => {
-  for (const tabla of Object.values(tablas)) {
-    tabla.busqueda = "";
-    tabla.filtros = tabla.columnas.map(() => "");
-    tabla.orden = null;
-    tabla.direccion = 1;
-    tabla.pagina = 1;
+$("quitar").addEventListener("click",()=>{
+  for(const t of Object.values(tablas)){
+    t.busqueda="";t.filtros=t.columnas.map(()=>"");
+    t.orden=null;t.direccion=1;t.pagina=1;
   }
   mostrar();
 });
-
-$("limite").addEventListener("change", () => {
-  tablas[activa].pagina = 1;
-  mostrarFilas();
-});
-
-$("anterior").addEventListener("click", () => {
-  tablas[activa].pagina--;
-  mostrarFilas();
-});
-
-$("siguiente").addEventListener("click", () => {
-  tablas[activa].pagina++;
-  mostrarFilas();
-});
-
-$("fila").addEventListener("change", () => {
-  if (activa === "produccion" || ocupado) return;
-  const config = CONFIG[activa];
-  const nuevaFila = Number($("fila").value);
-
-  if (!Number.isInteger(nuevaFila) || nuevaFila < 1 || nuevaFila > 100) {
-    $("fila").value = config.fila;
-    return;
+$("limite").addEventListener("change",()=>{tablas[activa].pagina=1;mostrarFilas()});
+$("anterior").addEventListener("click",()=>{tablas[activa].pagina--;mostrarFilas()});
+$("siguiente").addEventListener("click",()=>{tablas[activa].pagina++;mostrarFilas()});
+$("fila").addEventListener("change",()=>{
+  if(activa==="produccion"||ocupado)return;
+  const c=CONFIG[activa],n=Number($("fila").value);
+  if(!Number.isInteger(n)||n<1||n>100){$("fila").value=c.fila;return}
+  const anterior=c.fila;c.fila=n;
+  const guardado=libros[c.origen];
+  if(guardado){
+    try{
+      const t=extraer(activa,guardado.libro);
+      t.fuente=guardado.fuente;t.lectura=guardado.lectura;tablas[activa]=t;
+    }catch(e){c.fila=anterior;tablas[activa].error=e.message}
   }
-
-  const anterior = config.fila;
-  config.fila = nuevaFila;
-  const guardado = libros[config.origen];
-
-  if (guardado) {
-    try {
-      const tabla = extraer(activa, guardado.libro);
-      tabla.fuente = guardado.fuente;
-      tabla.lectura = guardado.lectura;
-      tablas[activa] = tabla;
-    } catch (error) {
-      config.fila = anterior;
-      tablas[activa].error = error.message;
-    }
-  }
-  tarjetas();
-  mostrar();
+  tarjetas();mostrar();
 });
-
-$("archivo-produccion").addEventListener("change", event => {
-  seleccionarArchivo("produccion", event.target);
-});
-
-$("archivo-recibo").addEventListener("change", event => {
-  seleccionarArchivo("recibo", event.target);
-});
-
-$("actualizar").addEventListener("click", actualizar);
-
+$("archivo-produccion").addEventListener("change",e=>seleccionarArchivo("produccion",e.target));
+$("archivo-recibo").addEventListener("change",e=>seleccionarArchivo("recibo",e.target));
+$("actualizar").addEventListener("click",actualizar);
+$("cerrarNota").addEventListener("click",()=>$("modalNota").close());
 mostrar();
 actualizar();
 </script>
