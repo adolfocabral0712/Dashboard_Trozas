@@ -357,7 +357,6 @@ function idsDelOrigen(origen) {
 }
 
 function claveProducto(valor) {
-  // Admitir diferencias de espacios, mayúsculas y separador decimal.
   return normalizar(valor)
     .replace(/,/g,".")
     .replace(/\s+/g,"");
@@ -370,8 +369,6 @@ const EQUIVALENCIAS = new Map([
 ]);
 
 function clasificarProducto(fila, indicesProducto) {
-  // Usar las columnas de producto cuando sus encabezados se reconocen.
-  // Si no se reconocen, buscar una equivalencia exacta en la fila.
   const valores = indicesProducto.length
     ? indicesProducto.map(indice => fila[indice])
     : fila;
@@ -404,9 +401,9 @@ function transformarRecibo(columnas, filas) {
     .map((clave, indice) => nombresProducto.has(clave) ? indice : -1)
     .filter(indice => indice >= 0);
 
-  const ocultas = new Set(["cosecha", "sacada", "origen"]);
+  // Sacada se conserva. Se ocultan Carga, Cosecha y Origen.
+  const ocultas = new Set(["carga", "cosecha", "origen"]);
 
-  // Si ya existe ID PRODUCTO, reemplazarlo con la clasificación solicitada.
   const existentesID = claves
     .map((clave, indice) => clave === "idproducto" ? indice : -1)
     .filter(indice => indice >= 0);
