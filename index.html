@@ -642,14 +642,14 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
   <h2 id="tituloChapas">CHAPAS</h2>
   <p id="alcanceChapas" class="detalle"></p>
   <table class="tabla-detalle">
-    <thead><tr><th>Concepto</th><th>Cantidad</th><th>% de Insumos</th></tr></thead>
+    <thead><tr><th>Concepto</th><th>Cantidad</th><th>% de Cajas de Insumos</th></tr></thead>
     <tbody>
-      <tr><td>Insumos · Total chapas</td><td id="chapas-insumos">—</td><td id="chapas-pct-insumos">—</td></tr>
+      <tr><td>Insumos · Cajas</td><td id="chapas-insumos">—</td><td id="chapas-pct-insumos">—</td></tr>
       <tr><td>Producción · Chapas</td><td id="chapas-produccion">—</td><td id="chapas-pct-produccion">—</td></tr>
     </tbody>
     <tfoot><tr><td>Saldo aproximado · Producción − Insumos</td><td id="chapas-saldo">—</td><td id="chapas-pct-saldo">—</td></tr></tfoot>
   </table>
-  <p class="detalle">Producción: Cajas Chapas + Chapas de mas PPL + Chapas EXTRAS STD.<br>Porcentajes calculados sobre Insumos (100 %). Se utilizan los registros completos de ambas tablas.</p>
+  <p class="detalle">Producción: Cajas Chapas + Chapas de mas PPL + Chapas EXTRAS STD.<br>Se resta la suma de Cajas de Insumos. Porcentajes calculados sobre Cajas de Insumos (100 %). Se utilizan los registros completos de ambas tablas.</p>
   <button id="cerrarChapas" class="secundario">Cerrar</button>
 </dialog>
 
@@ -1147,7 +1147,7 @@ function sumarColumnasChapas(id,grupos){
 }
 function calculoChapas(){
   const p=sumarColumnasChapas("produccion",[["Cajas Chapas"],["Chapas de mas PPL"],["Chapas EXTRAS STD"]]);
-  const i=sumarColumnasChapas("insumos",[["Total chapas","Chapas Total","Suma chapas Total"]]);
+  const i=sumarColumnasChapas("insumos",[["Cajas"]]);
   return {produccion:p.total,insumos:i.total,saldo:p.total===null||i.total===null?null:p.total-i.total,
     error:[p.error,i.error].filter(Boolean).join(" · ")};
 }
