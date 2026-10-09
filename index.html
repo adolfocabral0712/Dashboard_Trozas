@@ -21,9 +21,15 @@ button:disabled{opacity:.5;cursor:default}
 .tarjeta{background:white;border:1px solid var(--borde);padding:16px;border-radius:12px;text-align:center}
 .tarjeta h2{margin:0 0 10px;font-size:15px;color:var(--verde)}
 .numero{font-size:28px;font-weight:bold;margin-bottom:6px}
-.detalle{font-size:12px;color:#647582;margin-bottom:8px;line-height:1.5}
+.detalle{font-size:12px;color:#647582;margin-bottom:8px;line-height:1.6;overflow-wrap:anywhere}
 .estado{font-size:12px;line-height:1.5;color:#647582;overflow-wrap:anywhere}
-.error{color:#b02e2e}
+.error,.negativo{color:#b02e2e}
+.stock-rojo{border-top:4px solid #c94b4b}
+.stock-rojo h2{color:#a62323}
+.stock-amarillo{border-top:4px solid #d9b636}
+.stock-amarillo h2{color:#806300}
+.stock-verde{border-top:4px solid #429368}
+.stock-verde h2{color:#24623a}
 .archivos,.panel{background:white;border:1px solid var(--borde);border-radius:12px}
 .archivos{padding:16px;margin-bottom:18px}
 .archivos summary{cursor:pointer;color:var(--verde);font-weight:bold}
@@ -105,10 +111,31 @@ dialog h2{margin-top:0;color:var(--verde)}
   </article>
 </section>
 
+<section class="tarjetas" aria-label="Stocks por producto">
+  <article class="tarjeta stock-rojo">
+    <h2>STOCK ROJO</h2>
+    <div id="stock-rojo" class="numero">—</div>
+    <div id="detalle-stock-rojo" class="detalle">Pendiente de lectura</div>
+  </article>
+  <article class="tarjeta stock-amarillo">
+    <h2>STOCK AMARILLO</h2>
+    <div id="stock-amarillo" class="numero">—</div>
+    <div id="detalle-stock-amarillo" class="detalle">Pendiente de lectura</div>
+  </article>
+  <article class="tarjeta stock-verde">
+    <h2>STOCK VERDE</h2>
+    <div id="stock-verde" class="numero">—</div>
+    <div id="detalle-stock-verde" class="detalle">Pendiente de lectura</div>
+  </article>
+</section>
+
 <details id="archivos" class="archivos">
   <summary>Seleccionar archivos desde la PC</summary>
-  <p>Si Dropbox bloquea la lectura directa, seleccioná los Excel.
-    El libro de Producción carga también Insumos. Los archivos se leen en tu navegador.</p>
+  <p>
+    Si Dropbox bloquea la lectura directa, seleccioná los Excel.
+    El libro de Producción carga también Insumos.
+    Los archivos se leen en tu navegador.
+  </p>
   <div class="cargas">
     <label>PRODUCCION-LAS-ACACIAS.xlsx
       <input id="archivo-produccion" type="file" accept=".xlsx">
@@ -127,7 +154,8 @@ dialog h2{margin-top:0;color:var(--verde)}
   </nav>
   <h2 id="tituloTabla" class="titulo-tabla">Producción</h2>
   <div class="controles">
-    <input id="buscar" type="search" placeholder="Buscar en toda la tabla..." aria-label="Buscar">
+    <input id="buscar" type="search"
+      placeholder="Buscar en toda la tabla..." aria-label="Buscar">
     <label>Fila de encabezados
       <input id="fila" type="number" min="1" max="100" value="3">
     </label>
@@ -143,7 +171,10 @@ dialog h2{margin-top:0;color:var(--verde)}
   </div>
   <div id="resumen" aria-live="polite"></div>
   <div class="tabla">
-    <table><thead id="encabezado"></thead><tbody id="cuerpo"></tbody></table>
+    <table>
+      <thead id="encabezado"></thead>
+      <tbody id="cuerpo"></tbody>
+    </table>
     <div id="vacio">Cargando datos...</div>
   </div>
   <div class="pie">
@@ -155,12 +186,13 @@ dialog h2{margin-top:0;color:var(--verde)}
     </div>
   </div>
 </section>
+
 <p class="nota">
   Producción: encabezados en fila 3. Insumos y Recibo: fila ajustable.
   La hora de lectura no representa la modificación del Excel.
   Las fórmulas muestran los resultados guardados.
-  La tarjeta Producción suma las seis columnas de todas las filas filtradas,
-  sin incluir descartes ni limitarse a la página visible.
+  La tarjeta Producción responde a los filtros de su tabla.
+  Los stocks utilizan todos los registros cargados de Producción y Recibo.
 </p>
 </main>
 
@@ -173,51 +205,70 @@ dialog h2{margin-top:0;color:var(--verde)}
 <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
 <script>
 "use strict";
+
 const $=id=>document.getElementById(id);
 const TITULO_RECIBO="B3R UPM Las Acacias - Polo Logistico";
+
 const URLS={
   produccion:"https://dl.dropbox.com/scl/fi/z1jtk061zs1maw4vlnyib/PRODUCCION-LAS-ACACIAS.xlsx?rlkey=7pzd2o0oh1q3inr62bvztoqcb&dl=1",
   recibo:"https://dl.dropbox.com/scl/fi/l87boeiqu54yra3i0evd6/aENVIO-DE-CORREOS.xlsb?rlkey=149gw31ntsbso8vtpix30yxjl&dl=1"
 };
+
 const CONFIG={
   produccion:{origen:"produccion",hoja:"DATOS LAS ACACIAS",fila:3},
   insumos:{origen:"produccion",hoja:"INSUMOS",fila:1},
   recibo:{origen:"recibo",hoja:"tati las acacias",fila:1}
 };
+
+const GRUPOS_PRODUCCION={
+  ROJO:["ROJO__STD+30","ROJO_STD +30 Basal"],
+  AMARILLO:["AMARRILLO PPL+30","AMARRILLO PPL+45"],
+  VERDE:["Verde-STD+45","Verde Basal +55"]
+};
+
+const SUMAR_PRODUCCION=Object.values(GRUPOS_PRODUCCION).flat();
+const COLORES=["ROJO","AMARILLO","VERDE"];
 const libros={},tablas={};
 let activa="produccion",ocupado=false;
 
 function normalizar(v){
-  return String(v??"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();
+  return String(v??"").normalize("NFD")
+    .replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();
 }
-function claveColumna(v){return normalizar(v).replace(/[^a-z0-9]/g,"")}
+function claveColumna(v){
+  return normalizar(v).replace(/[^a-z0-9]/g,"");
+}
+function claveSuma(v){
+  return normalizar(v).replace(/amarillo/g,"amarrillo")
+    .replace(/[^a-z0-9+-]/g,"");
+}
 function texto(v){return v==null?"":String(v)}
-function numero(v){return v.toLocaleString("es-UY",{maximumFractionDigits:2})}
-function hora(v){return new Date(v).toLocaleString("es-UY",{timeZone:"America/Montevideo"})}
-function idsDelOrigen(o){return Object.keys(CONFIG).filter(id=>CONFIG[id].origen===o)}
-function claveProducto(v){return normalizar(v).replace(/,/g,".").replace(/\s+/g,"")}
-function esFecha(nombre){return claveColumna(nombre).includes("fecha")}
+function numero(v){
+  return v.toLocaleString("es-UY",{maximumFractionDigits:2});
+}
+function hora(v){
+  return new Date(v).toLocaleString("es-UY",{
+    timeZone:"America/Montevideo"
+  });
+}
+function idsDelOrigen(o){
+  return Object.keys(CONFIG).filter(id=>CONFIG[id].origen===o);
+}
+function claveProducto(v){
+  return normalizar(v).replace(/,/g,".").replace(/\s+/g,"");
+}
+function esFecha(nombre){
+  return claveColumna(nombre).includes("fecha");
+}
 function esObservaciones(nombre){
   return ["observaciones","observacion"].includes(claveColumna(nombre));
 }
 
-// Producción: únicamente estas seis columnas.
-const SUMAR_PRODUCCION=[
-  "AMARRILLO PPL+30",
-  "AMARRILLO PPL+45",
-  "ROJO__STD+30",
-  "ROJO_STD +30 Basal",
-  "Verde-STD+45",
-  "Verde Basal +55"
-];
-
-function claveSuma(v){
-  return normalizar(v).replace(/amarillo/g,"amarrillo").replace(/[^a-z0-9+-]/g,"");
-}
 const OCULTAS_PRODUCCION=new Set([
   "CAMIONES CARGADOS","AMARILLA/ ARBOL","ROJAS X ARBOL",
   "VERDE X ARBOL","Trozas","% DESCARTE","Predio"
 ].map(claveColumna));
+
 const EQUIVALENCIAS=new Map([
   [claveProducto("Troza 5,80 mts +30"),"ROJO"],
   [claveProducto("Troza 5,80 mts +45"),"VERDE"],
@@ -228,28 +279,37 @@ for(const id of Object.keys(CONFIG)){
   tablas[id]={
     columnas:[],filas:[],filtros:[],busqueda:"",
     orden:null,direccion:1,pagina:1,lectura:"",
-    fuente:"",error:"",cargando:false,faltantes:[]
+    fuente:"",error:"",cargando:false,faltantes:[],
+    faltantesColor:{ROJO:[],AMARILLO:[],VERDE:[]},
+    avisoCantidad:"",
+    noClasificados:0
   };
 }
 
+// Los números originales de Excel se usan directamente.
+// Para números guardados como texto se admite coma decimal.
 function numeroCelda(v){
-  if(typeof v==="number")return Number.isFinite(v)?v:0;
+  if(typeof v==="number")return Number.isFinite(v)?v:NaN;
   let s=texto(v).trim().replace(/\s/g,"");
   if(!s)return 0;
   if(s.includes(","))s=s.replace(/\./g,"").replace(",",".");
   const n=Number(s);
-  return Number.isFinite(n)?n:0;
+  return Number.isFinite(n)?n:NaN;
 }
+
 function fechaTexto(v){
   if(v==null||v==="")return "";
   const completar=n=>String(n).padStart(2,"0");
+
   if(v instanceof Date&&!Number.isNaN(v.getTime())){
-    return completar(v.getUTCDate())+"/"+completar(v.getUTCMonth()+1)+"/"+v.getUTCFullYear();
+    return completar(v.getUTCDate())+"/"+
+      completar(v.getUTCMonth()+1)+"/"+v.getUTCFullYear();
   }
   if(typeof v==="number"&&v>0&&v<2958466){
     const d=XLSX.SSF.parse_date_code(v);
     if(d)return completar(d.d)+"/"+completar(d.m)+"/"+d.y;
   }
+
   const s=texto(v).trim();
   let m=s.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})(?:[ T].*)?$/);
   if(m)return completar(m[3])+"/"+completar(m[2])+"/"+m[1];
@@ -257,167 +317,400 @@ function fechaTexto(v){
   if(m)return completar(m[1])+"/"+completar(m[2])+"/"+m[3];
   return s;
 }
+
 function clasificar(fila,indices){
   const valores=indices.length?indices.map(i=>fila[i]):fila;
   const encontrados=new Set();
+
   for(const v of valores){
     const color=EQUIVALENCIAS.get(claveProducto(v));
     if(color)encontrados.add(color);
   }
+
   return encontrados.size===1?[...encontrados][0]:
     encontrados.size>1?"REVISAR":"SIN CLASIFICAR";
 }
 
 function extraer(id,libro){
   const config=CONFIG[id];
-  const nombre=libro.SheetNames.find(n=>normalizar(n)===normalizar(config.hoja));
-  if(!nombre)throw new Error('No se encontró "'+config.hoja+'". Hojas: '+libro.SheetNames.join(", "));
+  const nombre=libro.SheetNames.find(
+    n=>normalizar(n)===normalizar(config.hoja)
+  );
+
+  if(!nombre){
+    throw new Error('No se encontró "'+config.hoja+
+      '". Hojas: '+libro.SheetNames.join(", "));
+  }
+
   const hoja=libro.Sheets[nombre];
   if(!hoja["!ref"])throw new Error("La hoja está vacía.");
+
   const rango=XLSX.utils.decode_range(hoja["!ref"]);
   rango.s.r=config.fila-1;
-  if(rango.s.r>rango.e.r)throw new Error("La fila elegida supera el contenido.");
+
+  if(rango.s.r>rango.e.r){
+    throw new Error("La fila elegida supera el contenido.");
+  }
 
   const matriz=XLSX.utils.sheet_to_json(hoja,{
     header:1,range:rango,raw:true,defval:"",blankrows:true
   });
-  const cabecera=matriz[0]||[],datos=matriz.slice(1);
-  const ancho=datos.reduce((n,f)=>Math.max(n,f.length),cabecera.length);
+  const cabecera=matriz[0]||[];
+  const datos=matriz.slice(1);
+  const ancho=datos.reduce(
+    (n,f)=>Math.max(n,f.length),cabecera.length
+  );
+
   const indices=[];
   for(let i=0;i<ancho;i++){
-    if(texto(cabecera[i]).trim()||datos.some(f=>texto(f[i]).trim()))indices.push(i);
+    if(texto(cabecera[i]).trim()||
+      datos.some(f=>texto(f[i]).trim())){
+      indices.push(i);
+    }
   }
+
   const usados=new Map();
   let columnas=indices.map(i=>{
-    const base=texto(cabecera[i]).trim()||"Columna "+XLSX.utils.encode_col(rango.s.c+i);
+    const base=texto(cabecera[i]).trim()||
+      "Columna "+XLSX.utils.encode_col(rango.s.c+i);
     const veces=(usados.get(base)||0)+1;
     usados.set(base,veces);
     return veces===1?base:base+" ("+veces+")";
   });
+
   const originales=datos
     .map(f=>indices.map(i=>f[i]??""))
     .filter(f=>f.some(v=>texto(v).trim()!==""));
 
-  let faltantes=[],totales=originales.map(()=>0);
+  const faltantesColor={ROJO:[],AMARILLO:[],VERDE:[]};
+  let faltantes=[];
+  let avisoCantidad="";
+  let noClasificados=0;
 
-  if(id==="produccion"){
-    const indicesSuma=SUMAR_PRODUCCION.map(nombre=>{
-      const encontrados=columnas
-        .map((c,i)=>claveSuma(c)===claveSuma(nombre)?i:-1)
-        .filter(i=>i>=0);
-      if(encontrados.length!==1){
-        faltantes.push(nombre+(encontrados.length>1?" (duplicada)":""));
-        return -1;
-      }
-      return encontrados[0];
-    });
-    totales=originales.map(f=>indicesSuma.reduce(
-      (s,i)=>s+(i>=0?numeroCelda(f[i]):0),0
-    ));
-  }
-
-  let filas=originales.map((f,indice)=>({
-    valores:f.map((v,i)=>esFecha(columnas[i])||v instanceof Date?fechaTexto(v):texto(v)),
-    total:totales[indice]
+  let filas=originales.map(f=>({
+    valores:f.map((v,i)=>
+      esFecha(columnas[i])||v instanceof Date
+        ?fechaTexto(v):texto(v)
+    ),
+    total:0,
+    produccion:{ROJO:0,AMARILLO:0,VERDE:0},
+    color:"",
+    cantidad:0
   }));
 
   if(id==="produccion"){
-    const mantener=columnas.map((c,i)=>OCULTAS_PRODUCCION.has(claveColumna(c))?-1:i).filter(i=>i>=0);
+    const indicesPorColor={};
+
+    for(const color of COLORES){
+      indicesPorColor[color]=GRUPOS_PRODUCCION[color].map(nombre=>{
+        const encontrados=columnas
+          .map((c,i)=>claveSuma(c)===claveSuma(nombre)?i:-1)
+          .filter(i=>i>=0);
+
+        if(encontrados.length!==1){
+          faltantesColor[color].push(
+            nombre+(encontrados.length>1?" (duplicada)":"")
+          );
+          return -1;
+        }
+        return encontrados[0];
+      });
+    }
+
+    filas.forEach((fila,n)=>{
+      for(const color of COLORES){
+        let suma=0;
+
+        for(const i of indicesPorColor[color]){
+          if(i<0)continue;
+          const valor=numeroCelda(originales[n][i]);
+
+          if(Number.isNaN(valor)){
+            const aviso="Valor no numérico en "+columnas[i];
+            if(!faltantesColor[color].includes(aviso)){
+              faltantesColor[color].push(aviso);
+            }
+          }else{
+            suma+=valor;
+          }
+        }
+
+        fila.produccion[color]=suma;
+      }
+
+      fila.total=COLORES.reduce(
+        (s,color)=>s+fila.produccion[color],0
+      );
+    });
+
+    faltantes=COLORES.flatMap(color=>faltantesColor[color]);
+
+    const mantener=columnas
+      .map((c,i)=>OCULTAS_PRODUCCION.has(claveColumna(c))?-1:i)
+      .filter(i=>i>=0);
+
     columnas=mantener.map(i=>columnas[i]);
-    filas=filas.map(f=>({...f,valores:mantener.map(i=>f.valores[i])}));
+    filas=filas.map(f=>({
+      ...f,valores:mantener.map(i=>f.valores[i])
+    }));
   }
+
   if(id==="recibo"){
-    const nombres=new Set([
+    const nombresProducto=new Set([
       "producto","nombreproducto","descripcionproducto",
       "productodescripcion","descripciondelproducto","tipoproducto"
     ]);
-    const producto=columnas.map((c,i)=>nombres.has(claveColumna(c))?i:-1).filter(i=>i>=0);
+
+    const producto=columnas
+      .map((c,i)=>nombresProducto.has(claveColumna(c))?i:-1)
+      .filter(i=>i>=0);
+
+    const cantidades=columnas
+      .map((c,i)=>claveColumna(c)==="cantidad"?i:-1)
+      .filter(i=>i>=0);
+
+    if(cantidades.length!==1){
+      avisoCantidad=cantidades.length
+        ?"La columna CANTIDAD está duplicada."
+        :"No se encontró la columna CANTIDAD en Recibo.";
+    }
+
+    filas.forEach((fila,n)=>{
+      fila.color=clasificar(fila.valores,producto);
+
+      if(!COLORES.includes(fila.color))noClasificados++;
+
+      if(cantidades.length===1){
+        const cantidad=numeroCelda(originales[n][cantidades[0]]);
+
+        if(Number.isNaN(cantidad)){
+          avisoCantidad="Hay valores no numéricos en CANTIDAD de Recibo.";
+        }else{
+          fila.cantidad=cantidad;
+        }
+      }
+    });
+
+    // Sacada permanece visible.
     const ocultas=new Set(["carga","cosecha","origen","idproducto"]);
-    const mantener=columnas.map((c,i)=>ocultas.has(claveColumna(c))?-1:i).filter(i=>i>=0);
+    const mantener=columnas
+      .map((c,i)=>ocultas.has(claveColumna(c))?-1:i)
+      .filter(i=>i>=0);
+
     const posicion=mantener.findIndex(i=>producto.includes(i));
     const insertar=posicion>=0?posicion+1:0;
+
     columnas=mantener.map(i=>columnas[i]);
     columnas.splice(insertar,0,"ID PRODUCTO");
+
     filas=filas.map(f=>{
       const valores=mantener.map(i=>f.valores[i]);
-      valores.splice(insertar,0,clasificar(f.valores,producto));
+      valores.splice(insertar,0,f.color);
       return {...f,valores};
     });
   }
+
   const anterior=tablas[id];
-  const mismos=JSON.stringify(columnas)===JSON.stringify(anterior.columnas);
+  const mismos=JSON.stringify(columnas)===
+    JSON.stringify(anterior.columnas);
+
   return {
-    ...anterior,columnas,filas,faltantes,
+    ...anterior,columnas,filas,faltantes,faltantesColor,
+    avisoCantidad,noClasificados,
     filtros:mismos?anterior.filtros:columnas.map(()=>""),
-    orden:mismos?anterior.orden:null,pagina:1,error:"",cargando:false
+    orden:mismos?anterior.orden:null,
+    pagina:1,error:"",cargando:false
   };
 }
 
 function filtradas(id){
-  const t=tablas[id],buscar=normalizar(t.busqueda);
+  const t=tablas[id];
+  const buscar=normalizar(t.busqueda);
+
   return t.filas.filter(f=>
     (!buscar||f.valores.some(v=>normalizar(v).includes(buscar)))&&
-    t.filtros.every((v,i)=>!normalizar(v)||normalizar(f.valores[i]).includes(normalizar(v)))
+    t.filtros.every((v,i)=>
+      !normalizar(v)||normalizar(f.valores[i]).includes(normalizar(v))
+    )
   );
 }
+
 function tarjetaProduccion(){
   const t=tablas.produccion;
-  if(!t.lectura){$("numero-produccion").textContent="—";return}
+  if(!t.lectura){
+    $("numero-produccion").textContent="—";
+    return;
+  }
+
   const seleccion=filtradas("produccion");
   const suma=seleccion.reduce((s,f)=>s+f.total,0);
-  $("numero-produccion").textContent=t.faltantes.length?"—":numero(suma);
+
+  $("numero-produccion").textContent=
+    t.faltantes.length?"—":numero(suma);
+
   $("detalle-produccion").textContent=t.faltantes.length
-    ?"Revisar encabezados: "+t.faltantes.join(", ")
-    :"Total producción · "+numero(seleccion.length)+" de "+numero(t.filas.length)+" registros";
-  $("detalle-produccion").classList.toggle("error",t.faltantes.length>0);
+    ?"Revisar: "+t.faltantes.join(", ")
+    :"Total producción · "+numero(seleccion.length)+
+      " de "+numero(t.filas.length)+" registros";
+
+  $("detalle-produccion").classList.toggle(
+    "error",t.faltantes.length>0
+  );
 }
+
+function tarjetasStock(){
+  const p=tablas.produccion;
+  const r=tablas.recibo;
+
+  for(const color of COLORES){
+    const id=color.toLowerCase();
+    const valor=$("stock-"+id);
+    const detalle=$("detalle-stock-"+id);
+
+    valor.classList.remove("negativo");
+    detalle.classList.remove("error");
+
+    if(p.cargando||r.cargando){
+      valor.textContent="—";
+      detalle.textContent="Actualizando datos...";
+      continue;
+    }
+
+    if(!p.lectura||!r.lectura){
+      valor.textContent="—";
+      detalle.textContent="Se necesita cargar Producción y Recibo.";
+      continue;
+    }
+
+    // Evitar presentar como actual un stock con una lectura fallida.
+    if(p.error||r.error){
+      valor.textContent="—";
+      detalle.textContent="Revisar la lectura de Producción y Recibo.";
+      detalle.classList.add("error");
+      continue;
+    }
+
+    const problemas=[
+      ...p.faltantesColor[color],
+      ...(r.avisoCantidad?[r.avisoCantidad]:[])
+    ];
+
+    if(problemas.length){
+      valor.textContent="—";
+      detalle.textContent="Revisar: "+problemas.join(", ");
+      detalle.classList.add("error");
+      continue;
+    }
+
+    const producido=p.filas.reduce(
+      (s,f)=>s+f.produccion[color],0
+    );
+    const recibido=r.filas.reduce(
+      (s,f)=>s+(f.color===color?f.cantidad:0),0
+    );
+    const stock=producido-recibido;
+
+    valor.textContent=numero(stock);
+    valor.classList.toggle("negativo",stock<0);
+
+    detalle.textContent=
+      "Producción: "+numero(producido)+
+      " − Recibido: "+numero(recibido)+
+      (r.noClasificados
+        ?" · "+numero(r.noClasificados)+
+          " registros de Recibo sin clasificación válida, excluidos."
+        :"");
+
+    detalle.classList.toggle("error",r.noClasificados>0);
+  }
+}
+
 function tarjetas(){
   tarjetaProduccion();
+  tarjetasStock();
+
   for(const [id,t]of Object.entries(tablas)){
-    if(id!=="produccion")$("numero-"+id).textContent=t.lectura?numero(t.filas.length):"—";
+    if(id!=="produccion"){
+      $("numero-"+id).textContent=
+        t.lectura?numero(t.filas.length):"—";
+    }
+
     const e=$("estado-"+id);
     e.classList.toggle("error",Boolean(t.error));
     e.textContent=t.cargando?"Cargando archivo...":
-      t.error?t.error+(t.lectura?" · Datos anteriores: "+hora(t.lectura):""):
-      t.lectura?t.fuente+" · Lectura: "+hora(t.lectura):"Pendiente";
+      t.error?t.error+
+        (t.lectura?" · Datos anteriores: "+hora(t.lectura):""):
+      t.lectura?t.fuente+" · Lectura: "+hora(t.lectura):
+      "Pendiente";
   }
 }
+
 function encabezado(){
-  const t=tablas[activa],tr=document.createElement("tr");
+  const t=tablas[activa];
+  const tr=document.createElement("tr");
+
   t.columnas.forEach((nombre,i)=>{
     const th=document.createElement("th");
     if(esObservaciones(nombre))th.className="observaciones";
+
     const b=document.createElement("button");
-    b.textContent=nombre+(t.orden===i?(t.direccion===1?" ▲":" ▼"):"");
+    b.textContent=nombre+
+      (t.orden===i?(t.direccion===1?" ▲":" ▼"):"");
+
     b.addEventListener("click",()=>{
       t.direccion=t.orden===i?-t.direccion:1;
-      t.orden=i;t.pagina=1;encabezado();mostrarFilas();
+      t.orden=i;
+      t.pagina=1;
+      encabezado();
+      mostrarFilas();
     });
+
     const input=document.createElement("input");
-    input.type="search";input.placeholder="Filtrar...";
+    input.type="search";
+    input.placeholder="Filtrar...";
     input.value=t.filtros[i]||"";
     input.setAttribute("aria-label","Filtrar "+nombre);
+
     input.addEventListener("input",()=>{
-      t.filtros[i]=input.value;t.pagina=1;mostrarFilas();
+      t.filtros[i]=input.value;
+      t.pagina=1;
+      mostrarFilas();
     });
-    th.append(b,input);tr.append(th);
+
+    th.append(b,input);
+    tr.append(th);
   });
+
   $("encabezado").replaceChildren(tr);
 }
-const comparador=new Intl.Collator("es",{numeric:true,sensitivity:"base"});
+
+const comparador=new Intl.Collator("es",{
+  numeric:true,sensitivity:"base"
+});
+
 function claveFecha(v){
   const m=texto(v).match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
   return m?m[3]+m[2]+m[1]:texto(v);
 }
+
 function mostrarFilas(){
-  const t=tablas[activa],resultado=filtradas(activa);
+  const t=tablas[activa];
+  const resultado=filtradas(activa);
+
   if(t.orden!==null){
     resultado.sort((a,b)=>{
-      let av=a.valores[t.orden],bv=b.valores[t.orden];
-      if(esFecha(t.columnas[t.orden])){av=claveFecha(av);bv=claveFecha(bv)}
+      let av=a.valores[t.orden];
+      let bv=b.valores[t.orden];
+
+      if(esFecha(t.columnas[t.orden])){
+        av=claveFecha(av);
+        bv=claveFecha(bv);
+      }
+
       return comparador.compare(av,bv)*t.direccion;
     });
   }
+
   const limite=Number($("limite").value);
   const paginas=Math.max(1,Math.ceil(resultado.length/limite));
   t.pagina=Math.min(t.pagina,paginas);
@@ -426,160 +719,301 @@ function mostrarFilas(){
 
   resultado.slice(inicio,inicio+limite).forEach(f=>{
     const tr=document.createElement("tr");
+
     f.valores.forEach((v,i)=>{
       const td=document.createElement("td");
+
       if(esObservaciones(t.columnas[i])){
         td.className="observaciones";
         const nota=document.createElement("div");
         nota.className="nota-texto corta";
         nota.textContent=v||"—";
         td.append(nota);
+
         if(v.trim()){
           const b=document.createElement("button");
-          b.className="leer-nota";b.textContent="Ver observación";
+          b.className="leer-nota";
+          b.textContent="Ver observación";
           b.addEventListener("click",()=>{
             $("notaCompleta").textContent=v;
             $("modalNota").showModal();
           });
           td.append(b);
         }
-      }else if(activa==="recibo"&&t.columnas[i]==="ID PRODUCTO"&&["ROJO","VERDE","AMARILLO"].includes(v)){
+      }else if(
+        activa==="recibo"&&
+        t.columnas[i]==="ID PRODUCTO"&&
+        COLORES.includes(v)
+      ){
         const e=document.createElement("span");
-        e.className="etiqueta "+v.toLowerCase();e.textContent=v;td.append(e);
-      }else td.textContent=v;
+        e.className="etiqueta "+v.toLowerCase();
+        e.textContent=v;
+        td.append(e);
+      }else{
+        td.textContent=v;
+      }
+
       tr.append(td);
     });
+
     fragmento.append(tr);
   });
 
   $("cuerpo").replaceChildren(fragmento);
-  $("resumen").textContent="Hoja: "+CONFIG[activa].hoja+
+  $("resumen").textContent=
+    "Hoja: "+CONFIG[activa].hoja+
     " · Encabezados: fila "+CONFIG[activa].fila+
-    " · "+numero(resultado.length)+" registros filtrados de "+numero(t.filas.length)+
+    " · "+numero(resultado.length)+
+    " registros filtrados de "+numero(t.filas.length)+
     (t.error?" · "+t.error:"");
+
   $("pagina").textContent="Página "+t.pagina+" de "+paginas;
   $("anterior").disabled=t.pagina<=1;
   $("siguiente").disabled=t.pagina>=paginas;
   $("vacio").hidden=resultado.length>0;
-  $("vacio").textContent=t.cargando&&!t.lectura?"Cargando datos...":
-    t.error&&!t.lectura?t.error:"No hay registros para esta selección.";
+  $("vacio").textContent=t.cargando&&!t.lectura
+    ?"Cargando datos...":
+    t.error&&!t.lectura?t.error:
+    "No hay registros para esta selección.";
+
   tarjetaProduccion();
 }
+
 function mostrar(){
   document.querySelectorAll("[data-tab]").forEach(b=>{
     const elegida=b.dataset.tab===activa;
     b.classList.toggle("activo",elegida);
     b.setAttribute("aria-pressed",String(elegida));
   });
-  $("tituloTabla").textContent=activa==="recibo"?TITULO_RECIBO:
+
+  $("tituloTabla").textContent=activa==="recibo"
+    ?TITULO_RECIBO:
     activa==="produccion"?"Producción":"Insumos";
+
   $("buscar").value=tablas[activa].busqueda;
   $("fila").value=CONFIG[activa].fila;
   $("fila").disabled=activa==="produccion"||ocupado;
-  encabezado();mostrarFilas();
+  encabezado();
+  mostrarFilas();
 }
+
 function cargarLibro(origen,bytes,fuente){
   const libro=XLSX.read(bytes,{type:"array",cellDates:true});
   const lectura=new Date().toISOString();
   libros[origen]={libro,fuente,lectura};
+
   for(const id of idsDelOrigen(origen)){
     try{
       const t=extraer(id,libro);
-      t.fuente=fuente;t.lectura=lectura;tablas[id]=t;
-    }catch(e){tablas[id].error=e.message;tablas[id].cargando=false}
+      t.fuente=fuente;
+      t.lectura=lectura;
+      tablas[id]=t;
+    }catch(e){
+      tablas[id].error=e.message;
+      tablas[id].cargando=false;
+    }
   }
 }
+
 function errorOrigen(origen,mensaje){
   for(const id of idsDelOrigen(origen)){
-    tablas[id].error=mensaje;tablas[id].cargando=false;
+    tablas[id].error=mensaje;
+    tablas[id].cargando=false;
   }
 }
+
 function comprobarLector(){
-  if(typeof XLSX==="undefined")throw new Error("No se cargó el lector Excel. Revisá la conexión y recargá.");
+  if(typeof XLSX==="undefined"){
+    throw new Error(
+      "No se cargó el lector Excel. Revisá la conexión y recargá."
+    );
+  }
 }
+
 async function descargar(origen){
   const control=new AbortController();
   const timer=setTimeout(()=>control.abort(),90000);
+
   try{
     const r=await fetch(URLS[origen],{
-      mode:"cors",cache:"no-store",credentials:"omit",signal:control.signal
+      mode:"cors",cache:"no-store",
+      credentials:"omit",signal:control.signal
     });
-    if(!r.ok)throw new Error("Dropbox respondió HTTP "+r.status+".");
+
+    if(!r.ok){
+      throw new Error("Dropbox respondió HTTP "+r.status+".");
+    }
+
     const tipo=(r.headers.get("Content-Type")||"").toLowerCase();
-    if(tipo.includes("text/html")||tipo.includes("application/json"))throw new Error("El enlace no devolvió un Excel.");
+    if(tipo.includes("text/html")||tipo.includes("application/json")){
+      throw new Error("El enlace no devolvió un Excel.");
+    }
+
     const bytes=await r.arrayBuffer();
     if(!bytes.byteLength)throw new Error("El archivo está vacío.");
     cargarLibro(origen,bytes,"Dropbox");
   }catch(e){
-    const mensaje=e.name==="AbortError"?"La descarga superó los 90 segundos.":
-      e instanceof TypeError?"No se pudo leer Dropbox por un bloqueo del navegador o un problema de conexión.":e.message;
-    errorOrigen(origen,mensaje+" Podés seleccionar el Excel desde la PC.");
+    const mensaje=e.name==="AbortError"
+      ?"La descarga superó los 90 segundos.":
+      e instanceof TypeError
+        ?"No se pudo leer Dropbox por un bloqueo del navegador o un problema de conexión."
+        :e.message;
+
+    errorOrigen(origen,mensaje+
+      " Podés seleccionar el Excel desde la PC.");
     $("archivos").open=true;
-  }finally{clearTimeout(timer);tarjetas();mostrar()}
+  }finally{
+    clearTimeout(timer);
+    tarjetas();
+    mostrar();
+  }
 }
+
 function bloquear(v){
-  ocupado=v;$("actualizar").disabled=v;
-  $("actualizar").textContent=v?"Cargando...":"Actualizar desde Dropbox";
-  $("archivo-produccion").disabled=v;$("archivo-recibo").disabled=v;
+  ocupado=v;
+  $("actualizar").disabled=v;
+  $("actualizar").textContent=v
+    ?"Cargando...":"Actualizar desde Dropbox";
+  $("archivo-produccion").disabled=v;
+  $("archivo-recibo").disabled=v;
   $("fila").disabled=activa==="produccion"||v;
 }
+
 async function actualizar(){
   if(ocupado)return;
-  try{comprobarLector()}catch(e){
-    errorOrigen("produccion",e.message);errorOrigen("recibo",e.message);
-    tarjetas();mostrar();return;
+
+  try{
+    comprobarLector();
+  }catch(e){
+    errorOrigen("produccion",e.message);
+    errorOrigen("recibo",e.message);
+    tarjetas();
+    mostrar();
+    return;
   }
+
   bloquear(true);
-  for(const t of Object.values(tablas)){t.cargando=true;t.error=""}
-  tarjetas();mostrar();
-  try{await Promise.allSettled([descargar("produccion"),descargar("recibo")])}
-  finally{bloquear(false);tarjetas();mostrar()}
+  for(const t of Object.values(tablas)){
+    t.cargando=true;
+    t.error="";
+  }
+  tarjetas();
+  mostrar();
+
+  try{
+    await Promise.allSettled([
+      descargar("produccion"),
+      descargar("recibo")
+    ]);
+  }finally{
+    bloquear(false);
+    tarjetas();
+    mostrar();
+  }
 }
+
 async function seleccionarArchivo(origen,input){
   const archivo=input.files[0];
   if(!archivo||ocupado)return;
+
   bloquear(true);
-  for(const id of idsDelOrigen(origen)){tablas[id].cargando=true;tablas[id].error=""}
+  for(const id of idsDelOrigen(origen)){
+    tablas[id].cargando=true;
+    tablas[id].error="";
+  }
   tarjetas();
-  try{comprobarLector();cargarLibro(origen,await archivo.arrayBuffer(),"Archivo local")}
-  catch(e){errorOrigen(origen,"No se pudo leer el archivo: "+e.message)}
-  finally{input.value="";bloquear(false);tarjetas();mostrar()}
+
+  try{
+    comprobarLector();
+    cargarLibro(origen,await archivo.arrayBuffer(),"Archivo local");
+  }catch(e){
+    errorOrigen(origen,"No se pudo leer el archivo: "+e.message);
+  }finally{
+    input.value="";
+    bloquear(false);
+    tarjetas();
+    mostrar();
+  }
 }
+
 document.querySelectorAll("[data-tab]").forEach(b=>{
-  b.addEventListener("click",()=>{activa=b.dataset.tab;mostrar()});
+  b.addEventListener("click",()=>{
+    activa=b.dataset.tab;
+    mostrar();
+  });
 });
+
 $("buscar").addEventListener("input",()=>{
   tablas[activa].busqueda=$("buscar").value;
-  tablas[activa].pagina=1;mostrarFilas();
+  tablas[activa].pagina=1;
+  mostrarFilas();
 });
+
 $("quitar").addEventListener("click",()=>{
   for(const t of Object.values(tablas)){
-    t.busqueda="";t.filtros=t.columnas.map(()=>"");
-    t.orden=null;t.direccion=1;t.pagina=1;
+    t.busqueda="";
+    t.filtros=t.columnas.map(()=>"");
+    t.orden=null;
+    t.direccion=1;
+    t.pagina=1;
   }
   mostrar();
 });
-$("limite").addEventListener("change",()=>{tablas[activa].pagina=1;mostrarFilas()});
-$("anterior").addEventListener("click",()=>{tablas[activa].pagina--;mostrarFilas()});
-$("siguiente").addEventListener("click",()=>{tablas[activa].pagina++;mostrarFilas()});
+
+$("limite").addEventListener("change",()=>{
+  tablas[activa].pagina=1;
+  mostrarFilas();
+});
+$("anterior").addEventListener("click",()=>{
+  tablas[activa].pagina--;
+  mostrarFilas();
+});
+$("siguiente").addEventListener("click",()=>{
+  tablas[activa].pagina++;
+  mostrarFilas();
+});
+
 $("fila").addEventListener("change",()=>{
   if(activa==="produccion"||ocupado)return;
-  const c=CONFIG[activa],n=Number($("fila").value);
-  if(!Number.isInteger(n)||n<1||n>100){$("fila").value=c.fila;return}
-  const anterior=c.fila;c.fila=n;
+  const c=CONFIG[activa];
+  const n=Number($("fila").value);
+
+  if(!Number.isInteger(n)||n<1||n>100){
+    $("fila").value=c.fila;
+    return;
+  }
+
+  const anterior=c.fila;
+  c.fila=n;
   const guardado=libros[c.origen];
+
   if(guardado){
     try{
       const t=extraer(activa,guardado.libro);
-      t.fuente=guardado.fuente;t.lectura=guardado.lectura;tablas[activa]=t;
-    }catch(e){c.fila=anterior;tablas[activa].error=e.message}
+      t.fuente=guardado.fuente;
+      t.lectura=guardado.lectura;
+      tablas[activa]=t;
+    }catch(e){
+      c.fila=anterior;
+      tablas[activa].error=e.message;
+    }
   }
-  tarjetas();mostrar();
+
+  tarjetas();
+  mostrar();
 });
-$("archivo-produccion").addEventListener("change",e=>seleccionarArchivo("produccion",e.target));
-$("archivo-recibo").addEventListener("change",e=>seleccionarArchivo("recibo",e.target));
+
+$("archivo-produccion").addEventListener("change",e=>
+  seleccionarArchivo("produccion",e.target)
+);
+$("archivo-recibo").addEventListener("change",e=>
+  seleccionarArchivo("recibo",e.target)
+);
 $("actualizar").addEventListener("click",actualizar);
-$("cerrarNota").addEventListener("click",()=>$("modalNota").close());
+$("cerrarNota").addEventListener("click",()=>
+  $("modalNota").close()
+);
+
 mostrar();
 actualizar();
 </script>
