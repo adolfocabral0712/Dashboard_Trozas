@@ -4,61 +4,25 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Producción Las Acacias</title>
-
 <style>
-:root{
-  --verde:#19564b;
-  --fondo:#f2f5f7;
-  --borde:#dbe4e8;
-  --texto:#273c49;
-}
+:root{--verde:#19564b;--fondo:#f2f5f7;--borde:#dbe4e8;--texto:#273c49}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
-body{
-  margin:0;
-  background:var(--fondo);
-  color:var(--texto);
-  font-family:Arial,sans-serif;
-}
+body{margin:0;background:var(--fondo);color:var(--texto);font-family:Arial,sans-serif}
 main{max-width:1600px;margin:auto;padding:24px}
-header{
-  display:flex;justify-content:space-between;
-  align-items:center;gap:15px;flex-wrap:wrap;
-  margin-bottom:20px;
-}
+header{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin-bottom:20px}
 h1{color:var(--verde);margin:0 0 8px;font-size:26px}
 .subtitulo{margin:0;color:#647582}
 button,input,select{font:inherit}
-button{
-  padding:10px 15px;border:1px solid var(--borde);
-  border-radius:8px;background:white;
-  cursor:pointer;color:var(--texto);
-}
+button{padding:10px 15px;border:1px solid var(--borde);border-radius:8px;background:white;cursor:pointer;color:var(--texto)}
 button:hover{background:#edf5f1}
 button:disabled{opacity:.5;cursor:default}
-.primario,.pestanas button.activo{
-  background:var(--verde);
-  border-color:var(--verde);color:white;
-}
-.tarjetas,.graficos{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:14px;margin-bottom:18px;
-}
-.tarjeta{
-  background:white;border:1px solid var(--borde);
-  padding:20px 16px;border-radius:12px;
-  text-align:center;display:flex;
-  flex-direction:column;justify-content:center;
-}
-.tarjeta h2{
-  margin:0 0 10px;font-size:15px;color:var(--verde);
-}
+.primario,.pestanas button.activo{background:var(--verde);border-color:var(--verde);color:white}
+.tarjetas,.graficos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:18px}
+.tarjeta{background:white;border:1px solid var(--borde);padding:20px 16px;border-radius:12px;text-align:center;display:flex;flex-direction:column;justify-content:center}
+.tarjeta h2{margin:0 0 10px;font-size:15px;color:var(--verde)}
 .numero{font-size:30px;font-weight:bold;margin-bottom:6px}
-.detalle{
-  font-size:12px;color:#647582;
-  line-height:1.6;overflow-wrap:anywhere;
-}
+.detalle{font-size:12px;color:#647582;line-height:1.6;overflow-wrap:anywhere}
 .error,.negativo{color:#b02e2e}
 .stock-rojo{border-top:4px solid #c94b4b}
 .stock-rojo h2{color:#a62323}
@@ -71,179 +35,60 @@ button:disabled{opacity:.5;cursor:default}
 .descarte{border-top:4px solid #b17b48}
 .descarte h2{color:#885b31}
 button.tarjeta{width:100%;font:inherit}
-button.tarjeta:hover{
-  background:#fffaf3;
-  box-shadow:0 3px 12px rgba(40,60,70,.08);
-}
-button.tarjeta:focus-visible{
-  outline:3px solid #b17b48;outline-offset:3px;
-}
-.grafico{
-  background:white;border:1px solid var(--borde);
-  border-radius:12px;overflow:hidden;
-}
-.grafico h2{
-  margin:0;padding:15px 12px;
-  font-size:14px;text-align:center;
-  color:var(--verde);
-  border-bottom:1px solid var(--borde);
-  background:#f8fbfa;
-}
-.visual{
-  height:260px;display:flex;
-  justify-content:center;align-items:center;
-  padding:12px;
-}
-.visual svg{width:100%;height:100%;max-width:300px}
-.mensaje-grafico{
-  text-align:center;color:#647582;
-  font-size:13px;line-height:1.6;padding:16px;
-}
-.leyenda{padding:0 18px 14px}
-.leyenda-fila{
-  display:flex;align-items:center;
-  gap:8px;padding:9px 0;
-  border-bottom:1px solid #edf1f3;
-  font-size:12px;
-}
-.punto{
-  width:11px;height:11px;border-radius:50%;
-  flex:0 0 11px;
-}
-.nombre-serie{flex:1}
-.valor-serie{font-weight:bold;white-space:nowrap}
-.porcentaje{font-weight:normal;color:#647582}
-.alcance{
-  text-align:center;font-size:11px;
-  color:#647582;padding:0 12px 14px;line-height:1.5;
-}
-.panel{
-  background:white;border:1px solid var(--borde);
-  border-radius:12px;overflow:hidden;
-}
-.pestanas,.controles{
-  display:flex;gap:10px;padding:16px;
-  flex-wrap:wrap;align-items:center;
-}
+button.tarjeta:hover{background:#fffaf3;box-shadow:0 3px 12px rgba(40,60,70,.08)}
+button.tarjeta:focus-visible{outline:3px solid #b17b48;outline-offset:3px}
+.grafico{background:white;border:1px solid var(--borde);border-radius:12px;overflow:hidden}
+.grafico h2{margin:0;padding:15px 12px;font-size:14px;text-align:center;color:var(--verde);border-bottom:1px solid var(--borde);background:#f8fbfa}
+.visual{min-height:300px;display:flex;justify-content:center;align-items:center;padding:8px 2px}
+.visual svg{display:block;width:100%;height:auto}
+.mensaje-grafico{text-align:center;color:#647582;font-size:13px;line-height:1.6;padding:16px}
+.alcance{text-align:center;font-size:11px;color:#647582;padding:0 12px 14px;line-height:1.5}
+.panel{background:white;border:1px solid var(--borde);border-radius:12px;overflow:hidden}
+.pestanas,.controles{display:flex;gap:10px;padding:16px;flex-wrap:wrap;align-items:center}
 .pestanas{justify-content:center}
-.ayuda-tablas{
-  text-align:center;font-size:12px;
-  color:#647582;margin:0;padding:0 16px 16px;
-}
+.ayuda-tablas{text-align:center;font-size:12px;color:#647582;margin:0;padding:0 16px 16px}
 #listado{border-top:1px solid var(--borde)}
-.titulo-tabla{
-  margin:0;padding:18px 16px 0;
-  text-align:center;color:var(--verde);
-  font-size:20px;overflow-wrap:anywhere;
-}
-input,select{
-  padding:9px;border:1px solid var(--borde);
-  border-radius:6px;background:white;color:var(--texto);
-}
+.titulo-tabla{margin:0;padding:18px 16px 0;text-align:center;color:var(--verde);font-size:20px;overflow-wrap:anywhere}
+input,select{padding:9px;border:1px solid var(--borde);border-radius:6px;background:white;color:var(--texto)}
 #buscar{flex:1;min-width:190px}
-.controles label{
-  font-size:13px;display:flex;
-  align-items:center;gap:7px;
-}
+.controles label{font-size:13px;display:flex;align-items:center;gap:7px}
 #fila{width:70px}
-#aviso{
-  padding:0 16px 14px;color:#b02e2e;
-  font-size:13px;line-height:1.6;text-align:center;
-}
-.tabla{
-  overflow:auto;max-height:65vh;
-  border-top:1px solid var(--borde);
-}
-table{
-  width:100%;border-collapse:separate;
-  border-spacing:0;font-size:12px;
-}
-th,td{
-  text-align:center;padding:10px;
-  min-width:105px;max-width:220px;
-  overflow-wrap:anywhere;
-  border-bottom:1px solid var(--borde);
-}
-th{
-  position:sticky;top:0;z-index:1;
-  background:#edf3f4;vertical-align:top;
-}
-th button{
-  width:100%;border:none;background:transparent;
-  color:var(--verde);font-weight:bold;
-  white-space:normal;padding:4px;
-}
-th input{
-  width:100%;min-width:85px;
-  margin-top:8px;font-size:11px;
-}
+#aviso{padding:0 16px 14px;color:#b02e2e;font-size:13px;line-height:1.6;text-align:center}
+.tabla{overflow:auto;max-height:65vh;border-top:1px solid var(--borde)}
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:12px}
+th,td{text-align:center;padding:10px;min-width:105px;max-width:220px;overflow-wrap:anywhere;border-bottom:1px solid var(--borde)}
+th{position:sticky;top:0;z-index:1;background:#edf3f4;vertical-align:top}
+th button{width:100%;border:none;background:transparent;color:var(--verde);font-weight:bold;white-space:normal;padding:4px}
+th input{width:100%;min-width:85px;margin-top:8px;font-size:11px}
 tbody tr:nth-child(even){background:#f8fafb}
 tbody tr:hover{background:#edf6f0}
-th.observaciones,td.observaciones{
-  min-width:280px;max-width:360px;width:320px;
-}
-td.observaciones{
-  text-align:left;vertical-align:top;
-  padding:12px 16px;
-}
-.nota-texto{
-  white-space:pre-wrap;line-height:1.65;
-  overflow-wrap:anywhere;
-}
-.nota-texto.corta{
-  display:-webkit-box;-webkit-line-clamp:3;
-  -webkit-box-orient:vertical;overflow:hidden;
-}
-.leer-nota{
-  padding:5px 8px;margin-top:7px;
-  font-size:11px;color:var(--verde);background:#edf5f1;
-}
-.etiqueta{
-  display:inline-block;padding:5px 9px;
-  border-radius:6px;font-weight:bold;
-}
+th.observaciones,td.observaciones{min-width:280px;max-width:360px;width:320px}
+td.observaciones{text-align:left;vertical-align:top;padding:12px 16px}
+.nota-texto{white-space:pre-wrap;line-height:1.65;overflow-wrap:anywhere}
+.nota-texto.corta{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.leer-nota{padding:5px 8px;margin-top:7px;font-size:11px;color:var(--verde);background:#edf5f1}
+.etiqueta{display:inline-block;padding:5px 9px;border-radius:6px;font-weight:bold}
 .rojo{background:#ffe1e1;color:#a62323}
 .verde{background:#dff2e4;color:#24623a}
 .amarillo{background:#fff0b6;color:#765b00}
 #vacio{padding:30px;text-align:center;color:#647582}
-.pie{
-  padding:16px;display:flex;
-  justify-content:space-between;align-items:center;
-  gap:12px;flex-wrap:wrap;font-size:13px;
-}
+.pie{padding:16px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-size:13px}
 .navegacion{display:flex;align-items:center;gap:10px}
 .nota{font-size:12px;line-height:1.6;color:#647582}
-#estadoCarga{
-  margin-bottom:14px;font-size:12px;
-  color:#647582;text-align:center;line-height:1.6;
-}
-dialog{
-  border:1px solid var(--borde);
-  border-radius:14px;padding:24px;
-  width:min(620px,90vw);max-height:80vh;
-  color:var(--texto);overflow:auto;
-}
+#estadoCarga{margin-bottom:14px;font-size:12px;color:#647582;text-align:center;line-height:1.6}
+dialog{border:1px solid var(--borde);border-radius:14px;padding:24px;width:min(620px,90vw);max-height:80vh;color:var(--texto);overflow:auto}
 dialog::backdrop{background:rgba(20,40,45,.45)}
 dialog h2{margin-top:0;color:var(--verde)}
-#notaCompleta{
-  white-space:pre-wrap;line-height:1.7;
-  overflow-wrap:anywhere;margin-bottom:20px;
-}
-#alcanceDescarte{
-  font-size:13px;line-height:1.6;
-  color:#647582;margin-bottom:16px;
-}
+#notaCompleta{white-space:pre-wrap;line-height:1.7;overflow-wrap:anywhere;margin-bottom:20px}
+#alcanceDescarte{font-size:13px;line-height:1.6;color:#647582;margin-bottom:16px}
 .tabla-detalle{margin-bottom:20px;font-size:14px}
 .tabla-detalle th{position:static;padding:12px}
 .tabla-detalle td{padding:12px}
-.tabla-detalle th:first-child,
-.tabla-detalle td:first-child{text-align:left}
-.tabla-detalle tfoot td{
-  background:#edf3f4;font-weight:bold;
-}
-@media(max-width:1000px){
+.tabla-detalle th:first-child,.tabla-detalle td:first-child{text-align:left}
+.tabla-detalle tfoot td{background:#edf3f4;font-weight:bold}
+@media(max-width:1100px){
   .graficos{grid-template-columns:1fr}
-  .visual{height:250px}
+  .visual svg{max-width:620px}
 }
 @media(max-width:700px){
   main{padding:12px}h1{font-size:22px}
@@ -251,10 +96,10 @@ dialog h2{margin-top:0;color:var(--verde)}
   .tarjeta{padding:16px}.numero{font-size:25px}
   #buscar{flex-basis:100%}.titulo-tabla{font-size:17px}
   th.observaciones,td.observaciones{min-width:230px}
+  .visual{min-height:250px}
 }
 </style>
 </head>
-
 <body>
 <main>
 <header>
@@ -262,9 +107,7 @@ dialog h2{margin-top:0;color:var(--verde)}
     <h1>PRODUCCIÓN LAS ACACIAS</h1>
     <p class="subtitulo">Producción · Insumos · Recibo</p>
   </div>
-  <button id="actualizar" class="primario">
-    Actualizar desde Dropbox
-  </button>
+  <button id="actualizar" class="primario">Actualizar desde Dropbox</button>
 </header>
 
 <section class="tarjetas" aria-label="Totales">
@@ -272,17 +115,12 @@ dialog h2{margin-top:0;color:var(--verde)}
     <h2>PRODUCCIÓN</h2>
     <div id="numero-produccion" class="numero">—</div>
   </article>
-
   <article class="tarjeta stock-monte">
     <h2>TROZAS STOCK MONTE</h2>
     <div id="stock-monte" class="numero">—</div>
-    <div id="detalle-stock-monte" class="detalle">
-      Pendiente de lectura
-    </div>
+    <div id="detalle-stock-monte" class="detalle">Pendiente de lectura</div>
   </article>
-
-  <button id="tarjetaDescarte" class="tarjeta descarte"
-    type="button" aria-haspopup="dialog">
+  <button id="tarjetaDescarte" class="tarjeta descarte" type="button" aria-haspopup="dialog">
     <h2>DESCARTE</h2>
     <div id="numero-descarte" class="numero">—</div>
     <div class="detalle">Ver detalle por clasificación</div>
@@ -293,58 +131,35 @@ dialog h2{margin-top:0;color:var(--verde)}
   <article class="tarjeta stock-rojo">
     <h2>STOCK ROJO</h2>
     <div id="stock-rojo" class="numero">—</div>
-    <div id="detalle-stock-rojo" class="detalle">
-      Pendiente de lectura
-    </div>
+    <div id="detalle-stock-rojo" class="detalle">Pendiente de lectura</div>
   </article>
-
   <article class="tarjeta stock-amarillo">
     <h2>STOCK AMARILLO</h2>
     <div id="stock-amarillo" class="numero">—</div>
-    <div id="detalle-stock-amarillo" class="detalle">
-      Pendiente de lectura
-    </div>
+    <div id="detalle-stock-amarillo" class="detalle">Pendiente de lectura</div>
   </article>
-
   <article class="tarjeta stock-verde">
     <h2>STOCK VERDE</h2>
     <div id="stock-verde" class="numero">—</div>
-    <div id="detalle-stock-verde" class="detalle">
-      Pendiente de lectura
-    </div>
+    <div id="detalle-stock-verde" class="detalle">Pendiente de lectura</div>
   </article>
 </section>
 
-<!-- GRÁFICOS ENTRE LAS TARJETAS Y LAS TABLAS -->
 <section class="graficos" aria-label="Gráficos">
   <article class="grafico">
     <h2>PRODUCCIÓN Y DESCARTES</h2>
     <div id="graficoProduccionDescarte" class="visual"></div>
-    <div id="leyendaProduccionDescarte" class="leyenda"></div>
-    <div class="alcance">
-      Producción, descarte basal y otros descartes.
-      Responde a los filtros de Producción.
-    </div>
+    <div class="alcance">Responde a los filtros de Producción.</div>
   </article>
-
   <article class="grafico">
     <h2>DESPACHO DE TROZAS · RECIBO</h2>
     <div id="graficoDespacho" class="visual"></div>
-    <div id="leyendaDespacho" class="leyenda"></div>
-    <div class="alcance">
-      Suma de CANTIDAD de todo Recibo.
-      Incluye una categoría adicional si hay productos sin clasificar.
-    </div>
+    <div class="alcance">Suma de CANTIDAD de todo Recibo.</div>
   </article>
-
   <article class="grafico">
     <h2>PRODUCCIÓN TROZAS MONTE</h2>
     <div id="graficoProduccionColor" class="visual"></div>
-    <div id="leyendaProduccionColor" class="leyenda"></div>
-    <div class="alcance">
-      Producción por color.
-      Responde a los filtros de Producción.
-    </div>
+    <div class="alcance">Responde a los filtros de Producción.</div>
   </article>
 </section>
 
@@ -352,41 +167,23 @@ dialog h2{margin-top:0;color:var(--verde)}
 
 <section class="panel">
   <nav class="pestanas" aria-label="Mostrar u ocultar tablas">
-    <button data-tab="produccion"
-      aria-expanded="false" aria-controls="listado">
-      Producción
-    </button>
-    <button data-tab="insumos"
-      aria-expanded="false" aria-controls="listado">
-      Insumos
-    </button>
-    <button data-tab="recibo"
-      aria-expanded="false" aria-controls="listado">
-      Recibo
-    </button>
+    <button data-tab="produccion" aria-expanded="false" aria-controls="listado">Producción</button>
+    <button data-tab="insumos" aria-expanded="false" aria-controls="listado">Insumos</button>
+    <button data-tab="recibo" aria-expanded="false" aria-controls="listado">Recibo</button>
   </nav>
-
   <p class="ayuda-tablas">
     Seleccioná un botón para ver su listado.
     Pulsá nuevamente el mismo botón para ocultarlo.
   </p>
 
-  <!-- LAS TABLAS COMIENZAN OCULTAS -->
   <div id="listado" hidden>
     <h2 id="tituloTabla" class="titulo-tabla">Producción</h2>
-
     <div class="controles">
-      <input id="buscar" type="search"
-        placeholder="Buscar en toda la tabla..." aria-label="Buscar">
-
-      <label>
-        Fila de encabezados
-        <input id="fila" type="number"
-          min="1" max="100" value="3">
+      <input id="buscar" type="search" placeholder="Buscar en toda la tabla..." aria-label="Buscar">
+      <label>Fila de encabezados
+        <input id="fila" type="number" min="1" max="100" value="3">
       </label>
-
-      <label>
-        Filas
+      <label>Filas
         <select id="limite">
           <option value="25">25</option>
           <option value="50" selected>50</option>
@@ -394,20 +191,13 @@ dialog h2{margin-top:0;color:var(--verde)}
           <option value="200">200</option>
         </select>
       </label>
-
       <button id="quitar">Quitar filtros</button>
     </div>
-
     <div id="aviso" hidden aria-live="polite"></div>
-
     <div class="tabla">
-      <table>
-        <thead id="encabezado"></thead>
-        <tbody id="cuerpo"></tbody>
-      </table>
+      <table><thead id="encabezado"></thead><tbody id="cuerpo"></tbody></table>
       <div id="vacio">Cargando datos...</div>
     </div>
-
     <div class="pie">
       <span>Hacé clic en los encabezados para ordenar.</span>
       <div class="navegacion">
@@ -418,7 +208,6 @@ dialog h2{margin-top:0;color:var(--verde)}
     </div>
   </div>
 </section>
-
 <p class="nota">
   Producción excluye las filas sin FECHA.
   Producción y Descarte responden a los filtros de su tabla.
@@ -436,129 +225,74 @@ dialog h2{margin-top:0;color:var(--verde)}
 <dialog id="modalDescarte" aria-labelledby="tituloDescarte">
   <h2 id="tituloDescarte">Detalle de descarte</h2>
   <div id="alcanceDescarte"></div>
-
   <table class="tabla-detalle">
-    <thead>
-      <tr>
-        <th>Clasificación</th>
-        <th>Cantidad</th>
-      </tr>
-    </thead>
+    <thead><tr><th>Clasificación</th><th>Cantidad</th></tr></thead>
     <tbody id="detalleDescarte"></tbody>
-    <tfoot>
-      <tr>
-        <td>TOTAL DESCARTE</td>
-        <td id="totalDetalleDescarte">—</td>
-      </tr>
-    </tfoot>
+    <tfoot><tr><td>TOTAL DESCARTE</td><td id="totalDetalleDescarte">—</td></tr></tfoot>
   </table>
-
   <button id="cerrarDescarte" class="primario">Cerrar</button>
 </dialog>
 
 <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
-
 <script>
 "use strict";
-
 const $=id=>document.getElementById(id);
 const TITULO_RECIBO="B3R UPM Las Acacias - Polo Logistico";
-
 const URLS={
   produccion:"https://dl.dropbox.com/scl/fi/z1jtk061zs1maw4vlnyib/PRODUCCION-LAS-ACACIAS.xlsx?rlkey=7pzd2o0oh1q3inr62bvztoqcb&dl=1",
   recibo:"https://dl.dropbox.com/scl/fi/l87boeiqu54yra3i0evd6/aENVIO-DE-CORREOS.xlsb?rlkey=149gw31ntsbso8vtpix30yxjl&dl=1"
 };
-
 const CONFIG={
   produccion:{origen:"produccion",hoja:"DATOS LAS ACACIAS",fila:3},
   insumos:{origen:"produccion",hoja:"INSUMOS",fila:1},
   recibo:{origen:"recibo",hoja:"tati las acacias",fila:1}
 };
-
 const GRUPOS_PRODUCCION={
   ROJO:["ROJO__STD+30","ROJO_STD +30 Basal"],
   AMARILLO:["AMARRILLO PPL+30","AMARRILLO PPL+45"],
   VERDE:["Verde-STD+45","Verde Basal +55"]
 };
-
 const COLUMNAS_DESCARTE=[
-  "Descarte basal+55",
-  "Descarte basal -55",
-  "Descarte +55",
-  "Descarte-55"
+  "Descarte basal+55","Descarte basal -55",
+  "Descarte +55","Descarte-55"
 ];
-
 const COLORES=["ROJO","AMARILLO","VERDE"];
-const PALETA={
-  ROJO:"#ef3340",
-  AMARILLO:"#efcf38",
-  VERDE:"#37b96b"
-};
-
+const PALETA={ROJO:"#ef3340",AMARILLO:"#efcf38",VERDE:"#37b96b"};
 const tablas={},libros={};
-let activa="produccion";
-let tablaVisible=false;
-let ocupado=false;
+let activa="produccion",tablaVisible=false,ocupado=false;
 
 function normalizar(v){
-  return String(v??"").normalize("NFD")
-    .replace(/[\u0300-\u036f]/g,"")
-    .toLowerCase().trim();
+  return String(v??"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();
 }
-function claveColumna(v){
-  return normalizar(v).replace(/[^a-z0-9]/g,"");
-}
-function claveSuma(v){
-  return normalizar(v).replace(/amarillo/g,"amarrillo")
-    .replace(/[^a-z0-9+-]/g,"");
-}
+function claveColumna(v){return normalizar(v).replace(/[^a-z0-9]/g,"")}
+function claveSuma(v){return normalizar(v).replace(/amarillo/g,"amarrillo").replace(/[^a-z0-9+-]/g,"")}
 function texto(v){return v==null?"":String(v)}
-function numero(v){
-  return v.toLocaleString("es-UY",{maximumFractionDigits:2});
-}
-function porcentaje(v){
-  return v.toLocaleString("es-UY",{
-    minimumFractionDigits:1,
-    maximumFractionDigits:1
-  })+"%";
-}
-function idsDelOrigen(o){
-  return Object.keys(CONFIG).filter(id=>CONFIG[id].origen===o);
-}
-function claveProducto(v){
-  return normalizar(v).replace(/,/g,".").replace(/\s+/g,"");
-}
-function esFecha(n){
-  return claveColumna(n).includes("fecha");
-}
-function esObservaciones(n){
-  return ["observaciones","observacion"].includes(claveColumna(n));
-}
-
+function numero(v){return v.toLocaleString("es-UY",{maximumFractionDigits:2})}
+function porcentaje(v){return v.toLocaleString("es-UY",{minimumFractionDigits:1,maximumFractionDigits:1})+"%"}
+function idsDelOrigen(o){return Object.keys(CONFIG).filter(id=>CONFIG[id].origen===o)}
+function claveProducto(v){return normalizar(v).replace(/,/g,".").replace(/\s+/g,"")}
+function esFecha(n){return claveColumna(n).includes("fecha")}
+function esObservaciones(n){return ["observaciones","observacion"].includes(claveColumna(n))}
 const OCULTAS_PRODUCCION=new Set([
   "CAMIONES CARGADOS","AMARILLA/ ARBOL","ROJAS X ARBOL",
   "VERDE X ARBOL","Trozas","% DESCARTE","Predio"
 ].map(claveColumna));
-
 const EQUIVALENCIAS=new Map([
   [claveProducto("Troza 5,80 mts +30"),"ROJO"],
   [claveProducto("Troza 5,80 mts +45"),"VERDE"],
   [claveProducto("Troza 5,80 mts +30 PPL"),"AMARILLO"]
 ]);
-
 for(const id of Object.keys(CONFIG)){
   tablas[id]={
     columnas:[],filas:[],filtros:[],busqueda:"",
-    orden:null,direccion:1,pagina:1,
-    lectura:"",error:"",cargando:false,faltantes:[],
+    orden:null,direccion:1,pagina:1,lectura:"",
+    error:"",cargando:false,faltantes:[],
     faltantesColor:{ROJO:[],AMARILLO:[],VERDE:[]},
     erroresDescarte:[],
     erroresDescartePorColumna:COLUMNAS_DESCARTE.map(()=>[]),
-    avisoCantidad:"",
-    noClasificados:0
+    avisoCantidad:"",noClasificados:0
   };
 }
-
 function numeroCelda(v){
   if(typeof v==="number")return Number.isFinite(v)?v:NaN;
   let s=texto(v).trim().replace(/\s/g,"");
@@ -567,1005 +301,588 @@ function numeroCelda(v){
   const n=Number(s);
   return Number.isFinite(n)?n:NaN;
 }
-
 function fechaTexto(v){
   if(v==null||v==="")return "";
-  const completar=n=>String(n).padStart(2,"0");
-
+  const p=n=>String(n).padStart(2,"0");
   if(v instanceof Date&&!Number.isNaN(v.getTime())){
-    return completar(v.getUTCDate())+"/"+
-      completar(v.getUTCMonth()+1)+"/"+v.getUTCFullYear();
+    return p(v.getUTCDate())+"/"+p(v.getUTCMonth()+1)+"/"+v.getUTCFullYear();
   }
-
   if(typeof v==="number"&&v>0&&v<2958466){
     const d=XLSX.SSF.parse_date_code(v);
-    if(d)return completar(d.d)+"/"+completar(d.m)+"/"+d.y;
+    if(d)return p(d.d)+"/"+p(d.m)+"/"+d.y;
   }
-
   const s=texto(v).trim();
   let m=s.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})(?:[ T].*)?$/);
-  if(m)return completar(m[3])+"/"+completar(m[2])+"/"+m[1];
-
+  if(m)return p(m[3])+"/"+p(m[2])+"/"+m[1];
   m=s.match(/^(\d{1,2})[/-](\d{1,2})[/-](\d{4})(?:[ T].*)?$/);
-  if(m)return completar(m[1])+"/"+completar(m[2])+"/"+m[3];
-
-  return s;
+  return m?p(m[1])+"/"+p(m[2])+"/"+m[3]:s;
 }
-
 function clasificar(fila,indices){
-  const valores=indices.length?indices.map(i=>fila[i]):fila;
   const encontrados=new Set();
-
-  for(const v of valores){
+  for(const v of(indices.length?indices.map(i=>fila[i]):fila)){
     const c=EQUIVALENCIAS.get(claveProducto(v));
     if(c)encontrados.add(c);
   }
-
-  return encontrados.size===1?[...encontrados][0]:
-    encontrados.size>1?"REVISAR":"SIN CLASIFICAR";
+  return encontrados.size===1?[...encontrados][0]:encontrados.size>1?"REVISAR":"SIN CLASIFICAR";
 }
-
 function localizarColumna(columnas,nombre,errores){
-  const encontrados=columnas
-    .map((c,i)=>claveSuma(c)===claveSuma(nombre)?i:-1)
-    .filter(i=>i>=0);
-
+  const encontrados=columnas.map((c,i)=>claveSuma(c)===claveSuma(nombre)?i:-1).filter(i=>i>=0);
   if(encontrados.length!==1){
-    errores.push(nombre+
-      (encontrados.length>1?" (duplicada)":" (no encontrada)"));
+    errores.push(nombre+(encontrados.length>1?" (duplicada)":" (no encontrada)"));
     return -1;
   }
-
   return encontrados[0];
 }
-
-function agregarError(lista,mensaje){
-  if(!lista.includes(mensaje))lista.push(mensaje);
-}
-
+function agregarError(lista,m){if(!lista.includes(m))lista.push(m)}
 function extraer(id,libro){
   const config=CONFIG[id];
-  const nombre=libro.SheetNames.find(
-    n=>normalizar(n)===normalizar(config.hoja)
-  );
-
-  if(!nombre){
-    throw new Error('No se encontró "'+config.hoja+
-      '". Hojas: '+libro.SheetNames.join(", "));
-  }
-
+  const nombre=libro.SheetNames.find(n=>normalizar(n)===normalizar(config.hoja));
+  if(!nombre)throw new Error('No se encontró "'+config.hoja+'". Hojas: '+libro.SheetNames.join(", "));
   const hoja=libro.Sheets[nombre];
   if(!hoja["!ref"])throw new Error("La hoja está vacía.");
-
   const rango=XLSX.utils.decode_range(hoja["!ref"]);
   rango.s.r=config.fila-1;
-
-  if(rango.s.r>rango.e.r){
-    throw new Error("La fila elegida supera el contenido.");
-  }
-
-  const matriz=XLSX.utils.sheet_to_json(hoja,{
-    header:1,range:rango,raw:true,defval:"",blankrows:true
-  });
-
-  const cabecera=matriz[0]||[];
-  const datos=matriz.slice(1);
-  const ancho=datos.reduce(
-    (n,f)=>Math.max(n,f.length),cabecera.length
-  );
-
+  if(rango.s.r>rango.e.r)throw new Error("La fila elegida supera el contenido.");
+  const matriz=XLSX.utils.sheet_to_json(hoja,{header:1,range:rango,raw:true,defval:"",blankrows:true});
+  const cabecera=matriz[0]||[],datos=matriz.slice(1);
+  const ancho=datos.reduce((n,f)=>Math.max(n,f.length),cabecera.length);
   const indices=[];
   for(let i=0;i<ancho;i++){
-    if(texto(cabecera[i]).trim()||
-      datos.some(f=>texto(f[i]).trim())){
-      indices.push(i);
-    }
+    if(texto(cabecera[i]).trim()||datos.some(f=>texto(f[i]).trim()))indices.push(i);
   }
-
   const usados=new Map();
   let columnas=indices.map(i=>{
-    const base=texto(cabecera[i]).trim()||
-      "Columna "+XLSX.utils.encode_col(rango.s.c+i);
-    const veces=(usados.get(base)||0)+1;
-    usados.set(base,veces);
-    return veces===1?base:base+" ("+veces+")";
+    const base=texto(cabecera[i]).trim()||"Columna "+XLSX.utils.encode_col(rango.s.c+i);
+    const n=(usados.get(base)||0)+1;
+    usados.set(base,n);
+    return n===1?base:base+" ("+n+")";
   });
-
-  let originales=datos
-    .map(f=>indices.map(i=>f[i]??""))
-    .filter(f=>f.some(v=>texto(v).trim()!==""));
-
+  let originales=datos.map(f=>indices.map(i=>f[i]??"")).filter(f=>f.some(v=>texto(v).trim()!==""));
   if(id==="produccion"){
-    const fechas=columnas
-      .map((c,i)=>claveColumna(c)==="fecha"?i:-1)
-      .filter(i=>i>=0);
-
-    if(fechas.length!==1){
-      throw new Error("Se necesita una única columna FECHA en Producción.");
-    }
-
-    originales=originales.filter(
-      f=>f[fechas[0]]!=null&&texto(f[fechas[0]]).trim()!==""
-    );
+    const fechas=columnas.map((c,i)=>claveColumna(c)==="fecha"?i:-1).filter(i=>i>=0);
+    if(fechas.length!==1)throw new Error("Se necesita una única columna FECHA en Producción.");
+    originales=originales.filter(f=>f[fechas[0]]!=null&&texto(f[fechas[0]]).trim()!=="");
   }
-
   const faltantesColor={ROJO:[],AMARILLO:[],VERDE:[]};
   const erroresDescartePorColumna=COLUMNAS_DESCARTE.map(()=>[]);
-  let faltantes=[],erroresDescarte=[];
-  let avisoCantidad="",noClasificados=0;
-
+  let faltantes=[],erroresDescarte=[],avisoCantidad="",noClasificados=0;
   let filas=originales.map(f=>({
-    valores:f.map((v,i)=>
-      esFecha(columnas[i])||v instanceof Date
-        ?fechaTexto(v):texto(v)
-    ),
-    total:0,
-    produccion:{ROJO:0,AMARILLO:0,VERDE:0},
-    descarte:COLUMNAS_DESCARTE.map(()=>0),
-    color:"",
-    cantidad:0
+    valores:f.map((v,i)=>esFecha(columnas[i])||v instanceof Date?fechaTexto(v):texto(v)),
+    total:0,produccion:{ROJO:0,AMARILLO:0,VERDE:0},
+    descarte:COLUMNAS_DESCARTE.map(()=>0),color:"",cantidad:0
   }));
-
   if(id==="produccion"){
-    const indicesPorColor={};
-
-    for(const color of COLORES){
-      indicesPorColor[color]=GRUPOS_PRODUCCION[color].map(
-        nombre=>localizarColumna(
-          columnas,nombre,faltantesColor[color]
-        )
-      );
+    const indicesColor={};
+    for(const c of COLORES){
+      indicesColor[c]=GRUPOS_PRODUCCION[c].map(n=>localizarColumna(columnas,n,faltantesColor[c]));
     }
-
-    const indicesDescarte=COLUMNAS_DESCARTE.map(
-      (nombre,i)=>localizarColumna(
-        columnas,nombre,erroresDescartePorColumna[i]
-      )
-    );
-
+    const indicesDescarte=COLUMNAS_DESCARTE.map((n,i)=>localizarColumna(columnas,n,erroresDescartePorColumna[i]));
     filas.forEach((fila,n)=>{
-      for(const color of COLORES){
-        let suma=0;
-
-        for(const i of indicesPorColor[color]){
+      for(const c of COLORES){
+        for(const i of indicesColor[c]){
           if(i<0)continue;
-          const valor=numeroCelda(originales[n][i]);
-
-          if(Number.isNaN(valor)){
-            agregarError(
-              faltantesColor[color],
-              "Valor no numérico en "+columnas[i]
-            );
-          }else suma+=valor;
+          const v=numeroCelda(originales[n][i]);
+          if(Number.isNaN(v))agregarError(faltantesColor[c],"Valor no numérico en "+columnas[i]);
+          else fila.produccion[c]+=v;
         }
-
-        fila.produccion[color]=suma;
       }
-
-      fila.total=COLORES.reduce(
-        (s,c)=>s+fila.produccion[c],0
-      );
-
-      indicesDescarte.forEach((i,clasificacion)=>{
+      fila.total=COLORES.reduce((s,c)=>s+fila.produccion[c],0);
+      indicesDescarte.forEach((i,k)=>{
         if(i<0)return;
-        const valor=numeroCelda(originales[n][i]);
-
-        if(Number.isNaN(valor)){
-          agregarError(
-            erroresDescartePorColumna[clasificacion],
-            "Valor no numérico en "+columnas[i]
-          );
-        }else fila.descarte[clasificacion]=valor;
+        const v=numeroCelda(originales[n][i]);
+        if(Number.isNaN(v))agregarError(erroresDescartePorColumna[k],"Valor no numérico en "+columnas[i]);
+        else fila.descarte[k]=v;
       });
     });
-
     faltantes=COLORES.flatMap(c=>faltantesColor[c]);
     erroresDescarte=erroresDescartePorColumna.flat();
-
-    const mantener=columnas
-      .map((c,i)=>OCULTAS_PRODUCCION.has(claveColumna(c))?-1:i)
-      .filter(i=>i>=0);
-
+    const mantener=columnas.map((c,i)=>OCULTAS_PRODUCCION.has(claveColumna(c))?-1:i).filter(i=>i>=0);
     columnas=mantener.map(i=>columnas[i]);
-    filas=filas.map(f=>({
-      ...f,valores:mantener.map(i=>f.valores[i])
-    }));
+    filas=filas.map(f=>({...f,valores:mantener.map(i=>f.valores[i])}));
   }
-
   if(id==="recibo"){
-    const nombresProducto=new Set([
-      "producto","nombreproducto","descripcionproducto",
-      "productodescripcion","descripciondelproducto","tipoproducto"
-    ]);
-
-    const producto=columnas
-      .map((c,i)=>nombresProducto.has(claveColumna(c))?i:-1)
-      .filter(i=>i>=0);
-
-    const cantidades=columnas
-      .map((c,i)=>claveColumna(c)==="cantidad"?i:-1)
-      .filter(i=>i>=0);
-
-    if(cantidades.length!==1){
-      avisoCantidad=cantidades.length
-        ?"La columna CANTIDAD está duplicada."
-        :"No se encontró la columna CANTIDAD en Recibo.";
-    }
-
+    const nombres=new Set(["producto","nombreproducto","descripcionproducto","productodescripcion","descripciondelproducto","tipoproducto"]);
+    const producto=columnas.map((c,i)=>nombres.has(claveColumna(c))?i:-1).filter(i=>i>=0);
+    const cantidades=columnas.map((c,i)=>claveColumna(c)==="cantidad"?i:-1).filter(i=>i>=0);
+    if(cantidades.length!==1)avisoCantidad=cantidades.length?"La columna CANTIDAD está duplicada.":"No se encontró la columna CANTIDAD en Recibo.";
     filas.forEach((fila,n)=>{
       fila.color=clasificar(fila.valores,producto);
       if(!COLORES.includes(fila.color))noClasificados++;
-
       if(cantidades.length===1){
-        const cantidad=numeroCelda(
-          originales[n][cantidades[0]]
-        );
-
-        if(Number.isNaN(cantidad)){
-          avisoCantidad="Hay valores no numéricos en CANTIDAD de Recibo.";
-        }else fila.cantidad=cantidad;
+        const v=numeroCelda(originales[n][cantidades[0]]);
+        if(Number.isNaN(v))avisoCantidad="Hay valores no numéricos en CANTIDAD de Recibo.";
+        else fila.cantidad=v;
       }
     });
-
-    const ocultas=new Set([
-      "carga","cosecha","origen","idproducto"
-    ]);
-
-    const mantener=columnas
-      .map((c,i)=>ocultas.has(claveColumna(c))?-1:i)
-      .filter(i=>i>=0);
-
-    const posicion=mantener.findIndex(
-      i=>producto.includes(i)
-    );
+    const ocultas=new Set(["carga","cosecha","origen","idproducto"]);
+    const mantener=columnas.map((c,i)=>ocultas.has(claveColumna(c))?-1:i).filter(i=>i>=0);
+    const posicion=mantener.findIndex(i=>producto.includes(i));
     const insertar=posicion>=0?posicion+1:0;
-
     columnas=mantener.map(i=>columnas[i]);
     columnas.splice(insertar,0,"ID PRODUCTO");
-
     filas=filas.map(f=>{
       const valores=mantener.map(i=>f.valores[i]);
       valores.splice(insertar,0,f.color);
       return {...f,valores};
     });
   }
-
   const anterior=tablas[id];
-  const mismos=JSON.stringify(columnas)===
-    JSON.stringify(anterior.columnas);
-
+  const mismos=JSON.stringify(columnas)===JSON.stringify(anterior.columnas);
   return {
     ...anterior,columnas,filas,faltantes,faltantesColor,
-    erroresDescarte,erroresDescartePorColumna,
-    avisoCantidad,noClasificados,
+    erroresDescarte,erroresDescartePorColumna,avisoCantidad,noClasificados,
     filtros:mismos?anterior.filtros:columnas.map(()=>""),
-    orden:mismos?anterior.orden:null,
-    pagina:1,error:"",cargando:false
+    orden:mismos?anterior.orden:null,pagina:1,error:"",cargando:false
   };
 }
-
 function filtradas(id){
   const t=tablas[id],buscar=normalizar(t.busqueda);
-
   return t.filas.filter(f=>
     (!buscar||f.valores.some(v=>normalizar(v).includes(buscar)))&&
-    t.filtros.every((v,i)=>
-      !normalizar(v)||
-      normalizar(f.valores[i]).includes(normalizar(v))
-    )
+    t.filtros.every((v,i)=>!normalizar(v)||normalizar(f.valores[i]).includes(normalizar(v)))
   );
 }
-
 function calculoDescarte(){
   const seleccion=filtradas("produccion");
-  const cantidades=COLUMNAS_DESCARTE.map(
-    (_,i)=>seleccion.reduce((s,f)=>s+f.descarte[i],0)
-  );
-  return {
-    seleccion,cantidades,
-    total:cantidades.reduce((s,v)=>s+v,0)
-  };
+  const cantidades=COLUMNAS_DESCARTE.map((_,i)=>seleccion.reduce((s,f)=>s+f.descarte[i],0));
+  return {seleccion,cantidades,total:cantidades.reduce((s,v)=>s+v,0)};
 }
-
 function actualizarTotales(){
   const t=tablas.produccion;
-  const problemaProduccion=t.error||
-    (t.faltantes.length?"Revisar: "+t.faltantes.join(", "):"");
-
-  const produccion=$("numero-produccion");
-  produccion.textContent=!t.lectura||problemaProduccion
-    ?"—":numero(filtradas("produccion").reduce((s,f)=>s+f.total,0));
-  produccion.title=problemaProduccion;
-  produccion.classList.toggle("error",Boolean(problemaProduccion));
-
-  const problemaDescarte=t.error||
-    (t.erroresDescarte.length
-      ?"Revisar: "+t.erroresDescarte.join(", "):"");
-
-  $("numero-descarte").textContent=!t.lectura||problemaDescarte
-    ?"—":numero(calculoDescarte().total);
-  $("numero-descarte").classList.toggle(
-    "error",Boolean(problemaDescarte)
-  );
-  $("tarjetaDescarte").title=problemaDescarte;
+  const pp=t.error||(t.faltantes.length?"Revisar: "+t.faltantes.join(", "):"");
+  $("numero-produccion").textContent=!t.lectura||pp?"—":numero(filtradas("produccion").reduce((s,f)=>s+f.total,0));
+  $("numero-produccion").title=pp;
+  $("numero-produccion").classList.toggle("error",Boolean(pp));
+  const pd=t.error||(t.erroresDescarte.length?"Revisar: "+t.erroresDescarte.join(", "):"");
+  $("numero-descarte").textContent=!t.lectura||pd?"—":numero(calculoDescarte().total);
+  $("numero-descarte").classList.toggle("error",Boolean(pd));
+  $("tarjetaDescarte").title=pd;
 }
-
 function mostrarDetalleDescarte(){
-  const t=tablas.produccion,calculo=calculoDescarte();
+  const t=tablas.produccion,d=calculoDescarte();
   const fragmento=document.createDocumentFragment();
-
-  COLUMNAS_DESCARTE.forEach((nombre,i)=>{
-    const tr=document.createElement("tr");
-    const clasificacion=document.createElement("td");
-    const cantidad=document.createElement("td");
-    clasificacion.textContent=nombre;
-
+  COLUMNAS_DESCARTE.forEach((n,i)=>{
+    const tr=document.createElement("tr"),nombre=document.createElement("td"),cantidad=document.createElement("td");
+    nombre.textContent=n;
     const errores=t.erroresDescartePorColumna[i];
-    cantidad.textContent=t.lectura&&!t.error&&!errores.length
-      ?numero(calculo.cantidades[i]):"—";
-
+    cantidad.textContent=t.lectura&&!t.error&&!errores.length?numero(d.cantidades[i]):"—";
     cantidad.title=errores.join(", ");
     cantidad.classList.toggle("error",errores.length>0);
-    tr.append(clasificacion,cantidad);
-    fragmento.append(tr);
+    tr.append(nombre,cantidad);fragmento.append(tr);
   });
-
   $("detalleDescarte").replaceChildren(fragmento);
-
-  const problema=t.error||
-    (t.erroresDescarte.length
-      ?"Revisar: "+t.erroresDescarte.join(", "):"");
-
-  $("totalDetalleDescarte").textContent=t.lectura&&!problema
-    ?numero(calculo.total):"—";
-
-  $("alcanceDescarte").textContent=!t.lectura
-    ?"Se necesita cargar Producción."
-    :problema||"Detalle de los registros seleccionados en Producción.";
-
+  const problema=t.error||(t.erroresDescarte.length?"Revisar: "+t.erroresDescarte.join(", "):"");
+  $("totalDetalleDescarte").textContent=t.lectura&&!problema?numero(d.total):"—";
+  $("alcanceDescarte").textContent=!t.lectura?"Se necesita cargar Producción.":problema||"Detalle de los registros seleccionados en Producción.";
   $("alcanceDescarte").classList.toggle("error",Boolean(problema));
 }
-
-function ponerStock(id,valor,detalle,error=false){
-  const elemento=$("stock-"+id);
-  elemento.textContent=valor===null?"—":numero(valor);
-  elemento.classList.toggle("negativo",valor!==null&&valor<0);
-  $("detalle-stock-"+id).textContent=detalle;
+function ponerStock(id,v,d,error=false){
+  $("stock-"+id).textContent=v===null?"—":numero(v);
+  $("stock-"+id).classList.toggle("negativo",v!==null&&v<0);
+  $("detalle-stock-"+id).textContent=d;
   $("detalle-stock-"+id).classList.toggle("error",error);
 }
-
 function tarjetasStock(){
-  const p=tablas.produccion,r=tablas.recibo;
-  const ids=["rojo","amarillo","verde","monte"];
-
-  if(p.cargando||r.cargando){
-    ids.forEach(id=>ponerStock(id,null,"Actualizando datos..."));
-    return;
+  const p=tablas.produccion,r=tablas.recibo,ids=["rojo","amarillo","verde","monte"];
+  if(p.cargando||r.cargando){ids.forEach(id=>ponerStock(id,null,"Actualizando datos..."));return}
+  if(!p.lectura||!r.lectura){ids.forEach(id=>ponerStock(id,null,"Se necesita cargar Producción y Recibo."));return}
+  if(p.error||r.error){ids.forEach(id=>ponerStock(id,null,"Revisar la lectura de Producción y Recibo.",true));return}
+  for(const c of COLORES){
+    const problemas=[...p.faltantesColor[c],...(r.avisoCantidad?[r.avisoCantidad]:[])];
+    if(problemas.length){ponerStock(c.toLowerCase(),null,"Revisar: "+problemas.join(", "),true);continue}
+    const producido=p.filas.reduce((s,f)=>s+f.produccion[c],0);
+    const recibido=r.filas.reduce((s,f)=>s+(f.color===c?f.cantidad:0),0);
+    ponerStock(c.toLowerCase(),producido-recibido,
+      "Producción: "+numero(producido)+" − Recibido: "+numero(recibido)+
+      (r.noClasificados?" · "+numero(r.noClasificados)+" registros sin clasificación válida, excluidos.":""),
+      r.noClasificados>0);
   }
-
-  if(!p.lectura||!r.lectura){
-    ids.forEach(id=>ponerStock(id,null,"Se necesita cargar Producción y Recibo."));
-    return;
-  }
-
-  if(p.error||r.error){
-    ids.forEach(id=>ponerStock(id,null,"Revisar la lectura de Producción y Recibo.",true));
-    return;
-  }
-
-  for(const color of COLORES){
-    const problemas=[
-      ...p.faltantesColor[color],
-      ...(r.avisoCantidad?[r.avisoCantidad]:[])
-    ];
-
-    if(problemas.length){
-      ponerStock(color.toLowerCase(),null,
-        "Revisar: "+problemas.join(", "),true);
-      continue;
-    }
-
-    const producido=p.filas.reduce((s,f)=>s+f.produccion[color],0);
-    const recibido=r.filas.reduce(
-      (s,f)=>s+(f.color===color?f.cantidad:0),0
-    );
-
-    ponerStock(
-      color.toLowerCase(),producido-recibido,
-      "Producción: "+numero(producido)+
-      " − Recibido: "+numero(recibido)+
-      (r.noClasificados
-        ?" · "+numero(r.noClasificados)+
-          " registros sin clasificación válida, excluidos."
-        :""),
-      r.noClasificados>0
-    );
-  }
-
-  const problemasMonte=[
-    ...p.faltantes,
-    ...(r.avisoCantidad?[r.avisoCantidad]:[])
-  ];
-
-  if(problemasMonte.length){
-    ponerStock("monte",null,"Revisar: "+problemasMonte.join(", "),true);
-    return;
-  }
-
+  const problemas=[...p.faltantes,...(r.avisoCantidad?[r.avisoCantidad]:[])];
+  if(problemas.length){ponerStock("monte",null,"Revisar: "+problemas.join(", "),true);return}
   const producido=p.filas.reduce((s,f)=>s+f.total,0);
   const recibido=r.filas.reduce((s,f)=>s+f.cantidad,0);
-
-  ponerStock("monte",producido-recibido,
-    "Producción: "+numero(producido)+
-    " − Cantidad Recibo: "+numero(recibido));
+  ponerStock("monte",producido-recibido,"Producción: "+numero(producido)+" − Cantidad Recibo: "+numero(recibido));
 }
 
-// GRÁFICOS SVG: sin una segunda biblioteca de gráficos.
+// GRÁFICOS CON ETIQUETAS EXTERIORES.
 const SVG_NS="http://www.w3.org/2000/svg";
-
-function svgElemento(nombre,atributos={}){
-  const el=document.createElementNS(SVG_NS,nombre);
-  for(const [k,v]of Object.entries(atributos)){
-    el.setAttribute(k,String(v));
-  }
+function svgElemento(n,atributos={}){
+  const el=document.createElementNS(SVG_NS,n);
+  for(const[k,v]of Object.entries(atributos))el.setAttribute(k,String(v));
   return el;
 }
-
-function mensajeGrafico(visualId,leyendaId,mensaje){
+function mensajeGrafico(id,m){
   const div=document.createElement("div");
-  div.className="mensaje-grafico";
-  div.textContent=mensaje;
-  $(visualId).replaceChildren(div);
-  $(leyendaId).replaceChildren();
+  div.className="mensaje-grafico";div.textContent=m;
+  $(id).replaceChildren(div);
 }
-
-function dibujarGrafico(visualId,leyendaId,series,anillo,etiqueta){
+function dividirNombre(nombre){
+  const palabras=nombre.split(/\s+/),lineas=[];
+  let actual="";
+  for(const palabra of palabras){
+    if(actual&&(actual+" "+palabra).length>17){
+      lineas.push(actual);actual=palabra;
+    }else actual=actual?actual+" "+palabra:palabra;
+  }
+  if(actual)lineas.push(actual);
+  return lineas;
+}
+function acomodarEtiquetas(lista){
+  if(!lista.length)return;
+  lista.sort((a,b)=>a.y-b.y);
+  const minimo=48,maximo=302,separacion=66;
+  for(let i=0;i<lista.length;i++){
+    lista[i].y=Math.max(minimo,Math.min(maximo,lista[i].y));
+    if(i)lista[i].y=Math.max(lista[i].y,lista[i-1].y+separacion);
+  }
+  if(lista[lista.length-1].y>maximo){
+    lista[lista.length-1].y=maximo;
+    for(let i=lista.length-2;i>=0;i--){
+      lista[i].y=Math.min(lista[i].y,lista[i+1].y-separacion);
+    }
+  }
+}
+function dibujarGrafico(id,series,anillo,etiqueta){
   if(series.some(s=>!Number.isFinite(s.valor)||s.valor<0)){
-    mensajeGrafico(visualId,leyendaId,
-      "Revisar valores negativos o no numéricos. No se puede representar esta composición.");
+    mensajeGrafico(id,"Revisar valores negativos o no numéricos.");
     return;
   }
-
   const total=series.reduce((s,v)=>s+v.valor,0);
   const svg=svgElemento("svg",{
-    viewBox:"0 0 260 260",
-    role:"img",
+    viewBox:"0 0 480 360",role:"img",
     "aria-label":etiqueta+". Total: "+numero(total)
   });
-
-  const cx=130,cy=130,r=103;
-  svg.append(svgElemento("circle",{
-    cx,cy,r,fill:"#e9eef0"
-  }));
-
+  const cx=240,cy=180,r=88;
+  svg.append(svgElemento("circle",{cx,cy,r,fill:"#e9eef0"}));
   let angulo=-Math.PI/2;
+  const etiquetas=[];
 
   if(total>0){
     for(const serie of series){
-      if(serie.valor===0)continue;
-
+      if(!serie.valor)continue;
       const amplitud=serie.valor/total*Math.PI*2;
+      const fin=angulo+amplitud,medio=angulo+amplitud/2;
       let pieza;
-
       if(amplitud>=Math.PI*2-0.000001){
-        pieza=svgElemento("circle",{
-          cx,cy,r,fill:serie.color
-        });
+        pieza=svgElemento("circle",{cx,cy,r,fill:serie.color});
       }else{
-        const fin=angulo+amplitud;
-        const x1=cx+r*Math.cos(angulo);
-        const y1=cy+r*Math.sin(angulo);
-        const x2=cx+r*Math.cos(fin);
-        const y2=cy+r*Math.sin(fin);
-        const grande=amplitud>Math.PI?1:0;
-
+        const x1=cx+r*Math.cos(angulo),y1=cy+r*Math.sin(angulo);
+        const x2=cx+r*Math.cos(fin),y2=cy+r*Math.sin(fin);
         pieza=svgElemento("path",{
-          d:"M "+cx+" "+cy+
-            " L "+x1+" "+y1+
-            " A "+r+" "+r+" 0 "+grande+" 1 "+x2+" "+y2+
-            " Z",
-          fill:serie.color,
-          stroke:"white",
-          "stroke-width":"1"
+          d:"M "+cx+" "+cy+" L "+x1+" "+y1+
+            " A "+r+" "+r+" 0 "+(amplitud>Math.PI?1:0)+" 1 "+x2+" "+y2+" Z",
+          fill:serie.color,stroke:"white","stroke-width":1
         });
       }
-
-      const title=svgElemento("title");
-      title.textContent=serie.nombre+": "+numero(serie.valor)+
+      const titulo=svgElemento("title");
+      titulo.textContent=serie.nombre+": "+numero(serie.valor)+
         " ("+porcentaje(serie.valor/total*100)+")";
-      pieza.append(title);
-      svg.append(pieza);
-      angulo+=amplitud;
+      pieza.append(titulo);svg.append(pieza);
+      etiquetas.push({
+        serie,medio,
+        derecha:Math.cos(medio)>=0,
+        y:cy+112*Math.sin(medio)
+      });
+      angulo=fin;
     }
   }
-
   if(anillo){
-    svg.append(svgElemento("circle",{
-      cx,cy,r:75,fill:"white"
+    svg.append(svgElemento("circle",{cx,cy,r:62,fill:"white"}));
+    const valor=svgElemento("text",{
+      x:cx,y:183,"text-anchor":"middle",
+      "font-family":"Arial, sans-serif","font-size":23,
+      "font-weight":"bold",fill:"#273c49"
+    });
+    valor.textContent=numero(total);svg.append(valor);
+    const nombre=svgElemento("text",{
+      x:cx,y:203,"text-anchor":"middle",
+      "font-family":"Arial, sans-serif","font-size":8.5,
+      fill:"#647582"
+    });
+    nombre.textContent=etiqueta;svg.append(nombre);
+  }
+  if(!total){
+    const aviso=svgElemento("text",{
+      x:cx,y:anillo?230:184,"text-anchor":"middle",
+      "font-family":"Arial, sans-serif","font-size":13,fill:"#647582"
+    });
+    aviso.textContent="Sin cantidades";svg.append(aviso);
+  }
+
+  acomodarEtiquetas(etiquetas.filter(e=>!e.derecha));
+  acomodarEtiquetas(etiquetas.filter(e=>e.derecha));
+
+  for(const e of etiquetas){
+    const xInicio=cx+(r+2)*Math.cos(e.medio);
+    const yInicio=cy+(r+2)*Math.sin(e.medio);
+    const xIntermedio=e.derecha?344:136;
+    const xTexto=e.derecha?350:130;
+    const lineas=dividirNombre(e.serie.nombre);
+    const alto=(lineas.length+1)*16;
+    const yTexto=e.y-alto/2+12;
+
+    svg.append(svgElemento("polyline",{
+      points:xInicio+","+yInicio+" "+
+        xIntermedio+","+e.y+" "+
+        (e.derecha?xTexto-4:xTexto+4)+","+e.y,
+      fill:"none",stroke:"#9ca9b1","stroke-width":1
     }));
 
-    const valor=svgElemento("text",{
-      x:cx,y:130,"text-anchor":"middle",
+    const etiquetaTexto=svgElemento("text",{
+      x:xTexto,y:yTexto,
+      "text-anchor":e.derecha?"start":"end",
       "font-family":"Arial, sans-serif",
-      "font-size":"25","font-weight":"bold",fill:"#273c49"
+      "font-size":12.5,"font-weight":"bold",
+      fill:"#273c49"
     });
-    valor.textContent=numero(total);
-    svg.append(valor);
-
-    const nombre=svgElemento("text",{
-      x:cx,y:151,"text-anchor":"middle",
-      "font-family":"Arial, sans-serif",
-      "font-size":"10",fill:"#647582"
+    lineas.forEach((linea,i)=>{
+      const parte=svgElemento("tspan",{x:xTexto,dy:i===0?0:16});
+      parte.textContent=linea;etiquetaTexto.append(parte);
     });
-    nombre.textContent=etiqueta;
-    svg.append(nombre);
+    const valores=svgElemento("tspan",{
+      x:xTexto,dy:17,"font-size":13
+    });
+    valores.textContent=numero(e.serie.valor)+
+      " ("+porcentaje(e.serie.valor/total*100)+")";
+    etiquetaTexto.append(valores);svg.append(etiquetaTexto);
   }
 
-  $(visualId).replaceChildren(svg);
-
-  const leyenda=document.createDocumentFragment();
-  for(const serie of series){
-    const fila=document.createElement("div");
-    fila.className="leyenda-fila";
-
-    const punto=document.createElement("span");
-    punto.className="punto";
-    punto.style.background=serie.color;
-
-    const nombre=document.createElement("span");
-    nombre.className="nombre-serie";
-    nombre.textContent=serie.nombre;
-
-    const valor=document.createElement("span");
-    valor.className="valor-serie";
-    valor.textContent=numero(serie.valor)+" ";
-
-    const porcentajeTexto=document.createElement("span");
-    porcentajeTexto.className="porcentaje";
-    porcentajeTexto.textContent="("+
-      porcentaje(total?serie.valor/total*100:0)+")";
-
-    valor.append(porcentajeTexto);
-    fila.append(punto,nombre,valor);
-    leyenda.append(fila);
+  // Las categorías de valor cero también permanecen visibles.
+  const ceros=series.filter(s=>s.valor===0);
+  if(total>0&&ceros.length){
+    const nota=svgElemento("text",{
+      x:cx,y:344,"text-anchor":"middle",
+      "font-family":"Arial, sans-serif","font-size":10,fill:"#647582"
+    });
+    nota.textContent=ceros.map(s=>s.nombre+": 0 (0,0%)").join(" · ");
+    svg.append(nota);
   }
-
-  $(leyendaId).replaceChildren(leyenda);
+  $(id).replaceChildren(svg);
 }
-
 function actualizarGraficos(){
   const p=tablas.produccion,r=tablas.recibo;
   const seleccion=filtradas("produccion");
-
   const problemaP=p.cargando?"Cargando Producción...":
-    !p.lectura?"Pendiente de lectura de Producción.":
-    p.error||p.faltantes.join(", ");
-
-  if(problemaP){
-    mensajeGrafico("graficoProduccionColor","leyendaProduccionColor",problemaP);
-  }else{
-    dibujarGrafico(
-      "graficoProduccionColor","leyendaProduccionColor",
-      ["ROJO","VERDE","AMARILLO"].map(color=>({
-        nombre:color,
-        color:PALETA[color],
-        valor:seleccion.reduce((s,f)=>s+f.produccion[color],0)
-      })),
-      true,"TROZAS PRODUCIDAS"
-    );
-  }
-
+    !p.lectura?"Pendiente de lectura de Producción.":p.error||p.faltantes.join(", ");
+  if(problemaP)mensajeGrafico("graficoProduccionColor",problemaP);
+  else dibujarGrafico("graficoProduccionColor",
+    ["ROJO","VERDE","AMARILLO"].map(c=>({
+      nombre:c,color:PALETA[c],
+      valor:seleccion.reduce((s,f)=>s+f.produccion[c],0)
+    })),true,"TROZAS PRODUCIDAS");
   const problemaPD=problemaP||p.erroresDescarte.join(", ");
-
-  if(problemaPD){
-    mensajeGrafico("graficoProduccionDescarte","leyendaProduccionDescarte",problemaPD);
-  }else{
+  if(problemaPD)mensajeGrafico("graficoProduccionDescarte",problemaPD);
+  else{
     const d=calculoDescarte();
-    dibujarGrafico(
-      "graficoProduccionDescarte","leyendaProduccionDescarte",
-      [
-        {
-          nombre:"PRODUCCIÓN",
-          color:"#f1763d",
-          valor:seleccion.reduce((s,f)=>s+f.total,0)
-        },
-        {
-          nombre:"DESCARTE BASAL",
-          color:"#247cbd",
-          valor:d.cantidades[0]+d.cantidades[1]
-        },
-        {
-          nombre:"DESCARTE",
-          color:"#23458c",
-          valor:d.cantidades[2]+d.cantidades[3]
-        }
-      ],
-      false,"PRODUCCIÓN Y DESCARTES"
-    );
+    dibujarGrafico("graficoProduccionDescarte",[
+      {nombre:"PRODUCCIÓN",color:"#f1763d",valor:seleccion.reduce((s,f)=>s+f.total,0)},
+      {nombre:"DESCARTE BASAL",color:"#247cbd",valor:d.cantidades[0]+d.cantidades[1]},
+      {nombre:"DESCARTE",color:"#23458c",valor:d.cantidades[2]+d.cantidades[3]}
+    ],false,"PRODUCCIÓN Y DESCARTES");
   }
-
   const problemaR=r.cargando?"Cargando Recibo...":
-    !r.lectura?"Pendiente de lectura de Recibo.":
-    r.error||r.avisoCantidad;
-
-  if(problemaR){
-    mensajeGrafico("graficoDespacho","leyendaDespacho",problemaR);
-  }else{
-    const series=["ROJO","VERDE","AMARILLO"].map(color=>({
-      nombre:color,
-      color:PALETA[color],
-      valor:r.filas.reduce(
-        (s,f)=>s+(f.color===color?f.cantidad:0),0
-      )
+    !r.lectura?"Pendiente de lectura de Recibo.":r.error||r.avisoCantidad;
+  if(problemaR)mensajeGrafico("graficoDespacho",problemaR);
+  else{
+    const series=["ROJO","VERDE","AMARILLO"].map(c=>({
+      nombre:c,color:PALETA[c],
+      valor:r.filas.reduce((s,f)=>s+(f.color===c?f.cantidad:0),0)
     }));
-
-    if(r.noClasificados){
-      series.push({
-        nombre:"SIN CLASIFICAR / REVISAR",
-        color:"#8a98a6",
-        valor:r.filas.reduce(
-          (s,f)=>s+(!COLORES.includes(f.color)?f.cantidad:0),0
-        )
-      });
-    }
-
-    dibujarGrafico(
-      "graficoDespacho","leyendaDespacho",
-      series,true,"TROZAS DESPACHADAS"
-    );
+    if(r.noClasificados)series.push({
+      nombre:"SIN CLASIFICAR",color:"#8a98a6",
+      valor:r.filas.reduce((s,f)=>s+(!COLORES.includes(f.color)?f.cantidad:0),0)
+    });
+    dibujarGrafico("graficoDespacho",series,true,"TROZAS DESPACHADAS");
   }
 }
-
 function actualizarEstado(){
-  const errores=Object.entries(tablas)
-    .filter(([,t])=>t.error)
-    .map(([id,t])=>id.toUpperCase()+": "+t.error);
-
-  $("estadoCarga").textContent=errores.length
-    ?errores.join(" · ")
-    :ocupado?"Actualizando datos...":"";
-
+  const errores=Object.entries(tablas).filter(([,t])=>t.error).map(([id,t])=>id.toUpperCase()+": "+t.error);
+  $("estadoCarga").textContent=errores.length?errores.join(" · "):ocupado?"Actualizando datos...":"";
   $("estadoCarga").classList.toggle("error",errores.length>0);
   $("estadoCarga").hidden=!$("estadoCarga").textContent;
 }
-
 function actualizarDashboard(){
-  actualizarTotales();
-  tarjetasStock();
-  actualizarGraficos();
-  actualizarEstado();
+  actualizarTotales();tarjetasStock();actualizarGraficos();actualizarEstado();
   if($("modalDescarte").open)mostrarDetalleDescarte();
 }
-
 function encabezado(){
-  const t=tablas[activa];
-  const tr=document.createElement("tr");
-
+  const t=tablas[activa],tr=document.createElement("tr");
   t.columnas.forEach((nombre,i)=>{
     const th=document.createElement("th");
     if(esObservaciones(nombre))th.className="observaciones";
-
     const b=document.createElement("button");
-    b.textContent=nombre+
-      (t.orden===i?(t.direccion===1?" ▲":" ▼"):"");
-
+    b.textContent=nombre+(t.orden===i?(t.direccion===1?" ▲":" ▼"):"");
     b.addEventListener("click",()=>{
       t.direccion=t.orden===i?-t.direccion:1;
-      t.orden=i;t.pagina=1;
-      encabezado();mostrarFilas();
+      t.orden=i;t.pagina=1;encabezado();mostrarFilas();
     });
-
     const input=document.createElement("input");
-    input.type="search";
-    input.placeholder="Filtrar...";
+    input.type="search";input.placeholder="Filtrar...";
     input.value=t.filtros[i]||"";
     input.setAttribute("aria-label","Filtrar "+nombre);
-
     input.addEventListener("input",()=>{
-      t.filtros[i]=input.value;
-      t.pagina=1;
-      mostrarFilas();
-      actualizarDashboard();
+      t.filtros[i]=input.value;t.pagina=1;
+      mostrarFilas();actualizarDashboard();
     });
-
     th.append(b,input);tr.append(th);
   });
-
   $("encabezado").replaceChildren(tr);
 }
-
-const comparador=new Intl.Collator("es",{
-  numeric:true,sensitivity:"base"
-});
-
+const comparador=new Intl.Collator("es",{numeric:true,sensitivity:"base"});
 function claveFecha(v){
   const m=texto(v).match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
   return m?m[3]+m[2]+m[1]:texto(v);
 }
-
 function mostrarFilas(){
   if(!tablaVisible)return;
-
-  const t=tablas[activa];
-  const resultado=filtradas(activa);
-
-  if(t.orden!==null){
-    resultado.sort((a,b)=>{
-      let av=a.valores[t.orden],bv=b.valores[t.orden];
-
-      if(esFecha(t.columnas[t.orden])){
-        av=claveFecha(av);bv=claveFecha(bv);
-      }
-
-      return comparador.compare(av,bv)*t.direccion;
-    });
-  }
-
+  const t=tablas[activa],resultado=filtradas(activa);
+  if(t.orden!==null)resultado.sort((a,b)=>{
+    let av=a.valores[t.orden],bv=b.valores[t.orden];
+    if(esFecha(t.columnas[t.orden])){av=claveFecha(av);bv=claveFecha(bv)}
+    return comparador.compare(av,bv)*t.direccion;
+  });
   const limite=Number($("limite").value);
   const paginas=Math.max(1,Math.ceil(resultado.length/limite));
   t.pagina=Math.min(t.pagina,paginas);
-  const inicio=(t.pagina-1)*limite;
-  const fragmento=document.createDocumentFragment();
-
+  const inicio=(t.pagina-1)*limite,fragmento=document.createDocumentFragment();
   resultado.slice(inicio,inicio+limite).forEach(f=>{
     const tr=document.createElement("tr");
-
     f.valores.forEach((v,i)=>{
       const td=document.createElement("td");
-
       if(esObservaciones(t.columnas[i])){
         td.className="observaciones";
-
         const nota=document.createElement("div");
-        nota.className="nota-texto corta";
-        nota.textContent=v||"—";
-        td.append(nota);
-
+        nota.className="nota-texto corta";nota.textContent=v||"—";td.append(nota);
         if(v.trim()){
           const b=document.createElement("button");
-          b.className="leer-nota";
-          b.textContent="Ver observación";
+          b.className="leer-nota";b.textContent="Ver observación";
           b.addEventListener("click",()=>{
-            $("notaCompleta").textContent=v;
-            $("modalNota").showModal();
+            $("notaCompleta").textContent=v;$("modalNota").showModal();
           });
           td.append(b);
         }
-      }else if(
-        activa==="recibo"&&
-        t.columnas[i]==="ID PRODUCTO"&&
-        COLORES.includes(v)
-      ){
+      }else if(activa==="recibo"&&t.columnas[i]==="ID PRODUCTO"&&COLORES.includes(v)){
         const e=document.createElement("span");
-        e.className="etiqueta "+v.toLowerCase();
-        e.textContent=v;td.append(e);
+        e.className="etiqueta "+v.toLowerCase();e.textContent=v;td.append(e);
       }else td.textContent=v;
-
       tr.append(td);
     });
-
     fragmento.append(tr);
   });
-
   $("cuerpo").replaceChildren(fragmento);
-
   const avisos=[
     ...(t.error?[t.error]:[]),
-    ...(activa==="produccion"&&t.faltantes.length
-      ?["Producción: "+t.faltantes.join(", ")]:[]),
-    ...(activa==="produccion"&&t.erroresDescarte.length
-      ?["Descarte: "+t.erroresDescarte.join(", ")]:[])
+    ...(activa==="produccion"&&t.faltantes.length?["Producción: "+t.faltantes.join(", ")]:[]),
+    ...(activa==="produccion"&&t.erroresDescarte.length?["Descarte: "+t.erroresDescarte.join(", ")]:[])
   ];
-
-  $("aviso").hidden=avisos.length===0;
-  $("aviso").textContent=avisos.join(" · ");
+  $("aviso").hidden=!avisos.length;$("aviso").textContent=avisos.join(" · ");
   $("pagina").textContent="Página "+t.pagina+" de "+paginas;
-  $("anterior").disabled=t.pagina<=1;
-  $("siguiente").disabled=t.pagina>=paginas;
+  $("anterior").disabled=t.pagina<=1;$("siguiente").disabled=t.pagina>=paginas;
   $("vacio").hidden=resultado.length>0;
-  $("vacio").textContent=t.cargando&&!t.lectura
-    ?"Cargando datos...":
-    t.error&&!t.lectura?t.error:
-    "No hay registros para esta selección.";
+  $("vacio").textContent=t.cargando&&!t.lectura?"Cargando datos...":t.error&&!t.lectura?t.error:"No hay registros para esta selección.";
 }
-
 function mostrar(){
   $("listado").hidden=!tablaVisible;
-
   document.querySelectorAll("[data-tab]").forEach(b=>{
     const elegida=tablaVisible&&b.dataset.tab===activa;
     b.classList.toggle("activo",elegida);
     b.setAttribute("aria-expanded",String(elegida));
   });
-
   if(!tablaVisible)return;
-
-  $("tituloTabla").textContent=activa==="recibo"
-    ?TITULO_RECIBO:
-    activa==="produccion"?"Producción":"Insumos";
-
+  $("tituloTabla").textContent=activa==="recibo"?TITULO_RECIBO:activa==="produccion"?"Producción":"Insumos";
   $("buscar").value=tablas[activa].busqueda;
   $("fila").value=CONFIG[activa].fila;
   $("fila").disabled=activa==="produccion"||ocupado;
   encabezado();mostrarFilas();
 }
-
 function cargarLibro(origen,bytes){
   const libro=XLSX.read(bytes,{type:"array",cellDates:true});
   const lectura=new Date().toISOString();
   libros[origen]={libro,lectura};
-
   for(const id of idsDelOrigen(origen)){
     try{
-      const t=extraer(id,libro);
-      t.lectura=lectura;
-      tablas[id]=t;
-    }catch(e){
-      tablas[id].error=e.message;
-      tablas[id].cargando=false;
-    }
+      const t=extraer(id,libro);t.lectura=lectura;tablas[id]=t;
+    }catch(e){tablas[id].error=e.message;tablas[id].cargando=false}
   }
 }
-
-function errorOrigen(origen,mensaje){
-  for(const id of idsDelOrigen(origen)){
-    tablas[id].error=mensaje;
-    tablas[id].cargando=false;
-  }
+function errorOrigen(origen,m){
+  for(const id of idsDelOrigen(origen)){tablas[id].error=m;tablas[id].cargando=false}
 }
-
 async function descargar(origen){
-  const control=new AbortController();
-  const timer=setTimeout(()=>control.abort(),90000);
-
+  const control=new AbortController(),timer=setTimeout(()=>control.abort(),90000);
   try{
-    const r=await fetch(URLS[origen],{
-      mode:"cors",cache:"no-store",
-      credentials:"omit",signal:control.signal
-    });
-
+    const r=await fetch(URLS[origen],{mode:"cors",cache:"no-store",credentials:"omit",signal:control.signal});
     if(!r.ok)throw new Error("Dropbox respondió HTTP "+r.status+".");
-
     const tipo=(r.headers.get("Content-Type")||"").toLowerCase();
-    if(tipo.includes("text/html")||tipo.includes("application/json")){
-      throw new Error("El enlace no devolvió un Excel.");
-    }
-
+    if(tipo.includes("text/html")||tipo.includes("application/json"))throw new Error("El enlace no devolvió un Excel.");
     const bytes=await r.arrayBuffer();
     if(!bytes.byteLength)throw new Error("El archivo está vacío.");
-
     cargarLibro(origen,bytes);
   }catch(e){
-    errorOrigen(origen,
-      e.name==="AbortError"
-        ?"La descarga superó los 90 segundos.":
-      e instanceof TypeError
-        ?"No se pudo leer Dropbox por un bloqueo del navegador o un problema de conexión.":
-      e.message
-    );
-  }finally{
-    clearTimeout(timer);
-    actualizarDashboard();
-    mostrar();
-  }
+    errorOrigen(origen,e.name==="AbortError"?"La descarga superó los 90 segundos.":
+      e instanceof TypeError?"No se pudo leer Dropbox por un bloqueo del navegador o un problema de conexión.":e.message);
+  }finally{clearTimeout(timer);actualizarDashboard();mostrar()}
 }
-
 function bloquear(v){
-  ocupado=v;
-  $("actualizar").disabled=v;
-  $("actualizar").textContent=v
-    ?"Cargando...":"Actualizar desde Dropbox";
+  ocupado=v;$("actualizar").disabled=v;
+  $("actualizar").textContent=v?"Cargando...":"Actualizar desde Dropbox";
   $("fila").disabled=activa==="produccion"||v;
 }
-
 async function actualizar(){
   if(ocupado)return;
-
   if(typeof XLSX==="undefined"){
-    const mensaje="No se cargó el lector Excel. Revisá la conexión y recargá.";
-    errorOrigen("produccion",mensaje);
-    errorOrigen("recibo",mensaje);
-    actualizarDashboard();mostrar();
-    return;
+    const m="No se cargó el lector Excel. Revisá la conexión y recargá.";
+    errorOrigen("produccion",m);errorOrigen("recibo",m);
+    actualizarDashboard();mostrar();return;
   }
-
   bloquear(true);
-
-  for(const t of Object.values(tablas)){
-    t.cargando=true;t.error="";
-  }
-
+  for(const t of Object.values(tablas)){t.cargando=true;t.error=""}
   actualizarDashboard();mostrar();
-
-  try{
-    await Promise.allSettled([
-      descargar("produccion"),descargar("recibo")
-    ]);
-  }finally{
-    bloquear(false);
-    actualizarDashboard();mostrar();
-  }
+  try{await Promise.allSettled([descargar("produccion"),descargar("recibo")])}
+  finally{bloquear(false);actualizarDashboard();mostrar()}
 }
-
 document.querySelectorAll("[data-tab]").forEach(b=>{
   b.addEventListener("click",()=>{
     const seleccion=b.dataset.tab;
-
-    if(tablaVisible&&activa===seleccion){
-      tablaVisible=false;
-    }else{
-      activa=seleccion;
-      tablaVisible=true;
-    }
-
+    if(tablaVisible&&activa===seleccion)tablaVisible=false;
+    else{activa=seleccion;tablaVisible=true}
     mostrar();
   });
 });
-
 $("buscar").addEventListener("input",()=>{
-  tablas[activa].busqueda=$("buscar").value;
-  tablas[activa].pagina=1;
-  mostrarFilas();
-  actualizarDashboard();
+  tablas[activa].busqueda=$("buscar").value;tablas[activa].pagina=1;
+  mostrarFilas();actualizarDashboard();
 });
-
 $("quitar").addEventListener("click",()=>{
   for(const t of Object.values(tablas)){
-    t.busqueda="";
-    t.filtros=t.columnas.map(()=>"");
+    t.busqueda="";t.filtros=t.columnas.map(()=>"");
     t.orden=null;t.direccion=1;t.pagina=1;
   }
   mostrar();actualizarDashboard();
 });
-
-$("limite").addEventListener("change",()=>{
-  tablas[activa].pagina=1;mostrarFilas();
-});
-$("anterior").addEventListener("click",()=>{
-  tablas[activa].pagina--;mostrarFilas();
-});
-$("siguiente").addEventListener("click",()=>{
-  tablas[activa].pagina++;mostrarFilas();
-});
-
+$("limite").addEventListener("change",()=>{tablas[activa].pagina=1;mostrarFilas()});
+$("anterior").addEventListener("click",()=>{tablas[activa].pagina--;mostrarFilas()});
+$("siguiente").addEventListener("click",()=>{tablas[activa].pagina++;mostrarFilas()});
 $("fila").addEventListener("change",()=>{
   if(activa==="produccion"||ocupado)return;
   const c=CONFIG[activa],n=Number($("fila").value);
-
-  if(!Number.isInteger(n)||n<1||n>100){
-    $("fila").value=c.fila;return;
-  }
-
-  const anterior=c.fila;
-  c.fila=n;
+  if(!Number.isInteger(n)||n<1||n>100){$("fila").value=c.fila;return}
+  const anterior=c.fila;c.fila=n;
   const guardado=libros[c.origen];
-
   if(guardado){
     try{
       const t=extraer(activa,guardado.libro);
-      t.lectura=guardado.lectura;
-      tablas[activa]=t;
-    }catch(e){
-      c.fila=anterior;
-      tablas[activa].error=e.message;
-    }
+      t.lectura=guardado.lectura;tablas[activa]=t;
+    }catch(e){c.fila=anterior;tablas[activa].error=e.message}
   }
-
   actualizarDashboard();mostrar();
 });
-
 $("actualizar").addEventListener("click",actualizar);
 $("cerrarNota").addEventListener("click",()=>$("modalNota").close());
-
 $("tarjetaDescarte").addEventListener("click",()=>{
-  mostrarDetalleDescarte();
-  $("modalDescarte").showModal();
+  mostrarDetalleDescarte();$("modalDescarte").showModal();
 });
-
-$("cerrarDescarte").addEventListener("click",()=>{
-  $("modalDescarte").close();
-});
-
+$("cerrarDescarte").addEventListener("click",()=>$("modalDescarte").close());
 mostrar();
 actualizar();
 </script>
