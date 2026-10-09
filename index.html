@@ -5,26 +5,74 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Producción Las Acacias</title>
 <style>
-:root{--verde:#19564b;--fondo:#f2f5f7;--borde:#dbe4e8;--texto:#273c49}
+:root{
+  --verde:#19564b;
+  --fondo:#f2f5f7;
+  --borde:#dbe4e8;
+  --texto:#273c49;
+}
 *{box-sizing:border-box}
-body{margin:0;background:var(--fondo);color:var(--texto);font-family:Arial,sans-serif}
+body{
+  margin:0;
+  background:var(--fondo);
+  color:var(--texto);
+  font-family:Arial,sans-serif;
+}
 main{max-width:1600px;margin:auto;padding:24px}
-header{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin-bottom:20px}
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  flex-wrap:wrap;
+  margin-bottom:20px;
+}
 h1{color:var(--verde);margin:0 0 8px;font-size:26px}
 .subtitulo{margin:0;color:#647582}
 button,input,select{font:inherit}
-button{padding:10px 15px;border:1px solid var(--borde);border-radius:8px;background:white;cursor:pointer;color:var(--texto)}
+button{
+  padding:10px 15px;
+  border:1px solid var(--borde);
+  border-radius:8px;
+  background:white;
+  cursor:pointer;
+  color:var(--texto);
+}
 button:hover{background:#edf5f1}
 button:disabled{opacity:.5;cursor:default}
-.primario,.pestanas button.activo{background:var(--verde);border-color:var(--verde);color:white}
-.tarjetas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:18px}
-.tarjetas.stock{grid-template-columns:repeat(4,minmax(0,1fr))}
-.tarjeta{background:white;border:1px solid var(--borde);padding:16px;border-radius:12px;text-align:center}
-.tarjeta h2{margin:0 0 10px;font-size:15px;color:var(--verde)}
-.tarjeta.produccion{display:flex;flex-direction:column;justify-content:center}
-.numero{font-size:28px;font-weight:bold;margin-bottom:6px}
-.detalle{font-size:12px;color:#647582;margin-bottom:8px;line-height:1.6;overflow-wrap:anywhere}
-.estado{font-size:12px;line-height:1.5;color:#647582;overflow-wrap:anywhere}
+.primario,.pestanas button.activo{
+  background:var(--verde);
+  border-color:var(--verde);
+  color:white;
+}
+.tarjetas{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+  margin-bottom:18px;
+}
+.tarjeta{
+  background:white;
+  border:1px solid var(--borde);
+  padding:20px 16px;
+  border-radius:12px;
+  text-align:center;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.tarjeta h2{
+  margin:0 0 10px;
+  font-size:15px;
+  color:var(--verde);
+}
+.numero{font-size:30px;font-weight:bold;margin-bottom:6px}
+.detalle{
+  font-size:12px;
+  color:#647582;
+  line-height:1.6;
+  overflow-wrap:anywhere;
+}
 .error,.negativo{color:#b02e2e}
 .stock-rojo{border-top:4px solid #c94b4b}
 .stock-rojo h2{color:#a62323}
@@ -34,48 +82,197 @@ button:disabled{opacity:.5;cursor:default}
 .stock-verde h2{color:#24623a}
 .stock-monte{border-top:4px solid #497ba0}
 .stock-monte h2{color:#315f80}
-.panel{background:white;border:1px solid var(--borde);border-radius:12px;overflow:hidden}
-.pestanas,.controles{display:flex;gap:10px;padding:16px;flex-wrap:wrap;align-items:center}
+.descarte{border-top:4px solid #b17b48}
+.descarte h2{color:#885b31}
+button.tarjeta{width:100%;font:inherit}
+button.tarjeta:hover{
+  background:#fffaf3;
+  box-shadow:0 3px 12px rgba(40,60,70,.08);
+}
+button.tarjeta:focus-visible{
+  outline:3px solid #b17b48;
+  outline-offset:3px;
+}
+.panel{
+  background:white;
+  border:1px solid var(--borde);
+  border-radius:12px;
+  overflow:hidden;
+}
+.pestanas,.controles{
+  display:flex;
+  gap:10px;
+  padding:16px;
+  flex-wrap:wrap;
+  align-items:center;
+}
 .pestanas{border-bottom:1px solid var(--borde)}
-.titulo-tabla{margin:0;padding:18px 16px 0;text-align:center;color:var(--verde);font-size:20px;overflow-wrap:anywhere}
-input,select{padding:9px;border:1px solid var(--borde);border-radius:6px;background:white;color:var(--texto)}
+.titulo-tabla{
+  margin:0;
+  padding:18px 16px 0;
+  text-align:center;
+  color:var(--verde);
+  font-size:20px;
+  overflow-wrap:anywhere;
+}
+input,select{
+  padding:9px;
+  border:1px solid var(--borde);
+  border-radius:6px;
+  background:white;
+  color:var(--texto);
+}
 #buscar{flex:1;min-width:190px}
-.controles label{font-size:13px;display:flex;align-items:center;gap:7px}
+.controles label{
+  font-size:13px;
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
 #fila{width:70px}
-#aviso{padding:0 16px 14px;color:#b02e2e;font-size:13px;line-height:1.6;text-align:center}
-.tabla{overflow:auto;max-height:65vh;border-top:1px solid var(--borde)}
-table{width:100%;border-collapse:separate;border-spacing:0;font-size:12px}
-th,td{text-align:center;padding:10px;min-width:105px;max-width:220px;overflow-wrap:anywhere;border-bottom:1px solid var(--borde)}
-th{position:sticky;top:0;z-index:1;background:#edf3f4;vertical-align:top}
-th button{width:100%;border:none;background:transparent;color:var(--verde);font-weight:bold;white-space:normal;padding:4px}
-th input{width:100%;min-width:85px;margin-top:8px;font-size:11px}
+#aviso{
+  padding:0 16px 14px;
+  color:#b02e2e;
+  font-size:13px;
+  line-height:1.6;
+  text-align:center;
+}
+.tabla{
+  overflow:auto;
+  max-height:65vh;
+  border-top:1px solid var(--borde);
+}
+table{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0;
+  font-size:12px;
+}
+th,td{
+  text-align:center;
+  padding:10px;
+  min-width:105px;
+  max-width:220px;
+  overflow-wrap:anywhere;
+  border-bottom:1px solid var(--borde);
+}
+th{
+  position:sticky;
+  top:0;
+  z-index:1;
+  background:#edf3f4;
+  vertical-align:top;
+}
+th button{
+  width:100%;
+  border:none;
+  background:transparent;
+  color:var(--verde);
+  font-weight:bold;
+  white-space:normal;
+  padding:4px;
+}
+th input{
+  width:100%;
+  min-width:85px;
+  margin-top:8px;
+  font-size:11px;
+}
 tbody tr:nth-child(even){background:#f8fafb}
 tbody tr:hover{background:#edf6f0}
-th.observaciones,td.observaciones{min-width:280px;max-width:360px;width:320px}
-td.observaciones{text-align:left;vertical-align:top;padding:12px 16px}
-.nota-texto{white-space:pre-wrap;line-height:1.65;overflow-wrap:anywhere}
-.nota-texto.corta{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.leer-nota{padding:5px 8px;margin-top:7px;font-size:11px;color:var(--verde);background:#edf5f1}
-.etiqueta{display:inline-block;padding:5px 9px;border-radius:6px;font-weight:bold}
+th.observaciones,td.observaciones{
+  min-width:280px;
+  max-width:360px;
+  width:320px;
+}
+td.observaciones{
+  text-align:left;
+  vertical-align:top;
+  padding:12px 16px;
+}
+.nota-texto{
+  white-space:pre-wrap;
+  line-height:1.65;
+  overflow-wrap:anywhere;
+}
+.nota-texto.corta{
+  display:-webkit-box;
+  -webkit-line-clamp:3;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+.leer-nota{
+  padding:5px 8px;
+  margin-top:7px;
+  font-size:11px;
+  color:var(--verde);
+  background:#edf5f1;
+}
+.etiqueta{
+  display:inline-block;
+  padding:5px 9px;
+  border-radius:6px;
+  font-weight:bold;
+}
 .rojo{background:#ffe1e1;color:#a62323}
 .verde{background:#dff2e4;color:#24623a}
 .amarillo{background:#fff0b6;color:#765b00}
 #vacio{padding:30px;text-align:center;color:#647582}
-.pie{padding:16px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-size:13px}
+.pie{
+  padding:16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+  font-size:13px;
+}
 .navegacion{display:flex;align-items:center;gap:10px}
 .nota{font-size:12px;line-height:1.6;color:#647582}
-dialog{border:1px solid var(--borde);border-radius:14px;padding:24px;width:min(600px,90vw);max-height:80vh;color:var(--texto)}
+dialog{
+  border:1px solid var(--borde);
+  border-radius:14px;
+  padding:24px;
+  width:min(620px,90vw);
+  max-height:80vh;
+  color:var(--texto);
+  overflow:auto;
+}
 dialog::backdrop{background:rgba(20,40,45,.45)}
 dialog h2{margin-top:0;color:var(--verde)}
-#notaCompleta{white-space:pre-wrap;line-height:1.7;overflow-wrap:anywhere;margin-bottom:20px}
-@media(max-width:1000px){
-  .tarjetas.stock{grid-template-columns:repeat(2,minmax(0,1fr))}
+#notaCompleta{
+  white-space:pre-wrap;
+  line-height:1.7;
+  overflow-wrap:anywhere;
+  margin-bottom:20px;
+}
+#alcanceDescarte{
+  font-size:13px;
+  line-height:1.6;
+  color:#647582;
+  margin-bottom:16px;
+}
+.tabla-detalle{margin-bottom:20px;font-size:14px}
+.tabla-detalle th{
+  position:static;
+  padding:12px;
+}
+.tabla-detalle td{padding:12px}
+.tabla-detalle th:first-child,.tabla-detalle td:first-child{
+  text-align:left;
+}
+.tabla-detalle tfoot td{
+  background:#edf3f4;
+  font-weight:bold;
 }
 @media(max-width:700px){
-  main{padding:12px}h1{font-size:22px}
-  .tarjetas,.tarjetas.stock{grid-template-columns:1fr}
-  .tarjeta{padding:12px}.numero{font-size:23px}
-  #buscar{flex-basis:100%}.titulo-tabla{font-size:17px}
+  main{padding:12px}
+  h1{font-size:22px}
+  .tarjetas{grid-template-columns:1fr}
+  .tarjeta{padding:16px}
+  .numero{font-size:25px}
+  #buscar{flex-basis:100%}
+  .titulo-tabla{font-size:17px}
   th.observaciones,td.observaciones{min-width:230px}
 }
 </style>
@@ -87,48 +284,58 @@ dialog h2{margin-top:0;color:var(--verde)}
     <h1>PRODUCCIÓN LAS ACACIAS</h1>
     <p class="subtitulo">Producción · Insumos · Recibo</p>
   </div>
-  <button id="actualizar" class="primario">Actualizar desde Dropbox</button>
+  <button id="actualizar" class="primario">
+    Actualizar desde Dropbox
+  </button>
 </header>
 
-<section class="tarjetas">
-  <article class="tarjeta produccion">
+<!-- PRIMERA FILA -->
+<section class="tarjetas" aria-label="Totales">
+  <article class="tarjeta">
     <h2>PRODUCCIÓN</h2>
     <div id="numero-produccion" class="numero">—</div>
   </article>
-  <article class="tarjeta">
-    <h2>INSUMOS</h2>
-    <div id="numero-insumos" class="numero">—</div>
-    <div class="detalle">Registros</div>
-    <div id="estado-insumos" class="estado">Pendiente</div>
-  </article>
-  <article class="tarjeta">
-    <h2>RECIBO</h2>
-    <div id="numero-recibo" class="numero">—</div>
-    <div class="detalle">Registros</div>
-    <div id="estado-recibo" class="estado">Pendiente</div>
-  </article>
-</section>
 
-<section class="tarjetas stock" aria-label="Stocks">
-  <article class="tarjeta stock-rojo">
-    <h2>STOCK ROJO</h2>
-    <div id="stock-rojo" class="numero">—</div>
-    <div id="detalle-stock-rojo" class="detalle">Pendiente de lectura</div>
-  </article>
-  <article class="tarjeta stock-amarillo">
-    <h2>STOCK AMARILLO</h2>
-    <div id="stock-amarillo" class="numero">—</div>
-    <div id="detalle-stock-amarillo" class="detalle">Pendiente de lectura</div>
-  </article>
-  <article class="tarjeta stock-verde">
-    <h2>STOCK VERDE</h2>
-    <div id="stock-verde" class="numero">—</div>
-    <div id="detalle-stock-verde" class="detalle">Pendiente de lectura</div>
-  </article>
   <article class="tarjeta stock-monte">
     <h2>TROZAS STOCK MONTE</h2>
     <div id="stock-monte" class="numero">—</div>
-    <div id="detalle-stock-monte" class="detalle">Pendiente de lectura</div>
+    <div id="detalle-stock-monte" class="detalle">
+      Pendiente de lectura
+    </div>
+  </article>
+
+  <button id="tarjetaDescarte" class="tarjeta descarte"
+    type="button" aria-haspopup="dialog">
+    <h2>DESCARTE</h2>
+    <div id="numero-descarte" class="numero">—</div>
+    <div class="detalle">Ver detalle por clasificación</div>
+  </button>
+</section>
+
+<!-- SEGUNDA FILA -->
+<section class="tarjetas" aria-label="Stocks por color">
+  <article class="tarjeta stock-rojo">
+    <h2>STOCK ROJO</h2>
+    <div id="stock-rojo" class="numero">—</div>
+    <div id="detalle-stock-rojo" class="detalle">
+      Pendiente de lectura
+    </div>
+  </article>
+
+  <article class="tarjeta stock-amarillo">
+    <h2>STOCK AMARILLO</h2>
+    <div id="stock-amarillo" class="numero">—</div>
+    <div id="detalle-stock-amarillo" class="detalle">
+      Pendiente de lectura
+    </div>
+  </article>
+
+  <article class="tarjeta stock-verde">
+    <h2>STOCK VERDE</h2>
+    <div id="stock-verde" class="numero">—</div>
+    <div id="detalle-stock-verde" class="detalle">
+      Pendiente de lectura
+    </div>
   </article>
 </section>
 
@@ -144,10 +351,14 @@ dialog h2{margin-top:0;color:var(--verde)}
   <div class="controles">
     <input id="buscar" type="search"
       placeholder="Buscar en toda la tabla..." aria-label="Buscar">
-    <label>Fila de encabezados
+
+    <label>
+      Fila de encabezados
       <input id="fila" type="number" min="1" max="100" value="3">
     </label>
-    <label>Filas
+
+    <label>
+      Filas
       <select id="limite">
         <option value="25">25</option>
         <option value="50" selected>50</option>
@@ -155,6 +366,7 @@ dialog h2{margin-top:0;color:var(--verde)}
         <option value="200">200</option>
       </select>
     </label>
+
     <button id="quitar">Quitar filtros</button>
   </div>
 
@@ -180,16 +392,39 @@ dialog h2{margin-top:0;color:var(--verde)}
 
 <p class="nota">
   Producción excluye las filas sin FECHA.
-  Su tarjeta responde a los filtros de la tabla.
+  Producción y Descarte responden a los filtros de la tabla Producción.
   Las tarjetas de stock utilizan los totales completos.
   Trozas Stock Monte = Producción total − suma de CANTIDAD de todo Recibo.
 </p>
 </main>
 
-<dialog id="modalNota">
-  <h2>Observaciones</h2>
+<dialog id="modalNota" aria-labelledby="tituloNota">
+  <h2 id="tituloNota">Observaciones</h2>
   <div id="notaCompleta"></div>
   <button id="cerrarNota" class="primario">Cerrar</button>
+</dialog>
+
+<dialog id="modalDescarte" aria-labelledby="tituloDescarte">
+  <h2 id="tituloDescarte">Detalle de descarte</h2>
+  <div id="alcanceDescarte"></div>
+
+  <table class="tabla-detalle">
+    <thead>
+      <tr>
+        <th>Clasificación</th>
+        <th>Cantidad</th>
+      </tr>
+    </thead>
+    <tbody id="detalleDescarte"></tbody>
+    <tfoot>
+      <tr>
+        <td>TOTAL DESCARTE</td>
+        <td id="totalDetalleDescarte">—</td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <button id="cerrarDescarte" class="primario">Cerrar</button>
 </dialog>
 
 <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
@@ -216,6 +451,13 @@ const GRUPOS_PRODUCCION={
   VERDE:["Verde-STD+45","Verde Basal +55"]
 };
 
+const COLUMNAS_DESCARTE=[
+  "Descarte basal+55",
+  "Descarte basal -55",
+  "Descarte +55",
+  "Descarte-55"
+];
+
 const COLORES=["ROJO","AMARILLO","VERDE"];
 const tablas={},libros={};
 let activa="produccion",ocupado=false;
@@ -227,6 +469,8 @@ function normalizar(v){
 function claveColumna(v){
   return normalizar(v).replace(/[^a-z0-9]/g,"");
 }
+
+// Conservar + y - para distinguir las clasificaciones.
 function claveSuma(v){
   return normalizar(v).replace(/amarillo/g,"amarrillo")
     .replace(/[^a-z0-9+-]/g,"");
@@ -234,11 +478,6 @@ function claveSuma(v){
 function texto(v){return v==null?"":String(v)}
 function numero(v){
   return v.toLocaleString("es-UY",{maximumFractionDigits:2});
-}
-function hora(v){
-  return new Date(v).toLocaleString("es-UY",{
-    timeZone:"America/Montevideo"
-  });
 }
 function idsDelOrigen(o){
   return Object.keys(CONFIG).filter(id=>CONFIG[id].origen===o);
@@ -264,11 +503,22 @@ const EQUIVALENCIAS=new Map([
 
 for(const id of Object.keys(CONFIG)){
   tablas[id]={
-    columnas:[],filas:[],filtros:[],busqueda:"",
-    orden:null,direccion:1,pagina:1,lectura:"",
-    error:"",cargando:false,faltantes:[],
+    columnas:[],
+    filas:[],
+    filtros:[],
+    busqueda:"",
+    orden:null,
+    direccion:1,
+    pagina:1,
+    lectura:"",
+    error:"",
+    cargando:false,
+    faltantes:[],
     faltantesColor:{ROJO:[],AMARILLO:[],VERDE:[]},
-    avisoCantidad:"",noClasificados:0
+    erroresDescarte:[],
+    erroresDescartePorColumna:COLUMNAS_DESCARTE.map(()=>[]),
+    avisoCantidad:"",
+    noClasificados:0
   };
 }
 
@@ -316,6 +566,24 @@ function clasificar(fila,indices){
 
   return encontrados.size===1?[...encontrados][0]:
     encontrados.size>1?"REVISAR":"SIN CLASIFICAR";
+}
+
+function localizarColumna(columnas,nombre,errores){
+  const encontrados=columnas
+    .map((c,i)=>claveSuma(c)===claveSuma(nombre)?i:-1)
+    .filter(i=>i>=0);
+
+  if(encontrados.length!==1){
+    errores.push(nombre+
+      (encontrados.length>1?" (duplicada)":" (no encontrada)"));
+    return -1;
+  }
+
+  return encontrados[0];
+}
+
+function agregarError(lista,mensaje){
+  if(!lista.includes(mensaje))lista.push(mensaje);
 }
 
 function extraer(id,libro){
@@ -386,7 +654,11 @@ function extraer(id,libro){
   }
 
   const faltantesColor={ROJO:[],AMARILLO:[],VERDE:[]};
-  let faltantes=[],avisoCantidad="",noClasificados=0;
+  const erroresDescartePorColumna=COLUMNAS_DESCARTE.map(()=>[]);
+  let faltantes=[];
+  let erroresDescarte=[];
+  let avisoCantidad="";
+  let noClasificados=0;
 
   let filas=originales.map(f=>({
     valores:f.map((v,i)=>
@@ -395,6 +667,7 @@ function extraer(id,libro){
     ),
     total:0,
     produccion:{ROJO:0,AMARILLO:0,VERDE:0},
+    descarte:COLUMNAS_DESCARTE.map(()=>0),
     color:"",
     cantidad:0
   }));
@@ -403,21 +676,18 @@ function extraer(id,libro){
     const indicesPorColor={};
 
     for(const color of COLORES){
-      indicesPorColor[color]=GRUPOS_PRODUCCION[color].map(nombre=>{
-        const encontrados=columnas
-          .map((c,i)=>claveSuma(c)===claveSuma(nombre)?i:-1)
-          .filter(i=>i>=0);
-
-        if(encontrados.length!==1){
-          faltantesColor[color].push(
-            nombre+(encontrados.length>1?" (duplicada)":"")
-          );
-          return -1;
-        }
-
-        return encontrados[0];
-      });
+      indicesPorColor[color]=GRUPOS_PRODUCCION[color].map(
+        nombre=>localizarColumna(
+          columnas,nombre,faltantesColor[color]
+        )
+      );
     }
+
+    const indicesDescarte=COLUMNAS_DESCARTE.map(
+      (nombre,i)=>localizarColumna(
+        columnas,nombre,erroresDescartePorColumna[i]
+      )
+    );
 
     filas.forEach((fila,n)=>{
       for(const color of COLORES){
@@ -428,10 +698,10 @@ function extraer(id,libro){
           const valor=numeroCelda(originales[n][i]);
 
           if(Number.isNaN(valor)){
-            const aviso="Valor no numérico en "+columnas[i];
-            if(!faltantesColor[color].includes(aviso)){
-              faltantesColor[color].push(aviso);
-            }
+            agregarError(
+              faltantesColor[color],
+              "Valor no numérico en "+columnas[i]
+            );
           }else{
             suma+=valor;
           }
@@ -443,15 +713,31 @@ function extraer(id,libro){
       fila.total=COLORES.reduce(
         (s,c)=>s+fila.produccion[c],0
       );
+
+      indicesDescarte.forEach((i,clasificacion)=>{
+        if(i<0)return;
+        const valor=numeroCelda(originales[n][i]);
+
+        if(Number.isNaN(valor)){
+          agregarError(
+            erroresDescartePorColumna[clasificacion],
+            "Valor no numérico en "+columnas[i]
+          );
+        }else{
+          fila.descarte[clasificacion]=valor;
+        }
+      });
     });
 
     faltantes=COLORES.flatMap(c=>faltantesColor[c]);
+    erroresDescarte=erroresDescartePorColumna.flat();
 
     const mantener=columnas
       .map((c,i)=>OCULTAS_PRODUCCION.has(claveColumna(c))?-1:i)
       .filter(i=>i>=0);
 
     columnas=mantener.map(i=>columnas[i]);
+
     filas=filas.map(f=>({
       ...f,valores:mantener.map(i=>f.valores[i])
     }));
@@ -480,10 +766,10 @@ function extraer(id,libro){
     filas.forEach((fila,n)=>{
       fila.color=clasificar(fila.valores,producto);
 
-      if(!COLORES.includes(fila.color))noClasificados++;
+      if(!COLORES.includes(fila.color)){
+        noClasificados++;
+      }
 
-      // CANTIDAD se conserva para todas las filas,
-      // independientemente de su clasificación.
       if(cantidades.length===1){
         const cantidad=numeroCelda(
           originales[n][cantidades[0]]
@@ -525,11 +811,20 @@ function extraer(id,libro){
     JSON.stringify(anterior.columnas);
 
   return {
-    ...anterior,columnas,filas,faltantes,faltantesColor,
-    avisoCantidad,noClasificados,
+    ...anterior,
+    columnas,
+    filas,
+    faltantes,
+    faltantesColor,
+    erroresDescarte,
+    erroresDescartePorColumna,
+    avisoCantidad,
+    noClasificados,
     filtros:mismos?anterior.filtros:columnas.map(()=>""),
     orden:mismos?anterior.orden:null,
-    pagina:1,error:"",cargando:false
+    pagina:1,
+    error:"",
+    cargando:false
   };
 }
 
@@ -565,9 +860,90 @@ function tarjetaProduccion(){
   elemento.classList.toggle("error",Boolean(problema));
 }
 
+function calculoDescarte(){
+  const t=tablas.produccion;
+  const seleccion=filtradas("produccion");
+
+  const cantidades=COLUMNAS_DESCARTE.map(
+    (_,i)=>seleccion.reduce(
+      (s,f)=>s+f.descarte[i],0
+    )
+  );
+
+  return {
+    seleccion,
+    cantidades,
+    total:cantidades.reduce((s,v)=>s+v,0)
+  };
+}
+
+function tarjetaDescarte(){
+  const t=tablas.produccion;
+  const elemento=$("numero-descarte");
+
+  const problema=t.error||
+    (t.erroresDescarte.length
+      ?"Revisar: "+t.erroresDescarte.join(", "):"");
+
+  elemento.textContent=!t.lectura||problema
+    ?"—":numero(calculoDescarte().total);
+
+  elemento.classList.toggle("error",Boolean(problema));
+  $("tarjetaDescarte").title=problema;
+}
+
+function mostrarDetalleDescarte(){
+  const t=tablas.produccion;
+  const calculo=calculoDescarte();
+  const fragmento=document.createDocumentFragment();
+
+  COLUMNAS_DESCARTE.forEach((nombre,i)=>{
+    const tr=document.createElement("tr");
+    const clasificacion=document.createElement("td");
+    const cantidad=document.createElement("td");
+
+    clasificacion.textContent=nombre;
+
+    const errores=t.erroresDescartePorColumna[i];
+    const disponible=t.lectura&&!t.error&&errores.length===0;
+
+    cantidad.textContent=disponible
+      ?numero(calculo.cantidades[i]):"—";
+
+    if(errores.length){
+      cantidad.title=errores.join(", ");
+      cantidad.classList.add("error");
+    }
+
+    tr.append(clasificacion,cantidad);
+    fragmento.append(tr);
+  });
+
+  $("detalleDescarte").replaceChildren(fragmento);
+
+  const problema=t.error||
+    (t.erroresDescarte.length
+      ?"Revisar: "+t.erroresDescarte.join(", "):"");
+
+  $("totalDetalleDescarte").textContent=
+    t.lectura&&!problema?numero(calculo.total):"—";
+
+  $("alcanceDescarte").textContent=!t.lectura
+    ?"Se necesita cargar Producción."
+    :problema
+      ?problema
+      :"Detalle de los registros seleccionados en Producción. "+
+        numero(calculo.seleccion.length)+" registros.";
+
+  $("alcanceDescarte").classList.toggle(
+    "error",Boolean(problema)
+  );
+}
+
 function ponerStock(id,valor,detalle,error=false){
   const elemento=$("stock-"+id);
   elemento.textContent=valor===null?"—":numero(valor);
+
   elemento.classList.toggle(
     "negativo",valor!==null&&valor<0
   );
@@ -604,8 +980,6 @@ function tarjetasStock(){
     return;
   }
 
-  // Stocks por color: producción del color
-  // menos CANTIDAD recibida del mismo color.
   for(const color of COLORES){
     const problemas=[
       ...p.faltantesColor[color],
@@ -641,9 +1015,6 @@ function tarjetasStock(){
     );
   }
 
-  // TROZAS STOCK MONTE:
-  // Producción total menos SUMA CANTIDAD de TODO Recibo.
-  // No se utiliza la clasificación por color en esta resta.
   const problemasMonte=[
     ...p.faltantes,
     ...(r.avisoCantidad?[r.avisoCantidad]:[])
@@ -661,6 +1032,7 @@ function tarjetasStock(){
     (s,f)=>s+f.total,0
   );
 
+  // Suma de CANTIDAD de todo Recibo, sin filtro por color.
   const cantidadReciboTotal=r.filas.reduce(
     (s,f)=>s+f.cantidad,0
   );
@@ -675,24 +1047,11 @@ function tarjetasStock(){
 
 function tarjetas(){
   tarjetaProduccion();
+  tarjetaDescarte();
   tarjetasStock();
 
-  for(const id of ["insumos","recibo"]){
-    const t=tablas[id];
-
-    $("numero-"+id).textContent=
-      t.lectura?numero(t.filas.length):"—";
-
-    const e=$("estado-"+id);
-    e.classList.toggle("error",Boolean(t.error));
-
-    e.textContent=t.cargando?"Cargando archivo...":
-      t.error?t.error+
-        (t.lectura
-          ?" · Datos anteriores: "+hora(t.lectura):""):
-      t.lectura
-        ?"Dropbox · Lectura: "+hora(t.lectura):
-      "Pendiente";
+  if($("modalDescarte").open){
+    mostrarDetalleDescarte();
   }
 }
 
@@ -824,12 +1183,12 @@ function mostrarFilas(){
 
   $("cuerpo").replaceChildren(fragmento);
 
-  // Sin leyenda de hoja, encabezados o cantidad de registros.
-  // Este espacio aparece solamente si hay un error.
   const avisos=[
     ...(t.error?[t.error]:[]),
     ...(activa==="produccion"&&t.faltantes.length
-      ?["Revisar: "+t.faltantes.join(", ")]:[])
+      ?["Producción: "+t.faltantes.join(", ")]:[]),
+    ...(activa==="produccion"&&t.erroresDescarte.length
+      ?["Descarte: "+t.erroresDescarte.join(", ")]:[])
   ];
 
   $("aviso").hidden=avisos.length===0;
@@ -849,6 +1208,11 @@ function mostrarFilas(){
     "No hay registros para esta selección.";
 
   tarjetaProduccion();
+  tarjetaDescarte();
+
+  if($("modalDescarte").open){
+    mostrarDetalleDescarte();
+  }
 }
 
 function mostrar(){
@@ -1065,8 +1429,18 @@ $("fila").addEventListener("change",()=>{
 });
 
 $("actualizar").addEventListener("click",actualizar);
+
 $("cerrarNota").addEventListener("click",()=>{
   $("modalNota").close();
+});
+
+$("tarjetaDescarte").addEventListener("click",()=>{
+  mostrarDetalleDescarte();
+  $("modalDescarte").showModal();
+});
+
+$("cerrarDescarte").addEventListener("click",()=>{
+  $("modalDescarte").close();
 });
 
 mostrar();
