@@ -1115,7 +1115,7 @@ function mostrarDetalleTrozasCamion(){
   $("avisoTrozasCamion").classList.toggle("error",Boolean(d.error));
   function fila(g){
     const tr=document.createElement("tr");
-    const valores=[g.producto,numero(g.viajes),numero(g.cantidad),numero(g.neto),
+    const valores=[g.producto,numero(g.viajes),numero(g.cantidad),g.neto.toLocaleString("es-UY",{minimumFractionDigits:2,maximumFractionDigits:2}),
       g.viajes?Math.round(g.cantidad/g.viajes).toLocaleString("es-UY"):"—",g.viajes?numero(g.neto/g.viajes):"—"];
     valores.forEach(v=>{const td=document.createElement("td");td.textContent=v;tr.append(td)});
     return tr;
