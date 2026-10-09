@@ -11,15 +11,10 @@
   --fondo:#f4f3ed;
   --tarjeta:#fffefa;
   --bosque:#173f35;
-  --bosque-claro:#2c5949;
   --oro:#b5995f;
-  --oro-claro:#eee6d5;
   --texto:#243d33;
   --secundario:#748077;
   --borde:#e4e1d7;
-  --rojo:#c64c45;
-  --amarillo:#d8b238;
-  --verde:#5d8f64;
   --sombra:0 5px 20px rgba(41,53,38,.045);
 }
 *{box-sizing:border-box}
@@ -41,64 +36,30 @@ button:focus-visible,input:focus-visible,select:focus-visible{
   background:var(--bosque);
   color:#fffefa;
   border-bottom:3px solid var(--oro);
-  position:relative;
-  overflow:hidden;
-}
-.cabecera::after{
-  content:"";
-  position:absolute;
-  width:450px;
-  height:450px;
-  border:1px solid #b5995f26;
-  border-radius:50%;
-  right:-90px;
-  top:-270px;
-  pointer-events:none;
 }
 .cabecera-interior{
   max-width:1600px;
   margin:auto;
-  padding:28px 24px;
+  padding:26px 24px;
   display:flex;
   justify-content:space-between;
   align-items:center;
   gap:24px;
-  position:relative;
-  z-index:1;
 }
 .marca{display:flex;align-items:center;gap:18px}
-.marca-icono{
-  width:64px;
-  height:64px;
-  color:#c9b178;
-  flex-shrink:0;
-}
+.marca-icono{width:58px;height:58px;color:#c9b178;flex-shrink:0}
 h1{
   margin:0 0 6px;
-  font-family:Georgia,"Times New Roman",serif;
+  font-family:Georgia,serif;
   font-size:clamp(23px,2.4vw,35px);
   font-weight:600;
-  letter-spacing:.3px;
 }
-.subtitulo{
-  margin:0;
-  color:#d6e0d5;
-  font-size:16px;
-  letter-spacing:.3px;
-}
+.subtitulo{margin:0;color:#d6e0d5;font-size:16px}
 .actualizar{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
-  background:var(--oro);
-  color:#fffefa;
-  border:1px solid #c8b17b;
-  border-radius:10px;
-  padding:13px 19px;
-  font-weight:600;
-  white-space:nowrap;
-  box-shadow:0 3px 12px #00000010;
+  display:flex;align-items:center;justify-content:center;
+  gap:10px;background:var(--oro);color:#fffefa;
+  border:1px solid #c8b17b;border-radius:10px;
+  padding:13px 19px;font-weight:600;white-space:nowrap;
 }
 .actualizar:hover{background:#a48a52}
 .actualizar svg{width:19px;height:19px}
@@ -114,85 +75,59 @@ main{max-width:1600px;margin:auto;padding:24px}
   border:1px solid var(--borde);
   border-radius:13px;
   box-shadow:var(--sombra);
-  padding:23px 20px;
+  padding:20px 16px;
   display:flex;
+  flex-direction:column;
   align-items:center;
-  gap:18px;
-  min-height:145px;
-  position:relative;
-  overflow:hidden;
-  text-align:left;
+  justify-content:center;
+  gap:10px;
+  min-height:170px;
+  text-align:center;
 }
-.tarjeta::after{
-  content:"";
-  position:absolute;
-  width:90px;
-  height:90px;
-  border:1px solid currentColor;
-  border-radius:50%;
-  right:-32px;
-  bottom:-40px;
-  opacity:.08;
-  pointer-events:none;
-}
-.tarjeta-contenido{min-width:0;flex:1}
+.tarjeta-contenido{width:100%;min-width:0;text-align:center}
 .tarjeta h2{
-  font-family:Georgia,"Times New Roman",serif;
+  font-family:Georgia,serif;
   font-size:17px;
-  margin:0 0 9px;
+  margin:0 0 8px;
   color:var(--bosque);
   line-height:1.35;
+  text-align:center;
 }
 .numero{
-  font-family:Georgia,"Times New Roman",serif;
-  font-size:clamp(30px,3vw,45px);
+  font-family:Georgia,serif;
+  font-size:clamp(31px,3vw,44px);
   font-weight:bold;
   color:var(--bosque);
   line-height:1.1;
+  text-align:center;
 }
 .detalle{
-  margin-top:9px;
+  margin-top:8px;
   font-size:11px;
   color:var(--secundario);
   line-height:1.6;
   overflow-wrap:anywhere;
+  text-align:center;
 }
 .icono-tarjeta{
-  width:66px;
-  height:66px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:#e9eddf;
-  color:var(--bosque);
-  flex-shrink:0;
+  width:49px;height:49px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:#e9eddf;color:var(--bosque);
 }
-.icono-tarjeta svg{width:35px;height:35px}
+.icono-tarjeta svg{width:29px;height:29px}
 .stock-monte .icono-tarjeta,.descarte .icono-tarjeta{
-  background:var(--oro-claro);
-  color:#786438;
+  background:#eee6d5;color:#786438;
 }
-.stock-rojo .icono-tarjeta{
-  background:#f5dfd9;color:#a43f38;
-}
-.stock-amarillo .icono-tarjeta{
-  background:#f8edc8;color:#997819;
-}
-.stock-verde .icono-tarjeta{
-  background:#e3ecd9;color:#48734b;
-}
+.stock-rojo .icono-tarjeta{background:#f5dfd9;color:#a43f38}
+.stock-amarillo .icono-tarjeta{background:#f8edc8;color:#997819}
+.stock-verde .icono-tarjeta{background:#e3ecd9;color:#48734b}
 .stock-rojo{border-top:3px solid #c64c4570}
 .stock-amarillo{border-top:3px solid #d8b23880}
 .stock-verde{border-top:3px solid #5d8f6470}
 button.tarjeta{font:inherit;width:100%;color:var(--texto)}
-button.tarjeta:hover{
-  border-color:var(--oro);
-  background:#fffdf4;
-  transform:translateY(-1px);
-}
+button.tarjeta:hover{border-color:var(--oro);background:#fffdf4}
 .error,.negativo{color:#aa3c35!important}
-.grafico{
+.grafico,.panel,.grafico-quincena{
   background:var(--tarjeta);
   border:1px solid var(--borde);
   border-radius:13px;
@@ -200,158 +135,141 @@ button.tarjeta:hover{
   overflow:hidden;
 }
 .grafico h2{
-  font-family:Georgia,"Times New Roman",serif;
-  font-size:17px;
-  color:var(--bosque);
-  margin:0 18px;
-  padding:18px 0;
+  font-family:Georgia,serif;
+  font-size:17px;color:var(--bosque);
+  margin:0 18px;padding:18px 0;
   border-bottom:1px solid #b5995f90;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
-  text-align:center;
+  display:flex;align-items:center;justify-content:center;
+  gap:10px;text-align:center;
 }
-.grafico h2 svg{
-  width:24px;height:24px;
-  color:var(--oro);flex-shrink:0;
-}
+.grafico h2 svg{width:24px;height:24px;color:var(--oro);flex-shrink:0}
 .visual{
-  min-height:300px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:7px 2px;
+  min-height:300px;display:flex;align-items:center;
+  justify-content:center;padding:7px 2px;
 }
 .visual svg{width:100%;height:auto;display:block}
 .mensaje-grafico{
-  text-align:center;
-  color:var(--secundario);
-  font-size:13px;
-  line-height:1.6;
-  padding:20px;
+  text-align:center;color:var(--secundario);
+  font-size:13px;line-height:1.6;padding:25px;
 }
 .alcance{
-  text-align:center;
-  padding:0 15px 15px;
-  font-size:11px;
-  line-height:1.5;
-  color:var(--secundario);
+  text-align:center;padding:0 15px 15px;
+  font-size:11px;line-height:1.5;color:var(--secundario);
+}
+.grafico-quincena{margin-bottom:20px}
+.cabecera-quincena{
+  padding:22px 22px 14px;
+  display:flex;justify-content:space-between;
+  align-items:flex-start;gap:20px;flex-wrap:wrap;
+}
+.cabecera-quincena h2{
+  font-family:Georgia,serif;color:var(--bosque);
+  margin:0 0 7px;font-size:23px;
+}
+.cabecera-quincena p{
+  margin:0;font-size:12px;color:var(--secundario);line-height:1.6;
+}
+.filtros-quincena{
+  display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;
+}
+.selector-quincena{
+  display:flex;flex-direction:column;gap:7px;
+  font-size:12px;font-weight:600;color:var(--bosque);
+}
+.selector-quincena select{min-width:155px;max-width:250px}
+fieldset.productos{
+  margin:0;padding:0;border:none;min-width:0;
+}
+.productos legend{
+  padding:0;margin-bottom:7px;font-size:12px;
+  font-weight:600;color:var(--bosque);
+}
+.opciones-productos{display:flex;gap:7px;flex-wrap:wrap}
+.chip{
+  display:flex;align-items:center;gap:6px;
+  border:1px solid var(--borde);border-radius:7px;
+  background:#fffefa;padding:8px;
+  font-size:11px;color:var(--bosque);cursor:pointer;
+}
+.chip input{margin:0;accent-color:var(--color)}
+.chip:has(input:checked){border-color:var(--color)}
+.chip input:disabled{cursor:default}
+#graficoQuincena{
+  overflow-x:auto;
+  padding:0 16px 5px;
+}
+#graficoQuincena svg{
+  display:block;width:100%;height:auto;
+}
+.leyenda-quincena{
+  display:flex;justify-content:center;flex-wrap:wrap;
+  gap:18px;padding:10px 18px 18px;font-size:12px;
+}
+.leyenda-item{display:flex;align-items:center;gap:7px}
+.punto{width:10px;height:10px;border-radius:50%}
+#avisoQuincena{
+  padding:5px 22px 15px;
+  text-align:center;font-size:12px;
+  color:var(--secundario);line-height:1.6;
 }
 .boton-tabla{
-  border:1px solid #c8b47f;
-  border-radius:12px;
-  background:var(--tarjeta);
-  color:var(--bosque);
-  box-shadow:var(--sombra);
-  padding:18px 20px;
-  display:flex;
-  align-items:center;
-  gap:13px;
-  text-align:left;
+  border:1px solid #c8b47f;border-radius:12px;
+  background:var(--tarjeta);color:var(--bosque);
+  box-shadow:var(--sombra);padding:18px 20px;
+  display:flex;align-items:center;gap:13px;text-align:left;
 }
 .boton-tabla>svg{width:28px;height:28px;flex-shrink:0}
 .boton-tabla span{
-  flex:1;
-  font-family:Georgia,"Times New Roman",serif;
-  font-size:19px;
-  font-weight:bold;
+  flex:1;font-family:Georgia,serif;
+  font-size:19px;font-weight:bold;
 }
 .boton-tabla .flecha{width:18px;height:18px;color:#9b7c3f}
 .boton-tabla:hover{background:#f5f2e8}
 .boton-tabla.activo{
-  background:var(--bosque);
-  color:#fffefa;
-  border-color:var(--bosque);
+  background:var(--bosque);color:#fffefa;border-color:var(--bosque);
 }
-.boton-tabla.activo .flecha{
-  color:#d3bc81;
-  transform:rotate(180deg);
-}
+.boton-tabla.activo .flecha{color:#d3bc81;transform:rotate(180deg)}
 #estadoCarga{
-  margin:0 0 18px;
-  font-size:12px;
-  line-height:1.6;
-  text-align:center;
-  color:var(--secundario);
-}
-.panel{
-  background:var(--tarjeta);
-  border:1px solid var(--borde);
-  border-radius:13px;
-  box-shadow:var(--sombra);
-  overflow:hidden;
+  margin:0 0 18px;font-size:12px;line-height:1.6;
+  text-align:center;color:var(--secundario);
 }
 .titulo-tabla{
-  font-family:Georgia,"Times New Roman",serif;
-  font-size:23px;
-  margin:0;
-  padding:23px 18px 6px;
-  text-align:center;
-  color:var(--bosque);
-  overflow-wrap:anywhere;
+  font-family:Georgia,serif;font-size:23px;margin:0;
+  padding:23px 18px 6px;text-align:center;
+  color:var(--bosque);overflow-wrap:anywhere;
 }
 .controles{
-  padding:16px;
-  display:flex;
-  gap:12px;
-  align-items:center;
-  flex-wrap:wrap;
+  padding:16px;display:flex;gap:12px;
+  align-items:center;flex-wrap:wrap;
 }
 input,select{
-  border:1px solid #dadfd2;
-  border-radius:7px;
-  padding:9px 11px;
-  background:#fffefa;
-  color:var(--texto);
+  border:1px solid #dadfd2;border-radius:7px;
+  padding:9px 11px;background:#fffefa;color:var(--texto);
 }
 #buscar{flex:1;min-width:190px}
-.controles label{
-  display:flex;align-items:center;gap:7px;font-size:12px;
-}
+.controles label{display:flex;align-items:center;gap:7px;font-size:12px}
 #fila{width:70px}
 .secundario{
-  border:1px solid #c8b47f;
-  border-radius:7px;
-  padding:9px 13px;
-  background:#f6f2e7;
-  color:var(--bosque);
+  border:1px solid #c8b47f;border-radius:7px;
+  padding:9px 13px;background:#f6f2e7;color:var(--bosque);
 }
 .secundario:hover{background:#eee7d6}
 #aviso{
-  padding:0 16px 16px;
-  font-size:13px;
-  line-height:1.6;
-  text-align:center;
-  color:#aa3c35;
+  padding:0 16px 16px;font-size:13px;line-height:1.6;
+  text-align:center;color:#aa3c35;
 }
 .tabla{overflow:auto;max-height:65vh;border-top:1px solid var(--borde)}
 table{width:100%;border-collapse:separate;border-spacing:0;font-size:12px}
 th,td{
-  padding:10px;
-  text-align:center;
-  min-width:105px;
-  max-width:220px;
-  overflow-wrap:anywhere;
-  border-bottom:1px solid var(--borde);
+  padding:10px;text-align:center;min-width:105px;max-width:220px;
+  overflow-wrap:anywhere;border-bottom:1px solid var(--borde);
 }
-th{
-  position:sticky;top:0;z-index:1;
-  background:#edf0e5;vertical-align:top;
-}
+th{position:sticky;top:0;z-index:1;background:#edf0e5;vertical-align:top}
 th button{
-  width:100%;
-  background:transparent;
-  border:none;
-  color:var(--bosque);
-  font-weight:600;
-  padding:4px;
-  white-space:normal;
+  width:100%;background:transparent;border:none;
+  color:var(--bosque);font-weight:600;padding:4px;white-space:normal;
 }
-th input{
-  width:100%;min-width:85px;
-  margin-top:8px;padding:7px;font-size:11px;
-}
+th input{width:100%;min-width:85px;margin-top:8px;padding:7px;font-size:11px}
 tbody tr:nth-child(even){background:#f8f7f1}
 tbody tr:hover{background:#edf2e5}
 th.observaciones,td.observaciones{min-width:280px;max-width:360px;width:320px}
@@ -362,13 +280,8 @@ td.observaciones{text-align:left;vertical-align:top;padding:12px 16px}
   -webkit-box-orient:vertical;overflow:hidden;
 }
 .leer-nota{
-  border:1px solid var(--borde);
-  background:#edf0e5;
-  color:var(--bosque);
-  border-radius:5px;
-  font-size:11px;
-  padding:5px 8px;
-  margin-top:7px;
+  border:1px solid var(--borde);background:#edf0e5;color:var(--bosque);
+  border-radius:5px;font-size:11px;padding:5px 8px;margin-top:7px;
 }
 .etiqueta{display:inline-block;padding:5px 9px;border-radius:6px;font-weight:bold}
 .rojo{background:#f5dfd9;color:#a43f38}
@@ -381,34 +294,19 @@ td.observaciones{text-align:left;vertical-align:top;padding:12px 16px}
 }
 .navegacion{display:flex;align-items:center;gap:10px}
 .nota{
-  font-size:11px;line-height:1.7;
-  color:var(--secundario);text-align:center;margin-top:20px;
+  font-size:11px;line-height:1.7;color:var(--secundario);
+  text-align:center;margin-top:20px;
 }
 dialog{
-  background:var(--tarjeta);
-  border:1px solid #c8b47f;
-  border-radius:15px;
-  padding:25px;
-  width:min(620px,90vw);
-  max-height:80vh;
-  overflow:auto;
-  color:var(--texto);
+  background:var(--tarjeta);border:1px solid #c8b47f;
+  border-radius:15px;padding:25px;width:min(620px,90vw);
+  max-height:80vh;overflow:auto;color:var(--texto);
   box-shadow:0 15px 60px #173f3525;
 }
 dialog::backdrop{background:#0b251dcc;backdrop-filter:blur(3px)}
-dialog h2{
-  margin-top:0;
-  font-family:Georgia,"Times New Roman",serif;
-  color:var(--bosque);
-}
-#notaCompleta{
-  white-space:pre-wrap;line-height:1.7;
-  overflow-wrap:anywhere;margin-bottom:20px;
-}
-#alcanceDescarte{
-  font-size:13px;line-height:1.6;
-  color:var(--secundario);margin-bottom:16px;
-}
+dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
+#notaCompleta{white-space:pre-wrap;line-height:1.7;overflow-wrap:anywhere;margin-bottom:20px}
+#alcanceDescarte{font-size:13px;line-height:1.6;color:var(--secundario);margin-bottom:16px}
 .tabla-detalle{margin-bottom:20px;font-size:14px}
 .tabla-detalle th{position:static;padding:12px}
 .tabla-detalle td{padding:12px}
@@ -418,68 +316,60 @@ dialog h2{
 @media(max-width:1100px){
   .graficos{grid-template-columns:1fr}
   .visual svg{max-width:640px}
-  .tarjeta{gap:12px;padding:20px 15px}
-  .icono-tarjeta{width:50px;height:50px}
-  .icono-tarjeta svg{width:30px;height:30px}
 }
 @media(max-width:700px){
   .cabecera-interior{padding:22px 16px;flex-direction:column;align-items:stretch}
   .marca{gap:12px}.marca-icono{width:45px;height:45px}
-  .subtitulo{font-size:13px}
-  main{padding:15px}
+  .subtitulo{font-size:13px}main{padding:15px}
   .tarjetas,.botones-tablas{grid-template-columns:1fr;gap:12px}
-  .tarjeta{min-height:115px}
-  .numero{font-size:35px}
-  #buscar{flex-basis:100%}
-  .titulo-tabla{font-size:20px}
+  .tarjeta{min-height:145px}.numero{font-size:35px}
+  #buscar{flex-basis:100%}.titulo-tabla{font-size:20px}
   .visual{min-height:250px}
   th.observaciones,td.observaciones{min-width:230px}
+  .cabecera-quincena{padding:18px 16px}
 }
 </style>
 </head>
 
 <body>
 <svg class="iconos" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-  <symbol id="icono-bosque" viewBox="0 0 64 64">
+  <symbol id="i-bosque" viewBox="0 0 64 64">
     <path d="M20 7 10 23h6L7 37h9L6 51h12v9h4v-9h12L24 37h9l-9-14h6L20 7ZM45 13 36 28h6l-8 13h8l-9 13h10v6h4v-6h10l-9-13h8l-8-13h6L45 13Z" fill="currentColor"/>
   </symbol>
-  <symbol id="icono-troncos" viewBox="0 0 48 48">
+  <symbol id="i-troncos" viewBox="0 0 48 48">
     <g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="13" cy="31" r="8"/>
-      <circle cx="13" cy="31" r="3"/>
-      <circle cx="30" cy="35" r="8"/>
-      <circle cx="30" cy="35" r="3"/>
+      <circle cx="13" cy="31" r="8"/><circle cx="13" cy="31" r="3"/>
+      <circle cx="30" cy="35" r="8"/><circle cx="30" cy="35" r="3"/>
       <path d="m9 24 18-12c8-5 18 5 12 12L21 37M15 23l17-10M20 26l16-11M25 29l16-11M6 36l5 6M33 27l7-5"/>
     </g>
   </symbol>
-  <symbol id="icono-descarte" viewBox="0 0 48 48">
+  <symbol id="i-descarte" viewBox="0 0 48 48">
     <g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
       <path d="M9 13h30M16 13V8h16v5M13 13l2 28h18l2-28M21 20v14M27 20v14"/>
     </g>
   </symbol>
-  <symbol id="icono-camion" viewBox="0 0 48 48">
+  <symbol id="i-camion" viewBox="0 0 48 48">
     <g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round">
       <path d="M4 12h25v22H4ZM29 20h9l6 8v6H29M35 20v9h9"/>
-      <circle cx="12" cy="35" r="5"/>
-      <circle cx="36" cy="35" r="5"/>
+      <circle cx="12" cy="35" r="5"/><circle cx="36" cy="35" r="5"/>
     </g>
   </symbol>
-  <symbol id="icono-caja" viewBox="0 0 48 48">
+  <symbol id="i-caja" viewBox="0 0 48 48">
     <g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round">
       <path d="m24 5 17 9v20l-17 9L7 34V14ZM7 14l17 10 17-10M24 24v19M16 10l17 10"/>
     </g>
   </symbol>
-  <symbol id="icono-documento" viewBox="0 0 48 48">
+  <symbol id="i-documento" viewBox="0 0 48 48">
     <g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round">
       <path d="M11 5h18l9 10v28H11ZM29 5v11h9M17 23h15M17 29h15M17 35h10"/>
     </g>
   </symbol>
-  <symbol id="icono-actualizar" viewBox="0 0 24 24">
+  <symbol id="i-actualizar" viewBox="0 0 24 24">
     <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M20 8a8 8 0 0 0-14-3L3 8M3 3v5h5M4 16a8 8 0 0 0 14 3l3-3M21 21v-5h-5"/>
     </g>
   </symbol>
-  <symbol id="icono-flecha" viewBox="0 0 24 24">
+  <symbol id="i-flecha" viewBox="0 0 24 24">
     <path d="m5 8 7 8 7-8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
   </symbol>
 </svg>
@@ -487,14 +377,14 @@ dialog h2{
 <header class="cabecera">
   <div class="cabecera-interior">
     <div class="marca">
-      <svg class="marca-icono" aria-hidden="true"><use href="#icono-bosque"/></svg>
+      <svg class="marca-icono" aria-hidden="true"><use href="#i-bosque"/></svg>
       <div>
         <h1>PRODUCCIÓN LAS ACACIAS</h1>
         <p class="subtitulo">Control de producción y stock</p>
       </div>
     </div>
     <button id="actualizar" class="actualizar">
-      <svg aria-hidden="true"><use href="#icono-actualizar"/></svg>
+      <svg aria-hidden="true"><use href="#i-actualizar"/></svg>
       <span id="textoActualizar">Actualizar últimos datos</span>
     </button>
   </div>
@@ -503,24 +393,22 @@ dialog h2{
 <main>
 <section class="tarjetas" aria-label="Totales">
   <article class="tarjeta">
-    <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#icono-troncos"/></svg></div>
+    <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#i-troncos"/></svg></div>
     <div class="tarjeta-contenido">
       <h2>PRODUCCIÓN</h2>
       <div id="numero-produccion" class="numero">—</div>
     </div>
   </article>
-
   <article class="tarjeta stock-monte">
-    <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#icono-troncos"/></svg></div>
+    <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#i-bosque"/></svg></div>
     <div class="tarjeta-contenido">
       <h2>TROZAS STOCK MONTE</h2>
       <div id="stock-monte" class="numero">—</div>
       <div id="detalle-stock-monte" class="detalle">Pendiente de lectura</div>
     </div>
   </article>
-
   <button id="tarjetaDescarte" class="tarjeta descarte" type="button" aria-haspopup="dialog">
-    <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#icono-descarte"/></svg></div>
+    <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#i-descarte"/></svg></div>
     <div class="tarjeta-contenido">
       <h2>DESCARTE</h2>
       <div id="numero-descarte" class="numero">—</div>
@@ -531,7 +419,7 @@ dialog h2{
 
 <section class="tarjetas" aria-label="Stocks por color">
   <article class="tarjeta stock-rojo">
-    <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#icono-troncos"/></svg></div>
+    <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#i-troncos"/></svg></div>
     <div class="tarjeta-contenido">
       <h2>STOCK ROJO</h2>
       <div id="stock-rojo" class="numero">—</div>
@@ -539,7 +427,7 @@ dialog h2{
     </div>
   </article>
   <article class="tarjeta stock-amarillo">
-    <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#icono-troncos"/></svg></div>
+    <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#i-troncos"/></svg></div>
     <div class="tarjeta-contenido">
       <h2>STOCK AMARILLO</h2>
       <div id="stock-amarillo" class="numero">—</div>
@@ -547,7 +435,7 @@ dialog h2{
     </div>
   </article>
   <article class="tarjeta stock-verde">
-    <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#icono-troncos"/></svg></div>
+    <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#i-troncos"/></svg></div>
     <div class="tarjeta-contenido">
       <h2>STOCK VERDE</h2>
       <div id="stock-verde" class="numero">—</div>
@@ -558,39 +446,87 @@ dialog h2{
 
 <section class="graficos" aria-label="Gráficos">
   <article class="grafico">
-    <h2><svg aria-hidden="true"><use href="#icono-troncos"/></svg>PRODUCCIÓN Y DESCARTES</h2>
+    <h2><svg aria-hidden="true"><use href="#i-troncos"/></svg>PRODUCCIÓN Y DESCARTES</h2>
     <div id="graficoProduccionDescarte" class="visual"></div>
     <div class="alcance">Responde a los filtros de Producción.</div>
   </article>
   <article class="grafico">
-    <h2><svg aria-hidden="true"><use href="#icono-camion"/></svg>DESPACHO DE TROZAS</h2>
+    <h2><svg aria-hidden="true"><use href="#i-camion"/></svg>DESPACHO DE TROZAS</h2>
     <div id="graficoDespacho" class="visual"></div>
-    <div class="alcance">Suma de CANTIDAD de todo Recibo.</div>
+    <div class="alcance">Suma de Cantidad de todo Recibo.</div>
   </article>
   <article class="grafico">
-    <h2><svg aria-hidden="true"><use href="#icono-bosque"/></svg>PRODUCCIÓN TROZAS MONTE</h2>
+    <h2><svg aria-hidden="true"><use href="#i-bosque"/></svg>PRODUCCIÓN TROZAS MONTE</h2>
     <div id="graficoProduccionColor" class="visual"></div>
     <div class="alcance">Responde a los filtros de Producción.</div>
   </article>
+</section>
+
+<section class="grafico-quincena" aria-labelledby="tituloQuincena">
+  <div class="cabecera-quincena">
+    <div>
+      <h2 id="tituloQuincena">PRODUCCIÓN POR QUINCENA</h2>
+      <p>Agrupado por la columna QUINCENA de Producción.</p>
+    </div>
+
+    <div class="filtros-quincena">
+      <label class="selector-quincena">
+        Quincena
+        <select id="selectorQuincena">
+          <option value="">Todas</option>
+        </select>
+      </label>
+
+      <fieldset class="productos">
+        <legend>Productos</legend>
+        <div class="opciones-productos">
+          <label class="chip" style="--color:#295344">
+            <input type="checkbox" data-serie="PRODUCCION" checked>
+            PRODUCCIÓN
+          </label>
+          <label class="chip" style="--color:#c64c45">
+            <input type="checkbox" data-serie="ROJO" checked>
+            ROJO
+          </label>
+          <label class="chip" style="--color:#d8b238">
+            <input type="checkbox" data-serie="AMARILLO" checked>
+            AMARILLO
+          </label>
+          <label class="chip" style="--color:#5d8f64">
+            <input type="checkbox" data-serie="VERDE" checked>
+            VERDE
+          </label>
+          <label class="chip" style="--color:#b5995f">
+            <input type="checkbox" data-serie="DESCARTES" checked>
+            DESCARTES
+          </label>
+        </div>
+      </fieldset>
+    </div>
+  </div>
+
+  <div id="graficoQuincena"></div>
+  <div id="leyendaQuincena" class="leyenda-quincena"></div>
+  <div id="avisoQuincena" hidden></div>
 </section>
 
 <div id="estadoCarga" hidden aria-live="polite"></div>
 
 <nav class="botones-tablas" aria-label="Mostrar u ocultar tablas">
   <button class="boton-tabla" data-tab="produccion" aria-expanded="false" aria-controls="listado">
-    <svg aria-hidden="true"><use href="#icono-troncos"/></svg>
+    <svg aria-hidden="true"><use href="#i-troncos"/></svg>
     <span>Producción</span>
-    <svg class="flecha" aria-hidden="true"><use href="#icono-flecha"/></svg>
+    <svg class="flecha" aria-hidden="true"><use href="#i-flecha"/></svg>
   </button>
   <button class="boton-tabla" data-tab="insumos" aria-expanded="false" aria-controls="listado">
-    <svg aria-hidden="true"><use href="#icono-caja"/></svg>
+    <svg aria-hidden="true"><use href="#i-caja"/></svg>
     <span>Insumos</span>
-    <svg class="flecha" aria-hidden="true"><use href="#icono-flecha"/></svg>
+    <svg class="flecha" aria-hidden="true"><use href="#i-flecha"/></svg>
   </button>
   <button class="boton-tabla" data-tab="recibo" aria-expanded="false" aria-controls="listado">
-    <svg aria-hidden="true"><use href="#icono-documento"/></svg>
+    <svg aria-hidden="true"><use href="#i-documento"/></svg>
     <span>Recibo</span>
-    <svg class="flecha" aria-hidden="true"><use href="#icono-flecha"/></svg>
+    <svg class="flecha" aria-hidden="true"><use href="#i-flecha"/></svg>
   </button>
 </nav>
 
@@ -627,10 +563,11 @@ dialog h2{
 </section>
 
 <p class="nota">
-  Producción excluye las filas sin FECHA. Insumos excluye las filas sin Quincena.<br>
-  Producción y Descarte responden a los filtros de Producción.
-  Los stocks utilizan los totales completos.<br>
-  Trozas Stock Monte = Producción total − suma de CANTIDAD de todo Recibo.
+  Producción excluye las filas sin Fecha. Insumos excluye las filas sin Quincena.<br>
+  Producción, Descarte y sus gráficos responden a los filtros de la tabla Producción.
+  Los selectores del gráfico por quincena afectan solamente ese gráfico.<br>
+  Los stocks utilizan los totales completos.
+  Trozas Stock Monte = Producción total − suma de Cantidad de todo Recibo.
 </p>
 </main>
 
@@ -683,19 +620,22 @@ const COLUMNAS_DESCARTE=[
 ];
 
 const COLORES=["ROJO","AMARILLO","VERDE"];
-const PALETA={
-  ROJO:"#c64c45",
-  AMARILLO:"#d8b238",
-  VERDE:"#5d8f64"
-};
+const PALETA={ROJO:"#c64c45",AMARILLO:"#d8b238",VERDE:"#5d8f64"};
+
+const SERIES_QUINCENA=[
+  {id:"PRODUCCION",nombre:"PRODUCCIÓN",color:"#295344"},
+  {id:"ROJO",nombre:"ROJO",color:PALETA.ROJO},
+  {id:"AMARILLO",nombre:"AMARILLO",color:PALETA.AMARILLO},
+  {id:"VERDE",nombre:"VERDE",color:PALETA.VERDE},
+  {id:"DESCARTES",nombre:"DESCARTES",color:"#b5995f"}
+];
 
 const tablas={},libros={};
 let activa="produccion",tablaVisible=false,ocupado=false;
 
 function normalizar(v){
   return String(v??"").normalize("NFD")
-    .replace(/[\u0300-\u036f]/g,"")
-    .toLowerCase().trim();
+    .replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();
 }
 function claveColumna(v){
   return normalizar(v).replace(/[^a-z0-9]/g,"");
@@ -726,6 +666,18 @@ function esObservaciones(n){
 function tieneContenido(v){
   return v!=null&&texto(v).trim()!=="";
 }
+function nombrePropio(v){
+  return texto(v).replace(/_/g," ").replace(/\s+/g," ").trim()
+    .toLocaleLowerCase("es")
+    .replace(/(^|[\s/])(\p{L})/gu,(_,espacio,letra)=>
+      espacio+letra.toLocaleUpperCase("es"));
+}
+function encabezadoRecibo(nombre){
+  const clave=claveColumna(nombre);
+  if(clave==="netoton")return "Neto";
+  if(clave==="sacada")return "Cuadro";
+  return nombrePropio(nombre);
+}
 
 const OCULTAS_PRODUCCION=new Set([
   "CAMIONES CARGADOS","AMARILLA/ ARBOL","ROJAS X ARBOL",
@@ -746,7 +698,7 @@ for(const id of Object.keys(CONFIG)){
     faltantesColor:{ROJO:[],AMARILLO:[],VERDE:[]},
     erroresDescarte:[],
     erroresDescartePorColumna:COLUMNAS_DESCARTE.map(()=>[]),
-    avisoCantidad:"",noClasificados:0
+    avisoCantidad:"",noClasificados:0,avisoQuincena:""
   };
 }
 
@@ -764,8 +716,7 @@ function fechaTexto(v,date1904=false){
   const p=n=>String(n).padStart(2,"0");
 
   if(v instanceof Date&&!Number.isNaN(v.getTime())){
-    return p(v.getUTCDate())+"/"+
-      p(v.getUTCMonth()+1)+"/"+v.getUTCFullYear();
+    return p(v.getUTCDate())+"/"+p(v.getUTCMonth()+1)+"/"+v.getUTCFullYear();
   }
 
   if(typeof v==="number"&&v>0&&v<2958466){
@@ -776,19 +727,16 @@ function fechaTexto(v,date1904=false){
   const s=texto(v).trim();
   let m=s.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})(?:[ T].*)?$/);
   if(m)return p(m[3])+"/"+p(m[2])+"/"+m[1];
-
   m=s.match(/^(\d{1,2})[/-](\d{1,2})[/-](\d{4})(?:[ T].*)?$/);
   return m?p(m[1])+"/"+p(m[2])+"/"+m[3]:s;
 }
 
 function clasificar(fila,indices){
   const encontrados=new Set();
-
   for(const v of(indices.length?indices.map(i=>fila[i]):fila)){
     const color=EQUIVALENCIAS.get(claveProducto(v));
     if(color)encontrados.add(color);
   }
-
   return encontrados.size===1?[...encontrados][0]:
     encontrados.size>1?"REVISAR":"SIN CLASIFICAR";
 }
@@ -803,7 +751,6 @@ function localizarColumna(columnas,nombre,errores){
       (encontrados.length>1?" (duplicada)":" (no encontrada)"));
     return -1;
   }
-
   return encontrados[0];
 }
 
@@ -811,8 +758,6 @@ function agregarError(lista,m){
   if(!lista.includes(m))lista.push(m);
 }
 
-// Insumos: localizar la primera fila real con Quincena y FECHA.
-// Se revisan las primeras 30 filas físicas, incluyendo las vacías.
 function localizarEncabezadosInsumos(hoja){
   const rango=XLSX.utils.decode_range(hoja["!ref"]);
   rango.s.r=0;
@@ -829,10 +774,9 @@ function localizarEncabezadosInsumos(hoja){
 
   if(indice<0){
     throw new Error(
-      "No se encontraron los encabezados Quincena y FECHA en las primeras 30 filas de Insumos."
+      "No se encontraron Quincena y FECHA en las primeras 30 filas de Insumos."
     );
   }
-
   return indice+1;
 }
 
@@ -851,8 +795,7 @@ function extraer(id,libro){
   if(!hoja["!ref"])throw new Error("La hoja está vacía.");
 
   const filaEncabezados=id==="insumos"
-    ?localizarEncabezadosInsumos(hoja)
-    :config.fila;
+    ?localizarEncabezadosInsumos(hoja):config.fila;
 
   const rango=XLSX.utils.decode_range(hoja["!ref"]);
   rango.s.r=filaEncabezados-1;
@@ -865,11 +808,8 @@ function extraer(id,libro){
     header:1,range:rango,raw:true,defval:"",blankrows:true
   });
 
-  const cabecera=matriz[0]||[];
-  const datos=matriz.slice(1);
-  const ancho=datos.reduce(
-    (n,f)=>Math.max(n,f.length),cabecera.length
-  );
+  const cabecera=matriz[0]||[],datos=matriz.slice(1);
+  const ancho=datos.reduce((n,f)=>Math.max(n,f.length),cabecera.length);
 
   const indices=[];
   for(let i=0;i<ancho;i++){
@@ -880,7 +820,6 @@ function extraer(id,libro){
   }
 
   const usados=new Map();
-
   let columnas=indices.map(i=>{
     const base=texto(cabecera[i]).trim()||
       "Columna "+XLSX.utils.encode_col(rango.s.c+i);
@@ -900,10 +839,8 @@ function extraer(id,libro){
       .filter(i=>i>=0);
 
     if(encontrados.length!==1){
-      throw new Error(
-        "Se necesita una única columna "+
-        (id==="produccion"?"FECHA en Producción.":"Quincena en Insumos.")
-      );
+      throw new Error("Se necesita una única columna "+
+        (id==="produccion"?"FECHA en Producción.":"Quincena en Insumos."));
     }
 
     originales=originales.filter(
@@ -914,7 +851,15 @@ function extraer(id,libro){
   const faltantesColor={ROJO:[],AMARILLO:[],VERDE:[]};
   const erroresDescartePorColumna=COLUMNAS_DESCARTE.map(()=>[]);
   let faltantes=[],erroresDescarte=[];
-  let avisoCantidad="",noClasificados=0;
+  let avisoCantidad="",noClasificados=0,avisoQuincena="";
+
+  const indicesQuincena=columnas
+    .map((c,i)=>claveColumna(c)==="quincena"?i:-1)
+    .filter(i=>i>=0);
+
+  if(id==="produccion"&&indicesQuincena.length!==1){
+    avisoQuincena="Se necesita una única columna QUINCENA en Producción.";
+  }
 
   const date1904=Boolean(libro.Workbook?.WBProps?.date1904);
 
@@ -926,13 +871,13 @@ function extraer(id,libro){
     total:0,
     produccion:{ROJO:0,AMARILLO:0,VERDE:0},
     descarte:COLUMNAS_DESCARTE.map(()=>0),
-    color:"",
-    cantidad:0
+    quincena:indicesQuincena.length===1
+      ?texto(f[indicesQuincena[0]]).trim():"",
+    color:"",cantidad:0
   }));
 
   if(id==="produccion"){
     const indicesColor={};
-
     for(const color of COLORES){
       indicesColor[color]=GRUPOS_PRODUCCION[color].map(
         n=>localizarColumna(columnas,n,faltantesColor[color])
@@ -940,9 +885,7 @@ function extraer(id,libro){
     }
 
     const indicesDescarte=COLUMNAS_DESCARTE.map(
-      (n,i)=>localizarColumna(
-        columnas,n,erroresDescartePorColumna[i]
-      )
+      (n,i)=>localizarColumna(columnas,n,erroresDescartePorColumna[i])
     );
 
     filas.forEach((fila,n)=>{
@@ -950,30 +893,22 @@ function extraer(id,libro){
         for(const i of indicesColor[color]){
           if(i<0)continue;
           const valor=numeroCelda(originales[n][i]);
-
           if(Number.isNaN(valor)){
             agregarError(faltantesColor[color],
               "Valor no numérico en "+columnas[i]);
-          }else{
-            fila.produccion[color]+=valor;
-          }
+          }else fila.produccion[color]+=valor;
         }
       }
 
-      fila.total=COLORES.reduce(
-        (s,c)=>s+fila.produccion[c],0
-      );
+      fila.total=COLORES.reduce((s,c)=>s+fila.produccion[c],0);
 
       indicesDescarte.forEach((i,k)=>{
         if(i<0)return;
         const valor=numeroCelda(originales[n][i]);
-
         if(Number.isNaN(valor)){
           agregarError(erroresDescartePorColumna[k],
             "Valor no numérico en "+columnas[i]);
-        }else{
-          fila.descarte[k]=valor;
-        }
+        }else fila.descarte[k]=valor;
       });
     });
 
@@ -985,9 +920,7 @@ function extraer(id,libro){
       .filter(i=>i>=0);
 
     columnas=mantener.map(i=>columnas[i]);
-    filas=filas.map(f=>({
-      ...f,valores:mantener.map(i=>f.valores[i])
-    }));
+    filas=filas.map(f=>({...f,valores:mantener.map(i=>f.valores[i])}));
   }
 
   if(id==="recibo"){
@@ -1012,39 +945,31 @@ function extraer(id,libro){
 
     filas.forEach((fila,n)=>{
       fila.color=clasificar(fila.valores,producto);
-
-      if(!COLORES.includes(fila.color)){
-        noClasificados++;
-      }
+      if(!COLORES.includes(fila.color))noClasificados++;
 
       if(cantidades.length===1){
-        const valor=numeroCelda(
-          originales[n][cantidades[0]]
-        );
-
+        const valor=numeroCelda(originales[n][cantidades[0]]);
         if(Number.isNaN(valor)){
           avisoCantidad="Hay valores no numéricos en CANTIDAD de Recibo.";
-        }else{
-          fila.cantidad=valor;
-        }
+        }else fila.cantidad=valor;
       }
     });
 
+    // Quitar Carga, Cosecha, Origen, Bruto_ton y Tara_ton.
+    // Sacada permanece y se presenta como Cuadro.
     const ocultas=new Set([
-      "carga","cosecha","origen","idproducto"
+      "carga","cosecha","origen","idproducto","brutoton","taraton"
     ]);
 
     const mantener=columnas
       .map((c,i)=>ocultas.has(claveColumna(c))?-1:i)
       .filter(i=>i>=0);
 
-    const posicion=mantener.findIndex(
-      i=>producto.includes(i)
-    );
+    const posicion=mantener.findIndex(i=>producto.includes(i));
     const insertar=posicion>=0?posicion+1:0;
 
-    columnas=mantener.map(i=>columnas[i]);
-    columnas.splice(insertar,0,"ID PRODUCTO");
+    columnas=mantener.map(i=>encabezadoRecibo(columnas[i]));
+    columnas.splice(insertar,0,"Id Producto");
 
     filas=filas.map(f=>{
       const valores=mantener.map(i=>f.valores[i]);
@@ -1054,16 +979,13 @@ function extraer(id,libro){
   }
 
   const anterior=tablas[id];
-  const mismos=JSON.stringify(columnas)===
-    JSON.stringify(anterior.columnas);
-
-  // Mostrar la fila física detectada en Insumos.
+  const mismos=JSON.stringify(columnas)===JSON.stringify(anterior.columnas);
   if(id==="insumos")config.fila=filaEncabezados;
 
   return {
     ...anterior,columnas,filas,faltantes,faltantesColor,
     erroresDescarte,erroresDescartePorColumna,
-    avisoCantidad,noClasificados,
+    avisoCantidad,noClasificados,avisoQuincena,
     filtros:mismos?anterior.filtros:columnas.map(()=>""),
     orden:mismos?anterior.orden:null,
     pagina:1,error:"",cargando:false
@@ -1072,14 +994,10 @@ function extraer(id,libro){
 
 function filtradas(id){
   const t=tablas[id],buscar=normalizar(t.busqueda);
-
   return t.filas.filter(f=>
-    (!buscar||f.valores.some(
-      v=>normalizar(v).includes(buscar)
-    ))&&
+    (!buscar||f.valores.some(v=>normalizar(v).includes(buscar)))&&
     t.filtros.every((v,i)=>
-      !normalizar(v)||
-      normalizar(f.valores[i]).includes(normalizar(v))
+      !normalizar(v)||normalizar(f.valores[i]).includes(normalizar(v))
     )
   );
 }
@@ -1089,41 +1007,25 @@ function calculoDescarte(){
   const cantidades=COLUMNAS_DESCARTE.map(
     (_,i)=>seleccion.reduce((s,f)=>s+f.descarte[i],0)
   );
-
-  return {
-    seleccion,cantidades,
-    total:cantidades.reduce((s,v)=>s+v,0)
-  };
+  return {seleccion,cantidades,total:cantidades.reduce((s,v)=>s+v,0)};
 }
 
 function actualizarTotales(){
   const t=tablas.produccion;
-  const problemaP=t.error||
-    (t.faltantes.length
-      ?"Revisar: "+t.faltantes.join(", "):"");
+  const pp=t.error||(t.faltantes.length?"Revisar: "+t.faltantes.join(", "):"");
 
-  $("numero-produccion").textContent=!t.lectura||problemaP
-    ?"—":numero(filtradas("produccion").reduce(
-      (s,f)=>s+f.total,0
-    ));
+  $("numero-produccion").textContent=!t.lectura||pp
+    ?"—":numero(filtradas("produccion").reduce((s,f)=>s+f.total,0));
+  $("numero-produccion").title=pp;
+  $("numero-produccion").classList.toggle("error",Boolean(pp));
 
-  $("numero-produccion").title=problemaP;
-  $("numero-produccion").classList.toggle(
-    "error",Boolean(problemaP)
-  );
+  const pd=t.error||(t.erroresDescarte.length
+    ?"Revisar: "+t.erroresDescarte.join(", "):"");
 
-  const problemaD=t.error||
-    (t.erroresDescarte.length
-      ?"Revisar: "+t.erroresDescarte.join(", "):"");
-
-  $("numero-descarte").textContent=!t.lectura||problemaD
+  $("numero-descarte").textContent=!t.lectura||pd
     ?"—":numero(calculoDescarte().total);
-
-  $("numero-descarte").classList.toggle(
-    "error",Boolean(problemaD)
-  );
-
-  $("tarjetaDescarte").title=problemaD;
+  $("numero-descarte").classList.toggle("error",Boolean(pd));
+  $("tarjetaDescarte").title=pd;
 }
 
 function mostrarDetalleDescarte(){
@@ -1134,46 +1036,29 @@ function mostrarDetalleDescarte(){
     const tr=document.createElement("tr");
     const clasificacion=document.createElement("td");
     const cantidad=document.createElement("td");
-
     clasificacion.textContent=nombre;
-
     const errores=t.erroresDescartePorColumna[i];
-
     cantidad.textContent=t.lectura&&!t.error&&!errores.length
       ?numero(d.cantidades[i]):"—";
-
     cantidad.title=errores.join(", ");
     cantidad.classList.toggle("error",errores.length>0);
-
-    tr.append(clasificacion,cantidad);
-    fragmento.append(tr);
+    tr.append(clasificacion,cantidad);fragmento.append(tr);
   });
 
   $("detalleDescarte").replaceChildren(fragmento);
+  const problema=t.error||(t.erroresDescarte.length
+    ?"Revisar: "+t.erroresDescarte.join(", "):"");
 
-  const problema=t.error||
-    (t.erroresDescarte.length
-      ?"Revisar: "+t.erroresDescarte.join(", "):"");
-
-  $("totalDetalleDescarte").textContent=t.lectura&&!problema
-    ?numero(d.total):"—";
-
+  $("totalDetalleDescarte").textContent=t.lectura&&!problema?numero(d.total):"—";
   $("alcanceDescarte").textContent=!t.lectura
     ?"Se necesita cargar Producción."
     :problema||"Detalle de los registros seleccionados en Producción.";
-
-  $("alcanceDescarte").classList.toggle(
-    "error",Boolean(problema)
-  );
+  $("alcanceDescarte").classList.toggle("error",Boolean(problema));
 }
 
 function ponerStock(id,valor,detalle,error=false){
   $("stock-"+id).textContent=valor===null?"—":numero(valor);
-
-  $("stock-"+id).classList.toggle(
-    "negativo",valor!==null&&valor<0
-  );
-
+  $("stock-"+id).classList.toggle("negativo",valor!==null&&valor<0);
   $("detalle-stock-"+id).textContent=detalle;
   $("detalle-stock-"+id).classList.toggle("error",error);
 }
@@ -1183,249 +1068,148 @@ function tarjetasStock(){
   const ids=["rojo","amarillo","verde","monte"];
 
   if(p.cargando||r.cargando){
-    ids.forEach(id=>ponerStock(id,null,"Actualizando datos..."));
-    return;
+    ids.forEach(id=>ponerStock(id,null,"Actualizando datos..."));return;
   }
-
   if(!p.lectura||!r.lectura){
-    ids.forEach(id=>ponerStock(id,null,
-      "Se necesita cargar Producción y Recibo."));
-    return;
+    ids.forEach(id=>ponerStock(id,null,"Se necesita cargar Producción y Recibo."));return;
   }
-
   if(p.error||r.error){
-    ids.forEach(id=>ponerStock(id,null,
-      "Revisar la lectura de Producción y Recibo.",true));
-    return;
+    ids.forEach(id=>ponerStock(id,null,"Revisar la lectura de Producción y Recibo.",true));return;
   }
 
   for(const color of COLORES){
-    const problemas=[
-      ...p.faltantesColor[color],
-      ...(r.avisoCantidad?[r.avisoCantidad]:[])
-    ];
+    const problemas=[...p.faltantesColor[color],
+      ...(r.avisoCantidad?[r.avisoCantidad]:[])];
 
     if(problemas.length){
-      ponerStock(color.toLowerCase(),null,
-        "Revisar: "+problemas.join(", "),true);
+      ponerStock(color.toLowerCase(),null,"Revisar: "+problemas.join(", "),true);
       continue;
     }
 
-    const producido=p.filas.reduce(
-      (s,f)=>s+f.produccion[color],0
-    );
+    const producido=p.filas.reduce((s,f)=>s+f.produccion[color],0);
+    const recibido=r.filas.reduce((s,f)=>s+(f.color===color?f.cantidad:0),0);
 
-    const recibido=r.filas.reduce(
-      (s,f)=>s+(f.color===color?f.cantidad:0),0
-    );
-
-    ponerStock(
-      color.toLowerCase(),
-      producido-recibido,
-      "Producción: "+numero(producido)+
-      " − Recibido: "+numero(recibido)+
-      (r.noClasificados
-        ?" · "+numero(r.noClasificados)+
-          " registros sin clasificación válida, excluidos."
-        :""),
-      r.noClasificados>0
-    );
+    ponerStock(color.toLowerCase(),producido-recibido,
+      "Producción: "+numero(producido)+" − Recibido: "+numero(recibido)+
+      (r.noClasificados?" · "+numero(r.noClasificados)+
+        " registros sin clasificación válida, excluidos.":""),
+      r.noClasificados>0);
   }
 
-  const problemas=[
-    ...p.faltantes,
-    ...(r.avisoCantidad?[r.avisoCantidad]:[])
-  ];
-
+  const problemas=[...p.faltantes,...(r.avisoCantidad?[r.avisoCantidad]:[])];
   if(problemas.length){
-    ponerStock("monte",null,
-      "Revisar: "+problemas.join(", "),true);
-    return;
+    ponerStock("monte",null,"Revisar: "+problemas.join(", "),true);return;
   }
 
   const producido=p.filas.reduce((s,f)=>s+f.total,0);
   const recibido=r.filas.reduce((s,f)=>s+f.cantidad,0);
-
   ponerStock("monte",producido-recibido,
-    "Producción: "+numero(producido)+
-    " − Cantidad Recibo: "+numero(recibido));
+    "Producción: "+numero(producido)+" − Cantidad Recibo: "+numero(recibido));
 }
 
-// GRÁFICOS SVG CON ETIQUETAS EXTERIORES.
 const SVG_NS="http://www.w3.org/2000/svg";
-
 function svgElemento(nombre,atributos={}){
   const el=document.createElementNS(SVG_NS,nombre);
-  for(const[k,v]of Object.entries(atributos)){
-    el.setAttribute(k,String(v));
-  }
+  for(const[k,v]of Object.entries(atributos))el.setAttribute(k,String(v));
   return el;
 }
-
+function textoSVG(svg,contenido,atributos){
+  const el=svgElemento("text",{
+    "font-family":"Segoe UI, Arial, sans-serif",
+    fill:"#243d33",...atributos
+  });
+  el.textContent=contenido;svg.append(el);return el;
+}
 function mensajeGrafico(id,mensaje){
   const div=document.createElement("div");
-  div.className="mensaje-grafico";
-  div.textContent=mensaje;
+  div.className="mensaje-grafico";div.textContent=mensaje;
   $(id).replaceChildren(div);
 }
-
 function dividirNombre(nombre){
-  const palabras=nombre.split(/\s+/);
-  const lineas=[];
+  const palabras=nombre.split(/\s+/),lineas=[];
   let actual="";
-
   for(const palabra of palabras){
     if(actual&&(actual+" "+palabra).length>17){
-      lineas.push(actual);
-      actual=palabra;
-    }else{
-      actual=actual?actual+" "+palabra:palabra;
-    }
+      lineas.push(actual);actual=palabra;
+    }else actual=actual?actual+" "+palabra:palabra;
   }
-
   if(actual)lineas.push(actual);
   return lineas;
 }
-
 function acomodarEtiquetas(lista){
   if(!lista.length)return;
-
   lista.sort((a,b)=>a.y-b.y);
-
   const minimo=48,maximo=302,separacion=66;
-
   for(let i=0;i<lista.length;i++){
-    lista[i].y=Math.max(minimo,
-      Math.min(maximo,lista[i].y));
-
-    if(i){
-      lista[i].y=Math.max(
-        lista[i].y,lista[i-1].y+separacion
-      );
-    }
+    lista[i].y=Math.max(minimo,Math.min(maximo,lista[i].y));
+    if(i)lista[i].y=Math.max(lista[i].y,lista[i-1].y+separacion);
   }
-
   if(lista[lista.length-1].y>maximo){
     lista[lista.length-1].y=maximo;
-
     for(let i=lista.length-2;i>=0;i--){
-      lista[i].y=Math.min(
-        lista[i].y,lista[i+1].y-separacion
-      );
+      lista[i].y=Math.min(lista[i].y,lista[i+1].y-separacion);
     }
   }
 }
-
 function dibujarGrafico(id,series,anillo,etiqueta){
   if(series.some(s=>!Number.isFinite(s.valor)||s.valor<0)){
-    mensajeGrafico(id,
-      "Revisar valores negativos o no numéricos.");
-    return;
+    mensajeGrafico(id,"Revisar valores negativos o no numéricos.");return;
   }
-
   const total=series.reduce((s,v)=>s+v.valor,0);
   const svg=svgElemento("svg",{
-    viewBox:"0 0 480 360",
-    role:"img",
+    viewBox:"0 0 480 360",role:"img",
     "aria-label":etiqueta+". Total: "+numero(total)
   });
-
   const cx=240,cy=180,r=88;
-
-  svg.append(svgElemento("circle",{
-    cx,cy,r,fill:"#e8e7de"
-  }));
-
+  svg.append(svgElemento("circle",{cx,cy,r,fill:"#e8e7de"}));
   let angulo=-Math.PI/2;
   const etiquetas=[];
 
   if(total>0){
     for(const serie of series){
       if(!serie.valor)continue;
-
       const amplitud=serie.valor/total*Math.PI*2;
-      const fin=angulo+amplitud;
-      const medio=angulo+amplitud/2;
+      const fin=angulo+amplitud,medio=angulo+amplitud/2;
       let pieza;
-
       if(amplitud>=Math.PI*2-0.000001){
-        pieza=svgElemento("circle",{
-          cx,cy,r,fill:serie.color
-        });
+        pieza=svgElemento("circle",{cx,cy,r,fill:serie.color});
       }else{
-        const x1=cx+r*Math.cos(angulo);
-        const y1=cy+r*Math.sin(angulo);
-        const x2=cx+r*Math.cos(fin);
-        const y2=cy+r*Math.sin(fin);
-
+        const x1=cx+r*Math.cos(angulo),y1=cy+r*Math.sin(angulo);
+        const x2=cx+r*Math.cos(fin),y2=cy+r*Math.sin(fin);
         pieza=svgElemento("path",{
           d:"M "+cx+" "+cy+" L "+x1+" "+y1+
-            " A "+r+" "+r+" 0 "+
-            (amplitud>Math.PI?1:0)+" 1 "+x2+" "+y2+" Z",
-          fill:serie.color,
-          stroke:"#fffefa",
-          "stroke-width":1
+            " A "+r+" "+r+" 0 "+(amplitud>Math.PI?1:0)+
+            " 1 "+x2+" "+y2+" Z",
+          fill:serie.color,stroke:"#fffefa","stroke-width":1
         });
       }
-
       const titulo=svgElemento("title");
-      titulo.textContent=serie.nombre+": "+
-        numero(serie.valor)+" ("+
-        porcentaje(serie.valor/total*100)+")";
-
-      pieza.append(titulo);
-      svg.append(pieza);
-
-      etiquetas.push({
-        serie,medio,
-        derecha:Math.cos(medio)>=0,
-        y:cy+112*Math.sin(medio)
-      });
-
+      titulo.textContent=serie.nombre+": "+numero(serie.valor)+
+        " ("+porcentaje(serie.valor/total*100)+")";
+      pieza.append(titulo);svg.append(pieza);
+      etiquetas.push({serie,medio,derecha:Math.cos(medio)>=0,
+        y:cy+112*Math.sin(medio)});
       angulo=fin;
     }
   }
 
   if(anillo){
-    svg.append(svgElemento("circle",{
-      cx,cy,r:62,fill:"#fffefa"
-    }));
-
-    const valor=svgElemento("text",{
-      x:cx,y:183,
-      "text-anchor":"middle",
-      "font-family":"Georgia, serif",
-      "font-size":23,
-      "font-weight":"bold",
-      fill:"#173f35"
+    svg.append(svgElemento("circle",{cx,cy,r:62,fill:"#fffefa"}));
+    textoSVG(svg,numero(total),{
+      x:cx,y:183,"text-anchor":"middle",
+      "font-family":"Georgia, serif","font-size":23,
+      "font-weight":"bold",fill:"#173f35"
     });
-
-    valor.textContent=numero(total);
-    svg.append(valor);
-
-    const nombre=svgElemento("text",{
-      x:cx,y:203,
-      "text-anchor":"middle",
-      "font-family":"Segoe UI, Arial, sans-serif",
-      "font-size":8.5,
-      fill:"#748077"
+    textoSVG(svg,etiqueta,{
+      x:cx,y:203,"text-anchor":"middle",
+      "font-size":8.5,fill:"#748077"
     });
-
-    nombre.textContent=etiqueta;
-    svg.append(nombre);
   }
-
   if(!total){
-    const aviso=svgElemento("text",{
-      x:cx,y:anillo?230:184,
-      "text-anchor":"middle",
-      "font-family":"Segoe UI, Arial, sans-serif",
-      "font-size":13,
-      fill:"#748077"
+    textoSVG(svg,"Sin cantidades",{
+      x:cx,y:anillo?230:184,"text-anchor":"middle",
+      "font-size":13,fill:"#748077"
     });
-
-    aviso.textContent="Sin cantidades";
-    svg.append(aviso);
   }
 
   acomodarEtiquetas(etiquetas.filter(e=>!e.derecha));
@@ -1434,169 +1218,305 @@ function dibujarGrafico(id,series,anillo,etiqueta){
   for(const e of etiquetas){
     const xInicio=cx+(r+2)*Math.cos(e.medio);
     const yInicio=cy+(r+2)*Math.sin(e.medio);
-    const xIntermedio=e.derecha?344:136;
-    const xTexto=e.derecha?350:130;
+    const xIntermedio=e.derecha?344:136,xTexto=e.derecha?350:130;
     const lineas=dividirNombre(e.serie.nombre);
-    const alto=(lineas.length+1)*16;
-    const yTexto=e.y-alto/2+12;
+    const yTexto=e.y-(lineas.length+1)*8+12;
 
     svg.append(svgElemento("polyline",{
-      points:xInicio+","+yInicio+" "+
-        xIntermedio+","+e.y+" "+
+      points:xInicio+","+yInicio+" "+xIntermedio+","+e.y+" "+
         (e.derecha?xTexto-4:xTexto+4)+","+e.y,
-      fill:"none",
-      stroke:"#a5ab96",
-      "stroke-width":1
+      fill:"none",stroke:"#a5ab96","stroke-width":1
     }));
-
     const etiquetaTexto=svgElemento("text",{
-      x:xTexto,y:yTexto,
-      "text-anchor":e.derecha?"start":"end",
+      x:xTexto,y:yTexto,"text-anchor":e.derecha?"start":"end",
       "font-family":"Segoe UI, Arial, sans-serif",
-      "font-size":12.5,
-      "font-weight":"600",
-      fill:"#243d33"
+      "font-size":12.5,"font-weight":"600",fill:"#243d33"
     });
-
     lineas.forEach((linea,i)=>{
-      const parte=svgElemento("tspan",{
-        x:xTexto,dy:i===0?0:16
-      });
-      parte.textContent=linea;
-      etiquetaTexto.append(parte);
+      const parte=svgElemento("tspan",{x:xTexto,dy:i===0?0:16});
+      parte.textContent=linea;etiquetaTexto.append(parte);
     });
-
     const valores=svgElemento("tspan",{
-      x:xTexto,dy:17,
-      "font-size":13,
-      "font-weight":"bold"
+      x:xTexto,dy:17,"font-size":13,"font-weight":"bold"
     });
-
     valores.textContent=numero(e.serie.valor)+
       " ("+porcentaje(e.serie.valor/total*100)+")";
-
-    etiquetaTexto.append(valores);
-    svg.append(etiquetaTexto);
+    etiquetaTexto.append(valores);svg.append(etiquetaTexto);
   }
 
   const ceros=series.filter(s=>s.valor===0);
-
   if(total>0&&ceros.length){
-    const nota=svgElemento("text",{
-      x:cx,y:344,
-      "text-anchor":"middle",
-      "font-family":"Segoe UI, Arial, sans-serif",
-      "font-size":10,
-      fill:"#748077"
+    textoSVG(svg,ceros.map(s=>s.nombre+": 0 (0,0%)").join(" · "),{
+      x:cx,y:344,"text-anchor":"middle","font-size":10,fill:"#748077"
     });
-
-    nota.textContent=ceros.map(
-      s=>s.nombre+": 0 (0,0%)"
-    ).join(" · ");
-
-    svg.append(nota);
   }
-
   $(id).replaceChildren(svg);
 }
 
 function actualizarGraficos(){
   const p=tablas.produccion,r=tablas.recibo;
   const seleccion=filtradas("produccion");
+  const problemaP=p.cargando?"Cargando Producción...":
+    !p.lectura?"Pendiente de lectura de Producción.":p.error||p.faltantes.join(", ");
 
-  const problemaP=p.cargando
-    ?"Cargando Producción..."
-    :!p.lectura
-      ?"Pendiente de lectura de Producción."
-      :p.error||p.faltantes.join(", ");
+  if(problemaP)mensajeGrafico("graficoProduccionColor",problemaP);
+  else dibujarGrafico("graficoProduccionColor",
+    ["ROJO","VERDE","AMARILLO"].map(color=>({
+      nombre:color,color:PALETA[color],
+      valor:seleccion.reduce((s,f)=>s+f.produccion[color],0)
+    })),true,"TROZAS PRODUCIDAS");
 
-  if(problemaP){
-    mensajeGrafico("graficoProduccionColor",problemaP);
-  }else{
-    dibujarGrafico(
-      "graficoProduccionColor",
-      ["ROJO","VERDE","AMARILLO"].map(color=>({
-        nombre:color,
-        color:PALETA[color],
-        valor:seleccion.reduce(
-          (s,f)=>s+f.produccion[color],0
-        )
-      })),
-      true,
-      "TROZAS PRODUCIDAS"
-    );
-  }
-
-  const problemaPD=problemaP||
-    p.erroresDescarte.join(", ");
-
-  if(problemaPD){
-    mensajeGrafico("graficoProduccionDescarte",problemaPD);
-  }else{
+  const problemaPD=problemaP||p.erroresDescarte.join(", ");
+  if(problemaPD)mensajeGrafico("graficoProduccionDescarte",problemaPD);
+  else{
     const d=calculoDescarte();
-
     dibujarGrafico("graficoProduccionDescarte",[
-      {
-        nombre:"PRODUCCIÓN",
-        color:"#295344",
-        valor:seleccion.reduce((s,f)=>s+f.total,0)
-      },
-      {
-        nombre:"DESCARTE BASAL",
-        color:"#b5995f",
-        valor:d.cantidades[0]+d.cantidades[1]
-      },
-      {
-        nombre:"DESCARTE",
-        color:"#c64c45",
-        valor:d.cantidades[2]+d.cantidades[3]
-      }
+      {nombre:"PRODUCCIÓN",color:"#295344",
+        valor:seleccion.reduce((s,f)=>s+f.total,0)},
+      {nombre:"DESCARTE BASAL",color:"#b5995f",
+        valor:d.cantidades[0]+d.cantidades[1]},
+      {nombre:"DESCARTE",color:"#c64c45",
+        valor:d.cantidades[2]+d.cantidades[3]}
     ],false,"PRODUCCIÓN Y DESCARTES");
   }
 
-  const problemaR=r.cargando
-    ?"Cargando Recibo..."
-    :!r.lectura
-      ?"Pendiente de lectura de Recibo."
-      :r.error||r.avisoCantidad;
+  const problemaR=r.cargando?"Cargando Recibo...":
+    !r.lectura?"Pendiente de lectura de Recibo.":r.error||r.avisoCantidad;
 
-  if(problemaR){
-    mensajeGrafico("graficoDespacho",problemaR);
-  }else{
+  if(problemaR)mensajeGrafico("graficoDespacho",problemaR);
+  else{
     const series=["ROJO","VERDE","AMARILLO"].map(color=>({
-      nombre:color,
-      color:PALETA[color],
-      valor:r.filas.reduce(
-        (s,f)=>s+(f.color===color?f.cantidad:0),0
-      )
+      nombre:color,color:PALETA[color],
+      valor:r.filas.reduce((s,f)=>s+(f.color===color?f.cantidad:0),0)
     }));
-
     if(r.noClasificados){
-      series.push({
-        nombre:"SIN CLASIFICAR",
-        color:"#98a090",
-        valor:r.filas.reduce(
-          (s,f)=>s+(!COLORES.includes(f.color)
-            ?f.cantidad:0),0
-        )
-      });
+      series.push({nombre:"SIN CLASIFICAR",color:"#98a090",
+        valor:r.filas.reduce((s,f)=>s+(!COLORES.includes(f.color)?f.cantidad:0),0)});
     }
+    dibujarGrafico("graficoDespacho",series,true,"TROZAS DESPACHADAS");
+  }
+}
 
-    dibujarGrafico(
-      "graficoDespacho",series,true,"TROZAS DESPACHADAS"
-    );
+// GRÁFICO POR LA COLUMNA QUINCENA DE PRODUCCIÓN.
+const comparador=new Intl.Collator("es",{numeric:true,sensitivity:"base"});
+
+function nombreQuincena(valor){
+  return /^quincena\b/i.test(valor)?valor:"Quincena "+valor;
+}
+
+function actualizarSelectorQuincena(){
+  const selector=$("selectorQuincena");
+  const anterior=selector.value;
+  const opciones=[...new Set(tablas.produccion.filas
+    .map(f=>f.quincena).filter(tieneContenido))]
+    .sort(comparador.compare);
+
+  const fragmento=document.createDocumentFragment();
+  const todas=document.createElement("option");
+  todas.value="";todas.textContent="Todas";fragmento.append(todas);
+
+  for(const valor of opciones){
+    const opcion=document.createElement("option");
+    opcion.value=valor;opcion.textContent=nombreQuincena(valor);
+    fragmento.append(opcion);
+  }
+  selector.replaceChildren(fragmento);
+  selector.value=opciones.includes(anterior)?anterior:"";
+}
+
+function seriesSeleccionadas(){
+  const seleccion=new Set([...document.querySelectorAll("[data-serie]:checked")]
+    .map(input=>input.dataset.serie));
+  return SERIES_QUINCENA.filter(s=>seleccion.has(s.id));
+}
+
+function valorSerie(fila,serie){
+  if(serie==="PRODUCCION")return fila.total;
+  if(serie==="DESCARTES")return fila.descarte.reduce((s,v)=>s+v,0);
+  return fila.produccion[serie];
+}
+
+function erroresSerie(tabla,serie){
+  if(serie==="PRODUCCION")return tabla.faltantes;
+  if(serie==="DESCARTES")return tabla.erroresDescarte;
+  return tabla.faltantesColor[serie];
+}
+
+function pasoEscala(rango){
+  if(!rango)return 1;
+  const bruto=rango/5;
+  const potencia=Math.pow(10,Math.floor(Math.log10(bruto)));
+  const proporcion=bruto/potencia;
+  const factor=proporcion<=1?1:proporcion<=2?2:
+    proporcion<=2.5?2.5:proporcion<=5?5:10;
+  return factor*potencia;
+}
+
+function actualizarGraficoQuincena(){
+  const t=tablas.produccion;
+  const series=seriesSeleccionadas();
+  $("leyendaQuincena").replaceChildren();
+  $("avisoQuincena").hidden=true;
+
+  const problema=t.cargando?"Cargando Producción...":
+    !t.lectura?"Pendiente de lectura de Producción.":
+    t.error||t.avisoQuincena;
+
+  if(problema){mensajeGrafico("graficoQuincena",problema);return}
+  if(!series.length){
+    mensajeGrafico("graficoQuincena","Seleccioná al menos un producto.");return;
+  }
+
+  const errores=[...new Set(series.flatMap(s=>erroresSerie(t,s.id)))];
+  if(errores.length){
+    mensajeGrafico("graficoQuincena","Revisar: "+errores.join(", "));return;
+  }
+
+  const seleccionQuincena=$("selectorQuincena").value;
+  const filtrado=filtradas("produccion");
+  const sinQuincena=filtrado.filter(f=>!tieneContenido(f.quincena)).length;
+  const filas=filtrado.filter(f=>
+    tieneContenido(f.quincena)&&
+    (!seleccionQuincena||f.quincena===seleccionQuincena)
+  );
+
+  const grupos=new Map();
+  for(const fila of filas){
+    if(!grupos.has(fila.quincena)){
+      grupos.set(fila.quincena,
+        Object.fromEntries(series.map(s=>[s.id,0])));
+    }
+    const valores=grupos.get(fila.quincena);
+    for(const serie of series){
+      valores[serie.id]+=valorSerie(fila,serie.id);
+    }
+  }
+
+  const categorias=[...grupos.keys()].sort(comparador.compare);
+  if(!categorias.length){
+    mensajeGrafico("graficoQuincena","No hay registros para la selección actual.");
+    if(sinQuincena){
+      $("avisoQuincena").hidden=false;
+      $("avisoQuincena").textContent=
+        numero(sinQuincena)+" registros sin Quincena no se incluyen en este gráfico.";
+    }
+    return;
+  }
+
+  const valores=categorias.flatMap(q=>series.map(s=>grupos.get(q)[s.id]));
+  const menor=Math.min(0,...valores);
+  const mayor=Math.max(0,...valores);
+  const paso=pasoEscala(mayor-menor);
+  const minimo=Math.floor(menor/paso)*paso;
+  const maximo=Math.ceil(mayor/paso)*paso||paso;
+
+  // Mantener anchura suficiente para las etiquetas.
+  const anchoGrupo=Math.max(180,series.length*65);
+  const ancho=Math.max(1000,110+categorias.length*anchoGrupo);
+  const alto=390;
+  const margen={izquierda:80,derecha:25,arriba:45,abajo:78};
+  const anchoArea=ancho-margen.izquierda-margen.derecha;
+  const altoArea=alto-margen.arriba-margen.abajo;
+  const y=v=>margen.arriba+(maximo-v)/(maximo-minimo)*altoArea;
+  const cero=y(0);
+
+  const svg=svgElemento("svg",{
+    viewBox:"0 0 "+ancho+" "+alto,
+    role:"img","aria-label":"Producción agrupada por Quincena"
+  });
+  svg.style.minWidth=ancho+"px";
+
+  for(let v=minimo;v<=maximo+paso/1000;v+=paso){
+    const posicion=y(v);
+    svg.append(svgElemento("line",{
+      x1:margen.izquierda,y1:posicion,
+      x2:ancho-margen.derecha,y2:posicion,
+      stroke:"#dedfd4","stroke-width":1,"stroke-dasharray":"4 4"
+    }));
+    textoSVG(svg,numero(Math.abs(v)<paso/1000?0:v),{
+      x:margen.izquierda-12,y:posicion+4,
+      "text-anchor":"end","font-size":12,fill:"#748077"
+    });
+  }
+
+  svg.append(svgElemento("line",{
+    x1:margen.izquierda,y1:cero,
+    x2:ancho-margen.derecha,y2:cero,
+    stroke:"#899383","stroke-width":1
+  }));
+
+  textoSVG(svg,"Cantidad",{
+    x:20,y:margen.arriba+altoArea/2,
+    transform:"rotate(-90 20 "+(margen.arriba+altoArea/2)+")",
+    "text-anchor":"middle","font-size":12,fill:"#748077"
+  });
+
+  const espacioGrupo=anchoArea/categorias.length;
+  const espacioBarra=Math.min(65,espacioGrupo*.83/series.length);
+  const anchoBarra=Math.max(12,espacioBarra-12);
+
+  categorias.forEach((quincena,indice)=>{
+    const centro=margen.izquierda+espacioGrupo*(indice+.5);
+    const inicio=centro-series.length*espacioBarra/2;
+
+    series.forEach((serie,i)=>{
+      const valor=grupos.get(quincena)[serie.id];
+      const x=inicio+i*espacioBarra+(espacioBarra-anchoBarra)/2;
+      const altoBarra=Math.abs(y(valor)-cero);
+      const rect=svgElemento("rect",{
+        x,y:Math.min(y(valor),cero),width:anchoBarra,
+        height:altoBarra,fill:serie.color,rx:2
+      });
+      const tooltip=svgElemento("title");
+      tooltip.textContent=nombreQuincena(quincena)+
+        " · "+serie.nombre+": "+numero(valor);
+      rect.append(tooltip);svg.append(rect);
+
+      textoSVG(svg,numero(valor),{
+        x:x+anchoBarra/2,y:valor>=0?y(valor)-9:y(valor)+17,
+        "text-anchor":"middle","font-size":11,
+        "font-weight":"600"
+      });
+    });
+
+    const etiqueta=nombreQuincena(quincena);
+    const lineas=etiqueta.length>25?dividirNombre(etiqueta):[etiqueta];
+
+    lineas.forEach((linea,i)=>{
+      textoSVG(svg,linea,{
+        x:centro,y:alto-margen.abajo+27+i*15,
+        "text-anchor":"middle","font-size":12
+      });
+    });
+  });
+
+  $("graficoQuincena").replaceChildren(svg);
+
+  const leyenda=document.createDocumentFragment();
+  for(const serie of series){
+    const item=document.createElement("span");
+    item.className="leyenda-item";
+    const punto=document.createElement("span");
+    punto.className="punto";punto.style.background=serie.color;
+    const nombre=document.createElement("span");
+    nombre.textContent=serie.nombre;
+    item.append(punto,nombre);leyenda.append(item);
+  }
+  $("leyendaQuincena").replaceChildren(leyenda);
+
+  if(sinQuincena){
+    $("avisoQuincena").hidden=false;
+    $("avisoQuincena").textContent=
+      numero(sinQuincena)+" registros sin Quincena no se incluyen en este gráfico.";
   }
 }
 
 function actualizarEstado(){
-  const errores=Object.entries(tablas)
-    .filter(([,t])=>t.error)
+  const errores=Object.entries(tablas).filter(([,t])=>t.error)
     .map(([id,t])=>id.toUpperCase()+": "+t.error);
 
   $("estadoCarga").textContent=errores.length
-    ?errores.join(" · ")
-    :ocupado?"Actualizando datos...":"";
-
+    ?errores.join(" · "):ocupado?"Actualizando datos...":"";
   $("estadoCarga").classList.toggle("error",errores.length>0);
   $("estadoCarga").hidden=!$("estadoCarga").textContent;
 }
@@ -1605,92 +1525,61 @@ function actualizarDashboard(){
   actualizarTotales();
   tarjetasStock();
   actualizarGraficos();
+  actualizarSelectorQuincena();
+  actualizarGraficoQuincena();
   actualizarEstado();
-
-  if($("modalDescarte").open){
-    mostrarDetalleDescarte();
-  }
+  if($("modalDescarte").open)mostrarDetalleDescarte();
 }
 
 function encabezado(){
-  const t=tablas[activa];
-  const tr=document.createElement("tr");
+  const t=tablas[activa],tr=document.createElement("tr");
 
   t.columnas.forEach((nombre,i)=>{
     const th=document.createElement("th");
-
-    if(esObservaciones(nombre)){
-      th.className="observaciones";
-    }
-
+    if(esObservaciones(nombre))th.className="observaciones";
     const b=document.createElement("button");
-    b.textContent=nombre+
-      (t.orden===i?(t.direccion===1?" ▲":" ▼"):"");
+    b.textContent=nombre+(t.orden===i?(t.direccion===1?" ▲":" ▼"):"");
 
     b.addEventListener("click",()=>{
       t.direccion=t.orden===i?-t.direccion:1;
-      t.orden=i;
-      t.pagina=1;
-      encabezado();
-      mostrarFilas();
+      t.orden=i;t.pagina=1;encabezado();mostrarFilas();
     });
 
     const input=document.createElement("input");
-    input.type="search";
-    input.placeholder="Filtrar...";
+    input.type="search";input.placeholder="Filtrar...";
     input.value=t.filtros[i]||"";
     input.setAttribute("aria-label","Filtrar "+nombre);
 
     input.addEventListener("input",()=>{
-      t.filtros[i]=input.value;
-      t.pagina=1;
-      mostrarFilas();
-      actualizarDashboard();
+      t.filtros[i]=input.value;t.pagina=1;
+      mostrarFilas();actualizarDashboard();
     });
 
-    th.append(b,input);
-    tr.append(th);
+    th.append(b,input);tr.append(th);
   });
 
   $("encabezado").replaceChildren(tr);
 }
 
-const comparador=new Intl.Collator("es",{
-  numeric:true,sensitivity:"base"
-});
-
 function claveFecha(v){
-  const m=texto(v).match(
-    /^(\d{2})\/(\d{2})\/(\d{4})$/
-  );
+  const m=texto(v).match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
   return m?m[3]+m[2]+m[1]:texto(v);
 }
 
 function mostrarFilas(){
   if(!tablaVisible)return;
-
-  const t=tablas[activa];
-  const resultado=filtradas(activa);
+  const t=tablas[activa],resultado=filtradas(activa);
 
   if(t.orden!==null){
     resultado.sort((a,b)=>{
-      let av=a.valores[t.orden];
-      let bv=b.valores[t.orden];
-
-      if(esFecha(t.columnas[t.orden])){
-        av=claveFecha(av);
-        bv=claveFecha(bv);
-      }
-
+      let av=a.valores[t.orden],bv=b.valores[t.orden];
+      if(esFecha(t.columnas[t.orden])){av=claveFecha(av);bv=claveFecha(bv)}
       return comparador.compare(av,bv)*t.direccion;
     });
   }
 
   const limite=Number($("limite").value);
-  const paginas=Math.max(
-    1,Math.ceil(resultado.length/limite)
-  );
-
+  const paginas=Math.max(1,Math.ceil(resultado.length/limite));
   t.pagina=Math.min(t.pagina,paginas);
   const inicio=(t.pagina-1)*limite;
   const fragmento=document.createDocumentFragment();
@@ -1703,45 +1592,34 @@ function mostrarFilas(){
 
       if(esObservaciones(t.columnas[i])){
         td.className="observaciones";
-
         const nota=document.createElement("div");
-        nota.className="nota-texto corta";
-        nota.textContent=v||"—";
+        nota.className="nota-texto corta";nota.textContent=v||"—";
         td.append(nota);
 
         if(v.trim()){
           const b=document.createElement("button");
-          b.className="leer-nota";
-          b.textContent="Ver observación";
-
+          b.className="leer-nota";b.textContent="Ver observación";
           b.addEventListener("click",()=>{
-            $("notaCompleta").textContent=v;
-            $("modalNota").showModal();
+            $("notaCompleta").textContent=v;$("modalNota").showModal();
           });
-
           td.append(b);
         }
       }else if(
         activa==="recibo"&&
-        t.columnas[i]==="ID PRODUCTO"&&
+        claveColumna(t.columnas[i])==="idproducto"&&
         COLORES.includes(v)
       ){
         const e=document.createElement("span");
-        e.className="etiqueta "+v.toLowerCase();
-        e.textContent=v;
+        e.className="etiqueta "+v.toLowerCase();e.textContent=v;
         td.append(e);
-      }else{
-        td.textContent=v;
-      }
+      }else td.textContent=v;
 
       tr.append(td);
     });
-
     fragmento.append(tr);
   });
 
   $("cuerpo").replaceChildren(fragmento);
-
   const avisos=[
     ...(t.error?[t.error]:[]),
     ...(activa==="produccion"&&t.faltantes.length
@@ -1752,24 +1630,17 @@ function mostrarFilas(){
 
   $("aviso").hidden=!avisos.length;
   $("aviso").textContent=avisos.join(" · ");
-
-  $("pagina").textContent=
-    "Página "+t.pagina+" de "+paginas;
-
+  $("pagina").textContent="Página "+t.pagina+" de "+paginas;
   $("anterior").disabled=t.pagina<=1;
   $("siguiente").disabled=t.pagina>=paginas;
   $("vacio").hidden=resultado.length>0;
-
   $("vacio").textContent=t.cargando&&!t.lectura
-    ?"Cargando datos..."
-    :t.error&&!t.lectura
-      ?t.error
-      :"No hay registros para esta selección.";
+    ?"Cargando datos...":t.error&&!t.lectura
+      ?t.error:"No hay registros para esta selección.";
 }
 
 function mostrar(){
   $("listado").hidden=!tablaVisible;
-
   document.querySelectorAll("[data-tab]").forEach(b=>{
     const elegida=tablaVisible&&b.dataset.tab===activa;
     b.classList.toggle("activo",elegida);
@@ -1777,50 +1648,33 @@ function mostrar(){
   });
 
   if(!tablaVisible)return;
-
   $("tituloTabla").textContent=activa==="recibo"
-    ?TITULO_RECIBO
-    :activa==="produccion"?"Producción":"Insumos";
-
+    ?TITULO_RECIBO:activa==="produccion"?"Producción":"Insumos";
   $("buscar").value=tablas[activa].busqueda;
   $("fila").value=CONFIG[activa].fila;
-
-  // Producción fija en fila 3.
-  // Insumos detecta automáticamente su primer encabezado real.
   $("fila").disabled=activa!=="recibo"||ocupado;
   $("fila").title=activa==="insumos"
-    ?"Encabezados detectados automáticamente por Quincena y FECHA."
-    :"";
-
-  encabezado();
-  mostrarFilas();
+    ?"Encabezados detectados automáticamente por Quincena y FECHA.":"";
+  encabezado();mostrarFilas();
 }
 
 function cargarLibro(origen,bytes){
-  // Conservar números originales y convertir fechas explícitamente.
-  const libro=XLSX.read(bytes,{
-    type:"array",cellDates:false
-  });
-
+  const libro=XLSX.read(bytes,{type:"array",cellDates:false});
   const lectura=new Date().toISOString();
   libros[origen]={libro,lectura};
 
   for(const id of idsDelOrigen(origen)){
     try{
-      const t=extraer(id,libro);
-      t.lectura=lectura;
-      tablas[id]=t;
+      const t=extraer(id,libro);t.lectura=lectura;tablas[id]=t;
     }catch(e){
-      tablas[id].error=e.message;
-      tablas[id].cargando=false;
+      tablas[id].error=e.message;tablas[id].cargando=false;
     }
   }
 }
 
 function errorOrigen(origen,mensaje){
   for(const id of idsDelOrigen(origen)){
-    tablas[id].error=mensaje;
-    tablas[id].cargando=false;
+    tablas[id].error=mensaje;tablas[id].cargando=false;
   }
 }
 
@@ -1830,57 +1684,37 @@ async function descargar(origen){
 
   try{
     const respuesta=await fetch(URLS[origen],{
-      mode:"cors",
-      cache:"no-store",
-      credentials:"omit",
-      signal:control.signal
+      mode:"cors",cache:"no-store",
+      credentials:"omit",signal:control.signal
     });
 
     if(!respuesta.ok){
-      throw new Error(
-        "La descarga respondió HTTP "+respuesta.status+"."
-      );
+      throw new Error("La descarga respondió HTTP "+respuesta.status+".");
     }
 
-    const tipo=(
-      respuesta.headers.get("Content-Type")||""
-    ).toLowerCase();
-
-    if(tipo.includes("text/html")||
-      tipo.includes("application/json")){
+    const tipo=(respuesta.headers.get("Content-Type")||"").toLowerCase();
+    if(tipo.includes("text/html")||tipo.includes("application/json")){
       throw new Error("El enlace no devolvió un Excel.");
     }
 
     const bytes=await respuesta.arrayBuffer();
-
-    if(!bytes.byteLength){
-      throw new Error("El archivo está vacío.");
-    }
-
+    if(!bytes.byteLength)throw new Error("El archivo está vacío.");
     cargarLibro(origen,bytes);
   }catch(e){
-    errorOrigen(
-      origen,
-      e.name==="AbortError"
-        ?"La descarga superó los 90 segundos."
-        :e instanceof TypeError
-          ?"No se pudo descargar el archivo por un bloqueo del navegador o un problema de conexión."
-          :e.message
-    );
+    errorOrigen(origen,e.name==="AbortError"
+      ?"La descarga superó los 90 segundos."
+      :e instanceof TypeError
+        ?"No se pudo descargar el archivo por un bloqueo del navegador o un problema de conexión."
+        :e.message);
   }finally{
-    clearTimeout(timer);
-    actualizarDashboard();
-    mostrar();
+    clearTimeout(timer);actualizarDashboard();mostrar();
   }
 }
 
 function bloquear(v){
-  ocupado=v;
-  $("actualizar").disabled=v;
+  ocupado=v;$("actualizar").disabled=v;
   $("textoActualizar").textContent=v
-    ?"Actualizando datos..."
-    :"Actualizar últimos datos";
-
+    ?"Actualizando datos...":"Actualizar últimos datos";
   $("fila").disabled=activa!=="recibo"||v;
 }
 
@@ -1888,132 +1722,88 @@ async function actualizar(){
   if(ocupado)return;
 
   if(typeof XLSX==="undefined"){
-    const mensaje=
-      "No se cargó el lector Excel. Revisá la conexión y recargá.";
-
-    errorOrigen("produccion",mensaje);
-    errorOrigen("recibo",mensaje);
-    actualizarDashboard();
-    mostrar();
-    return;
+    const mensaje="No se cargó el lector Excel. Revisá la conexión y recargá.";
+    errorOrigen("produccion",mensaje);errorOrigen("recibo",mensaje);
+    actualizarDashboard();mostrar();return;
   }
 
   bloquear(true);
-
-  for(const t of Object.values(tablas)){
-    t.cargando=true;
-    t.error="";
-  }
-
-  actualizarDashboard();
-  mostrar();
+  for(const t of Object.values(tablas)){t.cargando=true;t.error=""}
+  actualizarDashboard();mostrar();
 
   try{
-    await Promise.allSettled([
-      descargar("produccion"),
-      descargar("recibo")
-    ]);
+    await Promise.allSettled([descargar("produccion"),descargar("recibo")]);
   }finally{
-    bloquear(false);
-    actualizarDashboard();
-    mostrar();
+    bloquear(false);actualizarDashboard();mostrar();
   }
 }
 
 document.querySelectorAll("[data-tab]").forEach(b=>{
   b.addEventListener("click",()=>{
     const seleccion=b.dataset.tab;
-
-    if(tablaVisible&&activa===seleccion){
-      tablaVisible=false;
-    }else{
-      activa=seleccion;
-      tablaVisible=true;
-    }
-
+    if(tablaVisible&&activa===seleccion)tablaVisible=false;
+    else{activa=seleccion;tablaVisible=true}
     mostrar();
   });
 });
 
 $("buscar").addEventListener("input",()=>{
   tablas[activa].busqueda=$("buscar").value;
-  tablas[activa].pagina=1;
-  mostrarFilas();
-  actualizarDashboard();
+  tablas[activa].pagina=1;mostrarFilas();actualizarDashboard();
 });
 
 $("quitar").addEventListener("click",()=>{
   for(const t of Object.values(tablas)){
-    t.busqueda="";
-    t.filtros=t.columnas.map(()=>"");
-    t.orden=null;
-    t.direccion=1;
-    t.pagina=1;
+    t.busqueda="";t.filtros=t.columnas.map(()=>"");
+    t.orden=null;t.direccion=1;t.pagina=1;
   }
-
-  mostrar();
-  actualizarDashboard();
+  $("selectorQuincena").value="";
+  document.querySelectorAll("[data-serie]").forEach(input=>input.checked=true);
+  mostrar();actualizarDashboard();
 });
 
 $("limite").addEventListener("change",()=>{
-  tablas[activa].pagina=1;
-  mostrarFilas();
+  tablas[activa].pagina=1;mostrarFilas();
 });
-
 $("anterior").addEventListener("click",()=>{
-  tablas[activa].pagina--;
-  mostrarFilas();
+  tablas[activa].pagina--;mostrarFilas();
 });
-
 $("siguiente").addEventListener("click",()=>{
-  tablas[activa].pagina++;
-  mostrarFilas();
+  tablas[activa].pagina++;mostrarFilas();
 });
 
 $("fila").addEventListener("change",()=>{
   if(activa!=="recibo"||ocupado)return;
-
-  const config=CONFIG[activa];
-  const nueva=Number($("fila").value);
-
+  const config=CONFIG[activa],nueva=Number($("fila").value);
   if(!Number.isInteger(nueva)||nueva<1||nueva>100){
-    $("fila").value=config.fila;
-    return;
+    $("fila").value=config.fila;return;
   }
 
-  const anterior=config.fila;
-  config.fila=nueva;
+  const anterior=config.fila;config.fila=nueva;
   const guardado=libros[config.origen];
 
   if(guardado){
     try{
       const t=extraer(activa,guardado.libro);
-      t.lectura=guardado.lectura;
-      tablas[activa]=t;
+      t.lectura=guardado.lectura;tablas[activa]=t;
     }catch(e){
-      config.fila=anterior;
-      tablas[activa].error=e.message;
+      config.fila=anterior;tablas[activa].error=e.message;
     }
   }
+  actualizarDashboard();mostrar();
+});
 
-  actualizarDashboard();
-  mostrar();
+$("selectorQuincena").addEventListener("change",actualizarGraficoQuincena);
+document.querySelectorAll("[data-serie]").forEach(input=>{
+  input.addEventListener("change",actualizarGraficoQuincena);
 });
 
 $("actualizar").addEventListener("click",actualizar);
-
-$("cerrarNota").addEventListener("click",()=>{
-  $("modalNota").close();
-});
-
+$("cerrarNota").addEventListener("click",()=>$("modalNota").close());
 $("tarjetaDescarte").addEventListener("click",()=>{
-  mostrarDetalleDescarte();
-  $("modalDescarte").showModal();
+  mostrarDetalleDescarte();$("modalDescarte").showModal();
 });
-
-$("cerrarDescarte").addEventListener("click",()=>{
-  $("modalDescarte").close();
-});
+$("cerrarDescarte").addEventListener("click",()=>$("modalDescarte").close());
 
 mostrar();
 actualizar();
