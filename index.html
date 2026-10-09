@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Producción Las Acacias</title>
+
+<style>
+:root {
+  --verde: #19564b;
+  --fondo: #f2f5f7;
+  --borde: #dbe4e8;
+  --texto: #273c49;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: Arial, sans-serif;
+}
+
+main {
+  max-width: 1600px;
+  margin: auto;
+  padding: 24px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+h1 {
+  color: var(--verde);
+  margin: 0 0 8px;
+  font-size: 26px;
+}
+
+.subtitulo {
+  margin: 0;
+  color: #647582;
+}
+
+button, input, select { font: inherit; }
+
+button {
+  padding: 10px 15px;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  color: var(--texto);
+}
+
+button:hover { background: #edf5f1; }
+
+button:disabled {
+  opacity: .5;
+  cursor: default;
+}
+
+.primario, .pestanas button.activo {
+  background: var(--verde);
+  border-color: var(--verde);
+  color: white;
+}
+
+.tarjetas {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.tarjeta {
+  background: white;
+  border: 1px solid var(--borde);
+  padding: 16px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.tarjeta h2 {
+  margin: 0 0 10px;
+  font-size: 15px;
+  color: var(--verde);
+}
+
+.numero {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.estado {
+  font-size: 12px;
+  line-height: 1.5;
+  color: #647582;
+  overflow-wrap: anywhere;
+}
+
+.error { color: #b02e2e; }
+
+.archivos, .panel {
+  background: white;
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+}
+
+.archivos {
+  padding: 16px;
+  margin-bottom: 18px;
+}
+
+.archivos summary {
+  cursor: pointer;
+  color: var(--verde);
+  font-weight: bold;
+}
+
+.archivos p {
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.cargas {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.cargas label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 13px;
+  max-width: 100%;
+}
+
+.cargas input { max-width: 100%; }
+
+.panel { overflow: hidden; }
+
+.pestanas, .controles {
+  display: flex;
+  gap: 10px;
+  padding: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.pestanas { border-bottom: 1px solid var(--borde); }
+
+input, select {
+  padding: 9px;
+  border: 1px solid var(--borde);
+  border-radius: 6px;
+  background: white;
+  color: var(--texto);
+}
+
+#buscar {
+  flex: 1;
+  min-width: 190px;
+}
+
+.controles label {
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+#fila { width: 70px; }
+
+#resumen {
+  padding: 0 16px 14px;
+  color: #647582;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.tabla {
+  overflow: auto;
+  max-height: 65vh;
+  border-top: 1px solid var(--borde);
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 12px;
+}
+
+th, td {
+  text-align: center;
+  padding: 10px;
+  min-width: 110px;
+  max-width: 240px;
+  overflow-wrap: anywhere;
+  border-bottom: 1px solid var(--borde);
+}
+
+th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #edf3f4;
+  vertical-align: top;
+}
+
+th button {
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: var(--verde);
+  font-weight: bold;
+  white-space: normal;
+  padding: 4px;
+}
+
+th input {
+  width: 100%;
+  min-width: 90px;
+  margin-top: 8px;
+  font-size: 11px;
+}
+
+tbody tr:nth-child(even) { background: #f8fafb; }
+tbody tr:hover { background: #edf6f0; }
+
+#vacio {
+  padding: 30px;
+  text-align: center;
+  color: #647582;
+}
+
+.pie {
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-size: 13px;
+}
+
+.navegacion {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nota {
+  font-size: 12px;
+  line-height: 1.6;
+  color: #647582;
+}
+
+@media (max-width: 700px) {
+  main { padding: 12px; }
+  h1 { font-size: 22px; }
+  .tarjetas { grid-template-columns: 1fr; }
+  .tarjeta { padding: 12px; }
+  .numero { font-size: 23px; }
+  #buscar { flex-basis: 100%; }
+}
+</style>
+</head>
+
+<body>
+<main>
+  <header>
+    <div>
+      <h1>PRODUCCIÓN LAS ACACIAS</h1>
+      <p class="subtitulo">Producción · Insumos · Recibo</p>
+    </div>
+    <button id="actualizar" class="primario">
+      Actualizar desde Dropbox
+    </button>
+  </header>
+
+  <section class="tarjetas">
+    <article class="tarjeta">
+      <h2>PRODUCCIÓN</h2>
+      <div id="numero-produccion" class="numero">—</div>
+      <div id="estado-produccion" class="estado">Pendiente</div>
+    </article>
+
+    <article class="tarjeta">
+      <h2>INSUMOS</h2>
+      <div id="numero-insumos" class="numero">—</div>
+      <div id="estado-insumos" class="estado">Pendiente</div>
+    </article>
+
+    <article class="tarjeta">
+      <h2>RECIBO</h2>
+      <div id="numero-recibo" class="numero">—</div>
+      <div id="estado-recibo" class="estado">Pendiente</div>
+    </article>
+  </section>
+
+  <details id="archivos" class="archivos">
+    <summary>Seleccionar archivos desde la PC</summary>
+    <p>
+      Si la descarga desde Dropbox falla, seleccioná los archivos aquí.
+      El libro de Producción carga también la hoja Insumos.
+      Los archivos se leen en este navegador.
+    </p>
+
+    <div class="cargas">
+      <label>
+        PRODUCCION-LAS-ACACIAS.xlsx
+        <input id="archivo-produccion" type="file" accept=".xlsx">
+      </label>
+
+      <label>
+        aENVIO-DE-CORREOS.xlsb
+        <input id="archivo-recibo" type="file" accept=".xlsb">
+      </label>
+    </div>
+  </details>
+
+  <section class="panel">
+    <nav class="pestanas" aria-label="Seleccionar tabla">
+      <button data-tab="produccion" class="activo">Producción</button>
+      <button data-tab="insumos">Insumos</button>
+      <button data-tab="recibo">Recibo</button>
+    </nav>
+
+    <div class="controles">
+      <input id="buscar" type="search"
+             placeholder="Buscar en toda la tabla..."
+             aria-label="Buscar en toda la tabla">
+
+      <label>
+        Fila de encabezados
+        <input id="fila" type="number" min="1" max="100" value="3">
+      </label>
+
+      <label>
+        Filas
+        <select id="limite">
+          <option value="25">25</option>
+          <option value="50" selected>50</option>
+          <option value="100">100</option>
+          <option value="200">200</option>
+        </select>
+      </label>
+
+      <button id="quitar">Quitar filtros</button>
+    </div>
+
+    <div id="resumen" aria-live="polite"></div>
+
+    <div class="tabla">
+      <table>
+        <thead id="encabezado"></thead>
+        <tbody id="cuerpo"></tbody>
+      </table>
+      <div id="vacio">Cargando datos...</div>
+    </div>
+
+    <div class="pie">
+      <span>Hacé clic en los encabezados para ordenar.</span>
+      <div class="navegacion">
+        <button id="anterior">Anterior</button>
+        <span id="pagina">Página 1 de 1</span>
+        <button id="siguiente">Siguiente</button>
+      </div>
+    </div>
+  </section>
+
+  <p class="nota">
+    Producción utiliza los encabezados de la fila 3.
+    En Insumos y Recibo podés ajustar la fila de encabezados.
+    La hora de lectura indica cuándo se cargó el archivo en el tablero,
+    no cuándo se modificó el Excel.
+    Las fórmulas muestran los resultados guardados en el libro.
+  </p>
+</main>
+
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+
+<script>
+"use strict";
+
+const $ = id => document.getElementById(id);
+
+const URLS = {
+  produccion:
+    "https://dl.dropbox.com/scl/fi/z1jtk061zs1maw4vlnyib/PRODUCCION-LAS-ACACIAS.xlsx?rlkey=7pzd2o0oh1q3inr62bvztoqcb&dl=1",
+  recibo:
+    "https://dl.dropbox.com/scl/fi/l87boeiqu54yra3i0evd6/aENVIO-DE-CORREOS.xlsb?rlkey=149gw31ntsbso8vtpix30yxjl&dl=1"
+};
+
+const CONFIG = {
+  produccion: {
+    origen: "produccion",
+    hoja: "DATOS LAS ACACIAS",
+    fila: 3
+  },
+  insumos: {
+    origen: "produccion",
+    hoja: "INSUMOS",
+    fila: 1
+  },
+  recibo: {
+    origen: "recibo",
+    hoja: "tati las acacias",
+    fila: 1
+  }
+};
+
+const libros = {};
+const tablas = {};
+
+let activa = "produccion";
+let ocupado = false;
+
+for (const id of Object.keys(CONFIG)) {
+  tablas[id] = {
+    columnas: [],
+    filas: [],
+    filtros: [],
+    busqueda: "",
+    orden: null,
+    direccion: 1,
+    pagina: 1,
+    lectura: "",
+    fuente: "",
+    error: "",
+    cargando: false
+  };
+}
+
+function normalizar(valor) {
+  return String(valor ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+}
+
+function texto(valor) {
+  return valor == null ? "" : String(valor);
+}
+
+function numero(valor) {
+  return valor.toLocaleString("es-UY");
+}
+
+function hora(valor) {
+  return new Date(valor).toLocaleString("es-UY", {
+    timeZone: "America/Montevideo"
+  });
+}
+
+function idsDelOrigen(origen) {
+  return Object.keys(CONFIG).filter(
+    id => CONFIG[id].origen === origen
+  );
+}
+
+function extraer(id, libro) {
+  const config = CONFIG[id];
+
+  const nombre = libro.SheetNames.find(
+    hoja => normalizar(hoja) === normalizar(config.hoja)
+  );
+
+  if (!nombre) {
+    throw new Error(
+      'No se encontró "' + config.hoja +
+      '". Hojas: ' + libro.SheetNames.join(", ")
+    );
+  }
+
+  const hoja = libro.Sheets[nombre];
+
+  if (!hoja["!ref"]) {
+    throw new Error("La hoja está vacía.");
+  }
+
+  const rango = XLSX.utils.decode_range(hoja["!ref"]);
+  rango.s.r = config.fila - 1;
+
+  if (rango.s.r > rango.e.r) {
+    throw new Error("La fila elegida supera el contenido de la hoja.");
+  }
+
+  const matriz = XLSX.utils.sheet_to_json(hoja, {
+    header: 1,
+    range: rango,
+    raw: false,
+    defval: "",
+    blankrows: true
+  });
+
+  const encabezados = matriz[0] || [];
+  const datos = matriz.slice(1);
+
+  const ancho = datos.reduce(
+    (maximo, fila) => Math.max(maximo, fila.length),
+    encabezados.length
+  );
+
+  const indices = [];
+
+  for (let i = 0; i < ancho; i++) {
+    if (
+      texto(encabezados[i]).trim() ||
+      datos.some(fila => texto(fila[i]).trim())
+    ) {
+      indices.push(i);
+    }
+  }
+
+  const usados = new Map();
+
+  const columnas = indices.map(i => {
+    const base = texto(encabezados[i]).trim() ||
+      "Columna " + XLSX.utils.encode_col(rango.s.c + i);
+
+    const veces = (usados.get(base) || 0) + 1;
+    usados.set(base, veces);
+
+    return veces === 1 ? base : base + " (" + veces + ")";
+  });
+
+  const filas = datos
+    .map(fila => indices.map(i => texto(fila[i])))
+    .filter(fila => fila.some(valor => valor.trim() !== ""));
+
+  const anterior = tablas[id];
+  const mismos = JSON.stringify(columnas) ===
+    JSON.stringify(anterior.columnas);
+
+  return {
+    ...anterior,
+    columnas,
+    filas,
+    filtros: mismos ? anterior.filtros : columnas.map(() => ""),
+    orden: mismos ? anterior.orden : null,
+    pagina: 1,
+    error: "",
+    cargando: false
+  };
+}
+
+function tarjetas() {
+  for (const [id, tabla] of Object.entries(tablas)) {
+    $("numero-" + id).textContent =
+      tabla.lectura ? numero(tabla.filas.length) : "—";
+
+    const estado = $("estado-" + id);
+    estado.classList.toggle("error", Boolean(tabla.error));
+
+    if (tabla.cargando) {
+      estado.textContent = "Cargando archivo...";
+    } else if (tabla.error) {
+      estado.textContent = tabla.error +
+        (tabla.lectura
+          ? " · Datos anteriores: " + hora(tabla.lectura)
+          : "");
+    } else if (tabla.lectura) {
+      estado.textContent =
+        tabla.fuente + " · Lectura: " + hora(tabla.lectura);
+    } else {
+      estado.textContent = "Pendiente";
+    }
+  }
+}
+
+function encabezado() {
+  const tabla = tablas[activa];
+  const tr = document.createElement("tr");
+
+  tabla.columnas.forEach((nombre, indice) => {
+    const th = document.createElement("th");
+    const boton = document.createElement("button");
+
+    boton.textContent = nombre +
+      (tabla.orden === indice
+        ? (tabla.direccion === 1 ? " ▲" : " ▼")
+        : "");
+
+    boton.addEventListener("click", () => {
+      tabla.direccion = tabla.orden === indice
+        ? -tabla.direccion : 1;
+      tabla.orden = indice;
+      tabla.pagina = 1;
+      encabezado();
+      mostrarFilas();
+    });
+
+    const input = document.createElement("input");
+    input.type = "search";
+    input.placeholder = "Filtrar...";
+    input.value = tabla.filtros[indice] || "";
+    input.setAttribute("aria-label", "Filtrar " + nombre);
+
+    input.addEventListener("input", () => {
+      tabla.filtros[indice] = input.value;
+      tabla.pagina = 1;
+      mostrarFilas();
+    });
+
+    th.append(boton, input);
+    tr.append(th);
+  });
+
+  $("encabezado").replaceChildren(tr);
+}
+
+const comparador = new Intl.Collator("es", {
+  numeric: true,
+  sensitivity: "base"
+});
+
+function mostrarFilas() {
+  const tabla = tablas[activa];
+  const buscar = normalizar(tabla.busqueda);
+
+  let resultado = tabla.filas.filter(fila =>
+    (!buscar || fila.some(valor =>
+      normalizar(valor).includes(buscar)
+    )) &&
+    tabla.filtros.every((filtro, indice) =>
+      !normalizar(filtro) ||
+      normalizar(fila[indice]).includes(normalizar(filtro))
+    )
+  );
+
+  if (tabla.orden !== null) {
+    resultado.sort((a, b) =>
+      comparador.compare(a[tabla.orden], b[tabla.orden]) *
+      tabla.direccion
+    );
+  }
+
+  const limite = Number($("limite").value);
+  const paginas = Math.max(1, Math.ceil(resultado.length / limite));
+
+  tabla.pagina = Math.min(tabla.pagina, paginas);
+
+  const inicio = (tabla.pagina - 1) * limite;
+  const fragmento = document.createDocumentFragment();
+
+  resultado.slice(inicio, inicio + limite).forEach(fila => {
+    const tr = document.createElement("tr");
+
+    fila.forEach(valor => {
+      const td = document.createElement("td");
+      td.textContent = valor;
+      tr.append(td);
+    });
+
+    fragmento.append(tr);
+  });
+
+  $("cuerpo").replaceChildren(fragmento);
+
+  $("resumen").textContent =
+    "Hoja: " + CONFIG[activa].hoja +
+    " · Encabezados: fila " + CONFIG[activa].fila +
+    " · " + numero(resultado.length) +
+    " registros filtrados de " + numero(tabla.filas.length) +
+    (tabla.error ? " · " + tabla.error : "");
+
+  $("pagina").textContent =
+    "Página " + tabla.pagina + " de " + paginas;
+
+  $("anterior").disabled = tabla.pagina <= 1;
+  $("siguiente").disabled = tabla.pagina >= paginas;
+
+  $("vacio").hidden = resultado.length > 0;
+  $("vacio").textContent = tabla.cargando && !tabla.lectura
+    ? "Cargando datos..."
+    : tabla.error && !tabla.lectura
+      ? tabla.error
+      : "No hay registros para esta selección.";
+}
+
+function mostrar() {
+  document.querySelectorAll("[data-tab]").forEach(boton => {
+    const seleccionada = boton.dataset.tab === activa;
+    boton.classList.toggle("activo", seleccionada);
+    boton.setAttribute("aria-pressed", String(seleccionada));
+  });
+
+  $("buscar").value = tablas[activa].busqueda;
+  $("fila").value = CONFIG[activa].fila;
+  $("fila").disabled = activa === "produccion" || ocupado;
+
+  encabezado();
+  mostrarFilas();
+}
+
+function cargarLibro(origen, bytes, fuente) {
+  const libro = XLSX.read(bytes, {
+    type: "array",
+    cellDates: false
+  });
+
+  const lectura = new Date().toISOString();
+  libros[origen] = { libro, fuente, lectura };
+
+  for (const id of idsDelOrigen(origen)) {
+    try {
+      const tabla = extraer(id, libro);
+      tabla.fuente = fuente;
+      tabla.lectura = lectura;
+      tablas[id] = tabla;
+    } catch (error) {
+      tablas[id].error = error.message;
+      tablas[id].cargando = false;
+    }
+  }
+}
+
+function errorOrigen(origen, mensaje) {
+  for (const id of idsDelOrigen(origen)) {
+    tablas[id].error = mensaje;
+    tablas[id].cargando = false;
+  }
+}
+
+function comprobarLector() {
+  if (typeof XLSX === "undefined") {
+    throw new Error(
+      "No se cargó el lector Excel. Revisá la conexión y recargá la página."
+    );
+  }
+}
+
+async function descargar(origen) {
+  const controlador = new AbortController();
+  const temporizador = setTimeout(() => controlador.abort(), 90000);
+
+  try {
+    const respuesta = await fetch(URLS[origen], {
+      mode: "cors",
+      cache: "no-store",
+      credentials: "omit",
+      signal: controlador.signal
+    });
+
+    if (!respuesta.ok) {
+      throw new Error("Dropbox respondió HTTP " + respuesta.status + ".");
+    }
+
+    const tipo = (respuesta.headers.get("Content-Type") || "")
+      .toLowerCase();
+
+    if (tipo.includes("text/html") || tipo.includes("application/json")) {
+      throw new Error("El enlace no devolvió un archivo Excel.");
+    }
+
+    const bytes = await respuesta.arrayBuffer();
+
+    if (!bytes.byteLength) {
+      throw new Error("El archivo está vacío.");
+    }
+
+    cargarLibro(origen, bytes, "Dropbox");
+  } catch (error) {
+    const mensaje = error.name === "AbortError"
+      ? "La descarga superó los 90 segundos."
+      : error instanceof TypeError
+        ? "No se pudo leer Dropbox: puede ser un bloqueo del navegador o un problema de conexión."
+        : error.message;
+
+    errorOrigen(
+      origen,
+      mensaje + " Podés seleccionar el Excel desde la PC."
+    );
+
+    $("archivos").open = true;
+  } finally {
+    clearTimeout(temporizador);
+    tarjetas();
+    mostrar();
+  }
+}
+
+function bloquear(valor) {
+  ocupado = valor;
+  $("actualizar").disabled = valor;
+  $("actualizar").textContent = valor
+    ? "Cargando..."
+    : "Actualizar desde Dropbox";
+
+  $("archivo-produccion").disabled = valor;
+  $("archivo-recibo").disabled = valor;
+  $("fila").disabled = activa === "produccion" || valor;
+}
+
+async function actualizar() {
+  if (ocupado) return;
+
+  try {
+    comprobarLector();
+  } catch (error) {
+    errorOrigen("produccion", error.message);
+    errorOrigen("recibo", error.message);
+    tarjetas();
+    mostrar();
+    return;
+  }
+
+  bloquear(true);
+
+  for (const tabla of Object.values(tablas)) {
+    tabla.cargando = true;
+    tabla.error = "";
+  }
+
+  tarjetas();
+  mostrar();
+
+  try {
+    await Promise.allSettled([
+      descargar("produccion"),
+      descargar("recibo")
+    ]);
+  } finally {
+    bloquear(false);
+    tarjetas();
+    mostrar();
+  }
+}
+
+async function seleccionarArchivo(origen, input) {
+  const archivo = input.files[0];
+  if (!archivo || ocupado) return;
+
+  bloquear(true);
+
+  for (const id of idsDelOrigen(origen)) {
+    tablas[id].cargando = true;
+    tablas[id].error = "";
+  }
+
+  tarjetas();
+
+  try {
+    comprobarLector();
+    const bytes = await archivo.arrayBuffer();
+    cargarLibro(origen, bytes, "Archivo local");
+  } catch (error) {
+    errorOrigen(origen, "No se pudo leer el archivo: " + error.message);
+  } finally {
+    input.value = "";
+    bloquear(false);
+    tarjetas();
+    mostrar();
+  }
+}
+
+document.querySelectorAll("[data-tab]").forEach(boton => {
+  boton.addEventListener("click", () => {
+    activa = boton.dataset.tab;
+    mostrar();
+  });
+});
+
+$("buscar").addEventListener("input", () => {
+  tablas[activa].busqueda = $("buscar").value;
+  tablas[activa].pagina = 1;
+  mostrarFilas();
+});
+
+$("quitar").addEventListener("click", () => {
+  // Liberar búsquedas, filtros y ordenamiento de las tres tablas.
+  for (const tabla of Object.values(tablas)) {
+    tabla.busqueda = "";
+    tabla.filtros = tabla.columnas.map(() => "");
+    tabla.orden = null;
+    tabla.direccion = 1;
+    tabla.pagina = 1;
+  }
+
+  mostrar();
+});
+
+$("limite").addEventListener("change", () => {
+  tablas[activa].pagina = 1;
+  mostrarFilas();
+});
+
+$("anterior").addEventListener("click", () => {
+  tablas[activa].pagina--;
+  mostrarFilas();
+});
+
+$("siguiente").addEventListener("click", () => {
+  tablas[activa].pagina++;
+  mostrarFilas();
+});
+
+$("fila").addEventListener("change", () => {
+  if (activa === "produccion" || ocupado) return;
+
+  const config = CONFIG[activa];
+  const nuevaFila = Number($("fila").value);
+
+  if (
+    !Number.isInteger(nuevaFila) ||
+    nuevaFila < 1 ||
+    nuevaFila > 100
+  ) {
+    $("fila").value = config.fila;
+    return;
+  }
+
+  const anterior = config.fila;
+  config.fila = nuevaFila;
+  const guardado = libros[config.origen];
+
+  if (guardado) {
+    try {
+      const tabla = extraer(activa, guardado.libro);
+      tabla.fuente = guardado.fuente;
+      tabla.lectura = guardado.lectura;
+      tablas[activa] = tabla;
+    } catch (error) {
+      config.fila = anterior;
+      tablas[activa].error = error.message;
+    }
+  }
+
+  tarjetas();
+  mostrar();
+});
+
+$("archivo-produccion").addEventListener("change", event => {
+  seleccionarArchivo("produccion", event.target);
+});
+
+$("archivo-recibo").addEventListener("change", event => {
+  seleccionarArchivo("recibo", event.target);
+});
+
+$("actualizar").addEventListener("click", actualizar);
+
+mostrar();
+actualizar();
+</script>
+</body>
+</html>
