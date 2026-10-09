@@ -351,11 +351,16 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
 }
 .tabla-insumos .leer-nota{flex:0 0 auto;margin:0;padding:4px 7px;white-space:nowrap}
 
-.tarjetas-principales{grid-template-columns:repeat(4,minmax(0,1fr))}
+.tarjetas-principales{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
 @media(max-width:1100px){.tarjetas-principales{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:700px){.tarjetas-principales{grid-template-columns:1fr}}
 #modalChapas .tabla-detalle td:last-child{white-space:nowrap}
 #modalChapas .tabla-detalle tfoot{font-weight:bold;color:var(--bosque)}
+#modalTrozasCamion{width:min(1000px,94vw)}
+#modalTrozasCamion .tabla-detalle{min-width:760px}
+#modalTrozasCamion .detalle-scroll{overflow:auto}
+#modalTrozasCamion .tabla-detalle th{white-space:normal;min-width:100px}
+#modalTrozasCamion .tabla-detalle tfoot{font-weight:bold;color:var(--bosque)}
 </style>
 </head>
 
@@ -449,6 +454,14 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
       <h2>CHAPAS</h2>
       <div id="numero-chapas" class="numero">—</div>
       <div class="detalle">Saldo aproximado · ver detalle</div>
+    </div>
+  </button>
+  <button id="tarjetaTrozasCamion" class="tarjeta stock-monte" type="button" aria-haspopup="dialog">
+    <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#i-camion"/></svg></div>
+    <div class="tarjeta-contenido">
+      <h2>TROZAS POR CAMIÓN</h2>
+      <div id="numero-trozas-camion" class="numero">—</div>
+      <div class="detalle">Promedio por viaje · ver productos</div>
     </div>
   </button>
 </section>
@@ -611,6 +624,18 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
   <h2 id="tituloNota">Observaciones</h2>
   <div id="notaCompleta"></div>
   <button id="cerrarNota" class="secundario">Cerrar</button>
+</dialog>
+
+<dialog id="modalTrozasCamion" aria-labelledby="tituloTrozasCamion">
+  <h2 id="tituloTrozasCamion">TROZAS POR CAMIÓN</h2>
+  <p id="avisoTrozasCamion" class="detalle"></p>
+  <div class="detalle-scroll"><table class="tabla-detalle">
+    <thead><tr><th>Id Producto</th><th>Viajes</th><th>Cantidad de trozas</th><th>Neto total (t)</th><th>Trozas por camión</th><th>Neto por camión (t)</th></tr></thead>
+    <tbody id="detalleTrozasCamion"></tbody>
+    <tfoot id="totalTrozasCamion"></tfoot>
+  </table></div>
+  <p class="detalle">Cada registro de Recibo se considera un viaje. Trozas por camión = suma de Cantidad ÷ viajes. Neto por camión = suma de Neto ÷ viajes. Utiliza los registros completos de Recibo.</p>
+  <button id="cerrarTrozasCamion" class="secundario">Cerrar</button>
 </dialog>
 
 <dialog id="modalChapas" aria-labelledby="tituloChapas">
@@ -1059,6 +1084,46 @@ function calculoDescarte(){
     (_,i)=>seleccion.reduce((s,f)=>s+f.descarte[i],0)
   );
   return {seleccion,cantidades,total:cantidades.reduce((s,v)=>s+v,0)};
+}
+
+function calculoTrozasCamion(){
+  const t=tablas.recibo;
+  if(!t.lectura||t.error||t.avisoCantidad)return {error:t.error||t.avisoCantidad||"Pendiente de lectura de Recibo.",grupos:[],total:null};
+  const indices=t.columnas.map((c,i)=>["neto","netoton"].includes(claveColumna(c))?i:-1).filter(i=>i>=0);
+  if(indices.length!==1)return {error:"Se necesita una única columna Neto en Recibo.",grupos:[],total:null};
+  const grupos=new Map(),total={producto:"TOTAL",viajes:0,cantidad:0,neto:0};
+  let error="";
+  t.filas.forEach((f,n)=>{
+    const valorNeto=f.valores[indices[0]];
+    const neto=numeroCelda(valorNeto);
+    if(!tieneContenido(valorNeto)||!Number.isFinite(neto)){
+      error="Revisar Neto: valor vacío o no numérico en registro "+(n+1)+".";return;
+    }
+    const producto=f.color||"SIN CLASIFICAR";
+    if(!grupos.has(producto))grupos.set(producto,{producto,viajes:0,cantidad:0,neto:0});
+    for(const g of [grupos.get(producto),total]){g.viajes++;g.cantidad+=f.cantidad;g.neto+=neto;}
+  });
+  return {error,grupos:[...grupos.values()].sort((a,b)=>a.producto.localeCompare(b.producto,"es")),total:error?null:total};
+}
+function actualizarTrozasCamion(){
+  const d=calculoTrozasCamion();
+  $("numero-trozas-camion").textContent=d.total&&d.total.viajes?numero(d.total.cantidad/d.total.viajes):"—";
+  $("tarjetaTrozasCamion").title=d.error||"Cantidad total ÷ registros de Recibo. Cada registro se considera un viaje.";
+  if($("modalTrozasCamion").open)mostrarDetalleTrozasCamion();
+}
+function mostrarDetalleTrozasCamion(){
+  const d=calculoTrozasCamion();
+  $("avisoTrozasCamion").textContent=d.error||(d.total?.viajes?"Promedios por producto · registros completos de Recibo.":"No hay viajes en Recibo.");
+  $("avisoTrozasCamion").classList.toggle("error",Boolean(d.error));
+  function fila(g){
+    const tr=document.createElement("tr");
+    const valores=[g.producto,numero(g.viajes),numero(g.cantidad),numero(g.neto),
+      g.viajes?numero(g.cantidad/g.viajes):"—",g.viajes?numero(g.neto/g.viajes):"—"];
+    valores.forEach(v=>{const td=document.createElement("td");td.textContent=v;tr.append(td)});
+    return tr;
+  }
+  $("detalleTrozasCamion").replaceChildren(...(d.error?[]:d.grupos.map(fila)));
+  $("totalTrozasCamion").replaceChildren(...(d.total?[fila(d.total)]:[]));
 }
 
 function sumarColumnasChapas(id,grupos){
@@ -1619,6 +1684,7 @@ function actualizarEstado(){
 function actualizarDashboard(){
   actualizarTotales();
   actualizarChapas();
+  actualizarTrozasCamion();
   tarjetasStock();
   actualizarGraficos();
   actualizarSelectorQuincena();
@@ -1905,6 +1971,10 @@ $("tarjetaDescarte").addEventListener("click",()=>{
 $("tarjetaChapas").addEventListener("click",()=>{
   mostrarDetalleChapas();$("modalChapas").showModal();
 });
+$("tarjetaTrozasCamion").addEventListener("click",()=>{
+  mostrarDetalleTrozasCamion();$("modalTrozasCamion").showModal();
+});
+$("cerrarTrozasCamion").addEventListener("click",()=>$("modalTrozasCamion").close());
 $("cerrarChapas").addEventListener("click",()=>$("modalChapas").close());
 $("cerrarDescarte").addEventListener("click",()=>$("modalDescarte").close());
 
