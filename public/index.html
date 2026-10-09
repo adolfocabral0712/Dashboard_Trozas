@@ -343,10 +343,10 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
 .tarjetas-principales{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
 #modalChapas .tabla-detalle td:last-child{white-space:nowrap}
 #modalChapas .tabla-detalle tfoot{font-weight:bold;color:var(--bosque)}
-#modalTrozasCamion{width:min(1000px,94vw)}
-#modalTrozasCamion .tabla-detalle{min-width:760px}
+#modalTrozasCamion{width:min(620px,94vw)}
+#modalTrozasCamion .tabla-detalle{min-width:0}
 #modalTrozasCamion .detalle-scroll{overflow:auto}
-#modalTrozasCamion .tabla-detalle th{white-space:normal;min-width:100px}
+#modalTrozasCamion .tabla-detalle th{white-space:normal;min-width:100px;line-height:1.4;vertical-align:middle;text-align:center}
 #modalTrozasCamion .tabla-detalle tfoot{font-weight:bold;color:var(--bosque)}
 @media(max-width:1100px){
   .graficos{grid-template-columns:1fr}
@@ -677,12 +677,9 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
     <table class="tabla-detalle">
       <thead>
         <tr>
-          <th>Id Producto</th>
-          <th>Viajes</th>
-          <th>Cantidad de trozas</th>
-          <th>Tons.</th>
-          <th>Trozas por camión</th>
-          <th>Neto por camión (t)</th>
+          <th>Id<br>Producto</th>
+          <th>Trozas por<br>camión</th>
+          <th>Neto por<br>camión (t)</th>
         </tr>
       </thead>
       <tbody id="detalleTrozasCamion"></tbody>
@@ -1251,12 +1248,6 @@ function mostrarDetalleTrozasCamion(){
 
     const valores=[
       g.producto,
-      numero(g.viajes),
-      numero(g.cantidad),
-      g.neto.toLocaleString("es-UY",{
-        minimumFractionDigits:2,
-        maximumFractionDigits:2
-      }),
       g.viajes
         ?Math.round(g.cantidad/g.viajes).toLocaleString("es-UY")
         :"—",
