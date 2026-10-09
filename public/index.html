@@ -1932,6 +1932,17 @@ function pasoEscala(rango){
   return factor*potencia;
 }
 
+function disenoGraficoQuincena(disponible,categorias,series,compacto){
+  const margen={izquierda:compacto?60:80,derecha:compacto?15:25,
+    arriba:40,abajo:compacto?60:70};
+  const anchoGrupo=series===1?(compacto?90:140):
+    series*(compacto?42:52)+(compacto?18:26);
+  const preferido=compacto?340:series===1?420:series===2?560:700;
+  const ancho=Math.max(Math.min(disponible,preferido),
+    margen.izquierda+margen.derecha+categorias*anchoGrupo);
+  return {ancho,alto:compacto?310:350,margen};
+}
+
 function actualizarGraficoQuincena(){
   const t=tablas.produccion;
   const series=seriesSeleccionadas();
@@ -2025,18 +2036,14 @@ function actualizarGraficoQuincena(){
   const minimo=Math.floor(menor/paso)*paso;
   const maximo=Math.ceil(mayor/paso)*paso||paso;
 
-  const anchoGrupo=Math.max(180,series.length*65);
-  const ancho=Math.max(
-    1000,110+categorias.length*anchoGrupo
+  const contenedor=$("graficoQuincena");
+  const estilo=getComputedStyle(contenedor);
+  const disponible=Math.max(200,contenedor.clientWidth-
+    parseFloat(estilo.paddingLeft)-parseFloat(estilo.paddingRight));
+  const compacto=window.matchMedia("(max-width:700px)").matches;
+  const {ancho,alto,margen}=disenoGraficoQuincena(
+    disponible,categorias.length,series.length,compacto
   );
-  const alto=390;
-
-  const margen={
-    izquierda:80,
-    derecha:25,
-    arriba:45,
-    abajo:78
-  };
 
   const anchoArea=ancho-margen.izquierda-margen.derecha;
   const altoArea=alto-margen.arriba-margen.abajo;
@@ -2052,7 +2059,11 @@ function actualizarGraficoQuincena(){
     "aria-label":"Producción agrupada por Quincena"
   });
 
+  svg.style.width=ancho+"px";
   svg.style.minWidth=ancho+"px";
+  svg.style.maxWidth="none";
+  svg.style.margin="0 auto";
+  svg.style.height=alto+"px";
 
   for(let v=minimo;v<=maximo+paso/1000;v+=paso){
     const posicion=y(v);
@@ -2101,9 +2112,9 @@ function actualizarGraficoQuincena(){
 
   const espacioGrupo=anchoArea/categorias.length;
   const espacioBarra=Math.min(
-    65,espacioGrupo*.83/series.length
+    compacto?42:56,espacioGrupo*.83/series.length
   );
-  const anchoBarra=Math.max(12,espacioBarra-12);
+  const anchoBarra=Math.max(12,espacioBarra-(compacto?8:10));
 
   categorias.forEach((quincena,indice)=>{
     const centro=margen.izquierda+
@@ -2676,6 +2687,22 @@ $("cerrarDescarte").addEventListener("click",()=>{
   $("modalDescarte").close();
 });
 
+let anchoGraficoAnterior=-1;
+let frameGrafico=0;
+if(typeof ResizeObserver!=="undefined"){
+  new ResizeObserver(entradas=>{
+    const ancho=entradas[0].contentRect.width;
+    if(Math.abs(ancho-anchoGraficoAnterior)<1)return;
+    anchoGraficoAnterior=ancho;
+    cancelAnimationFrame(frameGrafico);
+    frameGrafico=requestAnimationFrame(actualizarGraficoQuincena);
+  }).observe($("graficoQuincena"));
+}else{
+  window.addEventListener("resize",()=>{
+    cancelAnimationFrame(frameGrafico);
+    frameGrafico=requestAnimationFrame(actualizarGraficoQuincena);
+  });
+}
 mostrar();
 actualizar();
 </script>
