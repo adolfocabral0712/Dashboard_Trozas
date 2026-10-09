@@ -4,278 +4,191 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Producción Las Acacias</title>
-
 <style>
-:root {
-  --verde: #19564b;
-  --fondo: #f2f5f7;
-  --borde: #dbe4e8;
-  --texto: #273c49;
+:root{
+  --verde:#19564b;
+  --fondo:#f2f5f7;
+  --borde:#dbe4e8;
+  --texto:#273c49;
 }
-
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  background: var(--fondo);
-  color: var(--texto);
-  font-family: Arial, sans-serif;
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--fondo);
+  color:var(--texto);
+  font-family:Arial,sans-serif;
 }
-
-main {
-  max-width: 1600px;
-  margin: auto;
-  padding: 24px;
+main{max-width:1600px;margin:auto;padding:24px}
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  flex-wrap:wrap;
+  margin-bottom:20px;
 }
-
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 15px;
-  flex-wrap: wrap;
-  margin-bottom: 20px;
+h1{color:var(--verde);margin:0 0 8px;font-size:26px}
+.subtitulo{margin:0;color:#647582}
+button,input,select{font:inherit}
+button{
+  padding:10px 15px;
+  border:1px solid var(--borde);
+  border-radius:8px;
+  background:white;
+  cursor:pointer;
+  color:var(--texto);
 }
-
-h1 {
-  color: var(--verde);
-  margin: 0 0 8px;
-  font-size: 26px;
+button:hover{background:#edf5f1}
+button:disabled{opacity:.5;cursor:default}
+.primario,.pestanas button.activo{
+  background:var(--verde);
+  border-color:var(--verde);
+  color:white;
 }
-
-.subtitulo {
-  margin: 0;
-  color: #647582;
+.tarjetas{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+  margin-bottom:18px;
 }
-
-button, input, select { font: inherit; }
-
-button {
-  padding: 10px 15px;
-  border: 1px solid var(--borde);
-  border-radius: 8px;
-  background: white;
-  cursor: pointer;
-  color: var(--texto);
+.tarjeta{
+  background:white;
+  border:1px solid var(--borde);
+  padding:16px;
+  border-radius:12px;
+  text-align:center;
 }
-
-button:hover { background: #edf5f1; }
-
-button:disabled {
-  opacity: .5;
-  cursor: default;
+.tarjeta h2{margin:0 0 10px;font-size:15px;color:var(--verde)}
+.numero{font-size:28px;font-weight:bold;margin-bottom:8px}
+.estado{
+  font-size:12px;
+  line-height:1.5;
+  color:#647582;
+  overflow-wrap:anywhere;
 }
-
-.primario, .pestanas button.activo {
-  background: var(--verde);
-  border-color: var(--verde);
-  color: white;
+.error{color:#b02e2e}
+.archivos,.panel{
+  background:white;
+  border:1px solid var(--borde);
+  border-radius:12px;
 }
-
-.tarjetas {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
-  margin-bottom: 18px;
+.archivos{padding:16px;margin-bottom:18px}
+.archivos summary{cursor:pointer;color:var(--verde);font-weight:bold}
+.archivos p{font-size:13px;line-height:1.6}
+.cargas{display:flex;gap:20px;flex-wrap:wrap}
+.cargas label{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  font-size:13px;
+  max-width:100%;
 }
-
-.tarjeta {
-  background: white;
-  border: 1px solid var(--borde);
-  padding: 16px;
-  border-radius: 12px;
-  text-align: center;
+.cargas input{max-width:100%}
+.panel{overflow:hidden}
+.pestanas,.controles{
+  display:flex;
+  gap:10px;
+  padding:16px;
+  flex-wrap:wrap;
+  align-items:center;
 }
-
-.tarjeta h2 {
-  margin: 0 0 10px;
-  font-size: 15px;
-  color: var(--verde);
+.pestanas{border-bottom:1px solid var(--borde)}
+.titulo-tabla{
+  margin:0;
+  padding:18px 16px 0;
+  text-align:center;
+  color:var(--verde);
+  font-size:20px;
+  overflow-wrap:anywhere;
 }
-
-.numero {
-  font-size: 28px;
-  font-weight: bold;
-  margin-bottom: 8px;
+input,select{
+  padding:9px;
+  border:1px solid var(--borde);
+  border-radius:6px;
+  background:white;
+  color:var(--texto);
 }
-
-.estado {
-  font-size: 12px;
-  line-height: 1.5;
-  color: #647582;
-  overflow-wrap: anywhere;
+#buscar{flex:1;min-width:190px}
+.controles label{
+  font-size:13px;
+  display:flex;
+  align-items:center;
+  gap:7px;
 }
-
-.error { color: #b02e2e; }
-
-.archivos, .panel {
-  background: white;
-  border: 1px solid var(--borde);
-  border-radius: 12px;
+#fila{width:70px}
+#resumen{
+  padding:0 16px 14px;
+  color:#647582;
+  font-size:13px;
+  line-height:1.6;
+  text-align:center;
 }
-
-.archivos {
-  padding: 16px;
-  margin-bottom: 18px;
+.tabla{overflow:auto;max-height:65vh;border-top:1px solid var(--borde)}
+table{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0;
+  font-size:12px;
 }
-
-.archivos summary {
-  cursor: pointer;
-  color: var(--verde);
-  font-weight: bold;
+th,td{
+  text-align:center;
+  padding:10px;
+  min-width:105px;
+  max-width:220px;
+  overflow-wrap:anywhere;
+  border-bottom:1px solid var(--borde);
 }
-
-.archivos p {
-  font-size: 13px;
-  line-height: 1.6;
+th{
+  position:sticky;
+  top:0;
+  z-index:1;
+  background:#edf3f4;
+  vertical-align:top;
 }
-
-.cargas {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
+th button{
+  width:100%;
+  border:none;
+  background:transparent;
+  color:var(--verde);
+  font-weight:bold;
+  white-space:normal;
+  padding:4px;
 }
-
-.cargas label {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  font-size: 13px;
-  max-width: 100%;
+th input{width:100%;min-width:85px;margin-top:8px;font-size:11px}
+tbody tr:nth-child(even){background:#f8fafb}
+tbody tr:hover{background:#edf6f0}
+.etiqueta{
+  display:inline-block;
+  padding:5px 9px;
+  border-radius:6px;
+  font-weight:bold;
 }
-
-.cargas input { max-width: 100%; }
-
-.panel { overflow: hidden; }
-
-.pestanas, .controles {
-  display: flex;
-  gap: 10px;
-  padding: 16px;
-  flex-wrap: wrap;
-  align-items: center;
+.rojo{background:#ffe1e1;color:#a62323}
+.verde{background:#dff2e4;color:#24623a}
+.amarillo{background:#fff0b6;color:#765b00}
+#vacio{padding:30px;text-align:center;color:#647582}
+.pie{
+  padding:16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+  font-size:13px;
 }
-
-.pestanas { border-bottom: 1px solid var(--borde); }
-
-input, select {
-  padding: 9px;
-  border: 1px solid var(--borde);
-  border-radius: 6px;
-  background: white;
-  color: var(--texto);
-}
-
-#buscar {
-  flex: 1;
-  min-width: 190px;
-}
-
-.controles label {
-  font-size: 13px;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-}
-
-#fila { width: 70px; }
-
-#resumen {
-  padding: 0 16px 14px;
-  color: #647582;
-  font-size: 13px;
-  line-height: 1.6;
-}
-
-.tabla {
-  overflow: auto;
-  max-height: 65vh;
-  border-top: 1px solid var(--borde);
-}
-
-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  font-size: 12px;
-}
-
-th, td {
-  text-align: center;
-  padding: 10px;
-  min-width: 110px;
-  max-width: 240px;
-  overflow-wrap: anywhere;
-  border-bottom: 1px solid var(--borde);
-}
-
-th {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  background: #edf3f4;
-  vertical-align: top;
-}
-
-th button {
-  width: 100%;
-  border: none;
-  background: transparent;
-  color: var(--verde);
-  font-weight: bold;
-  white-space: normal;
-  padding: 4px;
-}
-
-th input {
-  width: 100%;
-  min-width: 90px;
-  margin-top: 8px;
-  font-size: 11px;
-}
-
-tbody tr:nth-child(even) { background: #f8fafb; }
-tbody tr:hover { background: #edf6f0; }
-
-#vacio {
-  padding: 30px;
-  text-align: center;
-  color: #647582;
-}
-
-.pie {
-  padding: 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  font-size: 13px;
-}
-
-.navegacion {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.nota {
-  font-size: 12px;
-  line-height: 1.6;
-  color: #647582;
-}
-
-@media (max-width: 700px) {
-  main { padding: 12px; }
-  h1 { font-size: 22px; }
-  .tarjetas { grid-template-columns: 1fr; }
-  .tarjeta { padding: 12px; }
-  .numero { font-size: 23px; }
-  #buscar { flex-basis: 100%; }
+.navegacion{display:flex;align-items:center;gap:10px}
+.nota{font-size:12px;line-height:1.6;color:#647582}
+@media(max-width:700px){
+  main{padding:12px}
+  h1{font-size:22px}
+  .tarjetas{grid-template-columns:1fr}
+  .tarjeta{padding:12px}
+  .numero{font-size:23px}
+  #buscar{flex-basis:100%}
+  .titulo-tabla{font-size:17px}
 }
 </style>
 </head>
-
 <body>
 <main>
   <header>
@@ -283,9 +196,7 @@ tbody tr:hover { background: #edf6f0; }
       <h1>PRODUCCIÓN LAS ACACIAS</h1>
       <p class="subtitulo">Producción · Insumos · Recibo</p>
     </div>
-    <button id="actualizar" class="primario">
-      Actualizar desde Dropbox
-    </button>
+    <button id="actualizar" class="primario">Actualizar desde Dropbox</button>
   </header>
 
   <section class="tarjetas">
@@ -294,13 +205,11 @@ tbody tr:hover { background: #edf6f0; }
       <div id="numero-produccion" class="numero">—</div>
       <div id="estado-produccion" class="estado">Pendiente</div>
     </article>
-
     <article class="tarjeta">
       <h2>INSUMOS</h2>
       <div id="numero-insumos" class="numero">—</div>
       <div id="estado-insumos" class="estado">Pendiente</div>
     </article>
-
     <article class="tarjeta">
       <h2>RECIBO</h2>
       <div id="numero-recibo" class="numero">—</div>
@@ -311,17 +220,15 @@ tbody tr:hover { background: #edf6f0; }
   <details id="archivos" class="archivos">
     <summary>Seleccionar archivos desde la PC</summary>
     <p>
-      Si la descarga desde Dropbox falla, seleccioná los archivos aquí.
-      El libro de Producción carga también la hoja Insumos.
-      Los archivos se leen en este navegador.
+      Si Dropbox bloquea la lectura directa, seleccioná los Excel.
+      El libro de Producción carga también Insumos.
+      Los archivos se leen en tu navegador.
     </p>
-
     <div class="cargas">
       <label>
         PRODUCCION-LAS-ACACIAS.xlsx
         <input id="archivo-produccion" type="file" accept=".xlsx">
       </label>
-
       <label>
         aENVIO-DE-CORREOS.xlsb
         <input id="archivo-recibo" type="file" accept=".xlsb">
@@ -336,16 +243,16 @@ tbody tr:hover { background: #edf6f0; }
       <button data-tab="recibo">Recibo</button>
     </nav>
 
+    <h2 id="tituloTabla" class="titulo-tabla">Producción</h2>
+
     <div class="controles">
       <input id="buscar" type="search"
-             placeholder="Buscar en toda la tabla..."
-             aria-label="Buscar en toda la tabla">
-
+        placeholder="Buscar en toda la tabla..."
+        aria-label="Buscar en toda la tabla">
       <label>
         Fila de encabezados
         <input id="fila" type="number" min="1" max="100" value="3">
       </label>
-
       <label>
         Filas
         <select id="limite">
@@ -355,7 +262,6 @@ tbody tr:hover { background: #edf6f0; }
           <option value="200">200</option>
         </select>
       </label>
-
       <button id="quitar">Quitar filtros</button>
     </div>
 
@@ -380,74 +286,56 @@ tbody tr:hover { background: #edf6f0; }
   </section>
 
   <p class="nota">
-    Producción utiliza los encabezados de la fila 3.
-    En Insumos y Recibo podés ajustar la fila de encabezados.
-    La hora de lectura indica cuándo se cargó el archivo en el tablero,
-    no cuándo se modificó el Excel.
+    Producción: encabezados en fila 3.
+    Insumos y Recibo: fila de encabezados ajustable.
+    La hora de lectura no representa la modificación del Excel.
     Las fórmulas muestran los resultados guardados en el libro.
+    Los productos de Recibo sin equivalencia quedan como SIN CLASIFICAR.
   </p>
 </main>
 
 <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
-
 <script>
 "use strict";
 
 const $ = id => document.getElementById(id);
 
+const TITULO_RECIBO = "B3R UPM Las Acacias - Polo Logistico";
+
 const URLS = {
-  produccion:
-    "https://dl.dropbox.com/scl/fi/z1jtk061zs1maw4vlnyib/PRODUCCION-LAS-ACACIAS.xlsx?rlkey=7pzd2o0oh1q3inr62bvztoqcb&dl=1",
-  recibo:
-    "https://dl.dropbox.com/scl/fi/l87boeiqu54yra3i0evd6/aENVIO-DE-CORREOS.xlsb?rlkey=149gw31ntsbso8vtpix30yxjl&dl=1"
+  produccion: "https://dl.dropbox.com/scl/fi/z1jtk061zs1maw4vlnyib/PRODUCCION-LAS-ACACIAS.xlsx?rlkey=7pzd2o0oh1q3inr62bvztoqcb&dl=1",
+  recibo: "https://dl.dropbox.com/scl/fi/l87boeiqu54yra3i0evd6/aENVIO-DE-CORREOS.xlsb?rlkey=149gw31ntsbso8vtpix30yxjl&dl=1"
 };
 
 const CONFIG = {
-  produccion: {
-    origen: "produccion",
-    hoja: "DATOS LAS ACACIAS",
-    fila: 3
-  },
-  insumos: {
-    origen: "produccion",
-    hoja: "INSUMOS",
-    fila: 1
-  },
-  recibo: {
-    origen: "recibo",
-    hoja: "tati las acacias",
-    fila: 1
-  }
+  produccion: { origen:"produccion", hoja:"DATOS LAS ACACIAS", fila:3 },
+  insumos: { origen:"produccion", hoja:"INSUMOS", fila:1 },
+  recibo: { origen:"recibo", hoja:"tati las acacias", fila:1 }
 };
 
 const libros = {};
 const tablas = {};
-
 let activa = "produccion";
 let ocupado = false;
 
 for (const id of Object.keys(CONFIG)) {
   tablas[id] = {
-    columnas: [],
-    filas: [],
-    filtros: [],
-    busqueda: "",
-    orden: null,
-    direccion: 1,
-    pagina: 1,
-    lectura: "",
-    fuente: "",
-    error: "",
-    cargando: false
+    columnas:[], filas:[], filtros:[], busqueda:"",
+    orden:null, direccion:1, pagina:1,
+    lectura:"", fuente:"", error:"", cargando:false
   };
 }
 
 function normalizar(valor) {
   return String(valor ?? "")
     .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[\u0300-\u036f]/g,"")
     .toLowerCase()
     .trim();
+}
+
+function claveColumna(valor) {
+  return normalizar(valor).replace(/[^a-z0-9]/g,"");
 }
 
 function texto(valor) {
@@ -460,14 +348,93 @@ function numero(valor) {
 
 function hora(valor) {
   return new Date(valor).toLocaleString("es-UY", {
-    timeZone: "America/Montevideo"
+    timeZone:"America/Montevideo"
   });
 }
 
 function idsDelOrigen(origen) {
-  return Object.keys(CONFIG).filter(
-    id => CONFIG[id].origen === origen
+  return Object.keys(CONFIG).filter(id => CONFIG[id].origen === origen);
+}
+
+function claveProducto(valor) {
+  // Admitir diferencias de espacios, mayúsculas y separador decimal.
+  return normalizar(valor)
+    .replace(/,/g,".")
+    .replace(/\s+/g,"");
+}
+
+const EQUIVALENCIAS = new Map([
+  [claveProducto("Troza 5,80 mts +30"), "ROJO"],
+  [claveProducto("Troza 5,80 mts +45"), "VERDE"],
+  [claveProducto("Troza 5,80 mts +30 PPL"), "AMARILLO"]
+]);
+
+function clasificarProducto(fila, indicesProducto) {
+  // Usar las columnas de producto cuando sus encabezados se reconocen.
+  // Si no se reconocen, buscar una equivalencia exacta en la fila.
+  const valores = indicesProducto.length
+    ? indicesProducto.map(indice => fila[indice])
+    : fila;
+
+  const coincidencias = new Set();
+
+  for (const valor of valores) {
+    const clasificacion = EQUIVALENCIAS.get(claveProducto(valor));
+    if (clasificacion) coincidencias.add(clasificacion);
+  }
+
+  if (coincidencias.size === 1) return [...coincidencias][0];
+  if (coincidencias.size > 1) return "REVISAR";
+  return "SIN CLASIFICAR";
+}
+
+function transformarRecibo(columnas, filas) {
+  const claves = columnas.map(claveColumna);
+
+  const nombresProducto = new Set([
+    "producto",
+    "nombreproducto",
+    "descripcionproducto",
+    "productodescripcion",
+    "descripciondelproducto",
+    "tipoproducto"
+  ]);
+
+  const indicesProducto = claves
+    .map((clave, indice) => nombresProducto.has(clave) ? indice : -1)
+    .filter(indice => indice >= 0);
+
+  const ocultas = new Set(["cosecha", "sacada", "origen"]);
+
+  // Si ya existe ID PRODUCTO, reemplazarlo con la clasificación solicitada.
+  const existentesID = claves
+    .map((clave, indice) => clave === "idproducto" ? indice : -1)
+    .filter(indice => indice >= 0);
+
+  const mantener = columnas
+    .map((nombre, indice) =>
+      !ocultas.has(claves[indice]) &&
+      !existentesID.includes(indice) ? indice : -1
+    )
+    .filter(indice => indice >= 0);
+
+  const nuevasColumnas = mantener.map(indice => columnas[indice]);
+
+  const posicionProducto = mantener.findIndex(indice =>
+    indicesProducto.includes(indice)
   );
+
+  const posicionID = posicionProducto >= 0 ? posicionProducto + 1 : 0;
+  nuevasColumnas.splice(posicionID, 0, "ID PRODUCTO");
+
+  const nuevasFilas = filas.map(fila => {
+    const clasificacion = clasificarProducto(fila, indicesProducto);
+    const nueva = mantener.map(indice => fila[indice]);
+    nueva.splice(posicionID, 0, clasificacion);
+    return nueva;
+  });
+
+  return { columnas:nuevasColumnas, filas:nuevasFilas };
 }
 
 function extraer(id, libro) {
@@ -485,10 +452,7 @@ function extraer(id, libro) {
   }
 
   const hoja = libro.Sheets[nombre];
-
-  if (!hoja["!ref"]) {
-    throw new Error("La hoja está vacía.");
-  }
+  if (!hoja["!ref"]) throw new Error("La hoja está vacía.");
 
   const rango = XLSX.utils.decode_range(hoja["!ref"]);
   rango.s.r = config.fila - 1;
@@ -498,11 +462,7 @@ function extraer(id, libro) {
   }
 
   const matriz = XLSX.utils.sheet_to_json(hoja, {
-    header: 1,
-    range: rango,
-    raw: false,
-    defval: "",
-    blankrows: true
+    header:1, range:rango, raw:false, defval:"", blankrows:true
   });
 
   const encabezados = matriz[0] || [];
@@ -514,45 +474,42 @@ function extraer(id, libro) {
   );
 
   const indices = [];
-
   for (let i = 0; i < ancho; i++) {
-    if (
-      texto(encabezados[i]).trim() ||
-      datos.some(fila => texto(fila[i]).trim())
-    ) {
+    if (texto(encabezados[i]).trim() ||
+        datos.some(fila => texto(fila[i]).trim())) {
       indices.push(i);
     }
   }
 
   const usados = new Map();
 
-  const columnas = indices.map(i => {
+  let columnas = indices.map(i => {
     const base = texto(encabezados[i]).trim() ||
       "Columna " + XLSX.utils.encode_col(rango.s.c + i);
-
     const veces = (usados.get(base) || 0) + 1;
     usados.set(base, veces);
-
     return veces === 1 ? base : base + " (" + veces + ")";
   });
 
-  const filas = datos
+  let filas = datos
     .map(fila => indices.map(i => texto(fila[i])))
     .filter(fila => fila.some(valor => valor.trim() !== ""));
 
+  if (id === "recibo") {
+    const transformada = transformarRecibo(columnas, filas);
+    columnas = transformada.columnas;
+    filas = transformada.filas;
+  }
+
   const anterior = tablas[id];
-  const mismos = JSON.stringify(columnas) ===
-    JSON.stringify(anterior.columnas);
+  const mismos = JSON.stringify(columnas) === JSON.stringify(anterior.columnas);
 
   return {
     ...anterior,
-    columnas,
-    filas,
-    filtros: mismos ? anterior.filtros : columnas.map(() => ""),
-    orden: mismos ? anterior.orden : null,
-    pagina: 1,
-    error: "",
-    cargando: false
+    columnas, filas,
+    filtros:mismos ? anterior.filtros : columnas.map(() => ""),
+    orden:mismos ? anterior.orden : null,
+    pagina:1, error:"", cargando:false
   };
 }
 
@@ -568,12 +525,9 @@ function tarjetas() {
       estado.textContent = "Cargando archivo...";
     } else if (tabla.error) {
       estado.textContent = tabla.error +
-        (tabla.lectura
-          ? " · Datos anteriores: " + hora(tabla.lectura)
-          : "");
+        (tabla.lectura ? " · Datos anteriores: " + hora(tabla.lectura) : "");
     } else if (tabla.lectura) {
-      estado.textContent =
-        tabla.fuente + " · Lectura: " + hora(tabla.lectura);
+      estado.textContent = tabla.fuente + " · Lectura: " + hora(tabla.lectura);
     } else {
       estado.textContent = "Pendiente";
     }
@@ -589,13 +543,10 @@ function encabezado() {
     const boton = document.createElement("button");
 
     boton.textContent = nombre +
-      (tabla.orden === indice
-        ? (tabla.direccion === 1 ? " ▲" : " ▼")
-        : "");
+      (tabla.orden === indice ? (tabla.direccion === 1 ? " ▲" : " ▼") : "");
 
     boton.addEventListener("click", () => {
-      tabla.direccion = tabla.orden === indice
-        ? -tabla.direccion : 1;
+      tabla.direccion = tabla.orden === indice ? -tabla.direccion : 1;
       tabla.orden = indice;
       tabla.pagina = 1;
       encabezado();
@@ -606,7 +557,7 @@ function encabezado() {
     input.type = "search";
     input.placeholder = "Filtrar...";
     input.value = tabla.filtros[indice] || "";
-    input.setAttribute("aria-label", "Filtrar " + nombre);
+    input.setAttribute("aria-label","Filtrar " + nombre);
 
     input.addEventListener("input", () => {
       tabla.filtros[indice] = input.value;
@@ -622,8 +573,7 @@ function encabezado() {
 }
 
 const comparador = new Intl.Collator("es", {
-  numeric: true,
-  sensitivity: "base"
+  numeric:true, sensitivity:"base"
 });
 
 function mostrarFilas() {
@@ -631,9 +581,7 @@ function mostrarFilas() {
   const buscar = normalizar(tabla.busqueda);
 
   let resultado = tabla.filas.filter(fila =>
-    (!buscar || fila.some(valor =>
-      normalizar(valor).includes(buscar)
-    )) &&
+    (!buscar || fila.some(valor => normalizar(valor).includes(buscar))) &&
     tabla.filtros.every((filtro, indice) =>
       !normalizar(filtro) ||
       normalizar(fila[indice]).includes(normalizar(filtro))
@@ -641,15 +589,13 @@ function mostrarFilas() {
   );
 
   if (tabla.orden !== null) {
-    resultado.sort((a, b) =>
-      comparador.compare(a[tabla.orden], b[tabla.orden]) *
-      tabla.direccion
+    resultado.sort((a,b) =>
+      comparador.compare(a[tabla.orden], b[tabla.orden]) * tabla.direccion
     );
   }
 
   const limite = Number($("limite").value);
   const paginas = Math.max(1, Math.ceil(resultado.length / limite));
-
   tabla.pagina = Math.min(tabla.pagina, paginas);
 
   const inicio = (tabla.pagina - 1) * limite;
@@ -658,9 +604,19 @@ function mostrarFilas() {
   resultado.slice(inicio, inicio + limite).forEach(fila => {
     const tr = document.createElement("tr");
 
-    fila.forEach(valor => {
+    fila.forEach((valor, indice) => {
       const td = document.createElement("td");
-      td.textContent = valor;
+
+      if (activa === "recibo" && tabla.columnas[indice] === "ID PRODUCTO" &&
+          ["ROJO","VERDE","AMARILLO"].includes(valor)) {
+        const etiqueta = document.createElement("span");
+        etiqueta.className = "etiqueta " + valor.toLowerCase();
+        etiqueta.textContent = valor;
+        td.append(etiqueta);
+      } else {
+        td.textContent = valor;
+      }
+
       tr.append(td);
     });
 
@@ -676,9 +632,7 @@ function mostrarFilas() {
     " registros filtrados de " + numero(tabla.filas.length) +
     (tabla.error ? " · " + tabla.error : "");
 
-  $("pagina").textContent =
-    "Página " + tabla.pagina + " de " + paginas;
-
+  $("pagina").textContent = "Página " + tabla.pagina + " de " + paginas;
   $("anterior").disabled = tabla.pagina <= 1;
   $("siguiente").disabled = tabla.pagina >= paginas;
 
@@ -697,6 +651,10 @@ function mostrar() {
     boton.setAttribute("aria-pressed", String(seleccionada));
   });
 
+  $("tituloTabla").textContent = activa === "recibo"
+    ? TITULO_RECIBO
+    : activa === "produccion" ? "Producción" : "Insumos";
+
   $("buscar").value = tablas[activa].busqueda;
   $("fila").value = CONFIG[activa].fila;
   $("fila").disabled = activa === "produccion" || ocupado;
@@ -706,11 +664,7 @@ function mostrar() {
 }
 
 function cargarLibro(origen, bytes, fuente) {
-  const libro = XLSX.read(bytes, {
-    type: "array",
-    cellDates: false
-  });
-
+  const libro = XLSX.read(bytes, { type:"array", cellDates:false });
   const lectura = new Date().toISOString();
   libros[origen] = { libro, fuente, lectura };
 
@@ -736,9 +690,7 @@ function errorOrigen(origen, mensaje) {
 
 function comprobarLector() {
   if (typeof XLSX === "undefined") {
-    throw new Error(
-      "No se cargó el lector Excel. Revisá la conexión y recargá la página."
-    );
+    throw new Error("No se cargó el lector Excel. Revisá la conexión y recargá.");
   }
 }
 
@@ -748,42 +700,32 @@ async function descargar(origen) {
 
   try {
     const respuesta = await fetch(URLS[origen], {
-      mode: "cors",
-      cache: "no-store",
-      credentials: "omit",
-      signal: controlador.signal
+      mode:"cors", cache:"no-store", credentials:"omit",
+      signal:controlador.signal
     });
 
     if (!respuesta.ok) {
       throw new Error("Dropbox respondió HTTP " + respuesta.status + ".");
     }
 
-    const tipo = (respuesta.headers.get("Content-Type") || "")
-      .toLowerCase();
+    const tipo = (respuesta.headers.get("Content-Type") || "").toLowerCase();
 
     if (tipo.includes("text/html") || tipo.includes("application/json")) {
-      throw new Error("El enlace no devolvió un archivo Excel.");
+      throw new Error("El enlace no devolvió un Excel.");
     }
 
     const bytes = await respuesta.arrayBuffer();
-
-    if (!bytes.byteLength) {
-      throw new Error("El archivo está vacío.");
-    }
+    if (!bytes.byteLength) throw new Error("El archivo está vacío.");
 
     cargarLibro(origen, bytes, "Dropbox");
   } catch (error) {
     const mensaje = error.name === "AbortError"
       ? "La descarga superó los 90 segundos."
       : error instanceof TypeError
-        ? "No se pudo leer Dropbox: puede ser un bloqueo del navegador o un problema de conexión."
+        ? "No se pudo leer Dropbox por un bloqueo del navegador o un problema de conexión."
         : error.message;
 
-    errorOrigen(
-      origen,
-      mensaje + " Podés seleccionar el Excel desde la PC."
-    );
-
+    errorOrigen(origen, mensaje + " Podés seleccionar el Excel desde la PC.");
     $("archivos").open = true;
   } finally {
     clearTimeout(temporizador);
@@ -795,10 +737,7 @@ async function descargar(origen) {
 function bloquear(valor) {
   ocupado = valor;
   $("actualizar").disabled = valor;
-  $("actualizar").textContent = valor
-    ? "Cargando..."
-    : "Actualizar desde Dropbox";
-
+  $("actualizar").textContent = valor ? "Cargando..." : "Actualizar desde Dropbox";
   $("archivo-produccion").disabled = valor;
   $("archivo-recibo").disabled = valor;
   $("fila").disabled = activa === "produccion" || valor;
@@ -818,7 +757,6 @@ async function actualizar() {
   }
 
   bloquear(true);
-
   for (const tabla of Object.values(tablas)) {
     tabla.cargando = true;
     tabla.error = "";
@@ -844,7 +782,6 @@ async function seleccionarArchivo(origen, input) {
   if (!archivo || ocupado) return;
 
   bloquear(true);
-
   for (const id of idsDelOrigen(origen)) {
     tablas[id].cargando = true;
     tablas[id].error = "";
@@ -854,8 +791,7 @@ async function seleccionarArchivo(origen, input) {
 
   try {
     comprobarLector();
-    const bytes = await archivo.arrayBuffer();
-    cargarLibro(origen, bytes, "Archivo local");
+    cargarLibro(origen, await archivo.arrayBuffer(), "Archivo local");
   } catch (error) {
     errorOrigen(origen, "No se pudo leer el archivo: " + error.message);
   } finally {
@@ -880,7 +816,6 @@ $("buscar").addEventListener("input", () => {
 });
 
 $("quitar").addEventListener("click", () => {
-  // Liberar búsquedas, filtros y ordenamiento de las tres tablas.
   for (const tabla of Object.values(tablas)) {
     tabla.busqueda = "";
     tabla.filtros = tabla.columnas.map(() => "");
@@ -888,7 +823,6 @@ $("quitar").addEventListener("click", () => {
     tabla.direccion = 1;
     tabla.pagina = 1;
   }
-
   mostrar();
 });
 
@@ -913,11 +847,7 @@ $("fila").addEventListener("change", () => {
   const config = CONFIG[activa];
   const nuevaFila = Number($("fila").value);
 
-  if (
-    !Number.isInteger(nuevaFila) ||
-    nuevaFila < 1 ||
-    nuevaFila > 100
-  ) {
+  if (!Number.isInteger(nuevaFila) || nuevaFila < 1 || nuevaFila > 100) {
     $("fila").value = config.fila;
     return;
   }
