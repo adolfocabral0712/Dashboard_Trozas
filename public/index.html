@@ -342,7 +342,13 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
 }
 .tarjetas-principales{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
 #modalChapas .tabla-detalle td:last-child{white-space:nowrap}
+#modalChapas{width:min(500px,94vw)}
+#modalChapas .tabla-detalle{table-layout:fixed}
 #modalChapas .tabla-detalle th{line-height:1.4;vertical-align:middle}
+#modalChapas .tabla-detalle th,#modalChapas .tabla-detalle td{padding:9px 7px;min-width:0;max-width:none}
+#modalChapas .tabla-detalle th:first-child{width:44%}
+#modalChapas .tabla-detalle th:nth-child(2){width:23%}
+#modalChapas .tabla-detalle th:nth-child(3){width:33%}
 #modalChapas .tabla-detalle tfoot{font-weight:bold;color:var(--bosque)}
 #modalTrozasCamion{width:min(500px,94vw)}
 #modalTrozasCamion .tabla-detalle{min-width:0;table-layout:fixed}
