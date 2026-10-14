@@ -392,6 +392,8 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
 .tarjeta .numero{font-size:28px;line-height:1.05}
 .tarjeta .detalle{font-size:10px;line-height:1.25;margin-top:3px}
 @media(max-width:700px){.tarjeta{min-height:74px;padding:8px 10px}}
+.stock-valor{display:flex;align-items:baseline;justify-content:center;gap:6px;flex-wrap:wrap}
+.camiones-stock{font-size:13px;font-weight:600;color:var(--secundario);white-space:nowrap}
 </style>
 </head>
 
@@ -528,7 +530,7 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
     </div>
     <div class="tarjeta-contenido">
       <h2>STOCK ROJO</h2>
-      <div id="stock-rojo" class="numero">—</div>
+      <div class="stock-valor"><span id="stock-rojo" class="numero">—</span><span id="camiones-rojo" class="camiones-stock" hidden></span></div>
       <div id="detalle-stock-rojo" class="detalle">Pendiente de lectura</div>
     </div>
   </article>
@@ -538,7 +540,7 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
     </div>
     <div class="tarjeta-contenido">
       <h2>STOCK AMARILLO</h2>
-      <div id="stock-amarillo" class="numero">—</div>
+      <div class="stock-valor"><span id="stock-amarillo" class="numero">—</span><span id="camiones-amarillo" class="camiones-stock" hidden></span></div>
       <div id="detalle-stock-amarillo" class="detalle">Pendiente de lectura</div>
     </div>
   </article>
@@ -548,7 +550,7 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
     </div>
     <div class="tarjeta-contenido">
       <h2>STOCK VERDE</h2>
-      <div id="stock-verde" class="numero">—</div>
+      <div class="stock-valor"><span id="stock-verde" class="numero">—</span><span id="camiones-verde" class="camiones-stock" hidden></span></div>
       <div id="detalle-stock-verde" class="detalle">Pendiente de lectura</div>
     </div>
   </article>
@@ -1586,11 +1588,28 @@ function mostrarDetalleDescarte(){
   $("alcanceDescarte").classList.toggle("error",Boolean(problema));
 }
 
+function calcularCamionesStock(stock,promedio){
+  const base=Math.round(promedio);
+  if(!Number.isFinite(stock)||stock<0||!Number.isFinite(base)||base<=0)return null;
+  return Math.floor(stock/base);
+}
 function ponerStock(id,valor,detalle,error=false){
   $("stock-"+id).textContent=valor===null?"—":numero(valor);
   $("stock-"+id).classList.toggle("negativo",valor!==null&&valor<0);
   $("detalle-stock-"+id).textContent=detalle;
   $("detalle-stock-"+id).classList.toggle("error",error);
+  if(id==="monte")return;
+  const estimacion=$("camiones-"+id);
+  estimacion.hidden=valor===null;
+  if(valor===null){estimacion.textContent="";return;}
+  const d=calculoTrozasCamion();
+  const grupo=d.error?null:d.grupos.find(g=>g.producto===id.toUpperCase());
+  const promedio=grupo&&grupo.viajes?grupo.cantidad/grupo.viajes:NaN;
+  const camiones=calcularCamionesStock(valor,promedio);
+  estimacion.textContent=camiones===null?"(— cam.)":"("+numero(camiones)+" cam.)";
+  estimacion.title=camiones===null
+    ?"No se puede estimar: se necesita stock no negativo y un promedio válido de este producto en Recibo."
+    :numero(valor)+" ÷ "+numero(Math.round(promedio))+" trozas por camión. Estimación redondeada hacia abajo.";
 }
 
 function tarjetasStock(){
