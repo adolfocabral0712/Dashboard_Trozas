@@ -340,7 +340,7 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
 .tabla-insumos .leer-nota{
   flex:0 0 auto;margin:0;padding:4px 7px;white-space:nowrap;
 }
-.tarjetas-principales{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.tarjetas-principales{grid-template-columns:repeat(3,minmax(0,1fr))}
 #modalChapas .tabla-detalle td:last-child{white-space:nowrap}
 #modalChapas{width:min(500px,94vw)}
 #modalChapas .tabla-detalle{table-layout:fixed}
@@ -381,6 +381,9 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
   th.observaciones,td.observaciones{min-width:230px}
   .cabecera-quincena{padding:18px 16px}
 }
+.botones-tablas{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media(max-width:900px){.botones-tablas{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.botones-tablas{grid-template-columns:1fr}}
 </style>
 </head>
 
@@ -498,6 +501,14 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
     <div class="tarjeta-contenido">
       <h2>TROZAS POR CAMIÓN</h2>
       <div class="detalle">Ver detalle por producto</div>
+    </div>
+  </button>
+  <button id="tarjetaTransito" class="tarjeta stock-monte" type="button" aria-controls="listado">
+    <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#i-camion"/></svg></div>
+    <div class="tarjeta-contenido">
+      <h2>FALTA DESCARGAR</h2>
+      <div id="numero-transito" class="numero">—</div>
+      <div id="detalle-transito" class="detalle">Pendiente de lectura</div>
     </div>
   </button>
 </section>
@@ -628,6 +639,11 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
     <span>Recibo</span>
     <svg class="flecha" aria-hidden="true"><use href="#i-flecha"/></svg>
   </button>
+  <button class="boton-tabla" data-tab="transito" aria-expanded="false" aria-controls="listado">
+    <svg aria-hidden="true"><use href="#i-camion"/></svg>
+    <span>En Tránsito</span>
+    <svg class="flecha" aria-hidden="true"><use href="#i-flecha"/></svg>
+  </button>
 </nav>
 
 <section id="listado" class="panel" hidden>
@@ -670,7 +686,8 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
   Producción, Descarte y sus gráficos responden a los filtros de la tabla Producción.
   Los selectores del gráfico por quincena afectan solamente ese gráfico.<br>
   Los stocks utilizan los totales completos.
-  Trozas Stock Monte = Producción total − suma de Cantidad de todo Recibo.
+  Trozas Stock Monte = Producción total − Cantidad de Recibo − despachos sin Recibo.<br>
+  En Tránsito muestra despachos de LAS ACACIAS UPM sin coincidencia por Remito de origen. Se descuentan una sola vez.
 </p>
 </main>
 
@@ -770,13 +787,15 @@ const TITULO_RECIBO="B3R UPM Las Acacias - Polo Logistico";
 
 const URLS={
   produccion:"/api/produccion",
-  recibo:"/api/recibo"
+  recibo:"/api/recibo",
+  despachos:"/api/despachos"
 };
 
 const CONFIG={
   produccion:{origen:"produccion",hoja:"DATOS LAS ACACIAS",fila:3},
   insumos:{origen:"produccion",hoja:"INSUMOS",fila:1},
-  recibo:{origen:"recibo",hoja:"tati las acacias",fila:1}
+  recibo:{origen:"recibo",hoja:"tati las acacias",fila:1},
+  transito:{origen:"despachos",hoja:"En Tránsito",fila:1}
 };
 
 const GRUPOS_PRODUCCION={
@@ -871,9 +890,116 @@ for(const id of Object.keys(CONFIG)){
     faltantesColor:{ROJO:[],AMARILLO:[],VERDE:[]},
     erroresDescarte:[],
     erroresDescartePorColumna:COLUMNAS_DESCARTE.map(()=>[]),
-    avisoCantidad:"",noClasificados:0,avisoQuincena:""
+    avisoCantidad:"",noClasificados:0,avisoQuincena:"",avisoRemito:""
   };
 }
+
+const despachos={registros:[],lectura:"",actualizado:"",cargando:false,error:""};
+const COLUMNAS_TRANSITO=["Remito de origen","Matrícula","Predio","Destino","Id Producto","Cantidad","Fecha fin carga","Estado informado","Observaciones"];
+
+function normalizarRemito(v){
+  const s=texto(v).normalize("NFKC").trim();
+  if(!s||/^(nan|null|undefined|none)$/i.test(s))return "";
+  if(/^\d+(?:[.,]0+)?$/.test(s))return s.replace(/[.,]0+$/,"").replace(/^0+(?=\d)/,"");
+  return s.toUpperCase().replace(/\s+/g,"");
+}
+function productoDespacho(v){
+  const s=normalizar(v);
+  if(/\brojo\b/.test(s))return "ROJO";
+  if(/\bverde\b/.test(s))return "VERDE";
+  if(/\bamar+r?illo\b/.test(s)||/\bppl\b/.test(s))return "AMARILLO";
+  return "SIN CLASIFICAR";
+}
+function conciliarDespachos(registros,recibos){
+  const recibidos=new Set(recibos.map(f=>normalizarRemito(f.remitoOrigen)).filter(Boolean));
+  const vistos=new Map(),pendientes=[],errores=[];
+  let conciliados=0,repetidos=0;
+  for(const d of registros){
+    if(!normalizar(d.predio).includes("las acacias upm"))continue;
+    const remito=normalizarRemito(d.numero_1);
+    if(remito&&recibidos.has(remito)){conciliados++;continue;}
+    const cantidad=numeroCelda(d.cantidad);
+    const color=productoDespacho(d.producto);
+    const firma=JSON.stringify([normalizar(d.vehiculo),normalizar(d.predio),normalizar(d.producto),cantidad,texto(d.fin_carga)]);
+    if(remito&&vistos.has(remito)){
+      if(vistos.get(remito)!==firma)errores.push("Remito "+remito+" repetido con datos distintos en Despachos.");
+      repetidos++;continue;
+    }
+    if(remito)vistos.set(remito,firma);
+    if(!remito)errores.push("Hay un despacho de Las Acacias sin número de remito.");
+    const valida=tieneContenido(d.cantidad)&&Number.isFinite(cantidad)&&cantidad>=0;
+    if(!valida)errores.push("Revisar Cantidad del despacho "+(remito||"sin remito")+".");
+    const observacion=/^(nan|null|none)$/i.test(texto(d.observaciones).trim())?"":texto(d.observaciones);
+    pendientes.push({remito,color,cantidad:valida?cantidad:0,
+      valores:[texto(d.numero_1),texto(d.vehiculo),texto(d.predio),texto(d.destino),color,
+        valida?texto(cantidad):"Revisar",texto(d.fin_carga),texto(d.estado_descarga),observacion]});
+  }
+  return {pendientes,conciliados,repetidos,errores:[...new Set(errores)],
+    total:pendientes.reduce((s,f)=>s+f.cantidad,0),
+    sinColor:pendientes.filter(f=>!COLORES.includes(f.color)).length};
+}
+function actualizarTransito(){
+  const t=tablas.transito,r=tablas.recibo;
+  t.cargando=despachos.cargando||r.cargando;
+  t.error=despachos.error||r.error||r.avisoRemito||"";
+  t.avisoCruce="";
+  if(t.cargando){
+    $("numero-transito").textContent="—";
+    $("detalle-transito").textContent="Actualizando datos...";return;
+  }
+  if(!despachos.lectura||!r.lectura||t.error){
+    t.filas=[];t.resultadoCruce=null;
+    $("numero-transito").textContent="—";
+    $("detalle-transito").textContent=t.error||"Se necesita cargar Despachos y Recibo.";
+    return;
+  }
+  const cruce=conciliarDespachos(despachos.registros,r.filas);
+  t.filas=cruce.pendientes;t.resultadoCruce=cruce;
+  t.lectura=despachos.lectura;
+  t.error=cruce.errores.join(" · ");
+  t.avisoCruce=numero(cruce.pendientes.length)+" viajes · "+numero(cruce.total)+
+    " trozas sin registro en Recibo. Se cruzan todos los registros por Remito de origen, sin depender del estado informado."+
+    (cruce.repetidos?" Se omitieron "+numero(cruce.repetidos)+" registros repetidos.":"")+
+    (cruce.sinColor?" Revisar "+numero(cruce.sinColor)+" viajes sin producto reconocido.":"")+
+    (despachos.actualizado?" Despachos actualizados: "+despachos.actualizado+".":"");
+  $("numero-transito").textContent=t.error?"—":numero(cruce.total);
+  $("detalle-transito").textContent=t.error||numero(cruce.pendientes.length)+" viajes sin Recibo · ver En Tránsito";
+  $("detalle-transito").classList.toggle("error",Boolean(t.error));
+}
+function abrirTransito(){
+  activa="transito";tablaVisible=true;mostrar();
+  $("listado").scrollIntoView({behavior:"smooth",block:"start"});
+}
+async function descargarDespachos(){
+  const control=new AbortController();
+  const timer=setTimeout(()=>control.abort(),90000);
+  despachos.cargando=true;despachos.error="";
+  try{
+    const respuesta=await fetch(URLS.despachos,{cache:"no-store",mode:"same-origin",signal:control.signal});
+    if(!respuesta.ok){
+      let mensaje="No se pudieron cargar Despachos (HTTP "+respuesta.status+").";
+      try{const d=await respuesta.json();if(d.error)mensaje=d.error}catch{}
+      throw new Error(mensaje);
+    }
+    const datos=await respuesta.json();
+    const registros=Array.isArray(datos)?datos:datos.registros;
+    if(!Array.isArray(registros)||registros.some(r=>!r||typeof r!=="object"||Array.isArray(r))){
+      throw new Error("El JSON de Despachos debe contener una lista registros.");
+    }
+    despachos.registros=registros;
+    despachos.actualizado=texto(datos.actualizado);
+    despachos.lectura=new Date().toISOString();
+  }catch(e){
+    despachos.error=e.name==="AbortError"?"La descarga de Despachos superó los 90 segundos.":e.message;
+  }finally{
+    clearTimeout(timer);despachos.cargando=false;
+    actualizarDashboard();mostrar();
+  }
+}
+
+
+tablas.transito.columnas=COLUMNAS_TRANSITO.slice();
+tablas.transito.filtros=COLUMNAS_TRANSITO.map(()=>"");
 
 function numeroCelda(v){
   if(typeof v==="number")return Number.isFinite(v)?v:NaN;
@@ -1024,7 +1150,7 @@ function extraer(id,libro){
   const faltantesColor={ROJO:[],AMARILLO:[],VERDE:[]};
   const erroresDescartePorColumna=COLUMNAS_DESCARTE.map(()=>[]);
   let faltantes=[],erroresDescarte=[];
-  let avisoCantidad="",noClasificados=0,avisoQuincena="";
+  let avisoCantidad="",noClasificados=0,avisoQuincena="",avisoRemito="";
 
   const indicesQuincena=columnas
     .map((c,i)=>claveColumna(c)==="quincena"?i:-1)
@@ -1128,6 +1254,20 @@ function extraer(id,libro){
       }
     });
 
+    const remitosOrigen=columnas.map((c,i)=>
+      ["remitodeorigen","remitoorigen","rtoorigen","numeroremitoorigen"].includes(claveColumna(c))?i:-1
+    ).filter(i=>i>=0);
+    if(remitosOrigen.length!==1){
+      avisoRemito="Se necesita una única columna Remito de origen en Recibo para conciliar Despachos.";
+    }else{
+      let sinRemito=0;
+      filas.forEach((f,n)=>{
+        f.remitoOrigen=normalizarRemito(originales[n][remitosOrigen[0]]);
+        if(!f.remitoOrigen)sinRemito++;
+      });
+      if(sinRemito)avisoRemito="Recibo contiene "+sinRemito+" registros sin Remito de origen. Revisá el cruce antes de calcular el stock.";
+    }
+
     const ocultas=new Set([
       "carga","cosecha","origen","idproducto","brutoton","taraton"
     ]);
@@ -1156,7 +1296,7 @@ function extraer(id,libro){
   return {
     ...anterior,columnas,filas,faltantes,faltantesColor,
     erroresDescarte,erroresDescartePorColumna,
-    avisoCantidad,noClasificados,avisoQuincena,
+    avisoCantidad,noClasificados,avisoQuincena,avisoRemito,
     filtros:mismos?anterior.filtros:columnas.map(()=>""),
     orden:mismos?anterior.orden:null,
     pagina:1,error:"",cargando:false
@@ -1446,24 +1586,24 @@ function ponerStock(id,valor,detalle,error=false){
 }
 
 function tarjetasStock(){
-  const p=tablas.produccion,r=tablas.recibo;
+  const p=tablas.produccion,r=tablas.recibo,tr=tablas.transito;
   const ids=["rojo","amarillo","verde","monte"];
 
-  if(p.cargando||r.cargando){
+  if(p.cargando||r.cargando||tr.cargando){
     ids.forEach(id=>ponerStock(id,null,"Actualizando datos..."));
     return;
   }
 
-  if(!p.lectura||!r.lectura){
+  if(!p.lectura||!r.lectura||!tr.lectura){
     ids.forEach(id=>ponerStock(
-      id,null,"Se necesita cargar Producción y Recibo."
+      id,null,"Se necesita cargar Producción, Recibo y Despachos."
     ));
     return;
   }
 
-  if(p.error||r.error){
+  if(p.error||r.error||tr.error){
     ids.forEach(id=>ponerStock(
-      id,null,"Revisar la lectura de Producción y Recibo.",true
+      id,null,tr.error||"Revisar la lectura de Producción y Recibo.",true
     ));
     return;
   }
@@ -1471,7 +1611,8 @@ function tarjetasStock(){
   for(const color of COLORES){
     const problemas=[
       ...p.faltantesColor[color],
-      ...(r.avisoCantidad?[r.avisoCantidad]:[])
+      ...(r.avisoCantidad?[r.avisoCantidad]:[]),
+      ...(tr.resultadoCruce?.sinColor?["Hay despachos sin producto reconocido en En Tránsito."]:[])
     ];
 
     if(problemas.length){
@@ -1490,11 +1631,12 @@ function tarjetasStock(){
       (s,f)=>s+(f.color===color?f.cantidad:0),0
     );
 
+    const pendiente=tr.filas.reduce((s,f)=>s+(f.color===color?f.cantidad:0),0);
     ponerStock(
       color.toLowerCase(),
-      producido-recibido,
+      producido-recibido-pendiente,
       "Producción: "+numero(producido)+
-      " − Recibido: "+numero(recibido)+
+      " − Recibido: "+numero(recibido)+" − En tránsito: "+numero(pendiente)+
       (r.noClasificados
         ?" · "+numero(r.noClasificados)+
           " registros sin clasificación válida, excluidos."
@@ -1516,11 +1658,12 @@ function tarjetasStock(){
   const producido=p.filas.reduce((s,f)=>s+f.total,0);
   const recibido=r.filas.reduce((s,f)=>s+f.cantidad,0);
 
+  const pendiente=tr.filas.reduce((s,f)=>s+f.cantidad,0);
   ponerStock(
     "monte",
-    producido-recibido,
+    producido-recibido-pendiente,
     "Producción: "+numero(producido)+
-    " − Cantidad Recibo: "+numero(recibido)
+    " − Cantidad Recibo: "+numero(recibido)+" − En tránsito: "+numero(pendiente)
   );
 }
 
@@ -2214,6 +2357,7 @@ function actualizarEstado(){
 }
 
 function actualizarDashboard(){
+  actualizarTransito();
   actualizarTotales();
   actualizarChapas();
   actualizarTrozasCamion();
@@ -2273,10 +2417,10 @@ function encabezado(){
 
 function claveFecha(v){
   const m=texto(v).match(
-    /^(\d{2})\/(\d{2})\/(\d{4})$/
+    /^(\d{2})\/(\d{2})\/(\d{4})(?: (\d{2}:\d{2}:\d{2}))?$/
   );
 
-  return m?m[3]+m[2]+m[1]:texto(v);
+  return m?m[3]+m[2]+m[1]+(m[4]||""):texto(v);
 }
 
 function mostrarFilas(){
@@ -2344,7 +2488,7 @@ function mostrarFilas(){
           contenedor.append(b);
         }
       }else if(
-        activa==="recibo"&&
+        (activa==="recibo"||activa==="transito")&&
         claveColumna(t.columnas[i])==="idproducto"&&
         COLORES.includes(v)
       ){
@@ -2366,6 +2510,7 @@ function mostrarFilas(){
 
   const avisos=[
     ...(t.error?[t.error]:[]),
+    ...(activa==="transito"&&t.avisoCruce?[t.avisoCruce]:[]),
     ...(activa==="produccion"&&t.faltantes.length
       ?["Producción: "+t.faltantes.join(", ")]:[]),
     ...(activa==="produccion"&&t.erroresDescarte.length
@@ -2407,7 +2552,7 @@ function mostrar(){
 
   $("tituloTabla").textContent=activa==="recibo"
     ?TITULO_RECIBO
-    :activa==="produccion"?"Producción":"Insumos";
+    :activa==="produccion"?"Producción":activa==="transito"?"En Tránsito":"Insumos";
 
   $("buscar").value=tablas[activa].busqueda;
   $("fila").value=CONFIG[activa].fila;
@@ -2532,6 +2677,7 @@ async function actualizar(){
   }
 
   bloquear(true);
+  despachos.cargando=true;despachos.error="";
 
   for(const t of Object.values(tablas)){
     t.cargando=true;
@@ -2544,7 +2690,8 @@ async function actualizar(){
   try{
     await Promise.allSettled([
       descargar("produccion"),
-      descargar("recibo")
+      descargar("recibo"),
+      descargarDespachos()
     ]);
   }finally{
     bloquear(false);
@@ -2654,6 +2801,7 @@ document.querySelectorAll("[data-serie]").forEach(input=>{
   );
 });
 
+$("tarjetaTransito").addEventListener("click",abrirTransito);
 $("actualizar").addEventListener("click",actualizar);
 
 $("cerrarNota").addEventListener("click",()=>{
