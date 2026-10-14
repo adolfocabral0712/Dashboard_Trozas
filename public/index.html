@@ -468,6 +468,7 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
     <div class="tarjeta-contenido">
       <h2>PRODUCCIÓN</h2>
       <div id="numero-produccion" class="numero">—</div>
+      <div id="fecha-produccion" class="detalle">Último dato: —</div>
     </div>
   </article>
 
@@ -1531,8 +1532,28 @@ function mostrarDetalleChapas(){
   $("alcanceChapas").classList.toggle("error",Boolean(d.error));
 }
 
+function fechaMaximaProduccion(){
+  const t=tablas.produccion;
+  const indice=t.columnas.findIndex(c=>claveColumna(c)==="fecha");
+  if(indice<0)return "";
+  let maxima=-Infinity,resultado="";
+  for(const fila of t.filas){
+    const valor=texto(fila.valores[indice]).trim();
+    const m=valor.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+    if(!m)continue;
+    const dia=Number(m[1]),mes=Number(m[2]),anio=Number(m[3]);
+    const instante=Date.UTC(anio,mes-1,dia);
+    const fecha=new Date(instante);
+    if(fecha.getUTCFullYear()!==anio||fecha.getUTCMonth()!==mes-1||fecha.getUTCDate()!==dia)continue;
+    if(instante>maxima){maxima=instante;resultado=valor;}
+  }
+  return resultado;
+}
+
 function actualizarTotales(){
   const t=tablas.produccion;
+  $("fecha-produccion").textContent=t.cargando?"Actualizando fecha...":
+    "Último dato: "+(t.lectura&&!t.error?fechaMaximaProduccion()||"—":"—");
   const pp=t.error||
     (t.faltantes.length?"Revisar: "+t.faltantes.join(", "):"");
 
