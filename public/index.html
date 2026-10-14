@@ -384,6 +384,14 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
 .botones-tablas{grid-template-columns:repeat(4,minmax(0,1fr))}
 @media(max-width:900px){.botones-tablas{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:700px){.botones-tablas{grid-template-columns:1fr}}
+/* Tarjetas compactas: aproximadamente la mitad de altura. */
+.tarjeta{padding:8px 10px;gap:4px;min-height:86px}
+.tarjeta .icono-tarjeta{width:20px;height:20px}
+.tarjeta .icono-tarjeta svg{width:14px;height:14px}
+.tarjeta h2{font-size:13px;line-height:1.2;margin:0 0 3px}
+.tarjeta .numero{font-size:28px;line-height:1.05}
+.tarjeta .detalle{font-size:10px;line-height:1.25;margin-top:3px}
+@media(max-width:700px){.tarjeta{min-height:74px;padding:8px 10px}}
 </style>
 </head>
 
@@ -561,7 +569,7 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
       DESPACHO DE TROZAS
     </h2>
     <div id="graficoDespacho" class="visual"></div>
-    <div class="alcance">Suma de Cantidad de todo Recibo.</div>
+    <div id="alcanceDespacho" class="alcance">Recibo + despachos en tránsito sin Recibo.</div>
   </article>
   <article class="grafico">
     <h2>
@@ -1968,36 +1976,37 @@ function actualizarGraficos(){
     ],false,"PRODUCCIÓN Y DESCARTES");
   }
 
-  const problemaR=r.cargando
-    ?"Cargando Recibo..."
-    :!r.lectura
-      ?"Pendiente de lectura de Recibo."
-      :r.error||r.avisoCantidad;
+  const transito=tablas.transito;
+  const problemaR=r.cargando||transito.cargando
+    ?"Actualizando Recibo y En Tránsito..."
+    :!r.lectura||!transito.lectura
+      ?"Se necesita cargar Recibo y Despachos."
+      :r.error||r.avisoCantidad||transito.error;
 
   if(problemaR){
     mensajeGrafico("graficoDespacho",problemaR);
+    $("alcanceDespacho").textContent="Recibo + despachos en tránsito sin Recibo.";
   }else{
+    const filas=[...r.filas,...transito.filas];
     const series=["ROJO","VERDE","AMARILLO"].map(color=>({
       nombre:color,
       color:PALETA[color],
-      valor:r.filas.reduce(
-        (s,f)=>s+(f.color===color?f.cantidad:0),0
-      )
+      valor:filas.reduce((s,f)=>s+(f.color===color?f.cantidad:0),0)
     }));
-
-    if(r.noClasificados){
-      series.push({
-        nombre:"SIN CLASIFICAR",
-        color:"#98a090",
-        valor:r.filas.reduce(
-          (s,f)=>s+(!COLORES.includes(f.color)?f.cantidad:0),0
-        )
-      });
+    const sinClasificar=filas.filter(f=>!COLORES.includes(f.color));
+    if(sinClasificar.length){
+      series.push({nombre:"SIN CLASIFICAR",color:"#98a090",
+        valor:sinClasificar.reduce((s,f)=>s+f.cantidad,0)});
     }
-
-    dibujarGrafico(
-      "graficoDespacho",series,true,"TROZAS DESPACHADAS"
-    );
+    dibujarGrafico("graficoDespacho",series,true,"TROZAS DESPACHADAS");
+    const recibido=r.filas.reduce((s,f)=>s+f.cantidad,0);
+    const pendiente=transito.filas.reduce((s,f)=>s+f.cantidad,0);
+    const total=recibido+pendiente;
+    $("alcanceDespacho").textContent="Recibo: "+numero(recibido)+
+      (total?" ("+porcentaje(recibido/total*100)+")":"")+
+      " · En tránsito: "+numero(pendiente)+
+      (total?" ("+porcentaje(pendiente/total*100)+")":"")+
+      " · "+numero(transito.filas.length)+" viajes sin Recibo.";
   }
 }
 
