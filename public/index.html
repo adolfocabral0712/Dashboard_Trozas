@@ -492,35 +492,6 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
       <div class="detalle">Ver detalle por clasificación</div>
     </div>
   </button>
-
-  <button id="tarjetaChapas" class="tarjeta stock-monte" type="button" aria-haspopup="dialog">
-    <div class="icono-tarjeta">
-      <svg aria-hidden="true"><use href="#i-caja"/></svg>
-    </div>
-    <div class="tarjeta-contenido">
-      <h2>CHAPAS - Cajas Stock</h2>
-      <div id="numero-chapas" class="numero">—</div>
-      <div class="detalle">Saldo aproximado · ver detalle</div>
-    </div>
-  </button>
-
-  <button id="tarjetaTrozasCamion" class="tarjeta stock-monte" type="button" aria-haspopup="dialog">
-    <div class="icono-tarjeta">
-      <svg aria-hidden="true"><use href="#i-camion"/></svg>
-    </div>
-    <div class="tarjeta-contenido">
-      <h2>TROZAS POR CAMIÓN</h2>
-      <div class="detalle">Ver detalle por producto</div>
-    </div>
-  </button>
-  <button id="tarjetaTransito" class="tarjeta stock-monte" type="button" aria-controls="listado">
-    <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#i-camion"/></svg></div>
-    <div class="tarjeta-contenido">
-      <h2>FALTA DESCARGAR</h2>
-      <div id="numero-transito" class="numero">—</div>
-      <div id="detalle-transito" class="detalle">Pendiente de lectura</div>
-    </div>
-  </button>
 </section>
 
 <section class="tarjetas" aria-label="Stocks por color">
@@ -554,6 +525,38 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
       <div id="detalle-stock-verde" class="detalle">Pendiente de lectura</div>
     </div>
   </article>
+</section>
+
+<section class="tarjetas" aria-label="Chapas y despachos">
+  <button id="tarjetaChapas" class="tarjeta stock-monte" type="button" aria-haspopup="dialog">
+    <div class="icono-tarjeta">
+      <svg aria-hidden="true"><use href="#i-caja"/></svg>
+    </div>
+    <div class="tarjeta-contenido">
+      <h2>CHAPAS - Cajas Stock</h2>
+      <div id="numero-chapas" class="numero">—</div>
+      <div class="detalle">Saldo aproximado · ver detalle</div>
+    </div>
+  </button>
+
+  <button id="tarjetaTrozasCamion" class="tarjeta stock-monte" type="button" aria-haspopup="dialog">
+    <div class="icono-tarjeta">
+      <svg aria-hidden="true"><use href="#i-camion"/></svg>
+    </div>
+    <div class="tarjeta-contenido">
+      <h2>TROZAS POR CAMIÓN</h2>
+      <div class="detalle">Ver detalle por producto</div>
+    </div>
+  </button>
+
+  <button id="tarjetaTransito" class="tarjeta stock-monte" type="button" aria-controls="listado">
+    <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#i-camion"/></svg></div>
+    <div class="tarjeta-contenido">
+      <h2>FALTA DESCARGAR</h2>
+      <div id="numero-transito" class="numero">—</div>
+      <div id="detalle-transito" class="detalle">Pendiente de lectura</div>
+    </div>
+  </button>
 </section>
 
 <section class="graficos" aria-label="Gráficos">
