@@ -4,10 +4,18 @@ const ORIGENES = {
     archivo: "produccion.xlsx",
     tipo: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
   },
+
   "/api/recibo": {
     secret: "DROPBOX_RECIBO_URL",
     archivo: "recibo.xlsb",
     tipo: "application/vnd.ms-excel.sheet.binary.macroEnabled.12"
+  },
+
+  "/api/despachos": {
+    secret: "DROPBOX_DESPACHOS_URL",
+    archivo: "despachos.json",
+    tipo: "application/json; charset=utf-8",
+    json: true
   }
 };
 
@@ -24,7 +32,7 @@ function error(mensaje, status = 500) {
   );
 }
 
-async function descargarExcel(config, env) {
+async function descargarFuente(config, env) {
   const secreto = env[config.secret];
 
   if (!secreto) {
@@ -71,14 +79,20 @@ async function descargarExcel(config, env) {
     const respuesta = await fetch(enlace.toString(), {
       method: "GET",
       redirect: "follow",
+
       headers: {
-        "Accept": "application/octet-stream",
+        "Accept": config.json
+          ? "application/json"
+          : "application/octet-stream",
+
         "Cache-Control": "no-cache"
       },
+
       cf: {
         cacheTtl: 0,
         cacheEverything: false
       },
+
       signal: AbortSignal.timeout(80000)
     });
 
@@ -98,24 +112,74 @@ async function descargarExcel(config, env) {
 
     if (
       tipo.includes("text/html") ||
-      tipo.includes("application/json") ||
+      (!config.json && tipo.includes("application/json")) ||
       !respuesta.body
     ) {
       await respuesta.body?.cancel();
 
       return error(
-        "Dropbox devolvió una página en lugar del Excel. " +
+        "Dropbox no devolvió el archivo esperado. " +
         "Revisá el enlace del Secret.",
         502
       );
     }
 
+    // JSON de despachos: entregar solamente LAS ACACIAS UPM.
+    if (config.json) {
+      const datos = await respuesta.json();
+
+      const registros = Array.isArray(datos)
+        ? datos
+        : datos.registros;
+
+      if (!Array.isArray(registros)) {
+        return error(
+          "El JSON de Despachos no contiene una lista registros.",
+          502
+        );
+      }
+
+      const filtrados = registros.filter(registro => {
+        if (
+          !registro ||
+          typeof registro !== "object"
+        ) {
+          return false;
+        }
+
+        const predio = String(registro.predio || "")
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .toUpperCase();
+
+        return predio.includes("LAS ACACIAS UPM");
+      });
+
+      return Response.json(
+        {
+          actualizado: datos.actualizado || null,
+          cantidadRegistros: filtrados.length,
+          registros: filtrados
+        },
+        {
+          headers: {
+            "Cache-Control": "no-store, max-age=0",
+            "X-Content-Type-Options": "nosniff"
+          }
+        }
+      );
+    }
+
+    // Archivos Excel: transmitir sin exponer el enlace de Dropbox.
     return new Response(respuesta.body, {
       headers: {
         "Content-Type": config.tipo,
+
         "Content-Disposition":
           'inline; filename="' + config.archivo + '"',
+
         "Cache-Control": "no-store, max-age=0",
+
         "X-Content-Type-Options": "nosniff"
       }
     });
@@ -127,7 +191,7 @@ async function descargarExcel(config, env) {
     return error(
       timeout
         ? "Dropbox demoró demasiado. Intentá actualizar nuevamente."
-        : "No se pudo descargar el Excel desde Dropbox. Intentá actualizar nuevamente.",
+        : "No se pudo descargar el archivo desde Dropbox. Intentá actualizar nuevamente.",
       502
     );
   }
@@ -137,20 +201,34 @@ export default {
   async fetch(request, env) {
     const ruta = new URL(request.url).pathname;
 
+    // Rutas de datos.
     if (ruta.startsWith("/api/")) {
       if (request.method !== "GET") {
-        return error("Método no permitido.", 405);
+        return error(
+          "Método no permitido.",
+          405
+        );
       }
 
       const config = ORIGENES[ruta];
 
-      return config
-        ? descargarExcel(config, env)
-        : error("Ruta no encontrada.", 404);
+      if (!config) {
+        return error(
+          "Ruta no encontrada.",
+          404
+        );
+      }
+
+      return descargarFuente(config, env);
     }
 
+    // Dashboard y archivos estáticos.
     const respuesta = await env.ASSETS.fetch(request);
-    const salida = new Response(respuesta.body, respuesta);
+
+    const salida = new Response(
+      respuesta.body,
+      respuesta
+    );
 
     const tipo = salida.headers.get("Content-Type") || "";
 
