@@ -4,489 +4,124 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#173f35">
-<title>Producción Madera de Calidad</title>
+<title>Producción Las Acacias</title>
 
 <style>
 :root{
-  --fondo:#f4f3ed;
-  --tarjeta:#fffefa;
-  --bosque:#173f35;
-  --oro:#b5995f;
-  --texto:#243d33;
-  --secundario:#748077;
-  --borde:#e4e1d7;
+  --fondo:#f4f3ed;--tarjeta:#fffefa;--bosque:#173f35;--oro:#b5995f;
+  --texto:#243d33;--secundario:#748077;--borde:#e4e1d7;
   --sombra:0 5px 20px rgba(41,53,38,.045);
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
-body{
-  margin:0;
-  font-family:"Segoe UI",Arial,sans-serif;
-  background:var(--fondo);
-  color:var(--texto);
-}
+body{margin:0;font-family:"Segoe UI",Arial,sans-serif;background:var(--fondo);color:var(--texto)}
 button,input,select{font:inherit}
 button{cursor:pointer}
 button:disabled{opacity:.55;cursor:default}
-button:focus-visible,input:focus-visible,select:focus-visible{
-  outline:3px solid #b5995f80;
-  outline-offset:3px;
-}
-.cabecera{
-  background:var(--bosque);
-  color:#fffefa;
-  border-bottom:3px solid var(--oro);
-}
-.cabecera-interior{
-  max-width:1600px;
-  margin:auto;
-  padding:26px 24px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:24px;
-}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #b5995f80;outline-offset:3px}
+.cabecera{background:var(--bosque);color:#fffefa;border-bottom:3px solid var(--oro)}
+.cabecera-interior{max-width:1600px;margin:auto;padding:26px 24px;display:flex;justify-content:space-between;align-items:center;gap:24px}
 .marca{display:flex;align-items:center;gap:18px}
 .marca-icono{width:58px;height:58px;color:#c9b178;flex-shrink:0}
-h1{
-  margin:0 0 6px;
-  font-family:Georgia,serif;
-  font-size:clamp(23px,2.4vw,35px);
-  font-weight:600;
-}
+h1{margin:0 0 6px;font-family:Georgia,serif;font-size:clamp(23px,2.4vw,35px);font-weight:600}
 .subtitulo{margin:0;color:#d6e0d5;font-size:16px}
-.actualizar{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
-  background:var(--oro);
-  color:#fffefa;
-  border:1px solid #c8b17b;
-  border-radius:10px;
-  padding:13px 19px;
-  font-weight:600;
-  white-space:nowrap;
-}
+.actualizar{display:flex;align-items:center;justify-content:center;gap:10px;background:var(--oro);color:#fffefa;border:1px solid #c8b17b;border-radius:10px;padding:13px 19px;font-weight:600;white-space:nowrap}
 .actualizar:hover{background:#a48a52}
 .actualizar svg{width:19px;height:19px}
 main{max-width:1600px;margin:auto;padding:24px}
-.tarjetas,.graficos,.botones-tablas{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:18px;
-  margin-bottom:20px;
-}
-.tarjeta{
-  background:var(--tarjeta);
-  border:1px solid var(--borde);
-  border-radius:13px;
-  box-shadow:var(--sombra);
-  padding:8px 10px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:4px;
-  min-height:86px;
-  text-align:center;
-}
+.tarjetas,.graficos,.botones-tablas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-bottom:20px}
+.tarjeta{background:var(--tarjeta);border:1px solid var(--borde);border-radius:13px;box-shadow:var(--sombra);padding:8px 10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:86px;text-align:center}
 .tarjeta-contenido{width:100%;min-width:0;text-align:center}
-.tarjeta h2{
-  font-family:Georgia,serif;
-  font-size:13px;
-  margin:0 0 3px;
-  color:var(--bosque);
-  line-height:1.2;
-  text-align:center;
-}
-.numero{
-  font-family:Georgia,serif;
-  font-size:clamp(31px,3vw,44px);
-  font-weight:bold;
-  color:var(--bosque);
-  line-height:1.1;
-  text-align:center;
-}
+.tarjeta h2{font-family:Georgia,serif;font-size:13px;margin:0 0 3px;color:var(--bosque);line-height:1.2;text-align:center}
+.numero{font-family:Georgia,serif;font-size:clamp(31px,3vw,44px);font-weight:bold;color:var(--bosque);line-height:1.1;text-align:center}
 .tarjeta .numero{font-size:28px;line-height:1.05}
-.detalle{
-  margin-top:8px;
-  font-size:11px;
-  color:var(--secundario);
-  line-height:1.6;
-  overflow-wrap:anywhere;
-  text-align:center;
-}
+.detalle{margin-top:8px;font-size:11px;color:var(--secundario);line-height:1.6;overflow-wrap:anywhere;text-align:center}
 .tarjeta .detalle{font-size:10px;line-height:1.25;margin-top:3px}
-.icono-tarjeta{
-  width:20px;
-  height:20px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:#e9eddf;
-  color:var(--bosque);
-}
+.icono-tarjeta{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#e9eddf;color:var(--bosque)}
 .icono-tarjeta svg{width:14px;height:14px}
-.stock-monte .icono-tarjeta,.descarte .icono-tarjeta{
-  background:#eee6d5;
-  color:#786438;
-}
+.stock-monte .icono-tarjeta,.descarte .icono-tarjeta{background:#eee6d5;color:#786438}
 .stock-rojo .icono-tarjeta{background:#f5dfd9;color:#a43f38}
 .stock-amarillo .icono-tarjeta{background:#f8edc8;color:#997819}
 .stock-verde .icono-tarjeta{background:#e3ecd9;color:#48734b}
 .stock-rojo{border-top:3px solid #c64c4570}
 .stock-amarillo{border-top:3px solid #d8b23880}
 .stock-verde{border-top:3px solid #5d8f6470}
-.stock-valor{
-  display:flex;
-  align-items:baseline;
-  justify-content:center;
-  gap:6px;
-  flex-wrap:wrap;
-}
-.camiones-stock{
-  font-size:13px;
-  font-weight:600;
-  color:var(--secundario);
-  white-space:nowrap;
-}
+.stock-valor{display:flex;align-items:baseline;justify-content:center;gap:6px;flex-wrap:wrap}
+.camiones-stock{font-size:13px;font-weight:600;color:var(--secundario);white-space:nowrap}
 button.tarjeta{font:inherit;width:100%;color:var(--texto)}
 button.tarjeta:hover{border-color:var(--oro);background:#fffdf4}
 .error,.negativo{color:#aa3c35!important}
-.grafico,.panel,.grafico-quincena{
-  background:var(--tarjeta);
-  border:1px solid var(--borde);
-  border-radius:13px;
-  box-shadow:var(--sombra);
-  overflow:hidden;
-}
-.grafico h2{
-  font-family:Georgia,serif;
-  font-size:17px;
-  color:var(--bosque);
-  margin:0 18px;
-  padding:18px 0;
-  border-bottom:1px solid #b5995f90;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
-  text-align:center;
-}
-.grafico h2 svg{
-  width:24px;
-  height:24px;
-  color:var(--oro);
-  flex-shrink:0;
-}
-.visual{
-  min-height:300px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:7px 2px;
-}
+.grafico,.panel,.grafico-quincena{background:var(--tarjeta);border:1px solid var(--borde);border-radius:13px;box-shadow:var(--sombra);overflow:hidden}
+.grafico h2{font-family:Georgia,serif;font-size:17px;color:var(--bosque);margin:0 18px;padding:18px 0;border-bottom:1px solid #b5995f90;display:flex;align-items:center;justify-content:center;gap:10px;text-align:center}
+.grafico h2 svg{width:24px;height:24px;color:var(--oro);flex-shrink:0}
+.visual{min-height:300px;display:flex;align-items:center;justify-content:center;padding:7px 2px}
 .visual svg{width:100%;height:auto;display:block}
-.mensaje-grafico{
-  text-align:center;
-  color:var(--secundario);
-  font-size:13px;
-  line-height:1.6;
-  padding:25px;
-}
-.alcance{
-  text-align:center;
-  padding:0 15px 15px;
-  font-size:11px;
-  line-height:1.5;
-  color:var(--secundario);
-}
+.mensaje-grafico{text-align:center;color:var(--secundario);font-size:13px;line-height:1.6;padding:25px}
+.alcance{text-align:center;padding:0 15px 15px;font-size:11px;line-height:1.5;color:var(--secundario)}
 .grafico-quincena{margin-bottom:20px}
-.cabecera-quincena{
-  padding:22px 22px 14px;
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:20px;
-  flex-wrap:wrap;
-}
-.cabecera-quincena h2{
-  font-family:Georgia,serif;
-  color:var(--bosque);
-  margin:0 0 7px;
-  font-size:23px;
-}
-.cabecera-quincena p{
-  margin:0;
-  font-size:12px;
-  color:var(--secundario);
-  line-height:1.6;
-}
-.filtros-quincena{
-  display:flex;
-  gap:16px;
-  align-items:flex-start;
-  flex-wrap:wrap;
-}
-.selector-quincena{
-  display:flex;
-  flex-direction:column;
-  gap:7px;
-  font-size:12px;
-  font-weight:600;
-  color:var(--bosque);
-}
+.cabecera-quincena{padding:22px 22px 14px;display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap}
+.cabecera-quincena h2{font-family:Georgia,serif;color:var(--bosque);margin:0 0 7px;font-size:23px}
+.cabecera-quincena p{margin:0;font-size:12px;color:var(--secundario);line-height:1.6}
+.filtros-quincena{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap}
+.selector-quincena{display:flex;flex-direction:column;gap:7px;font-size:12px;font-weight:600;color:var(--bosque)}
 .selector-quincena select{min-width:155px;max-width:250px}
 fieldset.productos{margin:0;padding:0;border:none;min-width:0}
-.productos legend{
-  padding:0;
-  margin-bottom:7px;
-  font-size:12px;
-  font-weight:600;
-  color:var(--bosque);
-}
+.productos legend{padding:0;margin-bottom:7px;font-size:12px;font-weight:600;color:var(--bosque)}
 .opciones-productos{display:flex;gap:7px;flex-wrap:wrap}
-.chip{
-  display:flex;
-  align-items:center;
-  gap:6px;
-  border:1px solid var(--borde);
-  border-radius:7px;
-  background:#fffefa;
-  padding:8px;
-  font-size:11px;
-  color:var(--bosque);
-  cursor:pointer;
-}
+.chip{display:flex;align-items:center;gap:6px;border:1px solid var(--borde);border-radius:7px;background:#fffefa;padding:8px;font-size:11px;color:var(--bosque);cursor:pointer}
 .chip input{margin:0;accent-color:var(--color)}
 .chip:has(input:checked){border-color:var(--color)}
 .chip input:disabled{cursor:default}
 #graficoQuincena{overflow-x:auto;padding:0 16px 5px}
 #graficoQuincena svg{display:block;width:100%;height:auto}
-.leyenda-quincena{
-  display:flex;
-  justify-content:center;
-  flex-wrap:wrap;
-  gap:18px;
-  padding:10px 18px 18px;
-  font-size:12px;
-}
+.leyenda-quincena{display:flex;justify-content:center;flex-wrap:wrap;gap:18px;padding:10px 18px 18px;font-size:12px}
 .leyenda-item{display:flex;align-items:center;gap:7px}
 .punto{width:10px;height:10px;border-radius:50%}
-#avisoQuincena{
-  padding:5px 22px 15px;
-  text-align:center;
-  font-size:12px;
-  color:var(--secundario);
-  line-height:1.6;
-}
+#avisoQuincena{padding:5px 22px 15px;text-align:center;font-size:12px;color:var(--secundario);line-height:1.6}
 .botones-tablas{grid-template-columns:repeat(4,minmax(0,1fr))}
-.boton-tabla{
-  border:1px solid #c8b47f;
-  border-radius:12px;
-  background:var(--tarjeta);
-  color:var(--bosque);
-  box-shadow:var(--sombra);
-  padding:18px 20px;
-  display:flex;
-  align-items:center;
-  gap:13px;
-  text-align:left;
-}
+.boton-tabla{border:1px solid #c8b47f;border-radius:12px;background:var(--tarjeta);color:var(--bosque);box-shadow:var(--sombra);padding:18px 20px;display:flex;align-items:center;gap:13px;text-align:left}
 .boton-tabla>svg{width:28px;height:28px;flex-shrink:0}
-.boton-tabla span{
-  flex:1;
-  font-family:Georgia,serif;
-  font-size:19px;
-  font-weight:bold;
-}
+.boton-tabla span{flex:1;font-family:Georgia,serif;font-size:19px;font-weight:bold}
 .boton-tabla .flecha{width:18px;height:18px;color:#9b7c3f}
 .boton-tabla:hover{background:#f5f2e8}
-.boton-tabla.activo{
-  background:var(--bosque);
-  color:#fffefa;
-  border-color:var(--bosque);
-}
-.boton-tabla.activo .flecha{
-  color:#d3bc81;
-  transform:rotate(180deg);
-}
-#estadoCarga{
-  margin:0 0 18px;
-  font-size:12px;
-  line-height:1.6;
-  text-align:center;
-  color:var(--secundario);
-}
-.titulo-tabla{
-  font-family:Georgia,serif;
-  font-size:23px;
-  margin:0;
-  padding:23px 18px 6px;
-  text-align:center;
-  color:var(--bosque);
-  overflow-wrap:anywhere;
-}
-.controles{
-  padding:16px;
-  display:flex;
-  gap:12px;
-  align-items:center;
-  flex-wrap:wrap;
-}
-input,select{
-  border:1px solid #dadfd2;
-  border-radius:7px;
-  padding:9px 11px;
-  background:#fffefa;
-  color:var(--texto);
-}
+.boton-tabla.activo{background:var(--bosque);color:#fffefa;border-color:var(--bosque)}
+.boton-tabla.activo .flecha{color:#d3bc81;transform:rotate(180deg)}
+#estadoCarga{margin:0 0 18px;font-size:12px;line-height:1.6;text-align:center;color:var(--secundario)}
+.titulo-tabla{font-family:Georgia,serif;font-size:23px;margin:0;padding:23px 18px 6px;text-align:center;color:var(--bosque);overflow-wrap:anywhere}
+.controles{padding:16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+input,select{border:1px solid #dadfd2;border-radius:7px;padding:9px 11px;background:#fffefa;color:var(--texto)}
 #buscar{flex:1;min-width:190px}
 .controles label{display:flex;align-items:center;gap:7px;font-size:12px}
 #fila{width:70px}
-.secundario{
-  border:1px solid #c8b47f;
-  border-radius:7px;
-  padding:9px 13px;
-  background:#f6f2e7;
-  color:var(--bosque);
-}
+.secundario{border:1px solid #c8b47f;border-radius:7px;padding:9px 13px;background:#f6f2e7;color:var(--bosque)}
 .secundario:hover{background:#eee7d6}
-#aviso{
-  padding:0 16px 16px;
-  font-size:13px;
-  line-height:1.6;
-  text-align:center;
-  color:#aa3c35;
-}
+#aviso{padding:0 16px 16px;font-size:13px;line-height:1.6;text-align:center;color:#aa3c35}
 .tabla{overflow:auto;max-height:65vh;border-top:1px solid var(--borde)}
-table{
-  width:100%;
-  border-collapse:separate;
-  border-spacing:0;
-  font-size:12px;
-}
-th,td{
-  padding:10px;
-  text-align:center;
-  min-width:105px;
-  max-width:220px;
-  overflow-wrap:anywhere;
-  border-bottom:1px solid var(--borde);
-}
-th{
-  position:sticky;
-  top:0;
-  z-index:1;
-  background:#edf0e5;
-  vertical-align:top;
-}
-th button{
-  width:100%;
-  background:transparent;
-  border:none;
-  color:var(--bosque);
-  font-weight:600;
-  padding:4px;
-  white-space:normal;
-}
-th input{
-  width:100%;
-  min-width:85px;
-  margin-top:8px;
-  padding:7px;
-  font-size:11px;
-}
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:12px}
+th,td{padding:10px;text-align:center;min-width:105px;max-width:220px;overflow-wrap:anywhere;border-bottom:1px solid var(--borde)}
+th{position:sticky;top:0;z-index:1;background:#edf0e5;vertical-align:top}
+th button{width:100%;background:transparent;border:none;color:var(--bosque);font-weight:600;padding:4px;white-space:normal}
+th input{width:100%;min-width:85px;margin-top:8px;padding:7px;font-size:11px}
 tbody tr:nth-child(even){background:#f8f7f1}
 tbody tr:hover{background:#edf2e5}
-th.observaciones,td.observaciones{
-  min-width:280px;
-  max-width:360px;
-  width:320px;
-}
-td.observaciones{
-  text-align:left;
-  vertical-align:top;
-  padding:12px 16px;
-}
-.nota-texto{
-  white-space:pre-wrap;
-  line-height:1.65;
-  overflow-wrap:anywhere;
-}
-.nota-texto.corta{
-  display:-webkit-box;
-  -webkit-line-clamp:3;
-  -webkit-box-orient:vertical;
-  overflow:hidden;
-}
-.leer-nota{
-  border:1px solid var(--borde);
-  background:#edf0e5;
-  color:var(--bosque);
-  border-radius:5px;
-  font-size:11px;
-  padding:5px 8px;
-  margin-top:7px;
-}
-.etiqueta{
-  display:inline-block;
-  padding:5px 9px;
-  border-radius:6px;
-  font-weight:bold;
-}
+th.observaciones,td.observaciones{min-width:280px;max-width:360px;width:320px}
+td.observaciones{text-align:left;vertical-align:top;padding:12px 16px}
+.nota-texto{white-space:pre-wrap;line-height:1.65;overflow-wrap:anywhere}
+.nota-texto.corta{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.leer-nota{border:1px solid var(--borde);background:#edf0e5;color:var(--bosque);border-radius:5px;font-size:11px;padding:5px 8px;margin-top:7px}
+.etiqueta{display:inline-block;padding:5px 9px;border-radius:6px;font-weight:bold}
 .rojo{background:#f5dfd9;color:#a43f38}
 .amarillo{background:#f8edc8;color:#806615}
 .verde{background:#e3ecd9;color:#48734b}
 #vacio{padding:30px;text-align:center;color:var(--secundario)}
-.pie{
-  padding:16px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  flex-wrap:wrap;
-  font-size:12px;
-}
+.pie{padding:16px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-size:12px}
 .navegacion{display:flex;align-items:center;gap:10px}
-.nota{
-  font-size:11px;
-  line-height:1.7;
-  color:var(--secundario);
-  text-align:center;
-  margin-top:20px;
-}
-dialog{
-  background:var(--tarjeta);
-  border:1px solid #c8b47f;
-  border-radius:15px;
-  padding:25px;
-  width:min(620px,90vw);
-  max-height:80vh;
-  overflow:auto;
-  color:var(--texto);
-  box-shadow:0 15px 60px #173f3525;
-}
+.nota{font-size:11px;line-height:1.7;color:var(--secundario);text-align:center;margin-top:20px}
+dialog{background:var(--tarjeta);border:1px solid #c8b47f;border-radius:15px;padding:25px;width:min(620px,90vw);max-height:80vh;overflow:auto;color:var(--texto);box-shadow:0 15px 60px #173f3525}
 dialog::backdrop{background:#0b251dcc;backdrop-filter:blur(3px)}
-dialog h2{
-  margin-top:0;
-  font-family:Georgia,serif;
-  color:var(--bosque);
-}
-#notaCompleta{
-  white-space:pre-wrap;
-  line-height:1.7;
-  overflow-wrap:anywhere;
-  margin-bottom:20px;
-}
-#alcanceDescarte{
-  font-size:13px;
-  line-height:1.6;
-  color:var(--secundario);
-  margin-bottom:16px;
-}
+dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
+#notaCompleta{white-space:pre-wrap;line-height:1.7;overflow-wrap:anywhere;margin-bottom:20px}
+#alcanceDescarte{font-size:13px;line-height:1.6;color:var(--secundario);margin-bottom:16px}
 .tabla-detalle{margin-bottom:20px;font-size:14px}
 .tabla-detalle th{position:static;padding:12px}
 .tabla-detalle td{padding:12px}
@@ -494,69 +129,22 @@ dialog h2{
 .tabla-detalle tfoot td{background:#edf0e5;font-weight:bold}
 .iconos{position:absolute;width:0;height:0;overflow:hidden}
 .tabla-insumos{width:100%;table-layout:auto}
-.tabla-insumos th,.tabla-insumos td{
-  min-width:0;
-  max-width:none;
-  white-space:nowrap;
-  overflow-wrap:normal;
-  vertical-align:middle;
-}
+.tabla-insumos th,.tabla-insumos td{min-width:0;max-width:none;white-space:nowrap;overflow-wrap:normal;vertical-align:middle}
 .tabla-insumos td{padding:6px 10px;line-height:1.3}
 .tabla-insumos th{padding:8px 10px;min-width:105px;vertical-align:top}
-.tabla-insumos th button{
-  display:block;
-  width:100%;
-  white-space:nowrap;
-  line-height:1.3;
-  margin:0;
-}
-.tabla-insumos th input{
-  display:block;
-  min-width:0;
-  width:105px;
-  max-width:100%;
-  margin:6px auto 0;
-  box-sizing:border-box;
-}
+.tabla-insumos th button{display:block;width:100%;white-space:nowrap;line-height:1.3;margin:0}
+.tabla-insumos th input{display:block;min-width:0;width:105px;max-width:100%;margin:6px auto 0;box-sizing:border-box}
 .tabla-insumos th.observaciones input{width:100%}
-.tabla-insumos th.observaciones,.tabla-insumos td.observaciones{
-  width:360px;
-  min-width:360px;
-  max-width:360px;
-}
+.tabla-insumos th.observaciones,.tabla-insumos td.observaciones{width:360px;min-width:360px;max-width:360px}
 .tabla-insumos td.observaciones{padding:6px 10px;text-align:left}
-.tabla-insumos .nota-fila{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  width:340px;
-}
-.tabla-insumos .nota-texto.corta{
-  display:block;
-  flex:1;
-  min-width:0;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  line-height:1.3;
-  -webkit-line-clamp:unset;
-  -webkit-box-orient:unset;
-}
-.tabla-insumos .leer-nota{
-  flex:0 0 auto;
-  margin:0;
-  padding:4px 7px;
-  white-space:nowrap;
-}
+.tabla-insumos .nota-fila{display:flex;align-items:center;gap:8px;width:340px}
+.tabla-insumos .nota-texto.corta{display:block;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3;-webkit-line-clamp:unset;-webkit-box-orient:unset}
+.tabla-insumos .leer-nota{flex:0 0 auto;margin:0;padding:4px 7px;white-space:nowrap}
 .tarjetas-principales{grid-template-columns:repeat(3,minmax(0,1fr))}
 #modalChapas{width:min(500px,94vw)}
 #modalChapas .tabla-detalle{table-layout:fixed}
 #modalChapas .tabla-detalle th{line-height:1.4;vertical-align:middle}
-#modalChapas .tabla-detalle th,#modalChapas .tabla-detalle td{
-  padding:9px 7px;
-  min-width:0;
-  max-width:none;
-}
+#modalChapas .tabla-detalle th,#modalChapas .tabla-detalle td{padding:9px 7px;min-width:0;max-width:none}
 #modalChapas .tabla-detalle th:first-child{width:44%}
 #modalChapas .tabla-detalle th:nth-child(2){width:23%}
 #modalChapas .tabla-detalle th:nth-child(3){width:33%}
@@ -565,51 +153,25 @@ dialog h2{
 #modalTrozasCamion{width:min(500px,94vw)}
 #modalTrozasCamion .tabla-detalle{min-width:0;table-layout:fixed}
 #modalTrozasCamion .detalle-scroll{overflow:auto}
-#modalTrozasCamion .tabla-detalle th{
-  white-space:normal;
-  min-width:0;
-  line-height:1.4;
-  vertical-align:middle;
-  text-align:center;
-}
-#modalTrozasCamion .tabla-detalle th,#modalTrozasCamion .tabla-detalle td{
-  padding:9px 7px;
-  min-width:0;
-  max-width:none;
-}
+#modalTrozasCamion .tabla-detalle th{white-space:normal;min-width:0;line-height:1.4;vertical-align:middle;text-align:center}
+#modalTrozasCamion .tabla-detalle th,#modalTrozasCamion .tabla-detalle td{padding:9px 7px;min-width:0;max-width:none}
 #modalTrozasCamion .tabla-detalle th:first-child{width:34%}
-#modalTrozasCamion .tabla-detalle th:nth-child(2),
-#modalTrozasCamion .tabla-detalle th:nth-child(3){width:33%}
-#modalTrozasCamion .tabla-detalle tfoot{
-  font-weight:bold;
-  color:var(--bosque);
-}
+#modalTrozasCamion .tabla-detalle th:nth-child(2),#modalTrozasCamion .tabla-detalle th:nth-child(3){width:33%}
+#modalTrozasCamion .tabla-detalle tfoot{font-weight:bold;color:var(--bosque)}
 @media(max-width:1100px){
   .graficos{grid-template-columns:1fr}
   .visual svg{max-width:640px}
   .tarjetas-principales{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
-@media(max-width:900px){
-  .botones-tablas{grid-template-columns:repeat(2,minmax(0,1fr))}
-}
+@media(max-width:900px){.botones-tablas{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:700px){
-  .cabecera-interior{
-    padding:22px 16px;
-    flex-direction:column;
-    align-items:stretch;
-  }
-  .marca{gap:12px}
-  .marca-icono{width:45px;height:45px}
-  .subtitulo{font-size:13px}
-  main{padding:15px}
-  .tarjetas,.botones-tablas{
-    grid-template-columns:1fr;
-    gap:12px;
-  }
+  .cabecera-interior{padding:22px 16px;flex-direction:column;align-items:stretch}
+  .marca{gap:12px}.marca-icono{width:45px;height:45px}
+  .subtitulo{font-size:13px}main{padding:15px}
+  .tarjetas,.botones-tablas{grid-template-columns:1fr;gap:12px}
   .tarjetas-principales{grid-template-columns:1fr}
   .tarjeta{min-height:74px;padding:8px 10px}
-  #buscar{flex-basis:100%}
-  .titulo-tabla{font-size:20px}
+  #buscar{flex-basis:100%}.titulo-tabla{font-size:20px}
   .visual{min-height:250px}
   th.observaciones,td.observaciones{min-width:230px}
   .cabecera-quincena{padding:18px 16px}
@@ -620,14 +182,12 @@ dialog h2{
 <body>
 <svg class="iconos" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
   <symbol id="i-bosque" viewBox="0 0 64 64">
-    <path d="M20 7 10 23h6L7 37h9L6 51h12v9h4v-9h12L24 37h9l-9-14h6L20 7ZM45 13 36 28h6l-8 13h8l-9 13h10v6h4v-6h10l-9-13h8l-8-13h6L45 13Z" fill="currentColor"/>
+    <image x="0" y="0" width="64" height="64" preserveAspectRatio="xMidYMid meet" href="data:image/webp;base64,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"/>
   </symbol>
   <symbol id="i-troncos" viewBox="0 0 48 48">
     <g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="13" cy="31" r="8"/>
-      <circle cx="13" cy="31" r="3"/>
-      <circle cx="30" cy="35" r="8"/>
-      <circle cx="30" cy="35" r="3"/>
+      <circle cx="13" cy="31" r="8"/><circle cx="13" cy="31" r="3"/>
+      <circle cx="30" cy="35" r="8"/><circle cx="30" cy="35" r="3"/>
       <path d="m9 24 18-12c8-5 18 5 12 12L21 37M15 23l17-10M20 26l16-11M25 29l16-11M6 36l5 6M33 27l7-5"/>
     </g>
   </symbol>
@@ -639,8 +199,7 @@ dialog h2{
   <symbol id="i-camion" viewBox="0 0 48 48">
     <g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round">
       <path d="M4 12h25v22H4ZM29 20h9l6 8v6H29M35 20v9h9"/>
-      <circle cx="12" cy="35" r="5"/>
-      <circle cx="36" cy="35" r="5"/>
+      <circle cx="12" cy="35" r="5"/><circle cx="36" cy="35" r="5"/>
     </g>
   </symbol>
   <symbol id="i-caja" viewBox="0 0 48 48">
@@ -668,9 +227,8 @@ dialog h2{
     <div class="marca">
       <svg class="marca-icono" aria-hidden="true"><use href="#i-bosque"/></svg>
       <div>
-        <h1>PRODUCCIÓN MADERA DE CALIDAD</h1>
+        <h1>PRODUCCIÓN LAS ACACIAS</h1>
         <p class="subtitulo">Control de producción y stock</p>
-        <p class="subtitulo">Ing.Agr. Gonzalo Lustemberg</p>
       </div>
     </div>
     <button id="actualizar" class="actualizar">
@@ -683,31 +241,23 @@ dialog h2{
 <main>
 <section class="tarjetas tarjetas-principales" aria-label="Totales">
   <article class="tarjeta">
-    <div class="icono-tarjeta">
-      <svg aria-hidden="true"><use href="#i-troncos"/></svg>
-    </div>
+    <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#i-troncos"/></svg></div>
     <div class="tarjeta-contenido">
       <h2>PRODUCCIÓN</h2>
       <div id="numero-produccion" class="numero">—</div>
       <div id="fecha-produccion" class="detalle">Último dato: —</div>
     </div>
   </article>
-
   <article class="tarjeta stock-monte">
-    <div class="icono-tarjeta">
-      <svg aria-hidden="true"><use href="#i-bosque"/></svg>
-    </div>
+    <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#i-bosque"/></svg></div>
     <div class="tarjeta-contenido">
       <h2>TROZAS STOCK MONTE</h2>
       <div id="stock-monte" class="numero">—</div>
       <div id="detalle-stock-monte" class="detalle">Pendiente de lectura</div>
     </div>
   </article>
-
   <button id="tarjetaDescarte" class="tarjeta descarte" type="button" aria-haspopup="dialog">
-    <div class="icono-tarjeta">
-      <svg aria-hidden="true"><use href="#i-descarte"/></svg>
-    </div>
+    <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#i-descarte"/></svg></div>
     <div class="tarjeta-contenido">
       <h2>DESCARTE</h2>
       <div id="numero-descarte" class="numero">—</div>
@@ -718,43 +268,26 @@ dialog h2{
 
 <section class="tarjetas" aria-label="Stocks por color">
   <article class="tarjeta stock-rojo">
-    <div class="icono-tarjeta">
-      <svg aria-hidden="true"><use href="#i-troncos"/></svg>
-    </div>
+    <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#i-troncos"/></svg></div>
     <div class="tarjeta-contenido">
       <h2>STOCK ROJO</h2>
-      <div class="stock-valor">
-        <span id="stock-rojo" class="numero">—</span>
-        <span id="camiones-rojo" class="camiones-stock" hidden></span>
-      </div>
+      <div class="stock-valor"><span id="stock-rojo" class="numero">—</span><span id="camiones-rojo" class="camiones-stock" hidden></span></div>
       <div id="detalle-stock-rojo" class="detalle">Pendiente de lectura</div>
     </div>
   </article>
-
   <article class="tarjeta stock-amarillo">
-    <div class="icono-tarjeta">
-      <svg aria-hidden="true"><use href="#i-troncos"/></svg>
-    </div>
+    <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#i-troncos"/></svg></div>
     <div class="tarjeta-contenido">
       <h2>STOCK AMARILLO</h2>
-      <div class="stock-valor">
-        <span id="stock-amarillo" class="numero">—</span>
-        <span id="camiones-amarillo" class="camiones-stock" hidden></span>
-      </div>
+      <div class="stock-valor"><span id="stock-amarillo" class="numero">—</span><span id="camiones-amarillo" class="camiones-stock" hidden></span></div>
       <div id="detalle-stock-amarillo" class="detalle">Pendiente de lectura</div>
     </div>
   </article>
-
   <article class="tarjeta stock-verde">
-    <div class="icono-tarjeta">
-      <svg aria-hidden="true"><use href="#i-troncos"/></svg>
-    </div>
+    <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#i-troncos"/></svg></div>
     <div class="tarjeta-contenido">
       <h2>STOCK VERDE</h2>
-      <div class="stock-valor">
-        <span id="stock-verde" class="numero">—</span>
-        <span id="camiones-verde" class="camiones-stock" hidden></span>
-      </div>
+      <div class="stock-valor"><span id="stock-verde" class="numero">—</span><span id="camiones-verde" class="camiones-stock" hidden></span></div>
       <div id="detalle-stock-verde" class="detalle">Pendiente de lectura</div>
     </div>
   </article>
@@ -762,30 +295,22 @@ dialog h2{
 
 <section class="tarjetas" aria-label="Chapas y despachos">
   <button id="tarjetaChapas" class="tarjeta stock-monte" type="button" aria-haspopup="dialog">
-    <div class="icono-tarjeta">
-      <svg aria-hidden="true"><use href="#i-caja"/></svg>
-    </div>
+    <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#i-caja"/></svg></div>
     <div class="tarjeta-contenido">
       <h2>CHAPAS - Cajas Stock</h2>
       <div id="numero-chapas" class="numero">—</div>
       <div class="detalle">Saldo aproximado · ver detalle</div>
     </div>
   </button>
-
   <button id="tarjetaTrozasCamion" class="tarjeta stock-monte" type="button" aria-haspopup="dialog">
-    <div class="icono-tarjeta">
-      <svg aria-hidden="true"><use href="#i-camion"/></svg>
-    </div>
+    <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#i-camion"/></svg></div>
     <div class="tarjeta-contenido">
       <h2>TROZAS POR CAMIÓN</h2>
       <div class="detalle">Ver detalle por producto</div>
     </div>
   </button>
-
   <button id="tarjetaTransito" class="tarjeta stock-monte" type="button" aria-controls="listado">
-    <div class="icono-tarjeta">
-      <svg aria-hidden="true"><use href="#i-camion"/></svg>
-    </div>
+    <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#i-camion"/></svg></div>
     <div class="tarjeta-contenido">
       <h2>FALTA DESCARGAR</h2>
       <div id="numero-transito" class="numero">—</div>
@@ -796,28 +321,17 @@ dialog h2{
 
 <section class="graficos" aria-label="Gráficos">
   <article class="grafico">
-    <h2>
-      <svg aria-hidden="true"><use href="#i-bosque"/></svg>
-      PRODUCCIÓN TROZAS MONTE
-    </h2>
+    <h2><svg aria-hidden="true"><use href="#i-bosque"/></svg>PRODUCCIÓN TROZAS MONTE</h2>
     <div id="graficoProduccionColor" class="visual"></div>
     <div class="alcance">Responde a los filtros de Producción.</div>
   </article>
-
   <article class="grafico">
-    <h2>
-      <svg aria-hidden="true"><use href="#i-camion"/></svg>
-      DESPACHO DE TROZAS
-    </h2>
+    <h2><svg aria-hidden="true"><use href="#i-camion"/></svg>DESPACHO DE TROZAS</h2>
     <div id="graficoDespacho" class="visual"></div>
     <div id="alcanceDespacho" class="alcance">Recibo + despachos en tránsito sin Recibo.</div>
   </article>
-
   <article class="grafico">
-    <h2>
-      <svg aria-hidden="true"><use href="#i-troncos"/></svg>
-      PRODUCCIÓN Y DESCARTES
-    </h2>
+    <h2><svg aria-hidden="true"><use href="#i-troncos"/></svg>PRODUCCIÓN Y DESCARTES</h2>
     <div id="graficoProduccionDescarte" class="visual"></div>
     <div class="alcance">Responde a los filtros de Producción.</div>
   </article>
@@ -829,38 +343,18 @@ dialog h2{
       <h2 id="tituloQuincena">PRODUCCIÓN POR QUINCENA</h2>
       <p>Agrupado por la columna QUINCENA de Producción.</p>
     </div>
-
     <div class="filtros-quincena">
-      <label class="selector-quincena">
-        Quincena
-        <select id="selectorQuincena">
-          <option value="">Todas</option>
-        </select>
+      <label class="selector-quincena">Quincena
+        <select id="selectorQuincena"><option value="">Todas</option></select>
       </label>
-
       <fieldset class="productos">
         <legend>Productos</legend>
         <div class="opciones-productos">
-          <label class="chip" style="--color:#295344">
-            <input type="checkbox" data-serie="PRODUCCION" checked>
-            PRODUCCIÓN
-          </label>
-          <label class="chip" style="--color:#c64c45">
-            <input type="checkbox" data-serie="ROJO" checked>
-            ROJO
-          </label>
-          <label class="chip" style="--color:#d8b238">
-            <input type="checkbox" data-serie="AMARILLO" checked>
-            AMARILLO
-          </label>
-          <label class="chip" style="--color:#5d8f64">
-            <input type="checkbox" data-serie="VERDE" checked>
-            VERDE
-          </label>
-          <label class="chip" style="--color:#b5995f">
-            <input type="checkbox" data-serie="DESCARTES" checked>
-            DESCARTES
-          </label>
+          <label class="chip" style="--color:#295344"><input type="checkbox" data-serie="PRODUCCION" checked>PRODUCCIÓN</label>
+          <label class="chip" style="--color:#c64c45"><input type="checkbox" data-serie="ROJO" checked>ROJO</label>
+          <label class="chip" style="--color:#d8b238"><input type="checkbox" data-serie="AMARILLO" checked>AMARILLO</label>
+          <label class="chip" style="--color:#5d8f64"><input type="checkbox" data-serie="VERDE" checked>VERDE</label>
+          <label class="chip" style="--color:#b5995f"><input type="checkbox" data-serie="DESCARTES" checked>DESCARTES</label>
         </div>
       </fieldset>
     </div>
@@ -874,40 +368,24 @@ dialog h2{
 
 <nav class="botones-tablas" aria-label="Mostrar u ocultar tablas">
   <button class="boton-tabla" data-tab="produccion" aria-expanded="false" aria-controls="listado">
-    <svg aria-hidden="true"><use href="#i-troncos"/></svg>
-    <span>Producción</span>
-    <svg class="flecha" aria-hidden="true"><use href="#i-flecha"/></svg>
+    <svg aria-hidden="true"><use href="#i-troncos"/></svg><span>Producción</span><svg class="flecha" aria-hidden="true"><use href="#i-flecha"/></svg>
   </button>
-
   <button class="boton-tabla" data-tab="insumos" aria-expanded="false" aria-controls="listado">
-    <svg aria-hidden="true"><use href="#i-caja"/></svg>
-    <span>Insumos</span>
-    <svg class="flecha" aria-hidden="true"><use href="#i-flecha"/></svg>
+    <svg aria-hidden="true"><use href="#i-caja"/></svg><span>Insumos</span><svg class="flecha" aria-hidden="true"><use href="#i-flecha"/></svg>
   </button>
-
   <button class="boton-tabla" data-tab="recibo" aria-expanded="false" aria-controls="listado">
-    <svg aria-hidden="true"><use href="#i-documento"/></svg>
-    <span>Recibo</span>
-    <svg class="flecha" aria-hidden="true"><use href="#i-flecha"/></svg>
+    <svg aria-hidden="true"><use href="#i-documento"/></svg><span>Recibo</span><svg class="flecha" aria-hidden="true"><use href="#i-flecha"/></svg>
   </button>
-
   <button class="boton-tabla" data-tab="transito" aria-expanded="false" aria-controls="listado">
-    <svg aria-hidden="true"><use href="#i-camion"/></svg>
-    <span>En Tránsito</span>
-    <svg class="flecha" aria-hidden="true"><use href="#i-flecha"/></svg>
+    <svg aria-hidden="true"><use href="#i-camion"/></svg><span>En Tránsito</span><svg class="flecha" aria-hidden="true"><use href="#i-flecha"/></svg>
   </button>
 </nav>
 
 <section id="listado" class="panel" hidden>
   <h2 id="tituloTabla" class="titulo-tabla">Producción</h2>
-
   <div class="controles">
     <input id="buscar" type="search" placeholder="Buscar en toda la tabla..." aria-label="Buscar">
-
-    <label>Fila de encabezados
-      <input id="fila" type="number" min="1" max="100" value="3">
-    </label>
-
+    <label>Fila de encabezados<input id="fila" type="number" min="1" max="100" value="3"></label>
     <label>Filas
       <select id="limite">
         <option value="25">25</option>
@@ -916,20 +394,13 @@ dialog h2{
         <option value="200">200</option>
       </select>
     </label>
-
     <button id="quitar" class="secundario">Quitar filtros</button>
   </div>
-
   <div id="aviso" hidden aria-live="polite"></div>
-
   <div class="tabla">
-    <table id="tablaDatos">
-      <thead id="encabezado"></thead>
-      <tbody id="cuerpo"></tbody>
-    </table>
+    <table id="tablaDatos"><thead id="encabezado"></thead><tbody id="cuerpo"></tbody></table>
     <div id="vacio">Cargando datos...</div>
   </div>
-
   <div class="pie">
     <span>Hacé clic en los encabezados para ordenar.</span>
     <div class="navegacion">
@@ -960,89 +431,50 @@ dialog h2{
 <dialog id="modalTrozasCamion" aria-labelledby="tituloTrozasCamion">
   <h2 id="tituloTrozasCamion">TROZAS POR CAMIÓN</h2>
   <p id="avisoTrozasCamion" class="detalle"></p>
-
   <div class="detalle-scroll">
     <table class="tabla-detalle">
-      <thead>
-        <tr>
-          <th>Id<br>Producto</th>
-          <th>Trozas por<br>camión</th>
-          <th>Neto por<br>camión (t)</th>
-        </tr>
-      </thead>
+      <thead><tr><th>Id<br>Producto</th><th>Trozas por<br>camión</th><th>Neto por<br>camión (t)</th></tr></thead>
       <tbody id="detalleTrozasCamion"></tbody>
       <tfoot id="totalTrozasCamion"></tfoot>
     </table>
   </div>
-
   <p class="detalle">
     Cada registro de Recibo se considera un viaje.
     Trozas por camión = suma de Cantidad ÷ viajes.
     Neto por camión = suma de Neto ÷ viajes.
     Utiliza los registros completos de Recibo.
   </p>
-
   <button id="cerrarTrozasCamion" class="secundario">Cerrar</button>
 </dialog>
 
 <dialog id="modalChapas" aria-labelledby="tituloChapas">
   <h2 id="tituloChapas">CHAPAS - Cajas Stock</h2>
   <p id="alcanceChapas" class="detalle"></p>
-
   <table class="tabla-detalle">
-    <thead>
-      <tr>
-        <th>Concepto</th>
-        <th>Cantidad</th>
-        <th>% de Cajas<br>de Insumos</th>
-      </tr>
-    </thead>
+    <thead><tr><th>Concepto</th><th>Cantidad</th><th>% de Cajas<br>de Insumos</th></tr></thead>
     <tbody>
-      <tr>
-        <td>Insumos · Cajas</td>
-        <td id="chapas-insumos">—</td>
-        <td id="chapas-pct-insumos">—</td>
-      </tr>
-      <tr>
-        <td>Producción · Cajas consumidas</td>
-        <td id="chapas-produccion">—</td>
-        <td id="chapas-pct-produccion">—</td>
-      </tr>
+      <tr><td>Insumos · Cajas</td><td id="chapas-insumos">—</td><td id="chapas-pct-insumos">—</td></tr>
+      <tr><td>Producción · Cajas consumidas</td><td id="chapas-produccion">—</td><td id="chapas-pct-produccion">—</td></tr>
     </tbody>
-    <tfoot>
-      <tr>
-        <td>Saldo aproximado</td>
-        <td id="chapas-saldo">—</td>
-        <td id="chapas-pct-saldo">—</td>
-      </tr>
-    </tfoot>
+    <tfoot><tr><td>Saldo aproximado</td><td id="chapas-saldo">—</td><td id="chapas-pct-saldo">—</td></tr></tfoot>
   </table>
-
   <p class="detalle">
     Producción: Cajas Chapas + (Chapas de mas PPL + Chapas EXTRAS STD) ÷ 90.<br>
     Insumos: suma de Cajas. Saldo = Insumos − Producción.
     Porcentajes calculados sobre Cajas de Insumos (100 %).
     Se utilizan los registros completos de ambas tablas.
   </p>
-
   <button id="cerrarChapas" class="secundario">Cerrar</button>
 </dialog>
 
 <dialog id="modalDescarte" aria-labelledby="tituloDescarte">
   <h2 id="tituloDescarte">Detalle de descarte</h2>
   <div id="alcanceDescarte"></div>
-
   <table class="tabla-detalle">
     <thead><tr><th>Clasificación</th><th>Cantidad</th></tr></thead>
     <tbody id="detalleDescarte"></tbody>
-    <tfoot>
-      <tr>
-        <td>TOTAL DESCARTE</td>
-        <td id="totalDetalleDescarte">—</td>
-      </tr>
-    </tfoot>
+    <tfoot><tr><td>TOTAL DESCARTE</td><td id="totalDetalleDescarte">—</td></tr></tfoot>
   </table>
-
   <button id="cerrarDescarte" class="secundario">Cerrar</button>
 </dialog>
 
@@ -1097,21 +529,16 @@ function normalizar(v){
   return String(v??"").normalize("NFD")
     .replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();
 }
-function claveColumna(v){
-  return normalizar(v).replace(/[^a-z0-9]/g,"");
-}
+function claveColumna(v){return normalizar(v).replace(/[^a-z0-9]/g,"")}
 function claveSuma(v){
   return normalizar(v).replace(/amarillo/g,"amarrillo")
     .replace(/[^a-z0-9+-]/g,"");
 }
 function texto(v){return v==null?"":String(v)}
-function numero(v){
-  return v.toLocaleString("es-UY",{maximumFractionDigits:2});
-}
+function numero(v){return v.toLocaleString("es-UY",{maximumFractionDigits:2})}
 function porcentaje(v){
   return v.toLocaleString("es-UY",{
-    minimumFractionDigits:1,
-    maximumFractionDigits:1
+    minimumFractionDigits:1,maximumFractionDigits:1
   })+"%";
 }
 function idsDelOrigen(o){
@@ -1124,9 +551,7 @@ function esFecha(n){return claveColumna(n).includes("fecha")}
 function esObservaciones(n){
   return ["observaciones","observacion"].includes(claveColumna(n));
 }
-function tieneContenido(v){
-  return v!=null&&texto(v).trim()!=="";
-}
+function tieneContenido(v){return v!=null&&texto(v).trim()!==""}
 function nombrePropio(v){
   return texto(v).replace(/_/g," ").replace(/\s+/g," ").trim()
     .toLocaleLowerCase("es")
@@ -1153,69 +578,39 @@ const EQUIVALENCIAS=new Map([
 
 for(const id of Object.keys(CONFIG)){
   tablas[id]={
-    columnas:[],
-    filas:[],
-    filtros:[],
-    busqueda:"",
-    orden:null,
-    direccion:1,
-    pagina:1,
-    lectura:"",
-    error:"",
-    cargando:false,
-    faltantes:[],
+    columnas:[],filas:[],filtros:[],busqueda:"",
+    orden:null,direccion:1,pagina:1,lectura:"",
+    error:"",cargando:false,faltantes:[],
     faltantesColor:{ROJO:[],AMARILLO:[],VERDE:[]},
     erroresDescarte:[],
     erroresDescartePorColumna:COLUMNAS_DESCARTE.map(()=>[]),
-    avisoCantidad:"",
-    noClasificados:0,
-    avisoQuincena:"",
-    avisoRemito:""
+    avisoCantidad:"",noClasificados:0,avisoQuincena:"",avisoRemito:""
   };
 }
 
 const despachos={
-  registros:[],
-  lectura:"",
-  actualizado:"",
-  cargando:false,
-  error:""
+  registros:[],lectura:"",actualizado:"",cargando:false,error:""
 };
 
 const COLUMNAS_TRANSITO=[
-  "Remito de origen",
-  "Matrícula",
-  "Predio",
-  "Destino",
-  "Id Producto",
-  "Cantidad",
-  "Fecha fin carga",
-  "Estado informado",
-  "Observaciones"
+  "Remito de origen","Matrícula","Predio","Destino","Id Producto",
+  "Cantidad","Fecha fin carga","Estado informado","Observaciones"
 ];
 
 function normalizarRemito(v){
   const s=texto(v).normalize("NFKC").trim();
-
   if(!s||/^(nan|null|undefined|none)$/i.test(s))return "";
-
   if(/^\d+(?:[.,]0+)?$/.test(s)){
     return s.replace(/[.,]0+$/,"").replace(/^0+(?=\d)/,"");
   }
-
   return s.toUpperCase().replace(/\s+/g,"");
 }
 
 function productoDespacho(v){
   const s=normalizar(v);
-
   if(/\brojo\b/.test(s))return "ROJO";
   if(/\bverde\b/.test(s))return "VERDE";
-
-  if(/\bamar+r?illo\b/.test(s)||/\bppl\b/.test(s)){
-    return "AMARILLO";
-  }
-
+  if(/\bamar+r?illo\b/.test(s)||/\bppl\b/.test(s))return "AMARILLO";
   return "SIN CLASIFICAR";
 }
 
@@ -1223,17 +618,13 @@ function conciliarDespachos(registros,recibos){
   const recibidos=new Set(
     recibos.map(f=>normalizarRemito(f.remitoOrigen)).filter(Boolean)
   );
-
-  const vistos=new Map();
-  const pendientes=[];
-  const errores=[];
+  const vistos=new Map(),pendientes=[],errores=[];
   let conciliados=0,repetidos=0;
 
   for(const d of registros){
     if(!normalizar(d.predio).includes("las acacias upm"))continue;
 
     const remito=normalizarRemito(d.numero_1);
-
     if(remito&&recibidos.has(remito)){
       conciliados++;
       continue;
@@ -1241,13 +632,9 @@ function conciliarDespachos(registros,recibos){
 
     const cantidad=numeroCelda(d.cantidad);
     const color=productoDespacho(d.producto);
-
     const firma=JSON.stringify([
-      normalizar(d.vehiculo),
-      normalizar(d.predio),
-      normalizar(d.producto),
-      cantidad,
-      texto(d.fin_carga)
+      normalizar(d.vehiculo),normalizar(d.predio),
+      normalizar(d.producto),cantidad,texto(d.fin_carga)
     ]);
 
     if(remito&&vistos.has(remito)){
@@ -1261,7 +648,6 @@ function conciliarDespachos(registros,recibos){
     }
 
     if(remito)vistos.set(remito,firma);
-
     if(!remito){
       errores.push("Hay un despacho de Las Acacias sin número de remito.");
     }
@@ -1280,27 +666,17 @@ function conciliarDespachos(registros,recibos){
     )?"":texto(d.observaciones);
 
     pendientes.push({
-      remito,
-      color,
-      cantidad:valida?cantidad:0,
+      remito,color,cantidad:valida?cantidad:0,
       valores:[
-        texto(d.numero_1),
-        texto(d.vehiculo),
-        texto(d.predio),
-        texto(d.destino),
-        color,
-        valida?texto(cantidad):"Revisar",
-        texto(d.fin_carga),
-        texto(d.estado_descarga),
-        observacion
+        texto(d.numero_1),texto(d.vehiculo),texto(d.predio),
+        texto(d.destino),color,valida?texto(cantidad):"Revisar",
+        texto(d.fin_carga),texto(d.estado_descarga),observacion
       ]
     });
   }
 
   return {
-    pendientes,
-    conciliados,
-    repetidos,
+    pendientes,conciliados,repetidos,
     errores:[...new Set(errores)],
     total:pendientes.reduce((s,f)=>s+f.cantidad,0),
     sinColor:pendientes.filter(f=>!COLORES.includes(f.color)).length
@@ -1309,7 +685,6 @@ function conciliarDespachos(registros,recibos){
 
 function actualizarTransito(){
   const t=tablas.transito,r=tablas.recibo;
-
   t.cargando=despachos.cargando||r.cargando;
   t.error=despachos.error||r.error||r.avisoRemito||"";
   t.avisoCruce="";
@@ -1330,7 +705,6 @@ function actualizarTransito(){
   }
 
   const cruce=conciliarDespachos(despachos.registros,r.filas);
-
   t.filas=cruce.pendientes;
   t.resultadoCruce=cruce;
   t.lectura=despachos.lectura;
@@ -1340,20 +714,15 @@ function actualizarTransito(){
     numero(cruce.total)+
     " trozas sin registro en Recibo. Se cruzan todos los registros por Remito de origen, sin depender del estado informado."+
     (cruce.repetidos
-      ?" Se omitieron "+numero(cruce.repetidos)+" registros repetidos."
-      :"")+
+      ?" Se omitieron "+numero(cruce.repetidos)+" registros repetidos.":"")+
     (cruce.sinColor
-      ?" Revisar "+numero(cruce.sinColor)+" viajes sin producto reconocido."
-      :"")+
+      ?" Revisar "+numero(cruce.sinColor)+" viajes sin producto reconocido.":"")+
     (despachos.actualizado
-      ?" Despachos actualizados: "+despachos.actualizado+"."
-      :"");
+      ?" Despachos actualizados: "+despachos.actualizado+".":"");
 
   $("numero-transito").textContent=t.error?"—":numero(cruce.total);
-
   $("detalle-transito").textContent=t.error||
     numero(cruce.pendientes.length)+" viajes sin Recibo · ver En Tránsito";
-
   $("detalle-transito").classList.toggle("error",Boolean(t.error));
 }
 
@@ -1367,36 +736,29 @@ function abrirTransito(){
 async function descargarDespachos(){
   const control=new AbortController();
   const timer=setTimeout(()=>control.abort(),90000);
-
   despachos.cargando=true;
   despachos.error="";
 
   try{
     const respuesta=await fetch(URLS.despachos,{
-      cache:"no-store",
-      mode:"same-origin",
-      signal:control.signal
+      cache:"no-store",mode:"same-origin",signal:control.signal
     });
 
     if(!respuesta.ok){
       let mensaje="No se pudieron cargar Despachos (HTTP "+
         respuesta.status+").";
-
       try{
         const d=await respuesta.json();
         if(d.error)mensaje=d.error;
       }catch{}
-
       throw new Error(mensaje);
     }
 
     const datos=await respuesta.json();
     const registros=Array.isArray(datos)?datos:datos.registros;
 
-    if(
-      !Array.isArray(registros)||
-      registros.some(r=>!r||typeof r!=="object"||Array.isArray(r))
-    ){
+    if(!Array.isArray(registros)||
+      registros.some(r=>!r||typeof r!=="object"||Array.isArray(r))){
       throw new Error(
         "El JSON de Despachos debe contener una lista registros."
       );
@@ -1407,8 +769,7 @@ async function descargarDespachos(){
     despachos.lectura=new Date().toISOString();
   }catch(e){
     despachos.error=e.name==="AbortError"
-      ?"La descarga de Despachos superó los 90 segundos."
-      :e.message;
+      ?"La descarga de Despachos superó los 90 segundos.":e.message;
   }finally{
     clearTimeout(timer);
     despachos.cargando=false;
@@ -1422,11 +783,9 @@ tablas.transito.filtros=COLUMNAS_TRANSITO.map(()=>"");
 
 function numeroCelda(v){
   if(typeof v==="number")return Number.isFinite(v)?v:NaN;
-
   let s=texto(v).trim().replace(/\s/g,"");
   if(!s)return 0;
   if(s.includes(","))s=s.replace(/\./g,"").replace(",",".");
-
   const n=Number(s);
   return Number.isFinite(n)?n:NaN;
 }
@@ -1436,8 +795,7 @@ function fechaTexto(v,date1904=false){
   const p=n=>String(n).padStart(2,"0");
 
   if(v instanceof Date&&!Number.isNaN(v.getTime())){
-    return p(v.getUTCDate())+"/"+
-      p(v.getUTCMonth()+1)+"/"+v.getUTCFullYear();
+    return p(v.getUTCDate())+"/"+p(v.getUTCMonth()+1)+"/"+v.getUTCFullYear();
   }
 
   if(typeof v==="number"&&v>0&&v<2958466){
@@ -1446,31 +804,20 @@ function fechaTexto(v,date1904=false){
   }
 
   const s=texto(v).trim();
-
-  let m=s.match(
-    /^(\d{4})[-/](\d{1,2})[-/](\d{1,2})(?:[ T].*)?$/
-  );
-
+  let m=s.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})(?:[ T].*)?$/);
   if(m)return p(m[3])+"/"+p(m[2])+"/"+m[1];
-
-  m=s.match(
-    /^(\d{1,2})[/-](\d{1,2})[/-](\d{4})(?:[ T].*)?$/
-  );
-
+  m=s.match(/^(\d{1,2})[/-](\d{1,2})[/-](\d{4})(?:[ T].*)?$/);
   return m?p(m[1])+"/"+p(m[2])+"/"+m[3]:s;
 }
 
 function clasificar(fila,indices){
   const encontrados=new Set();
-
   for(const v of(indices.length?indices.map(i=>fila[i]):fila)){
     const color=EQUIVALENCIAS.get(claveProducto(v));
     if(color)encontrados.add(color);
   }
-
-  return encontrados.size===1
-    ?[...encontrados][0]
-    :encontrados.size>1?"REVISAR":"SIN CLASIFICAR";
+  return encontrados.size===1?[...encontrados][0]:
+    encontrados.size>1?"REVISAR":"SIN CLASIFICAR";
 }
 
 function localizarColumna(columnas,nombre,errores){
@@ -1479,12 +826,10 @@ function localizarColumna(columnas,nombre,errores){
     .filter(i=>i>=0);
 
   if(encontrados.length!==1){
-    errores.push(
-      nombre+(encontrados.length>1?" (duplicada)":" (no encontrada)")
-    );
+    errores.push(nombre+
+      (encontrados.length>1?" (duplicada)":" (no encontrada)"));
     return -1;
   }
-
   return encontrados[0];
 }
 
@@ -1498,11 +843,7 @@ function localizarEncabezadosInsumos(hoja){
   rango.e.r=Math.min(rango.e.r,29);
 
   const primeras=XLSX.utils.sheet_to_json(hoja,{
-    header:1,
-    range:rango,
-    raw:true,
-    defval:"",
-    blankrows:true
+    header:1,range:rango,raw:true,defval:"",blankrows:true
   });
 
   const indice=primeras.findIndex(fila=>{
@@ -1515,22 +856,18 @@ function localizarEncabezadosInsumos(hoja){
       "No se encontraron Quincena y FECHA en las primeras 30 filas de Insumos."
     );
   }
-
   return indice+1;
 }
 
 function extraer(id,libro){
   const config=CONFIG[id];
-
   const nombre=libro.SheetNames.find(
     n=>normalizar(n)===normalizar(config.hoja)
   );
 
   if(!nombre){
-    throw new Error(
-      'No se encontró "'+config.hoja+
-      '". Hojas: '+libro.SheetNames.join(", ")
-    );
+    throw new Error('No se encontró "'+config.hoja+
+      '". Hojas: '+libro.SheetNames.join(", "));
   }
 
   const hoja=libro.Sheets[nombre];
@@ -1547,40 +884,28 @@ function extraer(id,libro){
   }
 
   const matriz=XLSX.utils.sheet_to_json(hoja,{
-    header:1,
-    range:rango,
-    raw:true,
-    defval:"",
-    blankrows:true
+    header:1,range:rango,raw:true,defval:"",blankrows:true
   });
 
-  const cabecera=matriz[0]||[];
-  const datos=matriz.slice(1);
-
+  const cabecera=matriz[0]||[],datos=matriz.slice(1);
   const ancho=datos.reduce(
     (n,f)=>Math.max(n,f.length),cabecera.length
   );
 
   const indices=[];
-
   for(let i=0;i<ancho;i++){
-    if(
-      tieneContenido(cabecera[i])||
-      datos.some(f=>tieneContenido(f[i]))
-    ){
+    if(tieneContenido(cabecera[i])||
+      datos.some(f=>tieneContenido(f[i]))){
       indices.push(i);
     }
   }
 
   const usados=new Map();
-
   let columnas=indices.map(i=>{
     const base=texto(cabecera[i]).trim()||
       "Columna "+XLSX.utils.encode_col(rango.s.c+i);
-
     const n=(usados.get(base)||0)+1;
     usados.set(base,n);
-
     return n===1?base:base+" ("+n+")";
   });
 
@@ -1590,18 +915,14 @@ function extraer(id,libro){
 
   if(id==="produccion"||id==="insumos"){
     const clave=id==="produccion"?"fecha":"quincena";
-
     const encontrados=columnas
       .map((c,i)=>claveColumna(c)===clave?i:-1)
       .filter(i=>i>=0);
 
     if(encontrados.length!==1){
-      throw new Error(
-        "Se necesita una única columna "+
+      throw new Error("Se necesita una única columna "+
         (id==="produccion"
-          ?"FECHA en Producción."
-          :"Quincena en Insumos.")
-      );
+          ?"FECHA en Producción.":"Quincena en Insumos."));
     }
 
     originales=originales.filter(
@@ -1611,10 +932,8 @@ function extraer(id,libro){
 
   const faltantesColor={ROJO:[],AMARILLO:[],VERDE:[]};
   const erroresDescartePorColumna=COLUMNAS_DESCARTE.map(()=>[]);
-
   let faltantes=[],erroresDescarte=[];
-  let avisoCantidad="",noClasificados=0;
-  let avisoQuincena="",avisoRemito="";
+  let avisoCantidad="",noClasificados=0,avisoQuincena="",avisoRemito="";
 
   const indicesQuincena=columnas
     .map((c,i)=>claveColumna(c)==="quincena"?i:-1)
@@ -1630,15 +949,13 @@ function extraer(id,libro){
   let filas=originales.map(f=>({
     valores:f.map((v,i)=>
       esFecha(columnas[i])||v instanceof Date
-        ?fechaTexto(v,date1904):texto(v)
-    ),
+        ?fechaTexto(v,date1904):texto(v)),
     total:0,
     produccion:{ROJO:0,AMARILLO:0,VERDE:0},
     descarte:COLUMNAS_DESCARTE.map(()=>0),
     quincena:indicesQuincena.length===1
       ?texto(f[indicesQuincena[0]]).trim():"",
-    color:"",
-    cantidad:0
+    color:"",cantidad:0
   }));
 
   if(id==="produccion"){
@@ -1652,25 +969,19 @@ function extraer(id,libro){
 
     const indicesDescarte=COLUMNAS_DESCARTE.map(
       (n,i)=>localizarColumna(
-        columnas,n,erroresDescartePorColumna[i]
-      )
+        columnas,n,erroresDescartePorColumna[i])
     );
 
     filas.forEach((fila,n)=>{
       for(const color of COLORES){
         for(const i of indicesColor[color]){
           if(i<0)continue;
-
           const valor=numeroCelda(originales[n][i]);
 
           if(Number.isNaN(valor)){
-            agregarError(
-              faltantesColor[color],
-              "Valor no numérico en "+columnas[i]
-            );
-          }else{
-            fila.produccion[color]+=valor;
-          }
+            agregarError(faltantesColor[color],
+              "Valor no numérico en "+columnas[i]);
+          }else fila.produccion[color]+=valor;
         }
       }
 
@@ -1680,17 +991,12 @@ function extraer(id,libro){
 
       indicesDescarte.forEach((i,k)=>{
         if(i<0)return;
-
         const valor=numeroCelda(originales[n][i]);
 
         if(Number.isNaN(valor)){
-          agregarError(
-            erroresDescartePorColumna[k],
-            "Valor no numérico en "+columnas[i]
-          );
-        }else{
-          fila.descarte[k]=valor;
-        }
+          agregarError(erroresDescartePorColumna[k],
+            "Valor no numérico en "+columnas[i]);
+        }else fila.descarte[k]=valor;
       });
     });
 
@@ -1702,21 +1008,15 @@ function extraer(id,libro){
       .filter(i=>i>=0);
 
     columnas=mantener.map(i=>columnas[i]);
-
     filas=filas.map(f=>({
-      ...f,
-      valores:mantener.map(i=>f.valores[i])
+      ...f,valores:mantener.map(i=>f.valores[i])
     }));
   }
 
   if(id==="recibo"){
     const nombres=new Set([
-      "producto",
-      "nombreproducto",
-      "descripcionproducto",
-      "productodescripcion",
-      "descripciondelproducto",
-      "tipoproducto"
+      "producto","nombreproducto","descripcionproducto",
+      "productodescripcion","descripciondelproducto","tipoproducto"
     ]);
 
     const producto=columnas
@@ -1735,43 +1035,31 @@ function extraer(id,libro){
 
     filas.forEach((fila,n)=>{
       fila.color=clasificar(fila.valores,producto);
-
-      if(!COLORES.includes(fila.color)){
-        noClasificados++;
-      }
+      if(!COLORES.includes(fila.color))noClasificados++;
 
       if(cantidades.length===1){
         const valor=numeroCelda(originales[n][cantidades[0]]);
-
         if(Number.isNaN(valor)){
           avisoCantidad=
             "Hay valores no numéricos en CANTIDAD de Recibo.";
-        }else{
-          fila.cantidad=valor;
-        }
+        }else fila.cantidad=valor;
       }
     });
 
-    const remitosOrigen=columnas
-      .map((c,i)=>[
-        "remitodeorigen",
-        "remitoorigen",
-        "rtoorigen",
-        "numeroremitoorigen"
-      ].includes(claveColumna(c))?i:-1)
-      .filter(i=>i>=0);
+    const remitosOrigen=columnas.map((c,i)=>
+      ["remitodeorigen","remitoorigen","rtoorigen","numeroremitoorigen"]
+        .includes(claveColumna(c))?i:-1
+    ).filter(i=>i>=0);
 
     if(remitosOrigen.length!==1){
       avisoRemito=
         "Se necesita una única columna Remito de origen en Recibo para conciliar Despachos.";
     }else{
       let sinRemito=0;
-
       filas.forEach((f,n)=>{
         f.remitoOrigen=normalizarRemito(
           originales[n][remitosOrigen[0]]
         );
-
         if(!f.remitoOrigen)sinRemito++;
       });
 
@@ -1782,12 +1070,7 @@ function extraer(id,libro){
     }
 
     const ocultas=new Set([
-      "carga",
-      "cosecha",
-      "origen",
-      "idproducto",
-      "brutoton",
-      "taraton"
+      "carga","cosecha","origen","idproducto","brutoton","taraton"
     ]);
 
     const mantener=columnas
@@ -1808,57 +1091,37 @@ function extraer(id,libro){
   }
 
   const anterior=tablas[id];
-
   const mismos=JSON.stringify(columnas)===
     JSON.stringify(anterior.columnas);
 
   if(id==="insumos")config.fila=filaEncabezados;
 
   return {
-    ...anterior,
-    columnas,
-    filas,
-    faltantes,
-    faltantesColor,
-    erroresDescarte,
-    erroresDescartePorColumna,
-    avisoCantidad,
-    noClasificados,
-    avisoQuincena,
-    avisoRemito,
+    ...anterior,columnas,filas,faltantes,faltantesColor,
+    erroresDescarte,erroresDescartePorColumna,
+    avisoCantidad,noClasificados,avisoQuincena,avisoRemito,
     filtros:mismos?anterior.filtros:columnas.map(()=>""),
     orden:mismos?anterior.orden:null,
-    pagina:1,
-    error:"",
-    cargando:false
+    pagina:1,error:"",cargando:false
   };
 }
 
 function filtradas(id){
-  const t=tablas[id];
-  const buscar=normalizar(t.busqueda);
-
+  const t=tablas[id],buscar=normalizar(t.busqueda);
   return t.filas.filter(f=>
-    (!buscar||f.valores.some(
-      v=>normalizar(v).includes(buscar)
-    ))&&
+    (!buscar||f.valores.some(v=>normalizar(v).includes(buscar)))&&
     t.filtros.every((v,i)=>
-      !normalizar(v)||
-      normalizar(f.valores[i]).includes(normalizar(v))
-    )
+      !normalizar(v)||normalizar(f.valores[i]).includes(normalizar(v)))
   );
 }
 
 function calculoDescarte(){
   const seleccion=filtradas("produccion");
-
   const cantidades=COLUMNAS_DESCARTE.map(
     (_,i)=>seleccion.reduce((s,f)=>s+f.descarte[i],0)
   );
-
   return {
-    seleccion,
-    cantidades,
+    seleccion,cantidades,
     total:cantidades.reduce((s,v)=>s+v,0)
   };
 }
@@ -1870,8 +1133,7 @@ function calculoTrozasCamion(){
     return {
       error:t.error||t.avisoCantidad||
         "Pendiente de lectura de Recibo.",
-      grupos:[],
-      total:null
+      grupos:[],total:null
     };
   }
 
@@ -1882,20 +1144,12 @@ function calculoTrozasCamion(){
   if(indices.length!==1){
     return {
       error:"Se necesita una única columna Neto en Recibo.",
-      grupos:[],
-      total:null
+      grupos:[],total:null
     };
   }
 
   const grupos=new Map();
-
-  const total={
-    producto:"TOTAL",
-    viajes:0,
-    cantidad:0,
-    neto:0
-  };
-
+  const total={producto:"TOTAL",viajes:0,cantidad:0,neto:0};
   let error="";
 
   t.filas.forEach((f,n)=>{
@@ -1912,10 +1166,7 @@ function calculoTrozasCamion(){
 
     if(!grupos.has(producto)){
       grupos.set(producto,{
-        producto,
-        viajes:0,
-        cantidad:0,
-        neto:0
+        producto,viajes:0,cantidad:0,neto:0
       });
     }
 
@@ -1929,8 +1180,7 @@ function calculoTrozasCamion(){
   return {
     error,
     grupos:[...grupos.values()].sort(
-      (a,b)=>a.producto.localeCompare(b.producto,"es")
-    ),
+      (a,b)=>a.producto.localeCompare(b.producto,"es")),
     total:error?null:total
   };
 }
@@ -1960,7 +1210,6 @@ function mostrarDetalleTrozasCamion(){
 
   function fila(g){
     const tr=document.createElement("tr");
-
     const valores=[
       g.producto,
       g.viajes
@@ -1981,19 +1230,15 @@ function mostrarDetalleTrozasCamion(){
   $("detalleTrozasCamion").replaceChildren(
     ...(d.error?[]:d.grupos.map(fila))
   );
-
   $("totalTrozasCamion").replaceChildren(
     ...(d.total?[fila(d.total)]:[])
   );
 }
 
 function sumarColumnasChapas(id,grupos){
-  const t=tablas[id];
-  const errores=[];
+  const t=tablas[id],errores=[];
 
-  if(t.error){
-    return {total:null,error:t.error};
-  }
+  if(t.error)return {total:null,error:t.error};
 
   if(!t.lectura){
     return {
@@ -2005,18 +1250,14 @@ function sumarColumnasChapas(id,grupos){
 
   const indices=grupos.map(alias=>{
     const claves=alias.map(claveColumna);
-
     const encontrados=t.columnas
       .map((c,i)=>claves.includes(claveColumna(c))?i:-1)
       .filter(i=>i>=0);
 
     if(encontrados.length!==1){
-      errores.push(
-        alias[0]+
-        (encontrados.length?" (duplicada)":" (no encontrada)")
-      );
+      errores.push(alias[0]+
+        (encontrados.length?" (duplicada)":" (no encontrada)"));
     }
-
     return encontrados.length===1?encontrados[0]:-1;
   });
 
@@ -2024,58 +1265,44 @@ function sumarColumnasChapas(id,grupos){
 
   t.filas.forEach((f,n)=>indices.forEach(i=>{
     if(i<0)return;
-
     const valor=numeroCelda(f.valores[i]);
 
     if(!Number.isFinite(valor)){
       errores.push(
         t.columnas[i]+": valor no numérico en registro "+(n+1)
       );
-    }else{
-      total+=valor;
-    }
+    }else total+=valor;
   }));
 
   return {
     total:errores.length?null:total,
-    error:errores.length
-      ?"Revisar: "+errores.join(", ")
-      :""
+    error:errores.length?"Revisar: "+errores.join(", "):""
   };
 }
 
 function calculoChapas(){
   const cajas=sumarColumnasChapas(
-    "produccion",
-    [["Cajas Chapas"]]
+    "produccion",[["Cajas Chapas"]]
   );
-
   const extras=sumarColumnasChapas("produccion",[
     ["Chapas de mas PPL"],
     ["Chapas EXTRAS STD"]
   ]);
-
   const i=sumarColumnasChapas(
-    "insumos",
-    [["Cajas"]]
+    "insumos",[["Cajas"]]
   );
 
   // Las chapas adicionales se convierten a cajas de 90 unidades.
   const consumo=cajas.total===null||extras.total===null
-    ?null
-    :cajas.total+extras.total/90;
+    ?null:cajas.total+extras.total/90;
 
   return {
     produccion:consumo,
     insumos:i.total,
     saldo:consumo===null||i.total===null
-      ?null
-      :i.total-consumo,
-    error:[
-      cajas.error,
-      extras.error,
-      i.error
-    ].filter(Boolean).join(" · ")
+      ?null:i.total-consumo,
+    error:[cajas.error,extras.error,i.error]
+      .filter(Boolean).join(" · ")
   };
 }
 
@@ -2084,17 +1311,13 @@ function actualizarChapas(){
 
   $("numero-chapas").textContent=d.saldo===null
     ?"—":numero(d.saldo);
-
   $("numero-chapas").classList.toggle(
     "negativo",d.saldo!==null&&d.saldo<0
   );
-
   $("tarjetaChapas").title=d.error||
     "Insumos − Producción · registros completos";
 
-  if($("modalChapas").open){
-    mostrarDetalleChapas();
-  }
+  if($("modalChapas").open)mostrarDetalleChapas();
 }
 
 function mostrarDetalleChapas(){
@@ -2103,11 +1326,9 @@ function mostrarDetalleChapas(){
   for(const k of ["insumos","produccion","saldo"]){
     $("chapas-"+k).textContent=d[k]===null
       ?"—":numero(d[k]);
-
     $("chapas-pct-"+k).textContent=
       d[k]===null||d.insumos===null||d.insumos===0
-        ?"—"
-        :porcentaje(d[k]/d.insumos*100);
+        ?"—":porcentaje(d[k]/d.insumos*100);
   }
 
   $("alcanceChapas").textContent=d.error||
@@ -2122,39 +1343,25 @@ function mostrarDetalleChapas(){
 
 function fechaMaximaProduccion(){
   const t=tablas.produccion;
-
   const indice=t.columnas.findIndex(
     c=>claveColumna(c)==="fecha"
   );
-
   if(indice<0)return "";
 
-  let maxima=-Infinity;
-  let resultado="";
+  let maxima=-Infinity,resultado="";
 
   for(const fila of t.filas){
     const valor=texto(fila.valores[indice]).trim();
-
-    const m=valor.match(
-      /^(\d{2})\/(\d{2})\/(\d{4})$/
-    );
-
+    const m=valor.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
     if(!m)continue;
 
-    const dia=Number(m[1]);
-    const mes=Number(m[2]);
-    const anio=Number(m[3]);
-
+    const dia=Number(m[1]),mes=Number(m[2]),anio=Number(m[3]);
     const instante=Date.UTC(anio,mes-1,dia);
     const fecha=new Date(instante);
 
-    if(
-      fecha.getUTCFullYear()!==anio||
+    if(fecha.getUTCFullYear()!==anio||
       fecha.getUTCMonth()!==mes-1||
-      fecha.getUTCDate()!==dia
-    ){
-      continue;
-    }
+      fecha.getUTCDate()!==dia)continue;
 
     if(instante>maxima){
       maxima=instante;
@@ -2174,40 +1381,27 @@ function actualizarTotales(){
       (t.lectura&&!t.error?fechaMaximaProduccion()||"—":"—");
 
   const pp=t.error||
-    (t.faltantes.length
-      ?"Revisar: "+t.faltantes.join(", ")
-      :"");
+    (t.faltantes.length?"Revisar: "+t.faltantes.join(", "):"");
 
   $("numero-produccion").textContent=!t.lectura||pp
-    ?"—"
-    :numero(
+    ?"—":numero(
       filtradas("produccion").reduce((s,f)=>s+f.total,0)
     );
-
   $("numero-produccion").title=pp;
-
-  $("numero-produccion").classList.toggle(
-    "error",Boolean(pp)
-  );
+  $("numero-produccion").classList.toggle("error",Boolean(pp));
 
   const pd=t.error||
     (t.erroresDescarte.length
-      ?"Revisar: "+t.erroresDescarte.join(", ")
-      :"");
+      ?"Revisar: "+t.erroresDescarte.join(", "):"");
 
   $("numero-descarte").textContent=!t.lectura||pd
     ?"—":numero(calculoDescarte().total);
-
-  $("numero-descarte").classList.toggle(
-    "error",Boolean(pd)
-  );
-
+  $("numero-descarte").classList.toggle("error",Boolean(pd));
   $("tarjetaDescarte").title=pd;
 }
 
 function mostrarDetalleDescarte(){
-  const t=tablas.produccion;
-  const d=calculoDescarte();
+  const t=tablas.produccion,d=calculoDescarte();
   const fragmento=document.createDocumentFragment();
 
   COLUMNAS_DESCARTE.forEach((nombre,i)=>{
@@ -2216,18 +1410,12 @@ function mostrarDetalleDescarte(){
     const cantidad=document.createElement("td");
 
     clasificacion.textContent=nombre;
-
     const errores=t.erroresDescartePorColumna[i];
 
     cantidad.textContent=t.lectura&&!t.error&&!errores.length
-      ?numero(d.cantidades[i])
-      :"—";
-
+      ?numero(d.cantidades[i]):"—";
     cantidad.title=errores.join(", ");
-
-    cantidad.classList.toggle(
-      "error",errores.length>0
-    );
+    cantidad.classList.toggle("error",errores.length>0);
 
     tr.append(clasificacion,cantidad);
     fragmento.append(tr);
@@ -2237,16 +1425,14 @@ function mostrarDetalleDescarte(){
 
   const problema=t.error||
     (t.erroresDescarte.length
-      ?"Revisar: "+t.erroresDescarte.join(", ")
-      :"");
+      ?"Revisar: "+t.erroresDescarte.join(", "):"");
 
   $("totalDetalleDescarte").textContent=
     t.lectura&&!problema?numero(d.total):"—";
 
   $("alcanceDescarte").textContent=!t.lectura
     ?"Se necesita cargar Producción."
-    :problema||
-      "Detalle de los registros seleccionados en Producción.";
+    :problema||"Detalle de los registros seleccionados en Producción.";
 
   $("alcanceDescarte").classList.toggle(
     "error",Boolean(problema)
@@ -2255,31 +1441,18 @@ function mostrarDetalleDescarte(){
 
 function calcularCamionesStock(stock,promedio){
   const base=Math.round(promedio);
-
-  if(
-    !Number.isFinite(stock)||
-    stock<0||
-    !Number.isFinite(base)||
-    base<=0
-  ){
-    return null;
-  }
-
+  if(!Number.isFinite(stock)||stock<0||
+    !Number.isFinite(base)||base<=0)return null;
   return Math.floor(stock/base);
 }
 
 function ponerStock(id,valor,detalle,error=false){
   $("stock-"+id).textContent=valor===null?"—":numero(valor);
-
   $("stock-"+id).classList.toggle(
     "negativo",valor!==null&&valor<0
   );
-
   $("detalle-stock-"+id).textContent=detalle;
-
-  $("detalle-stock-"+id).classList.toggle(
-    "error",error
-  );
+  $("detalle-stock-"+id).classList.toggle("error",error);
 
   if(id==="monte")return;
 
@@ -2292,35 +1465,23 @@ function ponerStock(id,valor,detalle,error=false){
   }
 
   const d=calculoTrozasCamion();
-
-  const grupo=d.error
-    ?null
-    :d.grupos.find(g=>g.producto===id.toUpperCase());
-
+  const grupo=d.error?null:
+    d.grupos.find(g=>g.producto===id.toUpperCase());
   const promedio=grupo&&grupo.viajes
-    ?grupo.cantidad/grupo.viajes
-    :NaN;
-
-  const camiones=calcularCamionesStock(
-    valor,promedio
-  );
+    ?grupo.cantidad/grupo.viajes:NaN;
+  const camiones=calcularCamionesStock(valor,promedio);
 
   estimacion.textContent=camiones===null
-    ?"(— cam.)"
-    :"("+numero(camiones)+" cam.)";
+    ?"(— cam.)":"("+numero(camiones)+" cam.)";
 
   estimacion.title=camiones===null
     ?"No se puede estimar: se necesita stock no negativo y un promedio válido de este producto en Recibo."
-    :numero(valor)+" ÷ "+
-      numero(Math.round(promedio))+
+    :numero(valor)+" ÷ "+numero(Math.round(promedio))+
       " trozas por camión. Estimación redondeada hacia abajo.";
 }
 
 function tarjetasStock(){
-  const p=tablas.produccion;
-  const r=tablas.recibo;
-  const tr=tablas.transito;
-
+  const p=tablas.produccion,r=tablas.recibo,tr=tablas.transito;
   const ids=["rojo","amarillo","verde","monte"];
 
   if(p.cargando||r.cargando||tr.cargando){
@@ -2332,18 +1493,15 @@ function tarjetasStock(){
 
   if(!p.lectura||!r.lectura||!tr.lectura){
     ids.forEach(id=>ponerStock(
-      id,null,
-      "Se necesita cargar Producción, Recibo y Despachos."
+      id,null,"Se necesita cargar Producción, Recibo y Despachos."
     ));
     return;
   }
 
   if(p.error||r.error||tr.error){
     ids.forEach(id=>ponerStock(
-      id,
-      null,
-      tr.error||"Revisar la lectura de Producción y Recibo.",
-      true
+      id,null,tr.error||
+        "Revisar la lectura de Producción y Recibo.",true
     ));
     return;
   }
@@ -2353,16 +1511,13 @@ function tarjetasStock(){
       ...p.faltantesColor[color],
       ...(r.avisoCantidad?[r.avisoCantidad]:[]),
       ...(tr.resultadoCruce?.sinColor
-        ?["Hay despachos sin producto reconocido en En Tránsito."]
-        :[])
+        ?["Hay despachos sin producto reconocido en En Tránsito."]:[])
     ];
 
     if(problemas.length){
       ponerStock(
-        color.toLowerCase(),
-        null,
-        "Revisar: "+problemas.join(", "),
-        true
+        color.toLowerCase(),null,
+        "Revisar: "+problemas.join(", "),true
       );
       continue;
     }
@@ -2370,11 +1525,9 @@ function tarjetasStock(){
     const producido=p.filas.reduce(
       (s,f)=>s+f.produccion[color],0
     );
-
     const recibido=r.filas.reduce(
       (s,f)=>s+(f.color===color?f.cantidad:0),0
     );
-
     const pendiente=tr.filas.reduce(
       (s,f)=>s+(f.color===color?f.cantidad:0),0
     );
@@ -2387,8 +1540,7 @@ function tarjetasStock(){
       " − En tránsito: "+numero(pendiente)+
       (r.noClasificados
         ?" · "+numero(r.noClasificados)+
-          " registros sin clasificación válida, excluidos."
-        :""),
+          " registros sin clasificación válida, excluidos.":""),
       r.noClasificados>0
     );
   }
@@ -2400,27 +1552,17 @@ function tarjetasStock(){
 
   if(problemas.length){
     ponerStock(
-      "monte",null,
-      "Revisar: "+problemas.join(", "),true
+      "monte",null,"Revisar: "+problemas.join(", "),true
     );
     return;
   }
 
-  const producido=p.filas.reduce(
-    (s,f)=>s+f.total,0
-  );
-
-  const recibido=r.filas.reduce(
-    (s,f)=>s+f.cantidad,0
-  );
-
-  const pendiente=tr.filas.reduce(
-    (s,f)=>s+f.cantidad,0
-  );
+  const producido=p.filas.reduce((s,f)=>s+f.total,0);
+  const recibido=r.filas.reduce((s,f)=>s+f.cantidad,0);
+  const pendiente=tr.filas.reduce((s,f)=>s+f.cantidad,0);
 
   ponerStock(
-    "monte",
-    producido-recibido-pendiente,
+    "monte",producido-recibido-pendiente,
     "Producción: "+numero(producido)+
     " − Cantidad Recibo: "+numero(recibido)+
     " − En tránsito: "+numero(pendiente)
@@ -2430,27 +1572,20 @@ function tarjetasStock(){
 const SVG_NS="http://www.w3.org/2000/svg";
 
 function svgElemento(nombre,atributos={}){
-  const el=document.createElementNS(
-    SVG_NS,nombre
-  );
-
+  const el=document.createElementNS(SVG_NS,nombre);
   for(const[k,v]of Object.entries(atributos)){
     el.setAttribute(k,String(v));
   }
-
   return el;
 }
 
 function textoSVG(svg,contenido,atributos){
   const el=svgElemento("text",{
     "font-family":"Segoe UI, Arial, sans-serif",
-    fill:"#243d33",
-    ...atributos
+    fill:"#243d33",...atributos
   });
-
   el.textContent=contenido;
   svg.append(el);
-
   return el;
 }
 
@@ -2458,85 +1593,65 @@ function mensajeGrafico(id,mensaje){
   const div=document.createElement("div");
   div.className="mensaje-grafico";
   div.textContent=mensaje;
-
   $(id).replaceChildren(div);
 }
 
 function dividirNombre(nombre){
-  const palabras=nombre.split(/\s+/);
-  const lineas=[];
+  const palabras=nombre.split(/\s+/),lineas=[];
   let actual="";
 
   for(const palabra of palabras){
     if(actual&&(actual+" "+palabra).length>17){
       lineas.push(actual);
       actual=palabra;
-    }else{
-      actual=actual?actual+" "+palabra:palabra;
-    }
+    }else actual=actual?actual+" "+palabra:palabra;
   }
-
   if(actual)lineas.push(actual);
-
   return lineas;
 }
 
 function acomodarEtiquetas(lista){
   if(!lista.length)return;
-
   lista.sort((a,b)=>a.y-b.y);
 
-  const minimo=48;
-  const maximo=302;
-  const separacion=66;
+  const minimo=48,maximo=302,separacion=66;
 
   for(let i=0;i<lista.length;i++){
     lista[i].y=Math.max(
       minimo,Math.min(maximo,lista[i].y)
     );
-
     if(i){
       lista[i].y=Math.max(
-        lista[i].y,
-        lista[i-1].y+separacion
+        lista[i].y,lista[i-1].y+separacion
       );
     }
   }
 
   if(lista[lista.length-1].y>maximo){
     lista[lista.length-1].y=maximo;
-
     for(let i=lista.length-2;i>=0;i--){
       lista[i].y=Math.min(
-        lista[i].y,
-        lista[i+1].y-separacion
+        lista[i].y,lista[i+1].y-separacion
       );
     }
   }
 }
 
 function dibujarGrafico(id,series,anillo,etiqueta){
-  if(series.some(s=>
-    !Number.isFinite(s.valor)||s.valor<0
-  )){
+  if(series.some(s=>!Number.isFinite(s.valor)||s.valor<0)){
     mensajeGrafico(
       id,"Revisar valores negativos o no numéricos."
     );
     return;
   }
 
-  const total=series.reduce(
-    (s,v)=>s+v.valor,0
-  );
-
+  const total=series.reduce((s,v)=>s+v.valor,0);
   const svg=svgElemento("svg",{
-    viewBox:"0 0 480 360",
-    role:"img",
+    viewBox:"0 0 480 360",role:"img",
     "aria-label":etiqueta+". Total: "+numero(total)
   });
 
   const cx=240,cy=180,r=88;
-
   svg.append(svgElemento("circle",{
     cx,cy,r,fill:"#e8e7de"
   }));
@@ -2549,9 +1664,7 @@ function dibujarGrafico(id,series,anillo,etiqueta){
       if(!serie.valor)continue;
 
       const amplitud=serie.valor/total*Math.PI*2;
-      const fin=angulo+amplitud;
-      const medio=angulo+amplitud/2;
-
+      const fin=angulo+amplitud,medio=angulo+amplitud/2;
       let pieza;
 
       if(amplitud>=Math.PI*2-0.000001){
@@ -2565,19 +1678,14 @@ function dibujarGrafico(id,series,anillo,etiqueta){
         const y2=cy+r*Math.sin(fin);
 
         pieza=svgElemento("path",{
-          d:"M "+cx+" "+cy+
-            " L "+x1+" "+y1+
-            " A "+r+" "+r+
-            " 0 "+(amplitud>Math.PI?1:0)+
+          d:"M "+cx+" "+cy+" L "+x1+" "+y1+
+            " A "+r+" "+r+" 0 "+(amplitud>Math.PI?1:0)+
             " 1 "+x2+" "+y2+" Z",
-          fill:serie.color,
-          stroke:"#fffefa",
-          "stroke-width":1
+          fill:serie.color,stroke:"#fffefa","stroke-width":1
         });
       }
 
       const titulo=svgElemento("title");
-
       titulo.textContent=serie.nombre+": "+
         numero(serie.valor)+
         " ("+porcentaje(serie.valor/total*100)+")";
@@ -2586,12 +1694,9 @@ function dibujarGrafico(id,series,anillo,etiqueta){
       svg.append(pieza);
 
       etiquetas.push({
-        serie,
-        medio,
-        derecha:Math.cos(medio)>=0,
+        serie,medio,derecha:Math.cos(medio)>=0,
         y:cy+112*Math.sin(medio)
       });
-
       angulo=fin;
     }
   }
@@ -2600,51 +1705,32 @@ function dibujarGrafico(id,series,anillo,etiqueta){
     svg.append(svgElemento("circle",{
       cx,cy,r:62,fill:"#fffefa"
     }));
-
     textoSVG(svg,numero(total),{
-      x:cx,
-      y:183,
-      "text-anchor":"middle",
-      "font-family":"Georgia, serif",
-      "font-size":23,
-      "font-weight":"bold",
-      fill:"#173f35"
+      x:cx,y:183,"text-anchor":"middle",
+      "font-family":"Georgia, serif","font-size":23,
+      "font-weight":"bold",fill:"#173f35"
     });
-
     textoSVG(svg,etiqueta,{
-      x:cx,
-      y:203,
-      "text-anchor":"middle",
-      "font-size":8.5,
-      fill:"#748077"
+      x:cx,y:203,"text-anchor":"middle",
+      "font-size":8.5,fill:"#748077"
     });
   }
 
   if(!total){
     textoSVG(svg,"Sin cantidades",{
-      x:cx,
-      y:anillo?230:184,
-      "text-anchor":"middle",
-      "font-size":13,
-      fill:"#748077"
+      x:cx,y:anillo?230:184,"text-anchor":"middle",
+      "font-size":13,fill:"#748077"
     });
   }
 
-  acomodarEtiquetas(
-    etiquetas.filter(e=>!e.derecha)
-  );
-
-  acomodarEtiquetas(
-    etiquetas.filter(e=>e.derecha)
-  );
+  acomodarEtiquetas(etiquetas.filter(e=>!e.derecha));
+  acomodarEtiquetas(etiquetas.filter(e=>e.derecha));
 
   for(const e of etiquetas){
     const xInicio=cx+(r+2)*Math.cos(e.medio);
     const yInicio=cy+(r+2)*Math.sin(e.medio);
-
     const xIntermedio=e.derecha?344:136;
     const xTexto=e.derecha?350:130;
-
     const lineas=dividirNombre(e.serie.nombre);
     const yTexto=e.y-(lineas.length+1)*8+12;
 
@@ -2652,36 +1738,26 @@ function dibujarGrafico(id,series,anillo,etiqueta){
       points:xInicio+","+yInicio+" "+
         xIntermedio+","+e.y+" "+
         (e.derecha?xTexto-4:xTexto+4)+","+e.y,
-      fill:"none",
-      stroke:"#a5ab96",
-      "stroke-width":1
+      fill:"none",stroke:"#a5ab96","stroke-width":1
     }));
 
     const etiquetaTexto=svgElemento("text",{
-      x:xTexto,
-      y:yTexto,
+      x:xTexto,y:yTexto,
       "text-anchor":e.derecha?"start":"end",
       "font-family":"Segoe UI, Arial, sans-serif",
-      "font-size":12.5,
-      "font-weight":"600",
-      fill:"#243d33"
+      "font-size":12.5,"font-weight":"600",fill:"#243d33"
     });
 
     lineas.forEach((linea,i)=>{
       const parte=svgElemento("tspan",{
-        x:xTexto,
-        dy:i===0?0:16
+        x:xTexto,dy:i===0?0:16
       });
-
       parte.textContent=linea;
       etiquetaTexto.append(parte);
     });
 
     const valores=svgElemento("tspan",{
-      x:xTexto,
-      dy:17,
-      "font-size":13,
-      "font-weight":"bold"
+      x:xTexto,dy:17,"font-size":13,"font-weight":"bold"
     });
 
     valores.textContent=numero(e.serie.valor)+
@@ -2691,22 +1767,15 @@ function dibujarGrafico(id,series,anillo,etiqueta){
     svg.append(etiquetaTexto);
   }
 
-  const ceros=series.filter(
-    s=>s.valor===0
-  );
+  const ceros=series.filter(s=>s.valor===0);
 
   if(total>0&&ceros.length){
     textoSVG(
       svg,
-      ceros.map(s=>
-        s.nombre+": 0 (0,0%)"
-      ).join(" · "),
+      ceros.map(s=>s.nombre+": 0 (0,0%)").join(" · "),
       {
-        x:cx,
-        y:344,
-        "text-anchor":"middle",
-        "font-size":10,
-        fill:"#748077"
+        x:cx,y:344,"text-anchor":"middle",
+        "font-size":10,fill:"#748077"
       }
     );
   }
@@ -2715,9 +1784,7 @@ function dibujarGrafico(id,series,anillo,etiqueta){
 }
 
 function actualizarGraficos(){
-  const p=tablas.produccion;
-  const r=tablas.recibo;
-
+  const p=tablas.produccion,r=tablas.recibo;
   const seleccion=filtradas("produccion");
 
   const problemaP=p.cargando
@@ -2727,21 +1794,16 @@ function actualizarGraficos(){
       :p.error||p.faltantes.join(", ");
 
   if(problemaP){
-    mensajeGrafico(
-      "graficoProduccionColor",problemaP
-    );
+    mensajeGrafico("graficoProduccionColor",problemaP);
   }else{
     dibujarGrafico(
       "graficoProduccionColor",
       ["ROJO","VERDE","AMARILLO"].map(color=>({
-        nombre:color,
-        color:PALETA[color],
+        nombre:color,color:PALETA[color],
         valor:seleccion.reduce(
-          (s,f)=>s+f.produccion[color],0
-        )
+          (s,f)=>s+f.produccion[color],0)
       })),
-      true,
-      "TROZAS PRODUCIDAS"
+      true,"TROZAS PRODUCIDAS"
     );
   }
 
@@ -2749,33 +1811,26 @@ function actualizarGraficos(){
     p.erroresDescarte.join(", ");
 
   if(problemaPD){
-    mensajeGrafico(
-      "graficoProduccionDescarte",problemaPD
-    );
+    mensajeGrafico("graficoProduccionDescarte",problemaPD);
   }else{
     const d=calculoDescarte();
-
     dibujarGrafico("graficoProduccionDescarte",[
       {
-        nombre:"PRODUCCIÓN",
-        color:"#295344",
+        nombre:"PRODUCCIÓN",color:"#295344",
         valor:seleccion.reduce((s,f)=>s+f.total,0)
       },
       {
-        nombre:"DESCARTE BASAL",
-        color:"#b5995f",
+        nombre:"DESCARTE BASAL",color:"#b5995f",
         valor:d.cantidades[0]+d.cantidades[1]
       },
       {
-        nombre:"DESCARTE",
-        color:"#c64c45",
+        nombre:"DESCARTE",color:"#c64c45",
         valor:d.cantidades[2]+d.cantidades[3]
       }
     ],false,"PRODUCCIÓN Y DESCARTES");
   }
 
   const transito=tablas.transito;
-
   const problemaR=r.cargando||transito.cargando
     ?"Actualizando Recibo y En Tránsito..."
     :!r.lectura||!transito.lectura
@@ -2783,24 +1838,16 @@ function actualizarGraficos(){
       :r.error||r.avisoCantidad||transito.error;
 
   if(problemaR){
-    mensajeGrafico(
-      "graficoDespacho",problemaR
-    );
-
+    mensajeGrafico("graficoDespacho",problemaR);
     $("alcanceDespacho").textContent=
       "Recibo + despachos en tránsito sin Recibo.";
   }else{
-    const filas=[
-      ...r.filas,
-      ...transito.filas
-    ];
+    const filas=[...r.filas,...transito.filas];
 
     const series=["ROJO","VERDE","AMARILLO"].map(color=>({
-      nombre:color,
-      color:PALETA[color],
+      nombre:color,color:PALETA[color],
       valor:filas.reduce(
-        (s,f)=>s+(f.color===color?f.cantidad:0),0
-      )
+        (s,f)=>s+(f.color===color?f.cantidad:0),0)
     }));
 
     const sinClasificar=filas.filter(
@@ -2809,48 +1856,30 @@ function actualizarGraficos(){
 
     if(sinClasificar.length){
       series.push({
-        nombre:"SIN CLASIFICAR",
-        color:"#98a090",
-        valor:sinClasificar.reduce(
-          (s,f)=>s+f.cantidad,0
-        )
+        nombre:"SIN CLASIFICAR",color:"#98a090",
+        valor:sinClasificar.reduce((s,f)=>s+f.cantidad,0)
       });
     }
 
     dibujarGrafico(
-      "graficoDespacho",
-      series,
-      true,
-      "TROZAS DESPACHADAS"
+      "graficoDespacho",series,true,"TROZAS DESPACHADAS"
     );
 
-    const recibido=r.filas.reduce(
-      (s,f)=>s+f.cantidad,0
-    );
-
-    const pendiente=transito.filas.reduce(
-      (s,f)=>s+f.cantidad,0
-    );
-
+    const recibido=r.filas.reduce((s,f)=>s+f.cantidad,0);
+    const pendiente=transito.filas.reduce((s,f)=>s+f.cantidad,0);
     const total=recibido+pendiente;
 
     $("alcanceDespacho").textContent=
       "Recibo: "+numero(recibido)+
-      (total
-        ?" ("+porcentaje(recibido/total*100)+")"
-        :"")+
+      (total?" ("+porcentaje(recibido/total*100)+")":"")+
       " · En tránsito: "+numero(pendiente)+
-      (total
-        ?" ("+porcentaje(pendiente/total*100)+")"
-        :"")+
-      " · "+numero(transito.filas.length)+
-      " viajes sin Recibo.";
+      (total?" ("+porcentaje(pendiente/total*100)+")":"")+
+      " · "+numero(transito.filas.length)+" viajes sin Recibo.";
   }
 }
 
 const comparador=new Intl.Collator("es",{
-  numeric:true,
-  sensitivity:"base"
+  numeric:true,sensitivity:"base"
 });
 
 function nombreQuincena(valor){
@@ -2863,19 +1892,14 @@ function actualizarSelectorQuincena(){
   const anterior=selector.value;
 
   const opciones=[
-    ...new Set(
-      tablas.produccion.filas
-        .map(f=>f.quincena)
-        .filter(tieneContenido)
-    )
+    ...new Set(tablas.produccion.filas
+      .map(f=>f.quincena).filter(tieneContenido))
   ].sort(comparador.compare);
 
   const fragmento=document.createDocumentFragment();
-
   const todas=document.createElement("option");
   todas.value="";
   todas.textContent="Todas";
-
   fragmento.append(todas);
 
   for(const valor of opciones){
@@ -2886,9 +1910,7 @@ function actualizarSelectorQuincena(){
   }
 
   selector.replaceChildren(fragmento);
-
-  selector.value=opciones.includes(anterior)
-    ?anterior:"";
+  selector.value=opciones.includes(anterior)?anterior:"";
 }
 
 function seriesSeleccionadas(){
@@ -2896,54 +1918,32 @@ function seriesSeleccionadas(){
     [...document.querySelectorAll("[data-serie]:checked")]
       .map(input=>input.dataset.serie)
   );
-
-  return SERIES_QUINCENA.filter(
-    s=>seleccion.has(s.id)
-  );
+  return SERIES_QUINCENA.filter(s=>seleccion.has(s.id));
 }
 
 function valorSerie(fila,serie){
-  if(serie==="PRODUCCION"){
-    return fila.total;
-  }
-
+  if(serie==="PRODUCCION")return fila.total;
   if(serie==="DESCARTES"){
-    return fila.descarte.reduce(
-      (s,v)=>s+v,0
-    );
+    return fila.descarte.reduce((s,v)=>s+v,0);
   }
-
   return fila.produccion[serie];
 }
 
 function erroresSerie(tabla,serie){
-  if(serie==="PRODUCCION"){
-    return tabla.faltantes;
-  }
-
-  if(serie==="DESCARTES"){
-    return tabla.erroresDescarte;
-  }
-
+  if(serie==="PRODUCCION")return tabla.faltantes;
+  if(serie==="DESCARTES")return tabla.erroresDescarte;
   return tabla.faltantesColor[serie];
 }
 
 function pasoEscala(rango){
   if(!rango)return 1;
-
   const bruto=rango/5;
-
-  const potencia=Math.pow(
-    10,Math.floor(Math.log10(bruto))
-  );
-
+  const potencia=Math.pow(10,Math.floor(Math.log10(bruto)));
   const proporcion=bruto/potencia;
-
   const factor=proporcion<=1?1:
     proporcion<=2?2:
     proporcion<=2.5?2.5:
     proporcion<=5?5:10;
-
   return factor*potencia;
 }
 
@@ -2961,10 +1961,8 @@ function disenoGraficoQuincena(
     ?(compacto?90:140)
     :series*(compacto?42:52)+(compacto?18:26);
 
-  const preferido=compacto
-    ?340
-    :series===1?420:
-      series===2?560:700;
+  const preferido=compacto?340:
+    series===1?420:series===2?560:700;
 
   const ancho=Math.max(
     Math.min(disponible,preferido),
@@ -2972,11 +1970,7 @@ function disenoGraficoQuincena(
       categorias*anchoGrupo
   );
 
-  return {
-    ancho,
-    alto:compacto?310:350,
-    margen
-  };
+  return {ancho,alto:compacto?310:350,margen};
 }
 
 function actualizarGraficoQuincena(){
@@ -2993,37 +1987,30 @@ function actualizarGraficoQuincena(){
       :t.error||t.avisoQuincena;
 
   if(problema){
-    mensajeGrafico(
-      "graficoQuincena",problema
-    );
+    mensajeGrafico("graficoQuincena",problema);
     return;
   }
 
   if(!series.length){
     mensajeGrafico(
-      "graficoQuincena",
-      "Seleccioná al menos un producto."
+      "graficoQuincena","Seleccioná al menos un producto."
     );
     return;
   }
 
   const errores=[
-    ...new Set(
-      series.flatMap(s=>erroresSerie(t,s.id))
-    )
+    ...new Set(series.flatMap(s=>erroresSerie(t,s.id)))
   ];
 
   if(errores.length){
     mensajeGrafico(
-      "graficoQuincena",
-      "Revisar: "+errores.join(", ")
+      "graficoQuincena","Revisar: "+errores.join(", ")
     );
     return;
   }
 
   const seleccionQuincena=$("selectorQuincena").value;
   const filtrado=filtradas("produccion");
-
   const sinQuincena=filtrado.filter(
     f=>!tieneContenido(f.quincena)
   ).length;
@@ -3039,18 +2026,12 @@ function actualizarGraficoQuincena(){
     if(!grupos.has(fila.quincena)){
       grupos.set(
         fila.quincena,
-        Object.fromEntries(
-          series.map(s=>[s.id,0])
-        )
+        Object.fromEntries(series.map(s=>[s.id,0]))
       );
     }
-
     const valores=grupos.get(fila.quincena);
-
     for(const serie of series){
-      valores[serie.id]+=valorSerie(
-        fila,serie.id
-      );
+      valores[serie.id]+=valorSerie(fila,serie.id);
     }
   }
 
@@ -3063,15 +2044,11 @@ function actualizarGraficoQuincena(){
       "graficoQuincena",
       "No hay registros para la selección actual."
     );
-
     if(sinQuincena){
       $("avisoQuincena").hidden=false;
-
-      $("avisoQuincena").textContent=
-        numero(sinQuincena)+
+      $("avisoQuincena").textContent=numero(sinQuincena)+
         " registros sin Quincena no se incluyen en este gráfico.";
     }
-
     return;
   }
 
@@ -3082,7 +2059,6 @@ function actualizarGraficoQuincena(){
   const menor=Math.min(0,...valores);
   const mayor=Math.max(0,...valores);
   const paso=pasoEscala(mayor-menor);
-
   const minimo=Math.floor(menor/paso)*paso;
   const maximo=Math.ceil(mayor/paso)*paso||paso;
 
@@ -3090,8 +2066,7 @@ function actualizarGraficoQuincena(){
   const estilo=getComputedStyle(contenedor);
 
   const disponible=Math.max(
-    200,
-    contenedor.clientWidth-
+    200,contenedor.clientWidth-
       parseFloat(estilo.paddingLeft)-
       parseFloat(estilo.paddingRight)
   );
@@ -3101,17 +2076,11 @@ function actualizarGraficoQuincena(){
   ).matches;
 
   const {ancho,alto,margen}=disenoGraficoQuincena(
-    disponible,
-    categorias.length,
-    series.length,
-    compacto
+    disponible,categorias.length,series.length,compacto
   );
 
-  const anchoArea=ancho-
-    margen.izquierda-margen.derecha;
-
-  const altoArea=alto-
-    margen.arriba-margen.abajo;
+  const anchoArea=ancho-margen.izquierda-margen.derecha;
+  const altoArea=alto-margen.arriba-margen.abajo;
 
   const y=v=>margen.arriba+
     (maximo-v)/(maximo-minimo)*altoArea;
@@ -3130,62 +2099,42 @@ function actualizarGraficoQuincena(){
   svg.style.margin="0 auto";
   svg.style.height=alto+"px";
 
-  for(
-    let v=minimo;
-    v<=maximo+paso/1000;
-    v+=paso
-  ){
+  for(let v=minimo;v<=maximo+paso/1000;v+=paso){
     const posicion=y(v);
 
     svg.append(svgElemento("line",{
-      x1:margen.izquierda,
-      y1:posicion,
-      x2:ancho-margen.derecha,
-      y2:posicion,
-      stroke:"#dedfd4",
-      "stroke-width":1,
+      x1:margen.izquierda,y1:posicion,
+      x2:ancho-margen.derecha,y2:posicion,
+      stroke:"#dedfd4","stroke-width":1,
       "stroke-dasharray":"4 4"
     }));
 
     textoSVG(
-      svg,
-      numero(Math.abs(v)<paso/1000?0:v),
+      svg,numero(Math.abs(v)<paso/1000?0:v),
       {
-        x:margen.izquierda-12,
-        y:posicion+4,
-        "text-anchor":"end",
-        "font-size":12,
-        fill:"#748077"
+        x:margen.izquierda-12,y:posicion+4,
+        "text-anchor":"end","font-size":12,fill:"#748077"
       }
     );
   }
 
   svg.append(svgElemento("line",{
-    x1:margen.izquierda,
-    y1:cero,
-    x2:ancho-margen.derecha,
-    y2:cero,
-    stroke:"#899383",
-    "stroke-width":1
+    x1:margen.izquierda,y1:cero,
+    x2:ancho-margen.derecha,y2:cero,
+    stroke:"#899383","stroke-width":1
   }));
 
   textoSVG(svg,"Cantidad",{
-    x:20,
-    y:margen.arriba+altoArea/2,
+    x:20,y:margen.arriba+altoArea/2,
     transform:"rotate(-90 20 "+
       (margen.arriba+altoArea/2)+")",
-    "text-anchor":"middle",
-    "font-size":12,
-    fill:"#748077"
+    "text-anchor":"middle","font-size":12,fill:"#748077"
   });
 
   const espacioGrupo=anchoArea/categorias.length;
-
   const espacioBarra=Math.min(
-    compacto?42:56,
-    espacioGrupo*.83/series.length
+    compacto?42:56,espacioGrupo*.83/series.length
   );
-
   const anchoBarra=Math.max(
     12,espacioBarra-(compacto?8:10)
   );
@@ -3193,33 +2142,22 @@ function actualizarGraficoQuincena(){
   categorias.forEach((quincena,indice)=>{
     const centro=margen.izquierda+
       espacioGrupo*(indice+.5);
-
-    const inicio=centro-
-      series.length*espacioBarra/2;
+    const inicio=centro-series.length*espacioBarra/2;
 
     series.forEach((serie,i)=>{
       const valor=grupos.get(quincena)[serie.id];
-
       const x=inicio+i*espacioBarra+
         (espacioBarra-anchoBarra)/2;
-
-      const altoBarra=Math.abs(
-        y(valor)-cero
-      );
+      const altoBarra=Math.abs(y(valor)-cero);
 
       const rect=svgElemento("rect",{
-        x,
-        y:Math.min(y(valor),cero),
-        width:anchoBarra,
-        height:altoBarra,
-        fill:serie.color,
-        rx:2
+        x,y:Math.min(y(valor),cero),
+        width:anchoBarra,height:altoBarra,
+        fill:serie.color,rx:2
       });
 
       const tooltip=svgElemento("title");
-
-      tooltip.textContent=
-        nombreQuincena(quincena)+
+      tooltip.textContent=nombreQuincena(quincena)+
         " · "+serie.nombre+": "+numero(valor);
 
       rect.append(tooltip);
@@ -3227,27 +2165,20 @@ function actualizarGraficoQuincena(){
 
       textoSVG(svg,numero(valor),{
         x:x+anchoBarra/2,
-        y:valor>=0
-          ?y(valor)-9
-          :y(valor)+17,
-        "text-anchor":"middle",
-        "font-size":11,
+        y:valor>=0?y(valor)-9:y(valor)+17,
+        "text-anchor":"middle","font-size":11,
         "font-weight":"600"
       });
     });
 
     const etiqueta=nombreQuincena(quincena);
-
     const lineas=etiqueta.length>25
-      ?dividirNombre(etiqueta)
-      :[etiqueta];
+      ?dividirNombre(etiqueta):[etiqueta];
 
     lineas.forEach((linea,i)=>{
       textoSVG(svg,linea,{
-        x:centro,
-        y:alto-margen.abajo+27+i*15,
-        "text-anchor":"middle",
-        "font-size":12
+        x:centro,y:alto-margen.abajo+27+i*15,
+        "text-anchor":"middle","font-size":12
       });
     });
   });
@@ -3275,9 +2206,7 @@ function actualizarGraficoQuincena(){
 
   if(sinQuincena){
     $("avisoQuincena").hidden=false;
-
-    $("avisoQuincena").textContent=
-      numero(sinQuincena)+
+    $("avisoQuincena").textContent=numero(sinQuincena)+
       " registros sin Quincena no se incluyen en este gráfico.";
   }
 }
@@ -3285,20 +2214,14 @@ function actualizarGraficoQuincena(){
 function actualizarEstado(){
   const errores=Object.entries(tablas)
     .filter(([,t])=>t.error)
-    .map(([id,t])=>
-      id.toUpperCase()+": "+t.error
-    );
+    .map(([id,t])=>id.toUpperCase()+": "+t.error);
 
   $("estadoCarga").textContent=errores.length
-    ?errores.join(" · ")
-    :ocupado?"Actualizando datos...":"";
-
+    ?errores.join(" · "):ocupado?"Actualizando datos...":"";
   $("estadoCarga").classList.toggle(
     "error",errores.length>0
   );
-
-  $("estadoCarga").hidden=
-    !$("estadoCarga").textContent;
+  $("estadoCarga").hidden=!$("estadoCarga").textContent;
 }
 
 function actualizarDashboard(){
@@ -3311,10 +2234,7 @@ function actualizarDashboard(){
   actualizarSelectorQuincena();
   actualizarGraficoQuincena();
   actualizarEstado();
-
-  if($("modalDescarte").open){
-    mostrarDetalleDescarte();
-  }
+  if($("modalDescarte").open)mostrarDetalleDescarte();
 }
 
 function encabezado(){
@@ -3323,25 +2243,16 @@ function encabezado(){
 
   t.columnas.forEach((nombre,i)=>{
     const th=document.createElement("th");
-
-    if(esObservaciones(nombre)){
-      th.className="observaciones";
-    }
+    if(esObservaciones(nombre))th.className="observaciones";
 
     const b=document.createElement("button");
-
     b.textContent=nombre+
-      (t.orden===i
-        ?(t.direccion===1?" ▲":" ▼")
-        :"");
+      (t.orden===i?(t.direccion===1?" ▲":" ▼"):"");
 
     b.addEventListener("click",()=>{
-      t.direccion=t.orden===i
-        ?-t.direccion:1;
-
+      t.direccion=t.orden===i?-t.direccion:1;
       t.orden=i;
       t.pagina=1;
-
       encabezado();
       mostrarFilas();
     });
@@ -3350,15 +2261,11 @@ function encabezado(){
     input.type="search";
     input.placeholder="Filtrar...";
     input.value=t.filtros[i]||"";
-
-    input.setAttribute(
-      "aria-label","Filtrar "+nombre
-    );
+    input.setAttribute("aria-label","Filtrar "+nombre);
 
     input.addEventListener("input",()=>{
       t.filtros[i]=input.value;
       t.pagina=1;
-
       mostrarFilas();
       actualizarDashboard();
     });
@@ -3374,49 +2281,35 @@ function claveFecha(v){
   const m=texto(v).match(
     /^(\d{2})\/(\d{2})\/(\d{4})(?: (\d{2}:\d{2}:\d{2}))?$/
   );
-
-  return m
-    ?m[3]+m[2]+m[1]+(m[4]||"")
-    :texto(v);
+  return m?m[3]+m[2]+m[1]+(m[4]||""):texto(v);
 }
 
 function mostrarFilas(){
   if(!tablaVisible)return;
-
   const t=tablas[activa];
   const resultado=filtradas(activa);
 
   if(t.orden!==null){
     resultado.sort((a,b)=>{
-      let av=a.valores[t.orden];
-      let bv=b.valores[t.orden];
-
+      let av=a.valores[t.orden],bv=b.valores[t.orden];
       if(esFecha(t.columnas[t.orden])){
         av=claveFecha(av);
         bv=claveFecha(bv);
       }
-
-      return comparador.compare(av,bv)*
-        t.direccion;
+      return comparador.compare(av,bv)*t.direccion;
     });
   }
 
-  const limite=Number(
-    $("limite").value
-  );
-
+  const limite=Number($("limite").value);
   const paginas=Math.max(
     1,Math.ceil(resultado.length/limite)
   );
-
   t.pagina=Math.min(t.pagina,paginas);
 
   const inicio=(t.pagina-1)*limite;
   const fragmento=document.createDocumentFragment();
 
-  resultado.slice(
-    inicio,inicio+limite
-  ).forEach(f=>{
+  resultado.slice(inicio,inicio+limite).forEach(f=>{
     const tr=document.createElement("tr");
 
     f.valores.forEach((v,i)=>{
@@ -3426,8 +2319,7 @@ function mostrarFilas(){
         td.className="observaciones";
 
         const contenedor=activa==="insumos"
-          ?document.createElement("div")
-          :td;
+          ?document.createElement("div"):td;
 
         if(activa==="insumos"){
           contenedor.className="nota-fila";
@@ -3437,7 +2329,6 @@ function mostrarFilas(){
         const nota=document.createElement("div");
         nota.className="nota-texto corta";
         nota.textContent=v||"—";
-
         contenedor.append(nota);
 
         if(v.trim()){
@@ -3458,15 +2349,10 @@ function mostrarFilas(){
         COLORES.includes(v)
       ){
         const e=document.createElement("span");
-
-        e.className="etiqueta "+
-          v.toLowerCase();
-
+        e.className="etiqueta "+v.toLowerCase();
         e.textContent=v;
         td.append(e);
-      }else{
-        td.textContent=v;
-      }
+      }else td.textContent=v;
 
       tr.append(td);
     });
@@ -3478,73 +2364,49 @@ function mostrarFilas(){
 
   const avisos=[
     ...(t.error?[t.error]:[]),
-    ...(activa==="transito"&&t.avisoCruce
-      ?[t.avisoCruce]:[]),
+    ...(activa==="transito"&&t.avisoCruce?[t.avisoCruce]:[]),
     ...(activa==="produccion"&&t.faltantes.length
-      ?["Producción: "+t.faltantes.join(", ")]
-      :[]),
+      ?["Producción: "+t.faltantes.join(", ")]:[]),
     ...(activa==="produccion"&&t.erroresDescarte.length
-      ?["Descarte: "+t.erroresDescarte.join(", ")]
-      :[])
+      ?["Descarte: "+t.erroresDescarte.join(", ")]:[])
   ];
 
   $("aviso").hidden=!avisos.length;
   $("aviso").textContent=avisos.join(" · ");
-
-  $("pagina").textContent=
-    "Página "+t.pagina+" de "+paginas;
-
+  $("pagina").textContent="Página "+t.pagina+" de "+paginas;
   $("anterior").disabled=t.pagina<=1;
   $("siguiente").disabled=t.pagina>=paginas;
-
   $("vacio").hidden=resultado.length>0;
-
   $("vacio").textContent=t.cargando&&!t.lectura
     ?"Cargando datos..."
     :t.error&&!t.lectura
-      ?t.error
-      :"No hay registros para esta selección.";
+      ?t.error:"No hay registros para esta selección.";
 }
 
 function mostrar(){
   $("listado").hidden=!tablaVisible;
-
   $("tablaDatos").classList.toggle(
     "tabla-insumos",activa==="insumos"
   );
 
-  document.querySelectorAll(
-    "[data-tab]"
-  ).forEach(b=>{
-    const elegida=tablaVisible&&
-      b.dataset.tab===activa;
-
+  document.querySelectorAll("[data-tab]").forEach(b=>{
+    const elegida=tablaVisible&&b.dataset.tab===activa;
     b.classList.toggle("activo",elegida);
-
-    b.setAttribute(
-      "aria-expanded",String(elegida)
-    );
+    b.setAttribute("aria-expanded",String(elegida));
   });
 
   if(!tablaVisible)return;
 
   $("tituloTabla").textContent=activa==="recibo"
     ?TITULO_RECIBO
-    :activa==="produccion"
-      ?"Producción"
-      :activa==="transito"
-        ?"En Tránsito"
-        :"Insumos";
+    :activa==="produccion"?"Producción":
+      activa==="transito"?"En Tránsito":"Insumos";
 
   $("buscar").value=tablas[activa].busqueda;
   $("fila").value=CONFIG[activa].fila;
-
-  $("fila").disabled=
-    activa!=="recibo"||ocupado;
-
+  $("fila").disabled=activa!=="recibo"||ocupado;
   $("fila").title=activa==="insumos"
-    ?"Encabezados detectados automáticamente por Quincena y FECHA."
-    :"";
+    ?"Encabezados detectados automáticamente por Quincena y FECHA.":"";
 
   encabezado();
   mostrarFilas();
@@ -3552,12 +2414,9 @@ function mostrar(){
 
 function cargarLibro(origen,bytes){
   const libro=XLSX.read(bytes,{
-    type:"array",
-    cellDates:false
+    type:"array",cellDates:false
   });
-
   const lectura=new Date().toISOString();
-
   libros[origen]={libro,lectura};
 
   for(const id of idsDelOrigen(origen)){
@@ -3581,32 +2440,21 @@ function errorOrigen(origen,mensaje){
 
 async function descargar(origen){
   const control=new AbortController();
-
-  const timer=setTimeout(
-    ()=>control.abort(),90000
-  );
+  const timer=setTimeout(()=>control.abort(),90000);
 
   try{
-    const respuesta=await fetch(
-      URLS[origen],
-      {
-        mode:"same-origin",
-        cache:"no-store",
-        credentials:"omit",
-        signal:control.signal
-      }
-    );
+    const respuesta=await fetch(URLS[origen],{
+      mode:"same-origin",cache:"no-store",
+      credentials:"omit",signal:control.signal
+    });
 
     if(!respuesta.ok){
-      let mensaje=
-        "La descarga respondió HTTP "+
+      let mensaje="La descarga respondió HTTP "+
         respuesta.status+".";
-
       try{
         const detalle=await respuesta.json();
         if(detalle.error)mensaje=detalle.error;
       }catch{}
-
       throw new Error(mensaje);
     }
 
@@ -3614,21 +2462,14 @@ async function descargar(origen){
       respuesta.headers.get("Content-Type")||""
     ).toLowerCase();
 
-    if(
-      tipo.includes("text/html")||
-      tipo.includes("application/json")
-    ){
-      throw new Error(
-        "El enlace no devolvió un Excel."
-      );
+    if(tipo.includes("text/html")||
+      tipo.includes("application/json")){
+      throw new Error("El enlace no devolvió un Excel.");
     }
 
     const bytes=await respuesta.arrayBuffer();
-
     if(!bytes.byteLength){
-      throw new Error(
-        "El archivo está vacío."
-      );
+      throw new Error("El archivo está vacío.");
     }
 
     cargarLibro(origen,bytes);
@@ -3651,13 +2492,9 @@ async function descargar(origen){
 function bloquear(v){
   ocupado=v;
   $("actualizar").disabled=v;
-
   $("textoActualizar").textContent=v
-    ?"Actualizando datos..."
-    :"Actualizar últimos datos";
-
-  $("fila").disabled=
-    activa!=="recibo"||v;
+    ?"Actualizando datos...":"Actualizar últimos datos";
+  $("fila").disabled=activa!=="recibo"||v;
 }
 
 async function actualizar(){
@@ -3666,10 +2503,8 @@ async function actualizar(){
   if(typeof XLSX==="undefined"){
     const mensaje=
       "No se cargó el lector Excel. Revisá la conexión y recargá.";
-
     errorOrigen("produccion",mensaje);
     errorOrigen("recibo",mensaje);
-
     actualizarDashboard();
     mostrar();
     return;
@@ -3700,9 +2535,7 @@ async function actualizar(){
   }
 }
 
-document.querySelectorAll(
-  "[data-tab]"
-).forEach(b=>{
+document.querySelectorAll("[data-tab]").forEach(b=>{
   b.addEventListener("click",()=>{
     const seleccion=b.dataset.tab;
 
@@ -3720,7 +2553,6 @@ document.querySelectorAll(
 $("buscar").addEventListener("input",()=>{
   tablas[activa].busqueda=$("buscar").value;
   tablas[activa].pagina=1;
-
   mostrarFilas();
   actualizarDashboard();
 });
@@ -3736,9 +2568,7 @@ $("quitar").addEventListener("click",()=>{
 
   $("selectorQuincena").value="";
 
-  document.querySelectorAll(
-    "[data-serie]"
-  ).forEach(input=>{
+  document.querySelectorAll("[data-serie]").forEach(input=>{
     input.checked=true;
   });
 
@@ -3767,26 +2597,18 @@ $("fila").addEventListener("change",()=>{
   const config=CONFIG[activa];
   const nueva=Number($("fila").value);
 
-  if(
-    !Number.isInteger(nueva)||
-    nueva<1||
-    nueva>100
-  ){
+  if(!Number.isInteger(nueva)||nueva<1||nueva>100){
     $("fila").value=config.fila;
     return;
   }
 
   const anterior=config.fila;
   config.fila=nueva;
-
   const guardado=libros[config.origen];
 
   if(guardado){
     try{
-      const t=extraer(
-        activa,guardado.libro
-      );
-
+      const t=extraer(activa,guardado.libro);
       t.lectura=guardado.lectura;
       tablas[activa]=t;
     }catch(e){
@@ -3803,9 +2625,7 @@ $("selectorQuincena").addEventListener(
   "change",actualizarGraficoQuincena
 );
 
-document.querySelectorAll(
-  "[data-serie]"
-).forEach(input=>{
+document.querySelectorAll("[data-serie]").forEach(input=>{
   input.addEventListener(
     "change",actualizarGraficoQuincena
   );
@@ -3814,38 +2634,30 @@ document.querySelectorAll(
 $("tarjetaTransito").addEventListener(
   "click",abrirTransito
 );
-
 $("actualizar").addEventListener(
   "click",actualizar
 );
-
 $("cerrarNota").addEventListener("click",()=>{
   $("modalNota").close();
 });
-
 $("tarjetaDescarte").addEventListener("click",()=>{
   mostrarDetalleDescarte();
   $("modalDescarte").showModal();
 });
-
 $("tarjetaChapas").addEventListener("click",()=>{
   mostrarDetalleChapas();
   $("modalChapas").showModal();
 });
-
 $("tarjetaTrozasCamion").addEventListener("click",()=>{
   mostrarDetalleTrozasCamion();
   $("modalTrozasCamion").showModal();
 });
-
 $("cerrarTrozasCamion").addEventListener("click",()=>{
   $("modalTrozasCamion").close();
 });
-
 $("cerrarChapas").addEventListener("click",()=>{
   $("modalChapas").close();
 });
-
 $("cerrarDescarte").addEventListener("click",()=>{
   $("modalDescarte").close();
 });
@@ -3856,15 +2668,10 @@ let frameGrafico=0;
 if(typeof ResizeObserver!=="undefined"){
   new ResizeObserver(entradas=>{
     const ancho=entradas[0].contentRect.width;
-
-    if(Math.abs(ancho-anchoGraficoAnterior)<1){
-      return;
-    }
+    if(Math.abs(ancho-anchoGraficoAnterior)<1)return;
 
     anchoGraficoAnterior=ancho;
-
     cancelAnimationFrame(frameGrafico);
-
     frameGrafico=requestAnimationFrame(
       actualizarGraficoQuincena
     );
@@ -3872,7 +2679,6 @@ if(typeof ResizeObserver!=="undefined"){
 }else{
   window.addEventListener("resize",()=>{
     cancelAnimationFrame(frameGrafico);
-
     frameGrafico=requestAnimationFrame(
       actualizarGraficoQuincena
     );
