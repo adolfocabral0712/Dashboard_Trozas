@@ -76,6 +76,10 @@ fieldset.productos{margin:0;padding:0;border:none;min-width:0}
 .boton-producto::before{content:"";width:9px;height:9px;flex-shrink:0;border-radius:50%;background:var(--color)}
 .boton-producto[aria-pressed="true"]{border-color:var(--color);box-shadow:inset 0 0 0 1px var(--color);background:#edf1e7;font-weight:700}
 .boton-producto:focus-visible{outline:2px solid var(--bosque);outline-offset:3px}
+.control-cuadro{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 18px;padding:13px 18px;background:var(--tarjeta,#fffefa);border:1px solid var(--borde);border-radius:12px}
+.control-cuadro label{font-weight:700;color:var(--bosque)}
+.control-cuadro select{min-width:180px;max-width:100%;padding:9px 12px;border:1px solid var(--borde);border-radius:7px;background:#fffefa;color:var(--bosque)}
+.control-cuadro span{font-size:11px;color:var(--secundario)}
 .despacho-contenido{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:16px;align-items:start;padding:0 18px 12px}
 .despacho-contenido>div{min-width:0}
 .detalle-despacho{overflow-x:auto;border:1px solid var(--borde);border-radius:9px}
@@ -257,6 +261,11 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
 </header>
 
 <main>
+<section class="control-cuadro" aria-label="Filtrar tablero por cuadro">
+  <label for="selectorCuadro">Cuadro</label>
+  <select id="selectorCuadro"><option value="">Todos los cuadros</option></select>
+  <span id="alcanceCuadro" aria-live="polite">Insumos y CHAPAS - Cajas Stock: todos los cuadros.</span>
+</section>
 <section class="tarjetas tarjetas-principales" aria-label="Totales">
   <article class="tarjeta">
     <div class="icono-tarjeta"><svg aria-hidden="true"><use href="#i-troncos"/></svg></div>
@@ -317,7 +326,7 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
     <div class="tarjeta-contenido">
       <h2>CHAPAS - Cajas Stock</h2>
       <div id="numero-chapas" class="numero">—</div>
-      <div class="detalle">Saldo aproximado · ver detalle</div>
+      <div class="detalle">Saldo aproximado · Todos los cuadros</div>
     </div>
   </button>
   <button id="tarjetaTrozasCamion" class="tarjeta stock-monte" type="button" aria-haspopup="dialog">
@@ -460,7 +469,7 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
   Producción excluye las filas sin Fecha. Insumos excluye las filas sin Quincena.<br>
   Producción, Descarte y sus gráficos responden a los filtros de la tabla Producción.
   Los selectores del gráfico por quincena afectan solamente ese gráfico.<br>
-  Los stocks utilizan los totales completos.
+  Los stocks utilizan los totales del cuadro seleccionado, sin los filtros de las tablas.
   Trozas Stock Monte = Producción total − Cantidad de Recibo − despachos sin Recibo.<br>
   En Tránsito muestra despachos de LAS ACACIAS UPM sin coincidencia por Remito de origen.
   Se descuentan una sola vez.
@@ -487,7 +496,7 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
     Cada registro de Recibo se considera un viaje.
     Trozas por camión = suma de Cantidad ÷ viajes.
     Neto por camión = suma de Neto ÷ viajes.
-    Utiliza los registros completos de Recibo.
+    Utiliza los registros de Recibo del cuadro seleccionado.
   </p>
   <button id="cerrarTrozasCamion" class="secundario">Cerrar</button>
 </dialog>
@@ -507,7 +516,7 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
     Producción: Cajas Chapas + (Chapas de mas PPL + Chapas EXTRAS STD) ÷ 90.<br>
     Insumos: suma de Cajas. Saldo = Insumos − Producción.
     Porcentajes calculados sobre Cajas de Insumos (100 %).
-    Se utilizan los registros completos de ambas tablas.
+    Se utilizan los registros completos de ambas tablas: todos los cuadros.
   </p>
   <button id="cerrarChapas" class="secundario">Cerrar</button>
 </dialog>
@@ -756,8 +765,9 @@ function actualizarTransito(){
   t.lectura=despachos.lectura;
   t.error=cruce.errores.join(" · ");
 
-  t.avisoCruce=numero(cruce.pendientes.length)+" viajes · "+
-    numero(cruce.total)+
+  const visibles=filasCuadro("transito");
+  t.avisoCruce=numero(visibles.length)+" viajes · "+
+    numero(visibles.reduce((s,f)=>s+f.cantidad,0))+
     " trozas sin registro en Recibo. Se cruzan todos los registros por Remito de origen, sin depender del estado informado."+
     (cruce.repetidos
       ?" Se omitieron "+numero(cruce.repetidos)+" registros repetidos.":"")+
@@ -766,9 +776,9 @@ function actualizarTransito(){
     (despachos.actualizado
       ?" Despachos actualizados: "+despachos.actualizado+".":"");
 
-  $("numero-transito").textContent=t.error?"—":numero(cruce.total);
+  $("numero-transito").textContent=t.error?"—":numero(visibles.reduce((s,f)=>s+f.cantidad,0));
   $("detalle-transito").textContent=t.error||
-    numero(cruce.pendientes.length)+" viajes sin Recibo · ver En Tránsito";
+    numero(visibles.length)+" viajes sin Recibo · ver En Tránsito";
   $("detalle-transito").classList.toggle("error",Boolean(t.error));
 }
 
@@ -1160,9 +1170,58 @@ function extraer(id,libro){
   };
 }
 
+let cuadroSeleccionado="";
+const FUENTES_CUADRO=["produccion","ajustes","recibo","transito"];
+const CUADROS_PREDEFINIDOS=["7G425","7G425B","7G426","7G427","7G452C"];
+
+function normalizarCuadro(valor){
+  return texto(valor).normalize("NFKC").trim().toUpperCase().replace(/\s+/g,"");
+}
+
+function cuadroDeFila(id,fila){
+  if(id==="transito"){
+    const predio=texto(fila.valores[2]);
+    const coincidencia=predio.match(/LAS\s+ACACIAS\s+UPM\s*[-–—]\s*(.+?)\s*$/i);
+    return coincidencia?normalizarCuadro(coincidencia[1]):"";
+  }
+  const indice=tablas[id].columnas.findIndex(c=>
+    ["cuadro",...(id==="recibo"?["sacada"]:[])].includes(claveColumna(c))
+  );
+  return indice>=0?normalizarCuadro(fila.valores[indice]):"";
+}
+
+function filasCuadro(id){
+  const filas=tablas[id].filas;
+  if(!cuadroSeleccionado||id==="insumos")return filas;
+  return filas.filter(f=>{
+    const cuadro=cuadroDeFila(id,f);
+    return cuadroSeleccionado==="__SIN_CUADRO__"?!cuadro:cuadro===cuadroSeleccionado;
+  });
+}
+
+function actualizarSelectorCuadro(){
+  const valores=new Set();let sinCuadro=0;
+  for(const id of FUENTES_CUADRO){
+    for(const fila of tablas[id].filas){
+      const cuadro=cuadroDeFila(id,fila);
+      if(cuadro)valores.add(cuadro);else sinCuadro++;
+    }
+  }
+  for(const cuadro of CUADROS_PREDEFINIDOS)valores.add(cuadro);
+  const selector=$("selectorCuadro"),fragmento=document.createDocumentFragment();
+  const agregar=(valor,nombre)=>{const opcion=document.createElement("option");opcion.value=valor;opcion.textContent=nombre;fragmento.append(opcion);};
+  agregar("","Todos los cuadros");
+  for(const cuadro of valores)agregar(cuadro,cuadro);
+  if(sinCuadro||cuadroSeleccionado==="__SIN_CUADRO__")agregar("__SIN_CUADRO__","Sin cuadro");
+  // Conservar la selección aunque una actualización temporalmente no tenga filas.
+  if(cuadroSeleccionado&&cuadroSeleccionado!=="__SIN_CUADRO__"&&!valores.has(cuadroSeleccionado))agregar(cuadroSeleccionado,cuadroSeleccionado);
+  selector.replaceChildren(fragmento);selector.value=cuadroSeleccionado;
+  $("alcanceCuadro").textContent="Insumos y CHAPAS - Cajas Stock: todos los cuadros.";
+}
+
 function filtradas(id){
   const t=tablas[id],buscar=normalizar(t.busqueda);
-  return t.filas.filter(f=>
+  return filasCuadro(id).filter(f=>
     (!buscar||f.valores.some(v=>normalizar(v).includes(buscar)))&&
     t.filtros.every((v,i)=>
       !normalizar(v)||normalizar(f.valores[i]).includes(normalizar(v)))
@@ -1206,7 +1265,7 @@ function calculoTrozasCamion(){
   const total={producto:"TOTAL",viajes:0,cantidad:0,neto:0};
   let error="";
 
-  t.filas.forEach((f,n)=>{
+  filasCuadro("recibo").forEach((f,n)=>{
     const valorNeto=f.valores[indices[0]];
     const neto=numeroCelda(valorNeto);
 
@@ -1255,7 +1314,7 @@ function mostrarDetalleTrozasCamion(){
 
   $("avisoTrozasCamion").textContent=d.error||
     (d.total?.viajes
-      ?"Promedios por producto · registros completos de Recibo."
+      ?"Promedios por producto · Recibo del cuadro seleccionado (Todos si no hay selección)."
       :"No hay viajes en Recibo.");
 
   $("avisoTrozasCamion").classList.toggle(
@@ -1369,7 +1428,7 @@ function actualizarChapas(){
     "negativo",d.saldo!==null&&d.saldo<0
   );
   $("tarjetaChapas").title=d.error||
-    "Insumos − Producción · registros completos";
+    "Insumos − Producción · Todos los cuadros";
 
   if($("modalChapas").open)mostrarDetalleChapas();
 }
@@ -1388,7 +1447,7 @@ function mostrarDetalleChapas(){
   $("alcanceChapas").textContent=d.error||
     (d.insumos===0
       ?"Insumos es cero: no se puede calcular un porcentaje."
-      :"Saldo aproximado de chapas · Insumos − Producción.");
+      :"Saldo aproximado de chapas · Todos los cuadros · Insumos − Producción.");
 
   $("alcanceChapas").classList.toggle(
     "error",Boolean(d.error)
@@ -1404,7 +1463,7 @@ function fechaMaximaProduccion(){
 
   let maxima=-Infinity,resultado="";
 
-  for(const fila of t.filas){
+  for(const fila of filasCuadro("produccion")){
     if(!tieneContenido(fila.quincena))continue;
     const valor=texto(fila.valores[indice]).trim();
     const m=valor.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
@@ -1446,7 +1505,7 @@ function calculoAjustes(filasProduccion=null){
     indices[nombre]=encontrados[0];
   }
   const quincenas=filasProduccion===null?null:new Set(filasProduccion.map(f=>String(f.quincena).trim()));
-  for(const fila of t.filas){
+  for(const fila of filasCuadro("ajustes")){
     const quincena=String(fila.valores[indices.QUINCENA]??"").trim();
     if(quincenas&&!quincenas.has(quincena))continue;
     const ajuste={quincena,valores:{}};
@@ -1611,7 +1670,7 @@ function tarjetasStock(){
     const problemas=[
       ...p.faltantesColor[color],
       ...(r.avisoCantidad?[r.avisoCantidad]:[]),
-      ...(tr.resultadoCruce?.sinColor
+      ...(filasCuadro("transito").some(f=>!COLORES.includes(f.color))
         ?["Hay despachos sin producto reconocido en En Tránsito."]:[])
     ];
 
@@ -1623,13 +1682,13 @@ function tarjetasStock(){
       continue;
     }
 
-    const producido=p.filas.reduce(
+    const producido=filasCuadro("produccion").reduce(
       (s,f)=>s+f.produccion[color],0
     )+ajuste.valores[color];
-    const recibido=r.filas.reduce(
+    const recibido=filasCuadro("recibo").reduce(
       (s,f)=>s+(f.color===color?f.cantidad:0),0
     );
-    const pendiente=tr.filas.reduce(
+    const pendiente=filasCuadro("transito").reduce(
       (s,f)=>s+(f.color===color?f.cantidad:0),0
     );
 
@@ -1659,9 +1718,9 @@ function tarjetasStock(){
     return;
   }
 
-  const producido=p.filas.reduce((s,f)=>s+f.total,0)+ajuste.total;
-  const recibido=r.filas.reduce((s,f)=>s+f.cantidad,0);
-  const pendiente=tr.filas.reduce((s,f)=>s+f.cantidad,0);
+  const producido=filasCuadro("produccion").reduce((s,f)=>s+f.total,0)+ajuste.total;
+  const recibido=filasCuadro("recibo").reduce((s,f)=>s+f.cantidad,0);
+  const pendiente=filasCuadro("transito").reduce((s,f)=>s+f.cantidad,0);
 
   ponerStock(
     "monte",producido-recibido-pendiente,
@@ -1945,7 +2004,7 @@ function actualizarGraficos(){
     $("alcanceDespacho").textContent=
       "Recibo + despachos en tránsito sin Recibo.";
   }else{
-    const filas=[...r.filas,...transito.filas];
+    const filas=[...filasCuadro("recibo"),...filasCuadro("transito")];
 
     const series=["ROJO","VERDE","AMARILLO"].map(color=>({
       nombre:color,color:PALETA[color],
@@ -1968,8 +2027,8 @@ function actualizarGraficos(){
       "graficoDespacho",series,true,"TROZAS DESPACHADAS"
     );
 
-    const recibido=r.filas.reduce((s,f)=>s+f.cantidad,0);
-    const pendiente=transito.filas.reduce((s,f)=>s+f.cantidad,0);
+    const recibido=filasCuadro("recibo").reduce((s,f)=>s+f.cantidad,0);
+    const pendiente=filasCuadro("transito").reduce((s,f)=>s+f.cantidad,0);
     const total=recibido+pendiente;
 
     $("alcanceDespacho").textContent=
@@ -1977,7 +2036,7 @@ function actualizarGraficos(){
       (total?" ("+porcentaje(recibido/total*100)+")":"")+
       " · En tránsito: "+numero(pendiente)+
       (total?" ("+porcentaje(pendiente/total*100)+")":"")+
-      " · "+numero(transito.filas.length)+" viajes sin Recibo.";
+      " · "+numero(filasCuadro("transito").length)+" viajes sin Recibo.";
   }
 }
 
@@ -1995,7 +2054,7 @@ function actualizarSelectorQuincena(){
   const anterior=selector.value;
 
   const opciones=[
-    ...new Set([...tablas.produccion.filas,...tablas.ajustes.filas]
+    ...new Set([...filasCuadro("produccion"),...filasCuadro("ajustes")]
       .map(f=>f.quincena).filter(tieneContenido))
   ].sort(comparador.compare);
 
@@ -2325,14 +2384,14 @@ function datosDespachoDiario(){
   const producto=productoDespachoSeleccionado;
   const indice=p.columnas.findIndex(c=>claveColumna(c)==="fecha");
   const fechas=new Map(),grupos=new Map();let excluidos=0;
-  for(const fila of p.filas){
+  for(const fila of filasCuadro("produccion")){
     const fecha=fechaTexto(fila.valores[indice]);
     const quincena=String(fila.quincena??"").trim();
     if(!quincena)continue;
     if(!fechas.has(fecha))fechas.set(fecha,new Set());
     fechas.get(fecha).add(quincena);
   }
-  const filas=[...t.filas.map(f=>({...f,fuente:"recibo"})),...tablas.transito.filas.map(f=>({...f,fuente:"transito"}))];
+  const filas=[...filasCuadro("recibo").map(f=>({...f,fuente:"recibo"})),...filasCuadro("transito").map(f=>({...f,fuente:"transito"}))];
   for(const fila of filas){
     if(producto&&fila.color!==producto)continue;
     if(!COLORES.includes(fila.color)){excluidos++;continue;}
@@ -2459,6 +2518,7 @@ function actualizarEstado(){
 
 function actualizarDashboard(){
   actualizarTransito();
+  actualizarSelectorCuadro();
   actualizarTotales();
   actualizarChapas();
   actualizarTrozasCamion();
@@ -2906,6 +2966,13 @@ document.querySelectorAll("[data-producto-despacho]").forEach(boton=>{
   });
 });
 window.addEventListener("resize",actualizarDespachoDiario);
+
+$("selectorCuadro").addEventListener("change",()=>{
+  cuadroSeleccionado=$("selectorCuadro").value;
+  for(const id of FUENTES_CUADRO)tablas[id].pagina=1;
+  actualizarDashboard();
+  mostrar();
+});
 
 let anchoGraficoAnterior=-1;
 let frameGrafico=0;
