@@ -367,8 +367,8 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
 
 <section class="grafico-quincena" aria-labelledby="tituloDespachoDiario">
   <div class="cabecera-quincena">
-    <div><h2 id="tituloDespachoDiario">CAMIONES DESPACHADOS POR DÍA Y PRODUCTO</h2>
-      <p>Viajes de Recibo agrupados por fecha del remito de origen.</p></div>
+    <div><h2 id="tituloDespachoDiario">CAMIONES DESPACHADOS POR QUINCENA Y PRODUCTO</h2>
+      <p>Quincena de Producción según la fecha del remito de origen de Recibo.</p></div>
     <label class="selector-quincena">Producto
       <select id="productoDespachoDiario"><option value="">Todos</option><option>ROJO</option><option>AMARILLO</option><option>VERDE</option></select>
     </label>
@@ -2290,44 +2290,51 @@ function actualizarGraficoQuincena(){
 }
 
 function datosDespachoDiario(){
-  const t=tablas.recibo,producto=$("productoDespachoDiario").value;
-  const grupos=new Map();let excluidos=0;
-  for(const fila of t.filas){
-    if(!COLORES.includes(fila.color)){excluidos++;continue;}
-    if(producto&&fila.color!==producto)continue;
-    const m=String(fila.fechaDespacho||"").match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
-    if(!m){excluidos++;continue;}
-    const fecha=new Date(Date.UTC(+m[3],+m[2]-1,+m[1]));
-    if(fecha.getUTCFullYear()!==+m[3]||fecha.getUTCMonth()!==+m[2]-1||fecha.getUTCDate()!==+m[1]){excluidos++;continue;}
-    const clave=m[3]+"-"+m[2]+"-"+m[1];
-    if(!grupos.has(clave))grupos.set(clave,{fecha:fila.fechaDespacho,ROJO:0,AMARILLO:0,VERDE:0});
-    grupos.get(clave)[fila.color]+=1;
+  const p=tablas.produccion,t=tablas.recibo;
+  const producto=$("productoDespachoDiario").value;
+  const indice=p.columnas.findIndex(c=>claveColumna(c)==="fecha");
+  const fechas=new Map(),grupos=new Map();let excluidos=0;
+  for(const fila of p.filas){
+    const fecha=fechaTexto(fila.valores[indice]);
+    const quincena=String(fila.quincena??"").trim();
+    if(!quincena)continue;
+    if(!fechas.has(fecha))fechas.set(fecha,new Set());
+    fechas.get(fecha).add(quincena);
   }
-  return {dias:[...grupos.entries()].sort(([a],[b])=>a.localeCompare(b)).map(([,v])=>v),excluidos};
+  for(const fila of t.filas){
+    if(producto&&fila.color!==producto)continue;
+    if(!COLORES.includes(fila.color)){excluidos++;continue;}
+    const coincidencias=fechas.get(fila.fechaDespacho);
+    if(!coincidencias||coincidencias.size!==1){excluidos++;continue;}
+    const quincena=[...coincidencias][0];
+    if(!grupos.has(quincena))grupos.set(quincena,{fecha:nombreQuincena(quincena),ROJO:0,AMARILLO:0,VERDE:0});
+    grupos.get(quincena)[fila.color]+=1;
+  }
+  return {dias:[...grupos.entries()].sort(([a],[b])=>comparador.compare(a,b)).map(([,v])=>v),excluidos};
 }
 
 function actualizarDespachoDiario(){
-  const t=tablas.recibo,contenedor=$("graficoDespachoDiario");
+  const t=tablas.recibo,p=tablas.produccion,contenedor=$("graficoDespachoDiario");
   $("leyendaDespachoDiario").replaceChildren();
   $("avisoDespachoDiario").textContent="";
-  const problema=t.cargando?"Actualizando Recibo...":!t.lectura?"Pendiente de lectura de Recibo.":t.error;
+  const problema=t.cargando||p.cargando?"Actualizando Recibo y Producción...":!t.lectura||!p.lectura?"Se necesita cargar Recibo y Producción.":t.error||p.error||p.avisoQuincena;
   if(problema){mensajeGrafico("graficoDespachoDiario",problema);return;}
   if(t.filas.length&&!t.filas.some(f=>f.fechaDespacho)){
     mensajeGrafico("graficoDespachoDiario","No se encontró una fecha válida del remito de origen en Recibo.");return;
   }
   const {dias,excluidos}=datosDespachoDiario();
-  if(!dias.length){mensajeGrafico("graficoDespachoDiario","Sin despachos para la selección actual.");return;}
+  if(!dias.length){mensajeGrafico("graficoDespachoDiario","Sin despachos con fecha coincidente con una única Quincena de Producción.");$("avisoDespachoDiario").textContent=excluidos?numero(excluidos)+" registros sin producto válido o sin coincidencia única de fecha y quincena.":"";return;}
   const producto=$("productoDespachoDiario").value;
   const colores=producto?[producto]:COLORES;
   const compacto=window.matchMedia("(max-width:700px)").matches;
   const grupo=colores.length*(compacto?35:43)+24;
-  const ancho=Math.max(300,contenedor.clientWidth-32,60+dias.length*grupo);
+  const ancho=Math.max(300,Math.min(contenedor.clientWidth-32,700),60+dias.length*grupo);
   const alto=340,izq=60,der=20,arriba=35,abajo=70;
   const valores=dias.flatMap(d=>colores.map(c=>d[c]));
   const paso=Math.max(1,Math.ceil(pasoEscala(Math.max(1,...valores))));
   const maximo=Math.ceil(Math.max(1,...valores)/paso)*paso;
   const y=v=>alto-abajo-v/maximo*(alto-arriba-abajo);
-  const svg=svgElemento("svg",{viewBox:`0 0 ${ancho} ${alto}`,role:"img","aria-label":"Cantidad de camiones despachados por día y producto según Recibo"});
+  const svg=svgElemento("svg",{viewBox:`0 0 ${ancho} ${alto}`,role:"img","aria-label":"Cantidad de camiones despachados por quincena y producto según Recibo"});
   svg.style.width=ancho+"px";svg.style.height=alto+"px";svg.style.display="block";svg.style.margin="0 auto";
   for(let v=0;v<=maximo;v+=paso){
     svg.append(svgElemento("line",{x1:izq,y1:y(v),x2:ancho-der,y2:y(v),stroke:"#dedfd4","stroke-dasharray":"4 4"}));
@@ -2348,7 +2355,7 @@ function actualizarDespachoDiario(){
   for(const color of colores){
     const item=document.createElement("span"),punto=document.createElement("span");punto.className="punto";punto.style.background=PALETA[color];item.append(punto,document.createTextNode(color));$("leyendaDespachoDiario").append(item);
   }
-  $("avisoDespachoDiario").textContent="Fuente: Recibo · Cada registro se considera un viaje de camión · Fecha del remito de origen."+(excluidos?" Registros sin fecha o producto válido excluidos: "+numero(excluidos)+".":"");
+  $("avisoDespachoDiario").textContent="Fuente: Recibo · Cada registro es un viaje · Quincena obtenida cruzando fecha_rto_origen con FECHA de Producción."+(excluidos?" Registros sin producto válido o sin coincidencia única de fecha y quincena: "+numero(excluidos)+".":"");
 }
 
 function actualizarEstado(){
