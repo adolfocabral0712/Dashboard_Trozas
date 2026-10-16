@@ -80,9 +80,9 @@ fieldset.productos{margin:0;padding:0;border:none;min-width:0}
 .despacho-contenido>div{min-width:0}
 .detalle-despacho{overflow-x:auto;border:1px solid var(--borde);border-radius:9px}
 .detalle-despacho table{width:100%;min-width:430px;border-collapse:collapse;table-layout:auto;font-size:12px}
-.detalle-despacho th,.detalle-despacho td{padding:10px 8px;white-space:nowrap;text-align:right;border-bottom:1px solid var(--borde);height:auto}
+.detalle-despacho th,.detalle-despacho td{padding:10px 8px;white-space:nowrap;text-align:center;border-bottom:1px solid var(--borde);height:auto}
 .detalle-despacho thead th{position:static;background:#edf0e5;color:var(--bosque);font-weight:600}
-.detalle-despacho th:first-child,.detalle-despacho th:nth-child(2){text-align:left}
+.detalle-despacho th:first-child,.detalle-despacho th:nth-child(2){text-align:center}
 .detalle-despacho tbody th{font-weight:500;vertical-align:middle}
 .detalle-despacho .grupo-alterno>*{background:#f8f7f1}
 .detalle-despacho .total-columna{font-weight:700}
@@ -385,7 +385,7 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
 <section class="grafico-quincena" aria-labelledby="tituloDespachoDiario">
   <div class="cabecera-quincena">
     <div><h2 id="tituloDespachoDiario">CAMIONES DESPACHADOS POR QUINCENA Y PRODUCTO</h2>
-      <p>Quincena de Producción según la fecha del remito de origen de Recibo.</p></div>
+      <p>Recibo + En Tránsito, agrupados por la Quincena de Producción según su fecha de despacho.</p></div>
     <fieldset class="productos">
       <legend>Producto</legend>
       <div class="opciones-productos" aria-label="Filtrar camiones por producto">
@@ -712,7 +712,7 @@ function conciliarDespachos(registros,recibos){
     )?"":texto(d.observaciones);
 
     pendientes.push({
-      remito,color,cantidad:valida?cantidad:0,
+      remito,color,cantidad:valida?cantidad:0,fechaDespacho:fechaTexto(d.fin_carga),
       valores:[
         texto(d.numero_1),texto(d.vehiculo),texto(d.predio),
         texto(d.destino),color,valida?texto(cantidad):"Revisar",
@@ -2331,14 +2331,16 @@ function datosDespachoDiario(){
     if(!fechas.has(fecha))fechas.set(fecha,new Set());
     fechas.get(fecha).add(quincena);
   }
-  for(const fila of t.filas){
+  const filas=[...t.filas.map(f=>({...f,fuente:"recibo"})),...tablas.transito.filas.map(f=>({...f,fuente:"transito"}))];
+  for(const fila of filas){
     if(producto&&fila.color!==producto)continue;
     if(!COLORES.includes(fila.color)){excluidos++;continue;}
     const coincidencias=fechas.get(fila.fechaDespacho);
     if(!coincidencias||coincidencias.size!==1){excluidos++;continue;}
     const quincena=[...coincidencias][0];
-    if(!grupos.has(quincena))grupos.set(quincena,{fecha:nombreQuincena(quincena),ROJO:0,AMARILLO:0,VERDE:0,trozas:{ROJO:0,AMARILLO:0,VERDE:0}});
+    if(!grupos.has(quincena))grupos.set(quincena,{fecha:nombreQuincena(quincena),ROJO:0,AMARILLO:0,VERDE:0,trozas:{ROJO:0,AMARILLO:0,VERDE:0},recibo:{ROJO:0,AMARILLO:0,VERDE:0},transito:{ROJO:0,AMARILLO:0,VERDE:0}});
     grupos.get(quincena)[fila.color]+=1;
+    grupos.get(quincena)[fila.fuente][fila.color]+=1;
     grupos.get(quincena).trozas[fila.color]+=fila.cantidad;
   }
   return {dias:[...grupos.entries()].sort(([a],[b])=>comparador.compare(a,b)).map(([,v])=>v),excluidos};
@@ -2388,14 +2390,14 @@ function mostrarTablaDespachos(dias,colores){
 }
 
 function actualizarDespachoDiario(){
-  const t=tablas.recibo,p=tablas.produccion,contenedor=$("graficoDespachoDiario");
+  const t=tablas.recibo,p=tablas.produccion,tr=tablas.transito,contenedor=$("graficoDespachoDiario");
   $("tablaDespachoQuincena").replaceChildren();
   $("tablaDespachoQuincena").hidden=true;
   $("leyendaDespachoDiario").replaceChildren();
   $("avisoDespachoDiario").textContent="";
-  const problema=t.cargando||p.cargando?"Actualizando Recibo y Producción...":!t.lectura||!p.lectura?"Se necesita cargar Recibo y Producción.":t.error||p.error||p.avisoQuincena;
+  const problema=t.cargando||p.cargando||tr.cargando?"Actualizando Recibo, Producción y En Tránsito...":!t.lectura||!p.lectura||!tr.lectura?"Se necesita cargar Recibo, Producción y En Tránsito.":t.error||p.error||tr.error||p.avisoQuincena;
   if(problema){mensajeGrafico("graficoDespachoDiario",problema);return;}
-  if(t.filas.length&&!t.filas.some(f=>f.fechaDespacho)){
+  if((t.filas.length||tr.filas.length)&&![...t.filas,...tr.filas].some(f=>f.fechaDespacho)){
     mensajeGrafico("graficoDespachoDiario","No se encontró una fecha válida del remito de origen en Recibo.");return;
   }
   const {dias,excluidos}=datosDespachoDiario();
@@ -2411,7 +2413,7 @@ function actualizarDespachoDiario(){
   const paso=Math.max(1,Math.ceil(pasoEscala(Math.max(1,...valores))));
   const maximo=Math.ceil(Math.max(1,...valores)/paso)*paso;
   const y=v=>alto-abajo-v/maximo*(alto-arriba-abajo);
-  const svg=svgElemento("svg",{viewBox:`0 0 ${ancho} ${alto}`,role:"img","aria-label":"Cantidad de camiones despachados por quincena y producto según Recibo"});
+  const svg=svgElemento("svg",{viewBox:`0 0 ${ancho} ${alto}`,role:"img","aria-label":"Cantidad de camiones despachados por quincena y producto: Recibo más En Tránsito"});
   svg.style.width=ancho+"px";svg.style.height=alto+"px";svg.style.display="block";svg.style.margin="0 auto";
   for(let v=0;v<=maximo;v+=paso){
     svg.append(svgElemento("line",{x1:izq,y1:y(v),x2:ancho-der,y2:y(v),stroke:"#dedfd4","stroke-dasharray":"4 4"}));
@@ -2423,7 +2425,7 @@ function actualizarDespachoDiario(){
     colores.forEach((c,j)=>{
       const valor=d[c],x=centro-colores.length*barEsp/2+j*barEsp+4;
       const rect=svgElemento("rect",{x,y:y(valor),width:barAncho,height:y(0)-y(valor),fill:PALETA[c],rx:2});
-      const titulo=svgElemento("title");titulo.textContent=d.fecha+" · "+c+"\nCamiones: "+numero(valor)+"\nTotal de trozas: "+(t.avisoCantidad?"No disponible: "+t.avisoCantidad:numero(d.trozas[c]));rect.append(titulo);svg.append(rect);
+      const titulo=svgElemento("title");titulo.textContent=d.fecha+" · "+c+"\nCamiones: "+numero(valor)+"\nEn Recibo: "+numero(d.recibo[c])+" · En Tránsito: "+numero(d.transito[c])+"\nTotal de trozas: "+(t.avisoCantidad?"No disponible: "+t.avisoCantidad:numero(d.trozas[c]));rect.append(titulo);svg.append(rect);
       textoSVG(svg,numero(valor),{x:x+barAncho/2,y:y(valor)-7,"text-anchor":"middle","font-size":10});
     });
     textoSVG(svg,d.fecha,{x:centro,y:alto-abajo+24,"text-anchor":"middle","font-size":11});
@@ -2432,7 +2434,7 @@ function actualizarDespachoDiario(){
   for(const color of colores){
     const item=document.createElement("span"),punto=document.createElement("span");punto.className="punto";punto.style.background=PALETA[color];item.append(punto,document.createTextNode(color));$("leyendaDespachoDiario").append(item);
   }
-  $("avisoDespachoDiario").textContent="Fuente: Recibo · Cada registro es un viaje · Quincena obtenida cruzando fecha_rto_origen con FECHA de Producción."+(excluidos?" Registros sin producto válido o sin coincidencia única de fecha y quincena: "+numero(excluidos)+".":"");
+  $("avisoDespachoDiario").textContent="Fuente: Recibo + En Tránsito sin Recibo · Cada registro es un viaje · Quincena por fecha_rto_origen (Recibo) o fin_carga (En Tránsito), cruzada con FECHA de Producción."+(excluidos?" Registros sin producto válido o sin coincidencia única de fecha y quincena: "+numero(excluidos)+".":"");
 }
 
 function actualizarEstado(){
