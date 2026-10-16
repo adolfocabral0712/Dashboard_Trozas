@@ -76,6 +76,19 @@ fieldset.productos{margin:0;padding:0;border:none;min-width:0}
 .boton-producto::before{content:"";width:9px;height:9px;flex-shrink:0;border-radius:50%;background:var(--color)}
 .boton-producto[aria-pressed="true"]{border-color:var(--color);box-shadow:inset 0 0 0 1px var(--color);background:#edf1e7;font-weight:700}
 .boton-producto:focus-visible{outline:2px solid var(--bosque);outline-offset:3px}
+.despacho-contenido{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:16px;align-items:start;padding:0 18px 12px}
+.despacho-contenido>div{min-width:0}
+.detalle-despacho{overflow-x:auto;border:1px solid var(--borde);border-radius:9px}
+.detalle-despacho table{width:100%;min-width:430px;border-collapse:collapse;table-layout:auto;font-size:12px}
+.detalle-despacho th,.detalle-despacho td{padding:10px 8px;white-space:nowrap;text-align:right;border-bottom:1px solid var(--borde);height:auto}
+.detalle-despacho thead th{position:static;background:#edf0e5;color:var(--bosque);font-weight:600}
+.detalle-despacho th:first-child,.detalle-despacho th:nth-child(2){text-align:left}
+.detalle-despacho tbody th{font-weight:500;vertical-align:middle}
+.detalle-despacho .grupo-alterno>*{background:#f8f7f1}
+.detalle-despacho .total-columna{font-weight:700}
+.detalle-despacho tfoot th,.detalle-despacho tfoot td{background:#edf0e5;font-weight:700}
+.detalle-despacho .punto{display:inline-block;margin-right:5px}
+@media(max-width:1050px){.despacho-contenido{grid-template-columns:1fr}}
 #graficoQuincena{overflow-x:auto;padding:0 16px 5px}
 #graficoQuincena svg{display:block;width:100%;height:auto}
 .leyenda-quincena{display:flex;justify-content:center;flex-wrap:wrap;gap:18px;padding:10px 18px 18px;font-size:12px}
@@ -383,8 +396,13 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
       </div>
     </fieldset>
   </div>
-  <div id="graficoDespachoDiario" style="overflow-x:auto;padding:0 16px 10px"></div>
-  <div id="leyendaDespachoDiario" class="leyenda-quincena"></div>
+  <div class="despacho-contenido">
+    <div>
+      <div id="graficoDespachoDiario" style="overflow-x:auto;padding:0 0 10px"></div>
+      <div id="leyendaDespachoDiario" class="leyenda-quincena"></div>
+    </div>
+    <div id="tablaDespachoQuincena" class="detalle-despacho" aria-label="Detalle de camiones y trozas por quincena y producto" hidden></div>
+  </div>
   <div id="avisoDespachoDiario" class="alcance"></div>
 </section>
 
@@ -2326,8 +2344,53 @@ function datosDespachoDiario(){
   return {dias:[...grupos.entries()].sort(([a],[b])=>comparador.compare(a,b)).map(([,v])=>v),excluidos};
 }
 
+function mostrarTablaDespachos(dias,colores){
+  const contenedor=$("tablaDespachoQuincena"),tabla=document.createElement("table");
+  const thead=document.createElement("thead"),cabecera=document.createElement("tr");
+  for(const nombre of ["Quincena","Dato",...colores,"Total"]){
+    const th=document.createElement("th");th.scope="col";
+    if(COLORES.includes(nombre)){
+      const punto=document.createElement("span");punto.className="punto";punto.style.background=PALETA[nombre];
+      th.append(punto,document.createTextNode(nombre.charAt(0)+nombre.slice(1).toLowerCase()));
+    }else th.textContent=nombre;
+    cabecera.append(th);
+  }
+  thead.append(cabecera);tabla.append(thead);
+  const tbody=document.createElement("tbody");
+  const totales={Camiones:Object.fromEntries(colores.map(c=>[c,0])),Trozas:Object.fromEntries(colores.map(c=>[c,0]))};
+  function celdas(tr,dato,valores){
+    const th=document.createElement("th");th.scope="row";th.textContent=dato;tr.append(th);
+    for(const color of colores){
+      const td=document.createElement("td");td.textContent=dato==="Trozas"&&tablas.recibo.avisoCantidad?"—":numero(valores[color]);tr.append(td);
+    }
+    const total=document.createElement("td");total.className="total-columna";
+    total.textContent=dato==="Trozas"&&tablas.recibo.avisoCantidad?"—":numero(colores.reduce((s,c)=>s+valores[c],0));tr.append(total);
+  }
+  dias.forEach((dia,i)=>{
+    for(const dato of ["Camiones","Trozas"]){
+      const tr=document.createElement("tr");if(i%2)tr.className="grupo-alterno";
+      if(dato==="Camiones"){
+        const q=document.createElement("th");q.rowSpan=2;q.scope="rowgroup";q.textContent=dia.fecha.replace(/^Quincena\s+/i,"");tr.append(q);
+      }
+      const valores=dato==="Camiones"?dia:dia.trozas;
+      celdas(tr,dato,valores);
+      for(const color of colores)totales[dato][color]+=valores[color];
+      tbody.append(tr);
+    }
+  });tabla.append(tbody);
+  const tfoot=document.createElement("tfoot");
+  for(const dato of ["Camiones","Trozas"]){
+    const tr=document.createElement("tr");
+    if(dato==="Camiones"){const th=document.createElement("th");th.rowSpan=2;th.scope="rowgroup";th.textContent="TOTAL";tr.append(th);}
+    celdas(tr,dato,totales[dato]);tfoot.append(tr);
+  }
+  tabla.append(tfoot);contenedor.replaceChildren(tabla);contenedor.hidden=false;
+}
+
 function actualizarDespachoDiario(){
   const t=tablas.recibo,p=tablas.produccion,contenedor=$("graficoDespachoDiario");
+  $("tablaDespachoQuincena").replaceChildren();
+  $("tablaDespachoQuincena").hidden=true;
   $("leyendaDespachoDiario").replaceChildren();
   $("avisoDespachoDiario").textContent="";
   const problema=t.cargando||p.cargando?"Actualizando Recibo y Producción...":!t.lectura||!p.lectura?"Se necesita cargar Recibo y Producción.":t.error||p.error||p.avisoQuincena;
@@ -2339,6 +2402,7 @@ function actualizarDespachoDiario(){
   if(!dias.length){mensajeGrafico("graficoDespachoDiario","Sin despachos con fecha coincidente con una única Quincena de Producción.");$("avisoDespachoDiario").textContent=excluidos?numero(excluidos)+" registros sin producto válido o sin coincidencia única de fecha y quincena.":"";return;}
   const producto=productoDespachoSeleccionado;
   const colores=producto?[producto]:COLORES;
+  mostrarTablaDespachos(dias,colores);
   const compacto=window.matchMedia("(max-width:700px)").matches;
   const grupo=colores.length*(compacto?35:43)+24;
   const ancho=Math.max(300,Math.min(contenedor.clientWidth-32,700),60+dias.length*grupo);
