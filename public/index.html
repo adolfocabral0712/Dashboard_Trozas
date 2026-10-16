@@ -78,7 +78,7 @@ fieldset.productos{margin:0;padding:0;border:none;min-width:0}
 .leyenda-item{display:flex;align-items:center;gap:7px}
 .punto{width:10px;height:10px;border-radius:50%}
 #avisoQuincena{padding:5px 22px 15px;text-align:center;font-size:12px;color:var(--secundario);line-height:1.6}
-.botones-tablas{grid-template-columns:repeat(4,minmax(0,1fr))}
+.botones-tablas{grid-template-columns:repeat(5,minmax(0,1fr))}
 .boton-tabla{border:1px solid #c8b47f;border-radius:12px;background:var(--tarjeta);color:var(--bosque);box-shadow:var(--sombra);padding:18px 20px;display:flex;align-items:center;gap:13px;text-align:left}
 .boton-tabla>svg{width:28px;height:28px;flex-shrink:0}
 .boton-tabla span{flex:1;font-family:Georgia,serif;font-size:19px;font-weight:bold}
@@ -371,6 +371,9 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
   <button class="boton-tabla" data-tab="produccion" aria-expanded="false" aria-controls="listado">
     <svg aria-hidden="true"><use href="#i-troncos"/></svg><span>Producción</span><svg class="flecha" aria-hidden="true"><use href="#i-flecha"/></svg>
   </button>
+  <button class="boton-tabla" data-tab="ajustes" aria-expanded="false" aria-controls="listado">
+    <svg aria-hidden="true"><use href="#i-documento"/></svg><span>Ajustes</span><svg class="flecha" aria-hidden="true"><use href="#i-flecha"/></svg>
+  </button>
   <button class="boton-tabla" data-tab="insumos" aria-expanded="false" aria-controls="listado">
     <svg aria-hidden="true"><use href="#i-caja"/></svg><span>Insumos</span><svg class="flecha" aria-hidden="true"><use href="#i-flecha"/></svg>
   </button>
@@ -495,6 +498,7 @@ const URLS={
 const CONFIG={
   produccion:{origen:"produccion",hoja:"DATOS LAS ACACIAS",fila:3},
   insumos:{origen:"produccion",hoja:"INSUMOS",fila:1},
+  ajustes:{origen:"produccion",hoja:"AJUSTES",fila:1},
   recibo:{origen:"recibo",hoja:"tati las acacias",fila:1},
   transito:{origen:"despachos",hoja:"En Tránsito",fila:1}
 };
@@ -914,7 +918,7 @@ function extraer(id,libro){
     .map(f=>indices.map(i=>f[i]??""))
     .filter(f=>f.some(tieneContenido));
 
-  if(id==="produccion"||id==="insumos"){
+  if(id==="produccion"||id==="insumos"||id==="ajustes"){
     const clave=id==="produccion"?"fecha":"quincena";
     const encontrados=columnas
       .map((c,i)=>claveColumna(c)===clave?i:-1)
@@ -923,7 +927,7 @@ function extraer(id,libro){
     if(encontrados.length!==1){
       throw new Error("Se necesita una única columna "+
         (id==="produccion"
-          ?"FECHA en Producción.":"Quincena en Insumos."));
+          ?"FECHA en Producción.":"Quincena en "+(id==="ajustes"?"Ajustes":"Insumos")+"."));
     }
 
     originales=originales.filter(
@@ -1373,6 +1377,50 @@ function fechaMaximaProduccion(){
   return resultado;
 }
 
+// AJUSTES se suma una sola vez por registro, conservando el signo.
+function calculoAjustes(filasProduccion=null){
+  const t=tablas.ajustes;
+  const valores={ROJO:0,AMARILLO:0,VERDE:0};
+  const resultado={valores,total:0,filas:[],error:""};
+  if(t.cargando||!t.lectura||t.error){
+    resultado.error=t.error||"Pendiente de lectura de Ajustes.";
+    return resultado;
+  }
+  const indices={};
+  for(const nombre of ["QUINCENA",...COLORES]){
+    const encontrados=t.columnas.map((c,i)=>claveColumna(c)===claveColumna(nombre)?i:-1).filter(i=>i>=0);
+    if(encontrados.length!==1){
+      resultado.error="Revisar columna "+nombre+" en Ajustes.";
+      return resultado;
+    }
+    indices[nombre]=encontrados[0];
+  }
+  const quincenas=filasProduccion===null?null:new Set(filasProduccion.map(f=>String(f.quincena).trim()));
+  for(const fila of t.filas){
+    const quincena=String(fila.valores[indices.QUINCENA]??"").trim();
+    if(quincenas&&!quincenas.has(quincena))continue;
+    const ajuste={quincena,valores:{}};
+    for(const color of COLORES){
+      const n=numeroCelda(fila.valores[indices[color]]);
+      if(!Number.isFinite(n)){
+        resultado.error="Ajuste inválido de "+color+" en quincena "+quincena+".";
+        return resultado;
+      }
+      ajuste.valores[color]=n;
+      valores[color]+=n;
+      resultado.total+=n;
+    }
+    resultado.filas.push(ajuste);
+  }
+  return resultado;
+}
+
+function ajustesSeleccionados(){
+  const t=tablas.produccion;
+  const hayFiltros=Boolean(t.busqueda)||t.filtros.some(v=>Boolean(v));
+  return calculoAjustes(hayFiltros?filtradas("produccion"):null);
+}
+
 function actualizarTotales(){
   const t=tablas.produccion;
 
@@ -1381,14 +1429,15 @@ function actualizarTotales(){
     :"Último dato: "+
       (t.lectura&&!t.error?fechaMaximaProduccion()||"—":"—");
 
-  const pp=t.error||
+  const ajuste=ajustesSeleccionados();
+  const pp=t.error||ajuste.error||
     (t.faltantes.length?"Revisar: "+t.faltantes.join(", "):"");
 
   $("numero-produccion").textContent=!t.lectura||pp
     ?"—":numero(
-      filtradas("produccion").reduce((s,f)=>s+f.total,0)
+      filtradas("produccion").reduce((s,f)=>s+f.total,0)+ajuste.total
     );
-  $("numero-produccion").title=pp;
+  $("numero-produccion").title=pp||"Incluye ajustes: "+numero(ajuste.total);
   $("numero-produccion").classList.toggle("error",Boolean(pp));
 
   const pd=t.error||
@@ -1482,6 +1531,7 @@ function ponerStock(id,valor,detalle,error=false){
 }
 
 function tarjetasStock(){
+  const ajuste=calculoAjustes();
   const p=tablas.produccion,r=tablas.recibo,tr=tablas.transito;
   const ids=["rojo","amarillo","verde","monte"];
 
@@ -1499,9 +1549,9 @@ function tarjetasStock(){
     return;
   }
 
-  if(p.error||r.error||tr.error){
+  if(p.error||r.error||tr.error||ajuste.error){
     ids.forEach(id=>ponerStock(
-      id,null,tr.error||
+      id,null,ajuste.error||tr.error||
         "Revisar la lectura de Producción y Recibo.",true
     ));
     return;
@@ -1525,7 +1575,7 @@ function tarjetasStock(){
 
     const producido=p.filas.reduce(
       (s,f)=>s+f.produccion[color],0
-    );
+    )+ajuste.valores[color];
     const recibido=r.filas.reduce(
       (s,f)=>s+(f.color===color?f.cantidad:0),0
     );
@@ -1536,7 +1586,7 @@ function tarjetasStock(){
     ponerStock(
       color.toLowerCase(),
       producido-recibido-pendiente,
-      "Producción: "+numero(producido)+
+      "Producción ajustada: "+numero(producido)+
       " − Recibido: "+numero(recibido)+
       " − En tránsito: "+numero(pendiente)+
       (r.noClasificados
@@ -1558,13 +1608,13 @@ function tarjetasStock(){
     return;
   }
 
-  const producido=p.filas.reduce((s,f)=>s+f.total,0);
+  const producido=p.filas.reduce((s,f)=>s+f.total,0)+ajuste.total;
   const recibido=r.filas.reduce((s,f)=>s+f.cantidad,0);
   const pendiente=tr.filas.reduce((s,f)=>s+f.cantidad,0);
 
   ponerStock(
     "monte",producido-recibido-pendiente,
-    "Producción: "+numero(producido)+
+    "Producción ajustada: "+numero(producido)+
     " − Cantidad Recibo: "+numero(recibido)+
     " − En tránsito: "+numero(pendiente)
   );
@@ -1785,6 +1835,7 @@ function dibujarGrafico(id,series,anillo,etiqueta){
 }
 
 function actualizarGraficos(){
+  const ajuste=ajustesSeleccionados();
   const p=tablas.produccion,r=tablas.recibo;
   const seleccion=filtradas("produccion");
 
@@ -1792,7 +1843,7 @@ function actualizarGraficos(){
     ?"Cargando Producción..."
     :!p.lectura
       ?"Pendiente de lectura de Producción."
-      :p.error||p.faltantes.join(", ");
+      :p.error||ajuste.error||p.faltantes.join(", ");
 
   if(problemaP){
     mensajeGrafico("graficoProduccionColor",problemaP);
@@ -1802,7 +1853,7 @@ function actualizarGraficos(){
       ["ROJO","VERDE","AMARILLO"].map(color=>({
         nombre:color,color:PALETA[color],
         valor:seleccion.reduce(
-          (s,f)=>s+f.produccion[color],0)
+          (s,f)=>s+f.produccion[color],0)+ajuste.valores[color]
       })),
       true,"TROZAS PRODUCIDAS"
     );
@@ -1818,7 +1869,7 @@ function actualizarGraficos(){
     dibujarGrafico("graficoProduccionDescarte",[
       {
         nombre:"PRODUCCIÓN",color:"#295344",
-        valor:seleccion.reduce((s,f)=>s+f.total,0)
+        valor:seleccion.reduce((s,f)=>s+f.total,0)+ajuste.total
       },
       {
         nombre:"DESCARTE BASAL",color:"#b5995f",
@@ -1893,7 +1944,7 @@ function actualizarSelectorQuincena(){
   const anterior=selector.value;
 
   const opciones=[
-    ...new Set(tablas.produccion.filas
+    ...new Set([...tablas.produccion.filas,...tablas.ajustes.filas]
       .map(f=>f.quincena).filter(tieneContenido))
   ].sort(comparador.compare);
 
@@ -1975,6 +2026,7 @@ function disenoGraficoQuincena(
 }
 
 function actualizarGraficoQuincena(){
+  const ajuste=ajustesSeleccionados();
   const t=tablas.produccion;
   const series=seriesSeleccionadas();
 
@@ -1985,7 +2037,7 @@ function actualizarGraficoQuincena(){
     ?"Cargando Producción..."
     :!t.lectura
       ?"Pendiente de lectura de Producción."
-      :t.error||t.avisoQuincena;
+      :t.error||t.avisoQuincena||ajuste.error;
 
   if(problema){
     mensajeGrafico("graficoQuincena",problema);
@@ -2033,6 +2085,17 @@ function actualizarGraficoQuincena(){
     const valores=grupos.get(fila.quincena);
     for(const serie of series){
       valores[serie.id]+=valorSerie(fila,serie.id);
+    }
+  }
+
+  for(const fila of ajuste.filas){
+    if(seleccionQuincena&&fila.quincena!==seleccionQuincena)continue;
+    if(!grupos.has(fila.quincena))grupos.set(fila.quincena,Object.fromEntries(series.map(s=>[s.id,0])));
+    const valores=grupos.get(fila.quincena);
+    for(const serie of series){
+      valores[serie.id]+=serie.id==="PRODUCCION"
+        ?COLORES.reduce((s,c)=>s+fila.valores[c],0)
+        :serie.id==="DESCARTES"?0:fila.valores[serie.id];
     }
   }
 
@@ -2401,7 +2464,7 @@ function mostrar(){
   $("tituloTabla").textContent=activa==="recibo"
     ?TITULO_RECIBO
     :activa==="produccion"?"Producción":
-      activa==="transito"?"En Tránsito":"Insumos";
+      activa==="transito"?"En Tránsito":activa==="ajustes"?"Ajustes":"Insumos";
 
   $("buscar").value=tablas[activa].busqueda;
   $("fila").value=CONFIG[activa].fila;
