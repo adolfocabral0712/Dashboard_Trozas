@@ -2406,8 +2406,8 @@ function actualizarDespachoDiario(){
   const colores=producto?[producto]:COLORES;
   mostrarTablaDespachos(dias,colores);
   const compacto=window.matchMedia("(max-width:700px)").matches;
-  const grupo=colores.length*(compacto?35:43)+24;
-  const ancho=Math.max(300,Math.min(contenedor.clientWidth-32,700),60+dias.length*grupo);
+  const grupo=colores.length*(compacto?30:36)+(compacto?10:14);
+  const ancho=Math.max(240,80+dias.length*grupo);
   const alto=340,izq=60,der=20,arriba=35,abajo=70;
   const valores=dias.flatMap(d=>colores.map(c=>d[c]));
   const paso=Math.max(1,Math.ceil(pasoEscala(Math.max(1,...valores))));
@@ -2419,7 +2419,7 @@ function actualizarDespachoDiario(){
     svg.append(svgElemento("line",{x1:izq,y1:y(v),x2:ancho-der,y2:y(v),stroke:"#dedfd4","stroke-dasharray":"4 4"}));
     textoSVG(svg,numero(v),{x:izq-10,y:y(v)+4,"text-anchor":"end","font-size":11});
   }
-  const espacio=(ancho-izq-der)/dias.length,barEsp=Math.min(compacto?35:43,espacio*.85/colores.length),barAncho=barEsp-8;
+  const espacio=(ancho-izq-der)/dias.length,barEsp=Math.min(compacto?30:36,espacio*.94/colores.length),barAncho=barEsp-8;
   dias.forEach((d,i)=>{
     const centro=izq+espacio*(i+.5);
     colores.forEach((c,j)=>{
@@ -2434,7 +2434,7 @@ function actualizarDespachoDiario(){
   for(const color of colores){
     const item=document.createElement("span"),punto=document.createElement("span");punto.className="punto";punto.style.background=PALETA[color];item.append(punto,document.createTextNode(color));$("leyendaDespachoDiario").append(item);
   }
-  $("avisoDespachoDiario").textContent="Fuente: Recibo + En Tránsito sin Recibo · Cada registro es un viaje · Quincena por fecha_rto_origen (Recibo) o fin_carga (En Tránsito), cruzada con FECHA de Producción."+(excluidos?" Registros sin producto válido o sin coincidencia única de fecha y quincena: "+numero(excluidos)+".":"");
+  $("avisoDespachoDiario").textContent=excluidos?"Registros sin producto válido o sin coincidencia única de fecha y quincena: "+numero(excluidos)+".":"";
 }
 
 function actualizarEstado(){
