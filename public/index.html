@@ -365,6 +365,19 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
   <div id="avisoQuincena" hidden></div>
 </section>
 
+<section class="grafico-quincena" aria-labelledby="tituloDespachoDiario">
+  <div class="cabecera-quincena">
+    <div><h2 id="tituloDespachoDiario">CAMIONES DESPACHADOS POR DÍA Y PRODUCTO</h2>
+      <p>Viajes de Recibo agrupados por fecha del remito de origen.</p></div>
+    <label class="selector-quincena">Producto
+      <select id="productoDespachoDiario"><option value="">Todos</option><option>ROJO</option><option>AMARILLO</option><option>VERDE</option></select>
+    </label>
+  </div>
+  <div id="graficoDespachoDiario" style="overflow-x:auto;padding:0 16px 10px"></div>
+  <div id="leyendaDespachoDiario" class="leyenda-quincena"></div>
+  <div id="avisoDespachoDiario" class="alcance"></div>
+</section>
+
 <div id="estadoCarga" hidden aria-live="polite"></div>
 
 <nav class="botones-tablas" aria-label="Mostrar u ocultar tablas">
@@ -1051,6 +1064,14 @@ function extraer(id,libro){
       }
     });
 
+    const fechasOrigen=columnas.map((c,i)=>
+      ["fechartoorigen","fecharemitoorigen","fechadelremitodeorigen","fecharemitodeorigen","fechaorigen"].includes(claveColumna(c))?i:-1
+    ).filter(i=>i>=0);
+    filas.forEach((fila,n)=>{
+      fila.fechaDespacho=fechasOrigen.length===1
+        ?fechaTexto(originales[n][fechasOrigen[0]],Boolean(libro.Workbook?.WBProps?.date1904)):"";
+    });
+
     const remitosOrigen=columnas.map((c,i)=>
       ["remitodeorigen","remitoorigen","rtoorigen","numeroremitoorigen"]
         .includes(claveColumna(c))?i:-1
@@ -1586,7 +1607,8 @@ function tarjetasStock(){
     ponerStock(
       color.toLowerCase(),
       producido-recibido-pendiente,
-      "Producción ajustada: "+numero(producido)+
+      "Producción: "+numero(producido-ajuste.valores[color])+
+      " + Ajuste: "+(ajuste.valores[color]<0?"("+numero(ajuste.valores[color])+")":numero(ajuste.valores[color]))+
       " − Recibido: "+numero(recibido)+
       " − En tránsito: "+numero(pendiente)+
       (r.noClasificados
@@ -2108,11 +2130,7 @@ function actualizarGraficoQuincena(){
       "graficoQuincena",
       "No hay registros para la selección actual."
     );
-    if(sinQuincena){
-      $("avisoQuincena").hidden=false;
-      $("avisoQuincena").textContent=numero(sinQuincena)+
-        " registros sin Quincena no se incluyen en este gráfico.";
-    }
+
     return;
   }
 
@@ -2268,11 +2286,69 @@ function actualizarGraficoQuincena(){
 
   $("leyendaQuincena").replaceChildren(leyenda);
 
-  if(sinQuincena){
-    $("avisoQuincena").hidden=false;
-    $("avisoQuincena").textContent=numero(sinQuincena)+
-      " registros sin Quincena no se incluyen en este gráfico.";
+
+}
+
+function datosDespachoDiario(){
+  const t=tablas.recibo,producto=$("productoDespachoDiario").value;
+  const grupos=new Map();let excluidos=0;
+  for(const fila of t.filas){
+    if(!COLORES.includes(fila.color)){excluidos++;continue;}
+    if(producto&&fila.color!==producto)continue;
+    const m=String(fila.fechaDespacho||"").match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+    if(!m){excluidos++;continue;}
+    const fecha=new Date(Date.UTC(+m[3],+m[2]-1,+m[1]));
+    if(fecha.getUTCFullYear()!==+m[3]||fecha.getUTCMonth()!==+m[2]-1||fecha.getUTCDate()!==+m[1]){excluidos++;continue;}
+    const clave=m[3]+"-"+m[2]+"-"+m[1];
+    if(!grupos.has(clave))grupos.set(clave,{fecha:fila.fechaDespacho,ROJO:0,AMARILLO:0,VERDE:0});
+    grupos.get(clave)[fila.color]+=1;
   }
+  return {dias:[...grupos.entries()].sort(([a],[b])=>a.localeCompare(b)).map(([,v])=>v),excluidos};
+}
+
+function actualizarDespachoDiario(){
+  const t=tablas.recibo,contenedor=$("graficoDespachoDiario");
+  $("leyendaDespachoDiario").replaceChildren();
+  $("avisoDespachoDiario").textContent="";
+  const problema=t.cargando?"Actualizando Recibo...":!t.lectura?"Pendiente de lectura de Recibo.":t.error;
+  if(problema){mensajeGrafico("graficoDespachoDiario",problema);return;}
+  if(t.filas.length&&!t.filas.some(f=>f.fechaDespacho)){
+    mensajeGrafico("graficoDespachoDiario","No se encontró una fecha válida del remito de origen en Recibo.");return;
+  }
+  const {dias,excluidos}=datosDespachoDiario();
+  if(!dias.length){mensajeGrafico("graficoDespachoDiario","Sin despachos para la selección actual.");return;}
+  const producto=$("productoDespachoDiario").value;
+  const colores=producto?[producto]:COLORES;
+  const compacto=window.matchMedia("(max-width:700px)").matches;
+  const grupo=colores.length*(compacto?35:43)+24;
+  const ancho=Math.max(300,contenedor.clientWidth-32,60+dias.length*grupo);
+  const alto=340,izq=60,der=20,arriba=35,abajo=70;
+  const valores=dias.flatMap(d=>colores.map(c=>d[c]));
+  const paso=Math.max(1,Math.ceil(pasoEscala(Math.max(1,...valores))));
+  const maximo=Math.ceil(Math.max(1,...valores)/paso)*paso;
+  const y=v=>alto-abajo-v/maximo*(alto-arriba-abajo);
+  const svg=svgElemento("svg",{viewBox:`0 0 ${ancho} ${alto}`,role:"img","aria-label":"Cantidad de camiones despachados por día y producto según Recibo"});
+  svg.style.width=ancho+"px";svg.style.height=alto+"px";svg.style.display="block";svg.style.margin="0 auto";
+  for(let v=0;v<=maximo;v+=paso){
+    svg.append(svgElemento("line",{x1:izq,y1:y(v),x2:ancho-der,y2:y(v),stroke:"#dedfd4","stroke-dasharray":"4 4"}));
+    textoSVG(svg,numero(v),{x:izq-10,y:y(v)+4,"text-anchor":"end","font-size":11});
+  }
+  const espacio=(ancho-izq-der)/dias.length,barEsp=Math.min(compacto?35:43,espacio*.85/colores.length),barAncho=barEsp-8;
+  dias.forEach((d,i)=>{
+    const centro=izq+espacio*(i+.5);
+    colores.forEach((c,j)=>{
+      const valor=d[c],x=centro-colores.length*barEsp/2+j*barEsp+4;
+      const rect=svgElemento("rect",{x,y:y(valor),width:barAncho,height:y(0)-y(valor),fill:PALETA[c],rx:2});
+      const titulo=svgElemento("title");titulo.textContent=d.fecha+" · "+c+": "+numero(valor)+" camiones";rect.append(titulo);svg.append(rect);
+      textoSVG(svg,numero(valor),{x:x+barAncho/2,y:y(valor)-7,"text-anchor":"middle","font-size":10});
+    });
+    textoSVG(svg,d.fecha,{x:centro,y:alto-abajo+24,"text-anchor":"middle","font-size":11});
+  });
+  contenedor.replaceChildren(svg);
+  for(const color of colores){
+    const item=document.createElement("span"),punto=document.createElement("span");punto.className="punto";punto.style.background=PALETA[color];item.append(punto,document.createTextNode(color));$("leyendaDespachoDiario").append(item);
+  }
+  $("avisoDespachoDiario").textContent="Fuente: Recibo · Cada registro se considera un viaje de camión · Fecha del remito de origen."+(excluidos?" Registros sin fecha o producto válido excluidos: "+numero(excluidos)+".":"");
 }
 
 function actualizarEstado(){
@@ -2295,6 +2371,7 @@ function actualizarDashboard(){
   actualizarTrozasCamion();
   tarjetasStock();
   actualizarGraficos();
+  actualizarDespachoDiario();
   actualizarSelectorQuincena();
   actualizarGraficoQuincena();
   actualizarEstado();
@@ -2725,6 +2802,9 @@ $("cerrarChapas").addEventListener("click",()=>{
 $("cerrarDescarte").addEventListener("click",()=>{
   $("modalDescarte").close();
 });
+
+$("productoDespachoDiario").addEventListener("change",actualizarDespachoDiario);
+window.addEventListener("resize",actualizarDespachoDiario);
 
 let anchoGraficoAnterior=-1;
 let frameGrafico=0;
