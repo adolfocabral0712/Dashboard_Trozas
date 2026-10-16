@@ -72,6 +72,10 @@ fieldset.productos{margin:0;padding:0;border:none;min-width:0}
 .chip input{margin:0;accent-color:var(--color)}
 .chip:has(input:checked){border-color:var(--color)}
 .chip input:disabled{cursor:default}
+.boton-producto{min-height:40px;padding:9px 13px;border:1px solid var(--borde);border-radius:8px;background:#fffefa;color:var(--bosque);font:inherit;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:7px}
+.boton-producto::before{content:"";width:9px;height:9px;flex-shrink:0;border-radius:50%;background:var(--color)}
+.boton-producto[aria-pressed="true"]{border-color:var(--color);box-shadow:inset 0 0 0 1px var(--color);background:#edf1e7;font-weight:700}
+.boton-producto:focus-visible{outline:2px solid var(--bosque);outline-offset:3px}
 #graficoQuincena{overflow-x:auto;padding:0 16px 5px}
 #graficoQuincena svg{display:block;width:100%;height:auto}
 .leyenda-quincena{display:flex;justify-content:center;flex-wrap:wrap;gap:18px;padding:10px 18px 18px;font-size:12px}
@@ -369,9 +373,15 @@ dialog h2{margin-top:0;font-family:Georgia,serif;color:var(--bosque)}
   <div class="cabecera-quincena">
     <div><h2 id="tituloDespachoDiario">CAMIONES DESPACHADOS POR QUINCENA Y PRODUCTO</h2>
       <p>Quincena de Producción según la fecha del remito de origen de Recibo.</p></div>
-    <label class="selector-quincena">Producto
-      <select id="productoDespachoDiario"><option value="">Todos</option><option>ROJO</option><option>AMARILLO</option><option>VERDE</option></select>
-    </label>
+    <fieldset class="productos">
+      <legend>Producto</legend>
+      <div class="opciones-productos" aria-label="Filtrar camiones por producto">
+        <button type="button" class="boton-producto" data-producto-despacho="" aria-pressed="true" style="--color:#295344">Todos</button>
+        <button type="button" class="boton-producto" data-producto-despacho="ROJO" aria-pressed="false" style="--color:#c64c45">Rojo</button>
+        <button type="button" class="boton-producto" data-producto-despacho="AMARILLO" aria-pressed="false" style="--color:#d8b238">Amarillo</button>
+        <button type="button" class="boton-producto" data-producto-despacho="VERDE" aria-pressed="false" style="--color:#5d8f64">Verde</button>
+      </div>
+    </fieldset>
   </div>
   <div id="graficoDespachoDiario" style="overflow-x:auto;padding:0 16px 10px"></div>
   <div id="leyendaDespachoDiario" class="leyenda-quincena"></div>
@@ -2289,9 +2299,11 @@ function actualizarGraficoQuincena(){
 
 }
 
+let productoDespachoSeleccionado="";
+
 function datosDespachoDiario(){
   const p=tablas.produccion,t=tablas.recibo;
-  const producto=$("productoDespachoDiario").value;
+  const producto=productoDespachoSeleccionado;
   const indice=p.columnas.findIndex(c=>claveColumna(c)==="fecha");
   const fechas=new Map(),grupos=new Map();let excluidos=0;
   for(const fila of p.filas){
@@ -2307,8 +2319,9 @@ function datosDespachoDiario(){
     const coincidencias=fechas.get(fila.fechaDespacho);
     if(!coincidencias||coincidencias.size!==1){excluidos++;continue;}
     const quincena=[...coincidencias][0];
-    if(!grupos.has(quincena))grupos.set(quincena,{fecha:nombreQuincena(quincena),ROJO:0,AMARILLO:0,VERDE:0});
+    if(!grupos.has(quincena))grupos.set(quincena,{fecha:nombreQuincena(quincena),ROJO:0,AMARILLO:0,VERDE:0,trozas:{ROJO:0,AMARILLO:0,VERDE:0}});
     grupos.get(quincena)[fila.color]+=1;
+    grupos.get(quincena).trozas[fila.color]+=fila.cantidad;
   }
   return {dias:[...grupos.entries()].sort(([a],[b])=>comparador.compare(a,b)).map(([,v])=>v),excluidos};
 }
@@ -2324,7 +2337,7 @@ function actualizarDespachoDiario(){
   }
   const {dias,excluidos}=datosDespachoDiario();
   if(!dias.length){mensajeGrafico("graficoDespachoDiario","Sin despachos con fecha coincidente con una única Quincena de Producción.");$("avisoDespachoDiario").textContent=excluidos?numero(excluidos)+" registros sin producto válido o sin coincidencia única de fecha y quincena.":"";return;}
-  const producto=$("productoDespachoDiario").value;
+  const producto=productoDespachoSeleccionado;
   const colores=producto?[producto]:COLORES;
   const compacto=window.matchMedia("(max-width:700px)").matches;
   const grupo=colores.length*(compacto?35:43)+24;
@@ -2346,7 +2359,7 @@ function actualizarDespachoDiario(){
     colores.forEach((c,j)=>{
       const valor=d[c],x=centro-colores.length*barEsp/2+j*barEsp+4;
       const rect=svgElemento("rect",{x,y:y(valor),width:barAncho,height:y(0)-y(valor),fill:PALETA[c],rx:2});
-      const titulo=svgElemento("title");titulo.textContent=d.fecha+" · "+c+": "+numero(valor)+" camiones";rect.append(titulo);svg.append(rect);
+      const titulo=svgElemento("title");titulo.textContent=d.fecha+" · "+c+"\nCamiones: "+numero(valor)+"\nTotal de trozas: "+(t.avisoCantidad?"No disponible: "+t.avisoCantidad:numero(d.trozas[c]));rect.append(titulo);svg.append(rect);
       textoSVG(svg,numero(valor),{x:x+barAncho/2,y:y(valor)-7,"text-anchor":"middle","font-size":10});
     });
     textoSVG(svg,d.fecha,{x:centro,y:alto-abajo+24,"text-anchor":"middle","font-size":11});
@@ -2810,7 +2823,15 @@ $("cerrarDescarte").addEventListener("click",()=>{
   $("modalDescarte").close();
 });
 
-$("productoDespachoDiario").addEventListener("change",actualizarDespachoDiario);
+document.querySelectorAll("[data-producto-despacho]").forEach(boton=>{
+  boton.addEventListener("click",()=>{
+    productoDespachoSeleccionado=boton.dataset.productoDespacho;
+    document.querySelectorAll("[data-producto-despacho]").forEach(b=>{
+      b.setAttribute("aria-pressed",String(b.dataset.productoDespacho===productoDespachoSeleccionado));
+    });
+    actualizarDespachoDiario();
+  });
+});
 window.addEventListener("resize",actualizarDespachoDiario);
 
 let anchoGraficoAnterior=-1;
