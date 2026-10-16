@@ -84,7 +84,7 @@ fieldset.productos{margin:0;padding:0;border:none;min-width:0}
 .detalle-despacho thead th{position:static;background:#edf0e5;color:var(--bosque);font-weight:600}
 .detalle-despacho th:first-child,.detalle-despacho th:nth-child(2){text-align:center}
 .detalle-despacho tbody th{font-weight:500;vertical-align:middle}
-.detalle-despacho .grupo-alterno>*{background:#f8f7f1}
+.detalle-despacho tbody tr,.detalle-despacho tbody tr:nth-child(even),.detalle-despacho tbody tr:hover,.detalle-despacho tbody th,.detalle-despacho tbody td,.detalle-despacho .grupo-alterno>*{background:#fffefa}
 .detalle-despacho .total-columna{font-weight:700}
 .detalle-despacho tfoot th,.detalle-despacho tfoot td{background:#edf0e5;font-weight:700}
 .detalle-despacho .punto{display:inline-block;width:7px;height:7px;margin-right:4px}
@@ -2428,7 +2428,13 @@ function actualizarDespachoDiario(){
       const titulo=svgElemento("title");titulo.textContent=d.fecha+" · "+c+"\nCamiones: "+numero(valor)+"\nEn Recibo: "+numero(d.recibo[c])+" · En Tránsito: "+numero(d.transito[c])+"\nTotal de trozas: "+(t.avisoCantidad?"No disponible: "+t.avisoCantidad:numero(d.trozas[c]));rect.append(titulo);svg.append(rect);
       textoSVG(svg,numero(valor),{x:x+barAncho/2,y:y(valor)-7,"text-anchor":"middle","font-size":10});
     });
-    textoSVG(svg,d.fecha,{x:centro,y:alto-abajo+24,"text-anchor":"middle","font-size":11});
+    const diagonal=colores.length===1;
+    const etiquetaY=alto-abajo+(diagonal?18:24);
+    textoSVG(svg,d.fecha,{
+      x:centro,y:etiquetaY,
+      "text-anchor":diagonal?"end":"middle","font-size":11,
+      ...(diagonal?{transform:`rotate(-40 ${centro} ${etiquetaY})`}:{})
+    });
   });
   contenedor.replaceChildren(svg);
   for(const color of colores){
