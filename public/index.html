@@ -1405,6 +1405,7 @@ function fechaMaximaProduccion(){
   let maxima=-Infinity,resultado="";
 
   for(const fila of t.filas){
+    if(!tieneContenido(fila.quincena))continue;
     const valor=texto(fila.valores[indice]).trim();
     const m=valor.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
     if(!m)continue;
